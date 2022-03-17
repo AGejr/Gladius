@@ -1,0 +1,2 @@
+Bundle-SymbolicName: Core
+Service-Component: META-INF/core.xml

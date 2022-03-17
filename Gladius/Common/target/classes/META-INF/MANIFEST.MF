@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1647508165436
+Build-Jdk: 1.8.0_322
+Built-By: janik
+Bundle-ManifestVersion: 2
+Bundle-Name: org.gladius.Common
+Bundle-SymbolicName: org.gladius.Common
+Bundle-Version: 1.0.0.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin
+Tool: Bnd-3.5.0.201709291849

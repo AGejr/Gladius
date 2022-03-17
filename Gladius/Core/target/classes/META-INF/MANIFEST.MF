@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1647508165047
+Build-Jdk: 1.8.0_322
+Built-By: janik
+Bundle-ManifestVersion: 2
+Bundle-Name: Core
+Bundle-SymbolicName: Core
+Bundle-Version: 1.0.0.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin
+Export-Package: Core;version="1.0.0.SNAPSHOT";uses:="com.badlogic.gdx"
+Import-Package: com.badlogic.gdx;version="[1.0,2)",com.badlogic.gdx.back
+ ends.lwjgl;version="[1.0,2)",com.badlogic.gdx.graphics;version="[1.0,2)
+ ",com.badlogic.gdx.graphics.glutils;version="[1.0,2)"
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"
+Service-Component: META-INF/core.xml
+Tool: Bnd-3.5.0.201709291849
