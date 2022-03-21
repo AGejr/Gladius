@@ -2,13 +2,14 @@ package Common.data;
 
 
 import Common.data.entityparts.EntityPart;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import java.io.Serializable;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Entity implements Serializable {
+public class Entity extends Sprite implements Serializable {
     private final UUID ID = UUID.randomUUID();
 
     private float radius;

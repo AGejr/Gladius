@@ -13,17 +13,21 @@ public class GameInputProcessor extends InputAdapter {
     }
 
     public boolean keyDown(int k) {
-        if(k == Input.Keys.UP) {
+        if(k == Input.Keys.UP || k == Input.Keys.W) {
             gameData.getKeys().setKey(GameKeys.UP, true);
+            gameData.getKeys().setKey(GameKeys.W, true);
         }
-        if(k == Input.Keys.LEFT) {
+        if(k == Input.Keys.LEFT || k == Input.Keys.A) {
             gameData.getKeys().setKey(GameKeys.LEFT, true);
+            gameData.getKeys().setKey(GameKeys.A, true);
         }
-        if(k == Input.Keys.DOWN) {
+        if(k == Input.Keys.DOWN || k == Input.Keys.S) {
             gameData.getKeys().setKey(GameKeys.DOWN, true);
+            gameData.getKeys().setKey(GameKeys.S, true);
         }
-        if(k == Input.Keys.RIGHT) {
+        if(k == Input.Keys.RIGHT || k == Input.Keys.D) {
             gameData.getKeys().setKey(GameKeys.RIGHT, true);
+            gameData.getKeys().setKey(GameKeys.D, true);
         }
         if(k == Input.Keys.ENTER) {
             gameData.getKeys().setKey(GameKeys.ENTER, true);
