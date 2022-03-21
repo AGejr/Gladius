@@ -9,13 +9,13 @@
   </parent>
 
   <properties>
-    <bundle.symbolicName>Core</bundle.symbolicName>
-    <bundle.namespace>Core</bundle.namespace>
+    <bundle.symbolicName>Player</bundle.symbolicName>
+    <bundle.namespace>Player</bundle.namespace>
   </properties>
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.gladius.Gladius</groupId>
-  <artifactId>Core</artifactId>
+  <artifactId>Player</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <name>${bundle.symbolicName}</name>
@@ -26,22 +26,7 @@
     <dependency>
       <groupId>org.osgi</groupId>
       <artifactId>org.osgi.core</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>org.osgi</groupId>
-      <artifactId>org.osgi.compendium</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>org.gladius.build</groupId>
-      <artifactId>LibGDXImports</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>2.7</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.gladius.Gladius</groupId>
@@ -51,4 +36,13 @@
     </dependency>
   </dependencies>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <extensions>true</extensions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
