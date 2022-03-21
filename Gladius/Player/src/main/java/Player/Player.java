@@ -1,25 +1,21 @@
 package Player;
 
+import Common.data.Entity;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class Player extends Sprite {
+public class Player extends Entity {
     int balance;
-    //PositionPart positionPart;
-    //LifePart lifePart;
 
-    public Player(Texture texture) {
-        super(texture);
+    public Player(Texture texture, int radius) {
+        super(texture, radius);
         this.balance = 0;
     }
 
-    public Player(TextureRegion region) {
-        super(region);
+    public Player(TextureRegion region, int radius) {
+        super(region, radius);
         this.balance = 0;
     }
-
-
 
 
 }
