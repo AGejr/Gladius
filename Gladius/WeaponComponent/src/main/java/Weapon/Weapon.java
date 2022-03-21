@@ -4,11 +4,13 @@ public abstract class Weapon extends Entity {
     private String name;
     private float damage;
     private float weight;
+    private float range;
 
-    protected Weapon(String name, float damage, float weight) {
+    protected Weapon(String name, float damage, float weight, float range) {
         this.name = name;
         this.damage = damage;
         this.weight = weight;
+        this.setRadius(range);
     }
 
     public String getName() {
