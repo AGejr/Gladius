@@ -26,7 +26,8 @@
     <module>Core</module>
     <module>LibGDXImports</module>
     <module>Common</module>
-    <module>Weapon</module>
+    <module>WeaponComponent</module>
+    <module>CommonWeapon</module>
   </modules>
 
   <build>
