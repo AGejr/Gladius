@@ -11,6 +11,8 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
 
+import java.net.URISyntaxException;
+
 public class Game implements ApplicationListener {
     private static OrthographicCamera cam;
     private ShapeRenderer sr;
@@ -38,7 +40,8 @@ public class Game implements ApplicationListener {
         cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         cam.update();
         //TODO: load files properly
-        tiledMap = new TmxMapLoader().load("C:/Users/janik/Map/Map.tmx");
+        //tiledMap = new TmxMapLoader().load("C:/Users/janik/Map/Map.tmx");
+        tiledMap = new TmxMapLoader().load(Gdx.files.absolute(getClass().getClassLoader().getResourceAsStream("Map/Map.tmx"));
         tiledMapRenderer = new OrthoCachedTiledMapRenderer(tiledMap);
         tiledMapRenderer.setBlending(true); //Makes tiles transparent
 
