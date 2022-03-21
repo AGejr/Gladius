@@ -42,18 +42,22 @@ public class Game implements ApplicationListener {
     @Override
     public void create() {
         cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        cam.translate(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        cam.translate(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() / 2);
         cam.update();
-        String[] files = {"Map/Map.tmx", "Map/Arena_Tileset.tsx", "Map/Arena_Tileset.png"};
 
-        for (String file : files) {
-            try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(file)){
-                File newFile = new File(file);
-                if (inputStream != null) {
-                    FileUtils.copyInputStreamToFile(inputStream, newFile);
+        File mapFile = new File("Map/Map.tmx");
+        if (!mapFile.exists()) {
+            String[] files = {"Map/Map.tmx", "Map/Arena_Tileset.tsx", "Map/Arena_Tileset.png"};
+
+            for (String file : files) {
+                try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(file)) {
+                    File newFile = new File(file);
+                    if (inputStream != null) {
+                        FileUtils.copyInputStreamToFile(inputStream, newFile);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
 
@@ -73,8 +77,7 @@ public class Game implements ApplicationListener {
 
     @Override
     public void render() {
-        //Gdx.gl.glClearColor(194/255f, 178/255f, 128/255f, 1); //Black = 0,0,0,1
-        Gdx.gl.glClearColor(0,0,0,1);
+        Gdx.gl.glClearColor(237/255f, 190/255f, 82/255f, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         cam.update();
