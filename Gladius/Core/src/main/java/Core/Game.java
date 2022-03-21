@@ -1,5 +1,6 @@
 package Core;
 
+import Common.data.GameData;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
@@ -22,6 +23,7 @@ import java.util.logging.FileHandler;
 public class Game implements ApplicationListener {
     private static OrthographicCamera cam;
     private ShapeRenderer sr;
+    private final GameData gameData = new GameData();
     private TiledMap tiledMap;
     private OrthoCachedTiledMapRenderer tiledMapRenderer;
 
@@ -43,7 +45,7 @@ public class Game implements ApplicationListener {
     @Override
     public void create() {
         cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        cam.translate(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
         cam.update();
         String[] files = {"Map/Map.tmx", "Map/Arena_Tileset.tsx", "Map/Arena_Tileset.png"};
 
@@ -63,20 +65,8 @@ public class Game implements ApplicationListener {
         tiledMapRenderer.setBlending(true); //Makes tiles transparent
 
         sr = new ShapeRenderer();
-    }
-    public static final int DEFAULT_BUFFER_SIZE = 8192;
 
-    private static void copyInputStreamToFile(InputStream inputStream, File file)
-            throws IOException {
-
-        // append = false
-        try (FileOutputStream outputStream = new FileOutputStream(file, false)) {
-            int read;
-            byte[] bytes = new byte[DEFAULT_BUFFER_SIZE];
-            while ((read = inputStream.read(bytes)) != -1) {
-                outputStream.write(bytes, 0, read);
-            }
-        }
+        Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
     }
 
     @Override
@@ -109,5 +99,4 @@ public class Game implements ApplicationListener {
     public void dispose() {
 
     }
-
 }
