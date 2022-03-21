@@ -100,7 +100,6 @@ public class Game implements ApplicationListener {
         tiledMapRenderer.setView(cam);
         tiledMapRenderer.render();
 
-
         for (IEntityProcessingService entityProcessorService : entityProcessorList) {
             entityProcessorService.process(gameData, world);
         }
@@ -109,9 +108,6 @@ public class Game implements ApplicationListener {
         for (IPostEntityProcessingService postEntityProcessorService : postEntityProcessorList) {
             postEntityProcessorService.process(gameData, world);
         }
-
-
-
 
         for (Entity entity :  world.getEntities()){
             batch.begin();
