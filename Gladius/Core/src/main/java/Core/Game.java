@@ -10,8 +10,16 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
+import javafx.scene.effect.ImageInput;
 
+import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageInputStream;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class Game implements ApplicationListener {
     private static OrthographicCamera cam;
@@ -41,7 +49,43 @@ public class Game implements ApplicationListener {
         cam.update();
         //TODO: load files properly
         //tiledMap = new TmxMapLoader().load("C:/Users/janik/Map/Map.tmx");
-        tiledMap = new TmxMapLoader().load(Gdx.files.absolute(getClass().getClassLoader().getResourceAsStream("Map/Map.tmx"));
+        String[] files = {"/Map/Arena_Tileset.tsx", "Map/Map.tmx"};
+        String[] newFileNames = {"Arena_Tileset.tsx", "Map.tmx"};
+        List<InputStream> streams = new ArrayList<>();
+        for (String file: files) {
+            System.out.println(file);
+            streams.add(getClass().getClassLoader().getResourceAsStream(file));
+        }
+        List<Scanner> scanners = new ArrayList<>();
+        for (InputStream stream : streams) {
+            System.out.println(stream);
+            scanners.add(new Scanner(stream));
+        }
+        File mapTmx = null;
+        for (int i = 0; i < scanners.size(); i++) {
+            File newFile = new File(newFileNames[i]);
+            try {
+                FileWriter fileWriter = new FileWriter(newFile);
+                while (scanners.get(i).hasNext()) {
+                    fileWriter.append(scanners.get(i).next());
+                }
+                fileWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (i == 0) {
+                mapTmx = newFile;
+            }
+        }
+        BufferedImage BImage = null;
+        try {
+            InputStream is = new BufferedInputStream(getClass().getResourceAsStream("Map/Arena_Tileset.png"));
+            BImage = ImageIO.read(is);
+            ImageIO.write(BImage, "png", new File("Arena_Tileset.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        tiledMap = new TmxMapLoader().load(mapTmx.getPath());
         tiledMapRenderer = new OrthoCachedTiledMapRenderer(tiledMap);
         tiledMapRenderer.setBlending(true); //Makes tiles transparent
 
