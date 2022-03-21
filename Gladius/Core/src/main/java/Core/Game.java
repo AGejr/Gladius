@@ -1,5 +1,6 @@
 package Core;
 
+import Common.data.GameData;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 public class Game implements ApplicationListener {
     private static OrthographicCamera cam;
     private ShapeRenderer sr;
+    private final GameData gameData = new GameData();
 
     public Game(){
         init();
@@ -34,6 +36,8 @@ public class Game implements ApplicationListener {
         cam.update();
 
         sr = new ShapeRenderer();
+
+        Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
     }
 
     @Override
