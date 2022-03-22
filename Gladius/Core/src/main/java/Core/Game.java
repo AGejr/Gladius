@@ -41,7 +41,6 @@ public class Game implements ApplicationListener {
     private static World world = new World();
     private TiledMap tiledMap;
     private OrthoCachedTiledMapRenderer tiledMapRenderer;
-    private static World world = new World();
     private SpriteBatch batch;
 
 
