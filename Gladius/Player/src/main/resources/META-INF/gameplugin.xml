@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="org.gladius.Gladius.Player">
-    <implementation class="org.gladius.Gladius.Player.PlayerPlugin"/>
-   <service>
-       <provide interface="org.gladius.Gladius.common.services.IGamePluginService"/>
-   </service>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="Player.PlayerPlugin">
+    <implementation class="Player.PlayerPlugin"/>
+    <service>
+        <provide interface="Common.services.IGamePluginService"/>
+    </service>
 </scr:component>

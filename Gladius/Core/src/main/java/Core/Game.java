@@ -23,6 +23,8 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -36,10 +38,12 @@ public class Game implements ApplicationListener {
     private static OrthographicCamera cam;
     private ShapeRenderer sr;
     private final GameData gameData = new GameData();
+    private static World world = new World();
     private TiledMap tiledMap;
     private OrthoCachedTiledMapRenderer tiledMapRenderer;
     private static World world = new World();
     private SpriteBatch batch;
+
 
     public Game(){
         init();
@@ -99,7 +103,19 @@ public class Game implements ApplicationListener {
         cam.update();
         tiledMapRenderer.setView(cam);
         tiledMapRenderer.render();
+        
+        for (Entity entity :  world.getEntities()){
+            batch.begin();
+            entity.draw(batch);
+            batch.end();
+        }
 
+        update();
+    }
+
+
+    private void update() {
+        // Update
         for (IEntityProcessingService entityProcessorService : entityProcessorList) {
             entityProcessorService.process(gameData, world);
         }
@@ -107,12 +123,6 @@ public class Game implements ApplicationListener {
         // Post Update
         for (IPostEntityProcessingService postEntityProcessorService : postEntityProcessorList) {
             postEntityProcessorService.process(gameData, world);
-        }
-
-        for (Entity entity :  world.getEntities()){
-            batch.begin();
-            entity.draw(batch);
-            batch.end();
         }
     }
 
@@ -157,5 +167,4 @@ public class Game implements ApplicationListener {
         this.gamePluginList.remove(plugin);
         plugin.stop(gameData, world);
     }
-
 }
