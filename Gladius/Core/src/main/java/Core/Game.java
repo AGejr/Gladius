@@ -85,6 +85,14 @@ public class Game implements ApplicationListener {
         batch = new SpriteBatch();
 
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
+
+        for (Entity entity :  world.getEntities()){
+            File textureFile = new File(entity.getTexturePath());
+            FileHandle fileHandle = new FileHandle(textureFile);
+            Texture playerTexture = new Texture(fileHandle);
+            entity.setTexture(playerTexture);
+
+        }
     }
 
     @Override
@@ -103,9 +111,7 @@ public class Game implements ApplicationListener {
         tiledMapRenderer.render();
 
         /*
-        File textureFile = new File("GladiatorSpriteSheet.png");
-        FileHandle fileHandle = new FileHandle(textureFile);
-        Texture playerTexture = new Texture(fileHandle);
+
 
         batch.begin();
         batch.draw(playerTexture,10,10);
@@ -116,6 +122,7 @@ public class Game implements ApplicationListener {
         for (Entity entity :  world.getEntities()){
             batch.begin();
             entity.draw(batch);
+            batch.draw(entity.getTexture(),entity.getX(),entity.getY());
             batch.end();
         }
 

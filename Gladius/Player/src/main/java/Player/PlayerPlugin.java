@@ -3,6 +3,7 @@ package Player;
 import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
+import Common.data.entityparts.MovingPart;
 import Common.services.IGamePluginService;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -25,23 +26,11 @@ public class PlayerPlugin implements IGamePluginService {
     private Entity createPlayer(GameData gamedata){
 
         String file = "GladiatorSpriteSheet.png";
-        /*
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(file)){
-            File newFile = new File(file);
-            if (inputStream != null) {
-                FileUtils.copyInputStreamToFile(inputStream, newFile);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } */
-
-        File textureFile = new File("GladiatorSpriteSheet.png");
-        FileHandle fileHandle = new FileHandle(textureFile);
-        Texture playerTexture = new Texture(fileHandle);
 
         System.out.println("testestestestest");
 
-        Entity player = new Player(playerTexture, 2);
+        Entity player = new Player(file, 2);
+
         player.setX(10);
         player.setY(10);
         return player;

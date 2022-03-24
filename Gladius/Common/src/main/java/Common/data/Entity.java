@@ -15,17 +15,15 @@ public class Entity extends Sprite implements Serializable {
     private final UUID ID = UUID.randomUUID();
 
     private float radius;
+    private String texturePath;
     private Map<Class, EntityPart> parts;
 
-    public Entity(Texture texture, float radius) {
-        super(texture);
+    public Entity(String texturePath,float radius) {
+        super();
+        this.texturePath = texturePath;
         this.radius = radius;
     }
 
-    public Entity(TextureRegion region, float radius) {
-        super(region);
-        this.radius = radius;
-    }
 
     public Entity(Entity entity){
         super(entity);
@@ -61,5 +59,9 @@ public class Entity extends Sprite implements Serializable {
 
     public String getID() {
         return ID.toString();
+    }
+
+    public String getTexturePath() {
+        return texturePath;
     }
 }

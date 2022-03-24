@@ -14,7 +14,7 @@ public class PlayerControlSystem implements IEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
-
+    /*
         for (Entity entity : world.getEntities(Player.class)){
 
             MovingPart movingPart = entity.getPart(MovingPart.class);
@@ -27,7 +27,7 @@ public class PlayerControlSystem implements IEntityProcessingService {
 
             movingPart.process(gameData, entity);
 
-        }
+        } */
     }
 
 
