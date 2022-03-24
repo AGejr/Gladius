@@ -6,6 +6,7 @@ import Common.data.World;
 import Common.services.IEntityProcessingService;
 import Common.services.IGamePluginService;
 import Common.services.IPostEntityProcessingService;
+import Common.tools.FileLoader;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
@@ -14,18 +15,14 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
-import org.apache.commons.io.FileUtils;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -65,17 +62,7 @@ public class Game implements ApplicationListener {
         cam.translate(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
         cam.update();
         String[] files = {"Map/Map.tmx", "Map/Arena_Tileset.tsx", "Map/Arena_Tileset.png"};
-
-        for (String file : files) {
-            try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(file)){
-                File newFile = new File(file);
-                if (inputStream != null) {
-                    FileUtils.copyInputStreamToFile(inputStream, newFile);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        FileLoader.loadFiles(files, getClass());
 
         tiledMap = new TmxMapLoader().load("Map/Map.tmx");
         tiledMapRenderer = new OrthoCachedTiledMapRenderer(tiledMap);
@@ -104,7 +91,6 @@ public class Game implements ApplicationListener {
         tiledMapRenderer.setView(cam);
         tiledMapRenderer.render();
 
-
         batch.begin();
         for (Entity entity :  world.getEntities()){
 
@@ -114,12 +100,7 @@ public class Game implements ApplicationListener {
                 Texture playerTexture = new Texture(fileHandle);
                 entity.setTexture(playerTexture);
             }
-
             batch.draw(new TextureRegion(entity.getTexture(),32,32,32,32),entity.getX(),entity.getY());
-
-
-
-
         }
         batch.end();
 

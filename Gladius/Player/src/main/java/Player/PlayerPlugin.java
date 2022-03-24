@@ -5,6 +5,7 @@ import Common.data.GameData;
 import Common.data.World;
 import Common.data.entityparts.MovingPart;
 import Common.services.IGamePluginService;
+import Common.tools.FileLoader;
 
 
 public class PlayerPlugin implements IGamePluginService {
@@ -15,13 +16,11 @@ public class PlayerPlugin implements IGamePluginService {
         world.addEntity(player);
     }
 
-    private Entity createPlayer(GameData gamedata){
-
+    private Entity createPlayer(GameData gamedata) {
         String file = "GladiatorSpriteSheet.png";
-
         Entity player = new Player(file, 2);
-
         player.add(new MovingPart(50));
+        FileLoader.loadFile(file, getClass());
 
         player.setX(10);
         player.setY(10);
@@ -30,7 +29,7 @@ public class PlayerPlugin implements IGamePluginService {
 
     @Override
     public void stop(GameData gameData, World world) {
-        for(Entity entity : world.getEntities()) {
+        for (Entity entity : world.getEntities()) {
             world.removeEntity(entity);
         }
     }
