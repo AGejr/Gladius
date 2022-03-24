@@ -14,20 +14,20 @@ public class PlayerControlSystem implements IEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
-    /*
+
         for (Entity entity : world.getEntities(Player.class)){
 
             MovingPart movingPart = entity.getPart(MovingPart.class);
-            LifePart lifePart = entity.getPart(LifePart.class);
+            //LifePart lifePart = entity.getPart(LifePart.class);
 
-            movingPart.setLeft(gameData.getKeys().isDown(GameKeys.A));
-            movingPart.setRight(gameData.getKeys().isDown(GameKeys.D));
-            movingPart.setUp(gameData.getKeys().isDown(GameKeys.W));
-            movingPart.setDown(gameData.getKeys().isDown(GameKeys.S));
+            movingPart.setLeft(gameData.getKeys().isDown(GameKeys.LEFT));
+            movingPart.setRight(gameData.getKeys().isDown(GameKeys.RIGHT));
+            movingPart.setUp(gameData.getKeys().isDown(GameKeys.UP));
+            movingPart.setDown(gameData.getKeys().isDown(GameKeys.DOWN));
 
             movingPart.process(gameData, entity);
 
-        } */
+        }
     }
 
 

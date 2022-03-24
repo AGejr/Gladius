@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -86,13 +87,6 @@ public class Game implements ApplicationListener {
 
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
 
-        for (Entity entity :  world.getEntities()){
-            File textureFile = new File(entity.getTexturePath());
-            FileHandle fileHandle = new FileHandle(textureFile);
-            Texture playerTexture = new Texture(fileHandle);
-            entity.setTexture(playerTexture);
-
-        }
     }
 
     @Override
@@ -110,21 +104,24 @@ public class Game implements ApplicationListener {
         tiledMapRenderer.setView(cam);
         tiledMapRenderer.render();
 
-        /*
-
 
         batch.begin();
-        batch.draw(playerTexture,10,10);
-        batch.end();
-
-         */
-
         for (Entity entity :  world.getEntities()){
-            batch.begin();
-            entity.draw(batch);
-            batch.draw(entity.getTexture(),entity.getX(),entity.getY());
-            batch.end();
+
+            if(entity.getTexture() == null){
+                File textureFile = new File(entity.getTexturePath());
+                FileHandle fileHandle = new FileHandle(textureFile);
+                Texture playerTexture = new Texture(fileHandle);
+                entity.setTexture(playerTexture);
+            }
+
+            batch.draw(new TextureRegion(entity.getTexture(),32,32,32,32),entity.getX(),entity.getY());
+
+
+
+
         }
+        batch.end();
 
         update();
     }

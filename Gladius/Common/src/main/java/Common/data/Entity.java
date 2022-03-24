@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,6 +21,7 @@ public class Entity extends Sprite implements Serializable {
 
     public Entity(String texturePath,float radius) {
         super();
+        this.parts = new ConcurrentHashMap<>();
         this.texturePath = texturePath;
         this.radius = radius;
     }
@@ -27,6 +29,7 @@ public class Entity extends Sprite implements Serializable {
 
     public Entity(Entity entity){
         super(entity);
+        this.parts = new ConcurrentHashMap<>();
         this.radius = entity.getRadius();
         this.parts = entity.getParts();
     }
