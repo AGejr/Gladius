@@ -10,8 +10,10 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -23,9 +25,6 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -83,7 +82,7 @@ public class Game implements ApplicationListener {
 
         sr = new ShapeRenderer();
 
-        SpriteBatch batch = new SpriteBatch();
+        batch = new SpriteBatch();
 
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
     }
@@ -102,7 +101,18 @@ public class Game implements ApplicationListener {
         cam.update();
         tiledMapRenderer.setView(cam);
         tiledMapRenderer.render();
-        
+
+        /*
+        File textureFile = new File("GladiatorSpriteSheet.png");
+        FileHandle fileHandle = new FileHandle(textureFile);
+        Texture playerTexture = new Texture(fileHandle);
+
+        batch.begin();
+        batch.draw(playerTexture,10,10);
+        batch.end();
+
+         */
+
         for (Entity entity :  world.getEntities()){
             batch.begin();
             entity.draw(batch);
