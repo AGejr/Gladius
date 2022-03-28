@@ -27,16 +27,6 @@ public class PlayerControlSystem implements IEntityProcessingService {
             movingPart.setRight(gameData.getKeys().isDown(GameKeys.RIGHT));
             movingPart.setUp(gameData.getKeys().isDown(GameKeys.UP));
             movingPart.setDown(gameData.getKeys().isDown(GameKeys.DOWN));
-/*
-            Animation animation;
-
-            if(entity.getTexture() == null){
-                Array<TextureRegion> textures = new Array<>();
-                textures.add(new TextureRegion(playerTexture,0,0,32,32));
-                textures.add(new TextureRegion(playerTexture,64,32,32,32));
-                animation = new Animation(500, textures);
-
-            } */
 
             movingPart.process(gameData, entity);
 

@@ -23,9 +23,6 @@ public class PlayerPlugin implements IGamePluginService {
     private Entity createPlayer(GameData gamedata) {
         String file = "GladiatorSpriteSheet.png";
 
-        // if entity doesn't have texture, create and assign the texture
-        // Set the region of the texture assigned to the entity
-
         Entity player = new Player(file, 2);
         player.add(new MovingPart(50));
         FileLoader.loadFile(file, getClass());
