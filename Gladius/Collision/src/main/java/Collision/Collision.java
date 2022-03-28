@@ -33,8 +33,8 @@ public class Collision implements IPostEntityProcessingService {
             int[] gate = new int[]{24, 25};
             int[] spawn = new int[]{161, 162};
             int[] shop = new int[]{163, 164};
-            int[] water = new int[]{78, 79, 86,87,88, 103, 123, 127, 71, 159, 155, 108, 107};
-            int[] noCollide = new int[]{78, 79, 86,87,88, 103, 123, 127, 71, 159, 155, 108, 107, 24, 25, 37, 98, 99, 159, 160, 161,162,163,164, 165, 177, 178, 179};
+            int[] water = new int[]{70, 71, 78, 79, 86,87,88, 103, 123, 127, 159, 155, 108, 107};
+            int[] noCollide = new int[]{70, 71, 72, 78, 79, 86,87,88, 103, 104, 107, 123, 127, 159, 155, 108, 24, 25, 37, 98, 99, 159, 160, 161,162,163,164, 165, 177, 178, 179};
 
             MovingPart movingPart = entity.getPart(MovingPart.class);
             // Check wall layer, if there is a wall (not 0)
