@@ -26,15 +26,15 @@ public class Collision implements IPostEntityProcessingService {
             int x = (int) (((entity.getX()+32/2) / 1600) * 50);
             Long tile = csv.get(y).get(x);
             int[] gate = new int[]{24, 25};
-            int[] spawn = new int[]{160, 161};
-            int[] shop = new int[]{162, 163};
+            int[] spawn = new int[]{161, 162};
+            int[] shop = new int[]{163, 164};
             long[] noCollide = new long[]{37, 98, 99, 159, 160, 161,162,163,164, 165, 177, 178, 179, 2147483746l, 2147483685l};
 
             MovingPart movingPart = entity.getPart(MovingPart.class);
             if (Arrays.stream(gate).anyMatch(i -> i == tile)) {
                 entity.setY(366);
-            } else if (tile == 164) {
-                entity.setY(300);
+            } else if (tile == 165) {
+                entity.setY(200);
             } else if (tile != 0) {
                 System.out.println(tile);
                 if(!Arrays.stream(noCollide).anyMatch(i -> i == tile)) {
