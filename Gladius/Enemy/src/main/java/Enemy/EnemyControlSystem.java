@@ -15,25 +15,32 @@ public class EnemyControlSystem implements IEntityProcessingService {
             MovingPart movingPart = enemy.getPart(MovingPart.class);
 
             for (Entity player : world.getEntities(Player.class)) {
-                if (player.getX() == enemy.getX()) {
+                if (player.getY() > 300) {
+                    if (player.getX() == enemy.getX()+40) {
+                        movingPart.setLeft(false);
+                        movingPart.setRight(false);
+                    } else if (player.getX() < enemy.getX()+40) {
+                        movingPart.setLeft(true);
+                        movingPart.setRight(false);
+                    } else {
+                        movingPart.setRight(true);
+                        movingPart.setLeft(false);
+                    }
+                    if (player.getY() == enemy.getY()+40) {
+                        movingPart.setUp(false);
+                        movingPart.setDown(false);
+                    } else if (player.getY() < enemy.getY()+40) {
+                        movingPart.setUp(false);
+                        movingPart.setDown(true);
+                    } else {
+                        movingPart.setDown(false);
+                        movingPart.setUp(true);
+                    }
+                } else {
+                    movingPart.setDown(false);
+                    movingPart.setUp(false);
                     movingPart.setLeft(false);
                     movingPart.setRight(false);
-                } else if (player.getX() < enemy.getX()) {
-                    movingPart.setLeft(true);
-                    movingPart.setRight(false);
-                } else {
-                    movingPart.setRight(true);
-                    movingPart.setLeft(false);
-                }
-                if (player.getY() == enemy.getY()) {
-                    movingPart.setUp(false);
-                    movingPart.setDown(false);
-                } else if (player.getY() < enemy.getY()) {
-                    movingPart.setUp(false);
-                    movingPart.setDown(true);
-                } else {
-                    movingPart.setDown(false);
-                    movingPart.setUp(true);
                 }
             }
 

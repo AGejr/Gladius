@@ -7,13 +7,17 @@ import Common.data.entityparts.MovingPart;
 import Common.services.IGamePluginService;
 import Common.tools.FileLoader;
 
+import java.util.Random;
+
 public class EnemyPlugin implements IGamePluginService {
     private Entity enemy;
 
     @Override
     public void start(GameData gameData, World world) {
-        enemy = createEnemy(gameData);
-        world.addEntity(enemy);
+        for (int i = 0; i < 3; i++) {
+            enemy = createEnemy(gameData);
+            world.addEntity(enemy);
+        }
     }
 
     private Entity createEnemy(GameData gamedata) {
@@ -23,8 +27,8 @@ public class EnemyPlugin implements IGamePluginService {
         enemy.add(new MovingPart(30));
         FileLoader.loadFile(file, getClass());
 
-        enemy.setX(840);
-        enemy.setY(500);
+        enemy.setX(new Random().nextInt((1000 - 200) + 1) + 200);
+        enemy.setY(new Random().nextInt((1000 - 400) + 1) + 400);
         return enemy;
     }
 
