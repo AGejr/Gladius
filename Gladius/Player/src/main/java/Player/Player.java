@@ -76,26 +76,45 @@ public class Player extends Entity {
             animationPart.addAnimation(AnimationPart.ANIMATION_STATES.RUNNING_LEFT, leftMoveAnimation);
 
             // DEATH animation
-            // TODO FLIP DEATH
-            Array<TextureRegion> deathTextures = new Array<>();
+            Array<TextureRegion> rightDeathTextures = new Array<>();
+            Array<TextureRegion> leftDeathTextures = new Array<>();
+
             for (int i = 0; i < 7; i++) {
 
-                TextureRegion deathTexture = new TextureRegion(this.getTexture(),32*i,128,32,32);
-                deathTextures.add(deathTexture);
+                TextureRegion rightDeathTexture = new TextureRegion(this.getTexture(),32*i,128,32,32);
+                rightDeathTextures.add(rightDeathTexture);
+
+                TextureRegion leftDeathTexture = new TextureRegion(this.getTexture(),32*i,128,32,32);
+                leftDeathTexture.flip(true,false);
+                leftDeathTextures.add(leftDeathTexture);
             }
-            Animation deathAnimation = new Animation(0.10f,deathTextures);
-            animationPart.addAnimation(AnimationPart.ANIMATION_STATES.DEATH_RIGHT, deathAnimation);
+            // RIGHT DEATH animation
+            Animation rightDeathAnimation = new Animation(0.10f,rightDeathTextures);
+            animationPart.addAnimation(AnimationPart.ANIMATION_STATES.DEATH_RIGHT, rightDeathAnimation);
+
+            Animation leftDeathAnimation = new Animation(0.10f,leftDeathTextures);
+            animationPart.addAnimation(AnimationPart.ANIMATION_STATES.DEATH_LEFT, leftDeathAnimation);
 
             // ATTACK animation
-            // TODO FLIP ATTACK
-            Array<TextureRegion> attackTextures = new Array<>();
+
+            Array<TextureRegion> rightAttackTextures = new Array<>();
+            Array<TextureRegion> leftAttackTextures = new Array<>();
             for (int i = 0; i < 7; i++) {
 
-                TextureRegion attackTexture = new TextureRegion(this.getTexture(),32*i,64,32,32);
-                attackTextures.add(attackTexture);
+                TextureRegion rightAttackTexture = new TextureRegion(this.getTexture(),32*i,64,32,32);
+                rightAttackTextures.add(rightAttackTexture);
+
+                TextureRegion leftAttackTexture = new TextureRegion(this.getTexture(),32*i,64,32,32);
+                leftAttackTexture.flip(true,false);
+                leftAttackTextures.add(leftAttackTexture);
             }
-            Animation attackAnimation = new Animation(0.10f,attackTextures);
+            // ATTACK ANIMATION right
+            Animation attackAnimation = new Animation(0.10f,rightAttackTextures);
             animationPart.addAnimation(AnimationPart.ANIMATION_STATES.ATTACK_RIGHT, attackAnimation);
+
+            // ATTACK ANIMATION left
+            Animation leftAttackAnimation = new Animation(0.10f,leftAttackTextures);
+            animationPart.addAnimation(AnimationPart.ANIMATION_STATES.ATTACK_LEFT, leftAttackAnimation);
 
         }
 
