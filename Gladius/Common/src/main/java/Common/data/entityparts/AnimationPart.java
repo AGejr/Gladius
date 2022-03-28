@@ -15,8 +15,10 @@ public class AnimationPart implements EntityPart{
         IDLE_LEFT,
         RUNNING_RIGHT,
         RUNNING_LEFT,
-        ATTACK,
-        DEATH,
+        ATTACK_RIGHT,
+        ATTACK_LEFT,
+        DEATH_RIGHT,
+        DEATH_LEFT
     }
 
     private ANIMATION_STATES currentState = ANIMATION_STATES.IDLE_RIGHT;

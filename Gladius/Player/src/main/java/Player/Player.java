@@ -75,7 +75,27 @@ public class Player extends Entity {
             Animation leftMoveAnimation = new Animation(0.10f,leftMoveTextures);
             animationPart.addAnimation(AnimationPart.ANIMATION_STATES.RUNNING_LEFT, leftMoveAnimation);
 
+            // DEATH animation
+            // TODO FLIP DEATH
+            Array<TextureRegion> deathTextures = new Array<>();
+            for (int i = 0; i < 7; i++) {
 
+                TextureRegion deathTexture = new TextureRegion(this.getTexture(),32*i,128,32,32);
+                deathTextures.add(deathTexture);
+            }
+            Animation deathAnimation = new Animation(0.10f,deathTextures);
+            animationPart.addAnimation(AnimationPart.ANIMATION_STATES.DEATH_RIGHT, deathAnimation);
+
+            // ATTACK animation
+            // TODO FLIP ATTACK
+            Array<TextureRegion> attackTextures = new Array<>();
+            for (int i = 0; i < 7; i++) {
+
+                TextureRegion attackTexture = new TextureRegion(this.getTexture(),32*i,64,32,32);
+                attackTextures.add(attackTexture);
+            }
+            Animation attackAnimation = new Animation(0.10f,attackTextures);
+            animationPart.addAnimation(AnimationPart.ANIMATION_STATES.ATTACK_RIGHT, attackAnimation);
 
         }
 
