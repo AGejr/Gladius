@@ -30,6 +30,7 @@ public class Player extends Entity {
             AnimationPart animationPart = this.getPart(AnimationPart.class);
 
             //idle animation
+
             Array<TextureRegion> idleTextures = new Array<>();
             idleTextures.add(new TextureRegion(this.getTexture(),0,0,32,32));
             idleTextures.add(new TextureRegion(this.getTexture(),32,0,32,32));
@@ -37,8 +38,25 @@ public class Player extends Entity {
             idleTextures.add(new TextureRegion(this.getTexture(),96,0,32,32));
             idleTextures.add(new TextureRegion(this.getTexture(),128,0,32,32));
 
-            Animation idleAnimation = new Animation(200,idleTextures);
+            Animation idleAnimation = new Animation(0.10f,idleTextures);
             animationPart.addAnimation(AnimationPart.ANIMATION_STATES.IDLE, idleAnimation);
+
+            Array<TextureRegion> rightMoveTextures = new Array<>();
+            Array<TextureRegion> leftMoveTextures = new Array<>();
+            for (int i = 0; i < 5; i++) {
+
+                rightMoveTextures.add(new TextureRegion(this.getTexture(),32*i,32,32,32));
+
+                TextureRegion leftTexture = new TextureRegion(this.getTexture(),32*i,32,32,32);
+                leftTexture.flip(true,false);
+
+                leftMoveTextures.add(leftTexture);
+            }
+
+            Animation leftMoveAnimation = new Animation(0.10f,leftMoveTextures);
+            Animation rightMoveAnimation = new Animation(0.10f,rightMoveTextures);
+            animationPart.addAnimation(AnimationPart.ANIMATION_STATES.RUNNING_LEFT, leftMoveAnimation);
+            animationPart.addAnimation(AnimationPart.ANIMATION_STATES.RUNNING_RIGHT, rightMoveAnimation);
 
 
         }

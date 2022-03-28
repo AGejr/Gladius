@@ -38,7 +38,6 @@ public class MovingPart implements EntityPart {
         float x = entity.getX();
         float y = entity.getY();
 
-
         if (left) {
             x -= Gdx.graphics.getDeltaTime() * speed;
         }

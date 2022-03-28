@@ -25,7 +25,7 @@ public class PlayerPlugin implements IGamePluginService {
         String file = "GladiatorSpriteSheet.png";
 
         Entity player = new Player(file, 2);
-        player.add(new MovingPart(500));
+        player.add(new MovingPart(100));
         player.add(new AnimationPart());
         FileLoader.loadFile(file, getClass());
 
