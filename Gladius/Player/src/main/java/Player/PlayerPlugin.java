@@ -22,8 +22,8 @@ public class PlayerPlugin implements IGamePluginService {
         player.add(new MovingPart(50));
         FileLoader.loadFile(file, getClass());
 
-        player.setX(845);
-        player.setY(100);
+        player.setX(800);
+        player.setY(140);
         return player;
     }
 

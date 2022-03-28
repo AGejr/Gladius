@@ -14,22 +14,20 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Collision implements IPostEntityProcessingService {
-    private List<List<Integer>> csv;
+    private List<List<Long>> csv;
 
     @Override
     public void process(GameData gameData, World world) {
         if (csv == null) {
             fetchData();
         }
-
         for (Entity entity : world.getEntities()) {
             int y = (int) (40 - ((entity.getY() / 1280) * 40));
             int x = (int) ((entity.getX() / 1600) * 50);
-            int tile = csv.get(y).get(x);
+            Long tile = csv.get(y).get(x);
             int[] gate = new int[]{23, 24};
             int[] spawn = new int[]{160, 161};
             int[] shop = new int[]{162, 163};
-
 
             MovingPart movingPart = entity.getPart(MovingPart.class);
             if (Arrays.stream(gate).anyMatch(i -> i == tile)) {
@@ -60,14 +58,14 @@ public class Collision implements IPostEntityProcessingService {
         csv = new ArrayList<>();
         try {
             scanner = new Scanner(new File("Map/Map.tmx"));
-            for (int i = 0; i < 49; i++) {
+            for (int i = 0; i < 93; i++) {
                 if (scanner.hasNextLine()) scanner.nextLine();
             }
             scanner.useDelimiter(",");
             for (int i = 1; i <= 40; i++) {
-                List<Integer> integers = new ArrayList<>();
+                List<Long> integers = new ArrayList<>();
                 for (int j = 1; j <= 50; j++) {
-                    integers.add(Integer.parseInt(scanner.next().trim()));
+                    integers.add(Long.parseLong(scanner.next().trim()));
                 }
                 scanner.nextLine();
                 csv.add(integers);
