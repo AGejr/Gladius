@@ -5,6 +5,7 @@ import Common.data.GameData;
 import Common.data.World;
 import Common.data.entityparts.MovingPart;
 import Common.services.IPostEntityProcessingService;
+import com.badlogic.gdx.Gdx;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -39,16 +40,24 @@ public class Collision implements IPostEntityProcessingService {
                 System.out.println(tile);
                 if(!Arrays.stream(noCollide).anyMatch(i -> i == tile)) {
                     if (movingPart.isUp()) {
-                        entity.setY(entity.getY() - 1.4f);
+                        for (int i = 0; i < 3; i++) {
+                            entity.setY(entity.getY() - 0.4f);
+                        }
                     }
                     if (movingPart.isDown()) {
-                        entity.setY(entity.getY() + 1.4f);
+                        for (int i = 0; i < 3; i++) {
+                            entity.setY(entity.getY() + 0.4f);
+                        }
                     }
                     if (movingPart.isLeft()) {
-                        entity.setX(entity.getX() + 1.4f);
+                        for (int i = 0; i < 3; i++) {
+                            entity.setX(entity.getX() + 0.4f);
+                        }
                     }
                     if (movingPart.isRight()) {
-                        entity.setX(entity.getX() - 1.4f);
+                        for (int i = 0; i < 3; i++) {
+                            entity.setX(entity.getX() - 0.4f);
+                        }
                     }
                 }
             }

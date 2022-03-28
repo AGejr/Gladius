@@ -22,10 +22,13 @@ import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
+import com.badlogic.gdx.math.Vector3;
 
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import static org.lwjgl.opengl.Display.update;
 
 public class Game implements ApplicationListener {
 
@@ -61,6 +64,8 @@ public class Game implements ApplicationListener {
     public void create() {
         cam = new OrthographicCamera();
         cam.setToOrtho(false, Gdx.graphics.getWidth() / 1.5f, Gdx.graphics.getHeight() / 1.5f);
+        cam.position.x = 800;
+        cam.position.y = 140;
         cam.update();
         String[] files = {"Map/Map.tmx", "Map/Arena_Tileset.tsx", "Map/Arena_Tileset.png"};
         FileLoader.loadFiles(files, getClass());
@@ -95,21 +100,23 @@ public class Game implements ApplicationListener {
 
 
         batch.begin();
-        for (Entity entity :  world.getEntities()){
+        for (Entity entity :  world.getEntities()) {
 
-            if(entity.getTexture() == null){
+            if (entity.getTexture() == null) {
                 // if entity doesn't have texture, create and assign the texture
                 File textureFile = new File(entity.getTexturePath());
                 FileHandle fileHandle = new FileHandle(textureFile);
                 Texture playerTexture = new Texture(fileHandle);
                 entity.setTexture(playerTexture);
                 // Set the region of the texture we want to draw
-                entity.setRegion(0,0,32,32);
+                entity.setRegion(0, 0, 32, 32);
 
             }
-            batch.draw(entity,entity.getX(),entity.getY());
-            cam.position.y = entity.getY();
-            cam.position.x = entity.getX();
+            batch.draw(entity, entity.getX(), entity.getY());
+            Vector3 position = cam.position;
+            position.x += (entity.getX() - position.x) * gameData.getLerp() * Gdx.graphics.getDeltaTime();
+            position.y += (entity.getY() - position.y) * gameData.getLerp() * Gdx.graphics.getDeltaTime();
+
         }
         batch.end();
 
