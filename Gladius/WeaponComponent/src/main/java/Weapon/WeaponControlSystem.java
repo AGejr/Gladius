@@ -29,9 +29,11 @@ public class WeaponControlSystem implements IEntityProcessingService, WeaponSPI 
         float deltaTime = gameData.getDelta();
         //Weapon weaponEntity = ((IWeaponUser) attacker).getWeapon();
         Weapon weaponEntity = Sword.getSword();
+        world.addEntity(weaponEntity);
         weaponEntity.setX(xPos + 100);
         weaponEntity.setY(yPos + 30);
         weaponEntity.setWeaponTexture();
+        weaponEntity.removeWeaponTexture();
 
         // TODO get attacker 'radians'
         // int radians = attacker.getRadians()

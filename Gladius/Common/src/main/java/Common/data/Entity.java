@@ -2,6 +2,7 @@ package Common.data;
 
 
 import Common.data.entityparts.EntityPart;
+import Common.tools.FileLoader;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -70,9 +71,11 @@ public class Entity extends Sprite implements Serializable {
 
     public void setTexturePath(String texturePath) {
         this.texturePath = texturePath;
+        //FileLoader.loadFile(texturePath, getClass());
     }
 
     public void removeTexturePath() {
         this.texturePath = null;
+        setTexture(null);
     }
 }

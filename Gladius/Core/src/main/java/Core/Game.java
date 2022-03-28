@@ -94,18 +94,20 @@ public class Game implements ApplicationListener {
 
         batch.begin();
         for (Entity entity :  world.getEntities()){
+            if(entity.getTexturePath() != null) {
+                if (entity.getTexture() == null) {
+                    // if entity doesn't have texture, create and assign the texture
 
-            if(entity.getTexture() == null){
-                // if entity doesn't have texture, create and assign the texture
-                File textureFile = new File(entity.getTexturePath());
-                FileHandle fileHandle = new FileHandle(textureFile);
-                Texture playerTexture = new Texture(fileHandle);
-                entity.setTexture(playerTexture);
-                // Set the region of the texture we want to draw
-                entity.setRegion(0,0,32,32);
+                    File textureFile = new File(entity.getTexturePath());
+                    FileHandle fileHandle = new FileHandle(textureFile);
+                    Texture playerTexture = new Texture(fileHandle);
+                    entity.setTexture(playerTexture);
+                    // Set the region of the texture we want to draw
+                    entity.setRegion(0, 0, 500, 500);
 
+                }
+                batch.draw(entity, entity.getX(), entity.getY());
             }
-            batch.draw(entity,entity.getX(),entity.getY());
             cam.position.y = entity.getY();
             cam.position.x = entity.getX();
         }

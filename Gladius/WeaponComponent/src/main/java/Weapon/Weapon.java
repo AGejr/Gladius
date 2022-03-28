@@ -29,5 +29,5 @@ public abstract class Weapon extends Entity {
     public float getRange() {return super.getRadius();}
 
     public void removeWeaponTexture() { super.removeTexturePath();}
-    public void setWeaponTexture() {super.setTexturePath(this.texturePath);}
+    public void setWeaponTexture() {setTexturePath(this.texturePath);}
 }
