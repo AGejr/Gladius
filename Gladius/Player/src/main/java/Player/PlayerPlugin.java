@@ -3,6 +3,7 @@ package Player;
 import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
+import Common.data.entityparts.AnimationPart;
 import Common.data.entityparts.MovingPart;
 import Common.services.IGamePluginService;
 import Common.tools.FileLoader;
@@ -22,6 +23,7 @@ public class PlayerPlugin implements IGamePluginService {
 
         Entity player = new Player(file, 2);
         player.add(new MovingPart(100));
+        player.add(new AnimationPart());
         FileLoader.loadFile(file, getClass());
 
         player.setX(800);

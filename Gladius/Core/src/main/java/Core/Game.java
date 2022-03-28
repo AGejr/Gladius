@@ -3,6 +3,7 @@ package Core;
 import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
+import Common.data.entityparts.AnimationPart;
 import Common.services.IEntityProcessingService;
 import Common.services.IGamePluginService;
 import Common.services.IPostEntityProcessingService;
@@ -97,21 +98,23 @@ public class Game implements ApplicationListener {
         tiledMapRenderer.render();
         batch.setProjectionMatrix(cam.combined);
 
-
+        batch.begin();
         for (Entity entity :  world.getEntities()){
-            batch.begin();
             if(entity.getTexture() == null){
                 entity.initTexture();
             }
-            batch.draw(entity,entity.getX(),entity.getY());
-            batch.end();
+            if(entity.getPart(AnimationPart.class) != null){
+                AnimationPart animationPart = entity.getPart(AnimationPart.class);
+                batch.draw(animationPart.getCurrentKeyFrame(), entity.getX(),entity.getY());
+            } else {
+                batch.draw(entity, entity.getX(), entity.getY());
+            }
         }
-
         for (Entity entity : world.getEntities(Player.class)) {
             cam.position.y = entity.getY();
             cam.position.x = entity.getX();
         }
-
+        batch.end();
         update();
     }
 
