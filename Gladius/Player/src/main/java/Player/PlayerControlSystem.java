@@ -4,12 +4,9 @@ import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.GameKeys;
 import Common.data.World;
-import Common.data.entityparts.LifePart;
 import Common.data.entityparts.MovingPart;
 import Common.services.IEntityProcessingService;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.Array;
+import CommonPlayer.Player;
 
 public class PlayerControlSystem implements IEntityProcessingService {
 

@@ -7,6 +7,7 @@ import Common.services.IEntityProcessingService;
 import Common.services.IGamePluginService;
 import Common.services.IPostEntityProcessingService;
 import Common.tools.FileLoader;
+import CommonPlayer.Player;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
@@ -96,21 +97,20 @@ public class Game implements ApplicationListener {
         tiledMapRenderer.render();
         batch.setProjectionMatrix(cam.combined);
 
-        batch.begin();
 
         for (Entity entity :  world.getEntities()){
-
+            batch.begin();
             if(entity.getTexture() == null){
                 entity.initTexture();
             }
-
             batch.draw(entity,entity.getX(),entity.getY());
+            batch.end();
+        }
 
-
+        for (Entity entity : world.getEntities(Player.class)) {
             cam.position.y = entity.getY();
             cam.position.x = entity.getX();
         }
-        batch.end();
 
         update();
     }

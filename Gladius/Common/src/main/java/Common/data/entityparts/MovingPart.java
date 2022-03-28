@@ -11,6 +11,10 @@ public class MovingPart implements EntityPart {
     private float speed;
     private boolean left, right, up, down;
 
+    public float getSpeed() {
+        return speed;
+    }
+
     public MovingPart(float speed) {
         this.speed = speed;
     }

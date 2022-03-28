@@ -6,17 +6,14 @@ import Common.data.World;
 import Common.data.entityparts.MovingPart;
 import Common.services.IGamePluginService;
 import Common.tools.FileLoader;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Texture;
-
-import java.io.File;
-
+import CommonPlayer.Player;
 
 public class PlayerPlugin implements IGamePluginService {
+    private Entity player;
 
     @Override
     public void start(GameData gameData, World world) {
-        Entity player = createPlayer(gameData);
+        player = createPlayer(gameData);
         world.addEntity(player);
     }
 
@@ -24,7 +21,7 @@ public class PlayerPlugin implements IGamePluginService {
         String file = "GladiatorSpriteSheet.png";
 
         Entity player = new Player(file, 2);
-        player.add(new MovingPart(50));
+        player.add(new MovingPart(100));
         FileLoader.loadFile(file, getClass());
 
         player.setX(800);
@@ -34,8 +31,6 @@ public class PlayerPlugin implements IGamePluginService {
 
     @Override
     public void stop(GameData gameData, World world) {
-        for (Entity entity : world.getEntities()) {
-            world.removeEntity(entity);
-        }
+        world.removeEntity(player);
     }
 }

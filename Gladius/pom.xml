@@ -27,6 +27,8 @@
     <module>LibGDXImports</module>
     <module>Common</module>
     <module>Player</module>
+    <module>Enemy</module>
+    <module>CommonPlayer</module>
   </modules>
 
   <build>
