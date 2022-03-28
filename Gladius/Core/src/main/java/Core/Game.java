@@ -108,9 +108,7 @@ public class Game implements ApplicationListener {
                 AnimationPart animationPart = entity.getPart(AnimationPart.class);
 
                 batch.draw(animationPart.getCurrentKeyFrame(), entity.getX(),entity.getY());
-            } /*else {
-                batch.draw(entity, entity.getX(), entity.getY());
-            } */
+            }
 
             cam.position.y = entity.getY();
             cam.position.x = entity.getX();
