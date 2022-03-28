@@ -23,29 +23,33 @@ public class Collision implements IPostEntityProcessingService {
         }
         for (Entity entity : world.getEntities()) {
             int y = (int) (40 - ((entity.getY() / 1280) * 40));
-            int x = (int) ((entity.getX() / 1600) * 50);
+            int x = (int) (((entity.getX()+32/2) / 1600) * 50);
             Long tile = csv.get(y).get(x);
-            int[] gate = new int[]{23, 24};
+            int[] gate = new int[]{24, 25};
             int[] spawn = new int[]{160, 161};
             int[] shop = new int[]{162, 163};
+            long[] noCollide = new long[]{37, 98, 99, 159, 160, 161,162,163,164, 165, 177, 178, 179, 2147483746l, 2147483685l};
 
             MovingPart movingPart = entity.getPart(MovingPart.class);
             if (Arrays.stream(gate).anyMatch(i -> i == tile)) {
-                entity.setY(416);
+                entity.setY(366);
             } else if (tile == 164) {
                 entity.setY(300);
             } else if (tile != 0) {
-                if (movingPart.isUp()) {
-                    entity.setY(entity.getY() - 1);
-                }
-                if (movingPart.isDown()) {
-                    entity.setY(entity.getY() + 1);
-                }
-                if (movingPart.isLeft()) {
-                    entity.setX(entity.getX() + 1);
-                }
-                if (movingPart.isRight()) {
-                    entity.setX(entity.getX() - 1);
+                System.out.println(tile);
+                if(!Arrays.stream(noCollide).anyMatch(i -> i == tile)) {
+                    if (movingPart.isUp()) {
+                        entity.setY(entity.getY() - 1.4f);
+                    }
+                    if (movingPart.isDown()) {
+                        entity.setY(entity.getY() + 1.4f);
+                    }
+                    if (movingPart.isLeft()) {
+                        entity.setX(entity.getX() + 1.4f);
+                    }
+                    if (movingPart.isRight()) {
+                        entity.setX(entity.getX() - 1.4f);
+                    }
                 }
             }
             //movingPart.setColTop(Arrays.stream(topCollision).anyMatch(i -> i == tile));

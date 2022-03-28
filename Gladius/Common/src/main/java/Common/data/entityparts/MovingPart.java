@@ -8,7 +8,6 @@ public class MovingPart implements EntityPart {
 
     private float speed;
     private boolean left, right, up, down;
-    private boolean colTop = false, colBottom = false, colLeft = false, colRight = false;
 
     public MovingPart(float speed) {
         this.speed = speed;
@@ -32,22 +31,6 @@ public class MovingPart implements EntityPart {
 
     public void setDown(boolean down){ this.down = down; }
 
-    public void setColTop(boolean colTop) {
-        this.colTop = colTop;
-    }
-
-    public void setColBottom(boolean colBottom) {
-        this.colBottom = colBottom;
-    }
-
-    public void setColLeft(boolean colLeft) {
-        this.colLeft = colLeft;
-    }
-
-    public void setColRight(boolean colRight) {
-        this.colRight = colRight;
-    }
-
     public boolean isLeft() {
         return left;
     }
@@ -70,19 +53,19 @@ public class MovingPart implements EntityPart {
         float y = entity.getY();
 
 
-        if (left && !colLeft) {
+        if (left) {
             x -= Gdx.graphics.getDeltaTime() * speed;
         }
 
-        if (right && !colRight) {
+        if (right) {
             x += Gdx.graphics.getDeltaTime() * speed;
         }
 
-        if (up && !colTop) {
+        if (up) {
             y += Gdx.graphics.getDeltaTime() * speed;
         }
 
-        if (down && !colBottom){
+        if (down){
             y -= Gdx.graphics.getDeltaTime() * speed;
         }
 
