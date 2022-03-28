@@ -5,7 +5,6 @@ import Common.data.GameData;
 import Common.data.World;
 import Common.data.entityparts.MovingPart;
 import Common.services.IPostEntityProcessingService;
-import com.badlogic.gdx.Gdx;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -15,60 +14,71 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Collision implements IPostEntityProcessingService {
-    private List<List<Long>> csv;
+    private List<List<Integer>> csv;
+    private int width;
+    private int height;
 
     @Override
     public void process(GameData gameData, World world) {
         if (csv == null) {
             fetchData();
+            height = 1280;
+            width = 1600;
         }
         for (Entity entity : world.getEntities()) {
-            int y = (int) (40 - ((entity.getY() / 1280) * 40));
-            int x = (int) (((entity.getX()+32/2) / 1600) * 50);
-            Long tile = csv.get(y).get(x);
+            int y = (int) (40 - ((entity.getY() / height) * 40));
+            int x = (int) (((entity.getX()+32/2) / width) * 50); // divide by 2 to get center
+            float radius = entity.getRadius();
+            int tile = csv.get(y).get(x);
             int[] gate = new int[]{24, 25};
             int[] spawn = new int[]{161, 162};
             int[] shop = new int[]{163, 164};
-            long[] noCollide = new long[]{37, 98, 99, 159, 160, 161,162,163,164, 165, 177, 178, 179, 2147483746l, 2147483685l};
+            int[] water = new int[]{78, 79, 86,87,88, 103, 123, 127, 71, 159, 155, 108, 107};
+            int[] noCollide = new int[]{78, 79, 86,87,88, 103, 123, 127, 71, 159, 155, 108, 107, 24, 25, 37, 98, 99, 159, 160, 161,162,163,164, 165, 177, 178, 179};
 
             MovingPart movingPart = entity.getPart(MovingPart.class);
+            // Check wall layer, if there is a wall (not 0)
+            //      Should the tile be ignored?
+            //      Is the distance between entity and tile < entity radius?
+            if(csv.get(y-1).get(x) != 0 && !Arrays.stream(noCollide).anyMatch(i -> i == csv.get(y-1).get(x)) && (height-((y-1)*32)-32) - entity.getY() <= radius) {
+                movingPart.setColTop(true);
+            } else {
+                movingPart.setColTop(false);
+            }
+            if(csv.get(y+1).get(x) != 0 && !Arrays.stream(noCollide).anyMatch(i -> i == csv.get(y+1).get(x)) && entity.getY() - (height-(y+1)*32) <= radius) {
+                movingPart.setColBot(true);
+            } else {
+                movingPart.setColBot(false);
+            }
+            if(csv.get(y).get(x-1) != 0 && !Arrays.stream(noCollide).anyMatch(i -> i == csv.get(y).get(x-1)) && (entity.getX()+32/2) - (((x-1)*32)+32) < radius) {
+                movingPart.setColLeft(true);
+            } else {
+                movingPart.setColLeft(false);
+            }
+            if(csv.get(y).get(x+1) != 0 && !Arrays.stream(noCollide).anyMatch(i -> i == csv.get(y).get(x+1)) && ((x+1)*32) - (entity.getX()+32/2) < radius) {
+                movingPart.setColRight(true);
+            } else {
+                movingPart.setColRight(false);
+            }
+
+            if(Arrays.stream(water).anyMatch(i -> i == csv.get(y).get(x))) {
+                movingPart.setSlow();
+            }
+            else {
+                movingPart.setNormalSpeed();
+            }
+
             if (Arrays.stream(gate).anyMatch(i -> i == tile)) {
-                entity.setY(366);
+                entity.setY(346);
             } else if (tile == 165) {
                 entity.setY(200);
-            } else if (tile != 0) {
-                System.out.println(tile);
-                if(!Arrays.stream(noCollide).anyMatch(i -> i == tile)) {
-                    if (movingPart.isUp()) {
-                        for (int i = 0; i < 3; i++) {
-                            entity.setY(entity.getY() - 0.4f);
-                        }
-                    }
-                    if (movingPart.isDown()) {
-                        for (int i = 0; i < 3; i++) {
-                            entity.setY(entity.getY() + 0.4f);
-                        }
-                    }
-                    if (movingPart.isLeft()) {
-                        for (int i = 0; i < 3; i++) {
-                            entity.setX(entity.getX() + 0.4f);
-                        }
-                    }
-                    if (movingPart.isRight()) {
-                        for (int i = 0; i < 3; i++) {
-                            entity.setX(entity.getX() - 0.4f);
-                        }
-                    }
-                }
             }
-            //movingPart.setColTop(Arrays.stream(topCollision).anyMatch(i -> i == tile));
-            //movingPart.setColLeft(Arrays.stream(bottomCollision).anyMatch(i -> i == tile));
         }
     }
 
     private void fetchData() {
         Scanner scanner = null;
-        csv = new ArrayList<>();
+        csv = new ArrayList<List<Integer>>();
         try {
             scanner = new Scanner(new File("Map/Map.tmx"));
             for (int i = 0; i < 93; i++) {
@@ -76,9 +86,9 @@ public class Collision implements IPostEntityProcessingService {
             }
             scanner.useDelimiter(",");
             for (int i = 1; i <= 40; i++) {
-                List<Long> integers = new ArrayList<>();
+                List<Integer> integers = new ArrayList<>();
                 for (int j = 1; j <= 50; j++) {
-                    integers.add(Long.parseLong(scanner.next().trim()));
+                    integers.add(Integer.parseInt(scanner.next().trim()));
                 }
                 scanner.nextLine();
                 csv.add(integers);
