@@ -33,11 +33,26 @@ public class MovingPart implements EntityPart {
 
     public void setDown(boolean down){ this.down = down; }
 
+    public boolean isLeft() {
+        return left;
+    }
+
+    public boolean isRight() {
+        return right;
+    }
+
+    public boolean isUp() {
+        return up;
+    }
+
+    public boolean isDown() {
+        return down;
+    }
+
     @Override
     public void process(GameData gameData, Entity entity) {
         float x = entity.getX();
         float y = entity.getY();
-
 
         if (left) {
             x -= Gdx.graphics.getDeltaTime() * speed;
