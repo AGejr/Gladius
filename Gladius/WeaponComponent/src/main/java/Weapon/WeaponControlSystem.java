@@ -40,6 +40,7 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponSer
          */
     }
 
+    //TODO change to check collision between weapon and enemy, if hit then remove HP
     private List<Entity> getEntitiesInRange(IWeaponUser attacker, World world) {
         Entity weapon = attacker.getWeapon();
         Entity attackerEntity = (Entity) attacker;
