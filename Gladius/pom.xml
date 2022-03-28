@@ -27,6 +27,7 @@
     <module>LibGDXImports</module>
     <module>Common</module>
     <module>Player</module>
+    <module>Collision</module>
   </modules>
 
   <build>

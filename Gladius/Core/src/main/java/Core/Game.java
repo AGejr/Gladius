@@ -18,6 +18,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
@@ -65,6 +66,7 @@ public class Game implements ApplicationListener {
         FileLoader.loadFiles(files, getClass());
 
         tiledMap = new TmxMapLoader().load("Map/Map.tmx");
+        world.setTiledMap(tiledMap); //Saves tiledMap to the world
         tiledMapRenderer = new OrthoCachedTiledMapRenderer(tiledMap);
         tiledMapRenderer.setBlending(true); //Makes tiles transparent
 
@@ -90,6 +92,7 @@ public class Game implements ApplicationListener {
         tiledMapRenderer.setView(cam);
         tiledMapRenderer.render();
         batch.setProjectionMatrix(cam.combined);
+
 
         batch.begin();
         for (Entity entity :  world.getEntities()){
