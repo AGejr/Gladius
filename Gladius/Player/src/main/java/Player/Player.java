@@ -11,12 +11,12 @@ public class Player extends Entity implements IWeaponUser {
     private Weapon weapon;
 
     public Player(String texturePath,int radius) {
-        super(texturePath, radius);
+        super(texturePath, radius, 32, 32);
         this.balance = 0;
     }
 
     public Player(Weapon weapon, String texturePath,int radius) {
-        super(texturePath, radius);
+        super(texturePath, radius, 32, 32);
         this.weapon = weapon;
     }
 

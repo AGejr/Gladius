@@ -18,13 +18,17 @@ public class Entity extends Sprite implements Serializable {
 
     private float radius;
     private String texturePath;
+    private int textureWidth;
+    private int textureHeight;
     private Map<Class, EntityPart> parts;
 
-    public Entity(String texturePath,float radius) {
+    public Entity(String texturePath,float radius, int textureWidth, int textureHeight) {
         super();
         this.parts = new ConcurrentHashMap<>();
         this.texturePath = texturePath;
         this.radius = radius;
+        this.textureWidth = textureWidth;
+        this.textureHeight = textureHeight;
     }
 
 
@@ -33,6 +37,9 @@ public class Entity extends Sprite implements Serializable {
         this.parts = new ConcurrentHashMap<>();
         this.radius = entity.getRadius();
         this.parts = entity.getParts();
+
+        this.textureWidth = entity.getTextureWidth();
+        this.textureHeight = entity.getTextureWidth();
     }
 
     public Entity() {
@@ -69,9 +76,17 @@ public class Entity extends Sprite implements Serializable {
         return texturePath;
     }
 
+    public int getTextureWidth() {
+        return this.textureWidth;
+    }
+
+    public int getTextureHeight() {
+        return this.textureHeight;
+    }
+
     public void setTexturePath(String texturePath) {
         this.texturePath = texturePath;
-        //FileLoader.loadFile(texturePath, getClass());
+        FileLoader.loadFile(texturePath, getClass());
     }
 
     public void removeTexturePath() {

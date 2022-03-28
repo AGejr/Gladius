@@ -103,13 +103,13 @@ public class Game implements ApplicationListener {
                     Texture playerTexture = new Texture(fileHandle);
                     entity.setTexture(playerTexture);
                     // Set the region of the texture we want to draw
-                    entity.setRegion(0, 0, 500, 500);
+                    entity.setRegion(0, 0, entity.getTextureWidth(), entity.getTextureHeight());
 
                 }
                 batch.draw(entity, entity.getX(), entity.getY());
+                cam.position.y = entity.getY();
+                cam.position.x = entity.getX();
             }
-            cam.position.y = entity.getY();
-            cam.position.x = entity.getX();
         }
         batch.end();
 

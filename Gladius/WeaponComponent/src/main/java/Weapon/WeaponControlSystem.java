@@ -30,10 +30,10 @@ public class WeaponControlSystem implements IEntityProcessingService, WeaponSPI 
         //Weapon weaponEntity = ((IWeaponUser) attacker).getWeapon();
         Weapon weaponEntity = Sword.getSword();
         world.addEntity(weaponEntity);
-        weaponEntity.setX(xPos + 100);
-        weaponEntity.setY(yPos + 30);
+        weaponEntity.setX(xPos + 20);
+        weaponEntity.setY(yPos + 5);
         weaponEntity.setWeaponTexture();
-        weaponEntity.removeWeaponTexture();
+        //weaponEntity.removeWeaponTexture();
 
         // TODO get attacker 'radians'
         // int radians = attacker.getRadians()
