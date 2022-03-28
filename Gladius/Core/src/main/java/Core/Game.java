@@ -51,7 +51,7 @@ public class Game implements ApplicationListener {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "Gladius";
         cfg.width = 800;
-        cfg.height = 600;
+        cfg.height = 640;
         cfg.useGL30 = false;
         cfg.resizable = false;
 
@@ -60,8 +60,8 @@ public class Game implements ApplicationListener {
 
     @Override
     public void create() {
-        cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        cam.translate(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        cam = new OrthographicCamera();
+        cam.setToOrtho(false, Gdx.graphics.getWidth() / 1.5f, Gdx.graphics.getHeight() / 1.5f);
         cam.update();
         String[] files = {"Map/Map.tmx", "Map/Arena_Tileset.tsx", "Map/Arena_Tileset.png"};
         FileLoader.loadFiles(files, getClass());
@@ -93,13 +93,15 @@ public class Game implements ApplicationListener {
         cam.update();
         tiledMapRenderer.setView(cam);
         tiledMapRenderer.render();
+        batch.setProjectionMatrix(cam.combined);
 
         batch.begin();
 
         for (Entity entity :  world.getEntities()){
 
             batch.draw(entity,entity.getX(),entity.getY());
-
+            cam.position.y = entity.getY();
+            cam.position.x = entity.getX();
         }
         batch.end();
 
