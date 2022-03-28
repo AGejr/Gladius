@@ -2,10 +2,12 @@ package Common.data;
 
 
 import Common.data.entityparts.EntityPart;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +26,11 @@ public class Entity extends Sprite implements Serializable {
         this.parts = new ConcurrentHashMap<>();
         this.texturePath = texturePath;
         this.radius = radius;
+
+        File textureFile = new File(this.getTexturePath());
+        FileHandle fileHandle = new FileHandle(textureFile);
+        Texture playerTexture = new Texture(fileHandle);
+        this.setTexture(playerTexture);
     }
 
 
@@ -32,6 +39,11 @@ public class Entity extends Sprite implements Serializable {
         this.parts = new ConcurrentHashMap<>();
         this.radius = entity.getRadius();
         this.parts = entity.getParts();
+
+        File textureFile = new File(this.getTexturePath());
+        FileHandle fileHandle = new FileHandle(textureFile);
+        Texture playerTexture = new Texture(fileHandle);
+        this.setTexture(playerTexture);
     }
 
     public Entity() {

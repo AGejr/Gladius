@@ -6,6 +6,10 @@ import Common.data.World;
 import Common.data.entityparts.MovingPart;
 import Common.services.IGamePluginService;
 import Common.tools.FileLoader;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
+
+import java.io.File;
 
 
 public class PlayerPlugin implements IGamePluginService {
@@ -18,10 +22,14 @@ public class PlayerPlugin implements IGamePluginService {
 
     private Entity createPlayer(GameData gamedata) {
         String file = "GladiatorSpriteSheet.png";
+
+        // if entity doesn't have texture, create and assign the texture
+        // Set the region of the texture assigned to the entity
+
         Entity player = new Player(file, 2);
         player.add(new MovingPart(50));
         FileLoader.loadFile(file, getClass());
-
+        player.setRegion(0,0,32,32);
         player.setX(10);
         player.setY(10);
         return player;
