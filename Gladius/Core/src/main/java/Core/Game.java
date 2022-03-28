@@ -112,8 +112,8 @@ public class Game implements ApplicationListener {
             }
         }
         batch.end();
-
         update();
+        gameData.getKeys().update();
     }
 
 

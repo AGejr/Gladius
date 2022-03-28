@@ -9,15 +9,66 @@ import Common.services.IEntityProcessingService;
 import CommonWeapon.IWeaponUser;
 //import CommonWeapon.Weapon;
 import CommonWeapon.WeaponSPI;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.List;
 
 public class WeaponControlSystem implements IEntityProcessingService, WeaponSPI {
+    private int j = 0;
+    private int counter = 0;
+    private int rotationDegrees = 0;
     @Override
     public void process(GameData gameData, World world) {
         /*
             TODO Write the code for the swing with a weapon
          */
+        /*
+        for (Entity entity: world.getEntities(Weapon.class)) {
+            entity.setRotation((entity.getRotation() + 10) % 360);
+        }
+
+         */
+
+        /*
+            TODO Use getTexture instead of newTexture
+         */
+
+        for(Entity entity: world.getEntities(Sword.class)) {
+            if(entity.getTexturePath() != null) {
+                System.out.println("test");
+                counter++;
+                // float xPos = attacker.getX();
+                // float yPos = attacker.getY();
+                float deltaTime = Gdx.graphics.getDeltaTime();
+                float lerp = 0.9f;
+                // Weapon weaponEntity = ((IWeaponUser) attacker).getWeapon();
+
+                Texture test = new Texture(entity.getTexturePath());
+                Sprite testSprite = new Sprite(test);
+                SpriteBatch testBatch = new SpriteBatch();
+                testBatch.begin();
+                if (counter % 10 == 0) {
+                    testSprite.rotate(rotationDegrees * deltaTime * lerp);
+                    testSprite.draw(testBatch, 100);
+                    rotationDegrees += 10;
+                    entity.setRotation(rotationDegrees * deltaTime * lerp);
+                    rotationDegrees += 10;
+                }
+                //testBatch.end();
+
+                if (counter >= 150) {
+                    ((Weapon) entity).removeWeaponTexture();
+                    world.removeEntity(entity);
+                    rotationDegrees = 0;
+                    counter = 0;
+
+                }
+            }
+        }
+
 
     }
 
@@ -26,14 +77,39 @@ public class WeaponControlSystem implements IEntityProcessingService, WeaponSPI 
         System.out.println("ATTACK");
         float xPos = attacker.getX();
         float yPos = attacker.getY();
-        float deltaTime = gameData.getDelta();
-        //Weapon weaponEntity = ((IWeaponUser) attacker).getWeapon();
+        float deltaTime = Gdx.graphics.getDeltaTime();
+        float lerp = 0.9f;
+        // Weapon weaponEntity = ((IWeaponUser) attacker).getWeapon();
         Weapon weaponEntity = Sword.getSword();
         world.addEntity(weaponEntity);
         weaponEntity.setX(xPos + 20);
         weaponEntity.setY(yPos + 5);
         weaponEntity.setWeaponTexture();
-        //weaponEntity.removeWeaponTexture();
+        // process(gameData, world);
+        /*
+        Texture test = new Texture(weaponEntity.getTexturePath());
+        Sprite testSprite = new Sprite(test);
+        SpriteBatch testBatch = new SpriteBatch();
+        testBatch.begin();
+        if (counter % 10 == 0) {
+            testSprite.rotate(rotationDegrees * deltaTime * lerp);
+            testSprite.draw(testBatch, 100);
+            rotationDegrees += 10;
+        }
+        testBatch.end();
+
+         */
+
+
+
+        if (counter == 80) {
+            weaponEntity.removeWeaponTexture();
+            rotationDegrees = 0;
+        }
+        // weaponEntity.removeWeaponTexture();
+
+
+
 
         // TODO get attacker 'radians'
         // int radians = attacker.getRadians()
