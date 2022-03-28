@@ -5,13 +5,8 @@ import Common.data.GameData;
 import Common.data.GameKeys;
 import Common.data.World;
 import Common.data.entityparts.AnimationPart;
-import Common.data.entityparts.LifePart;
 import Common.data.entityparts.MovingPart;
 import Common.services.IEntityProcessingService;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 
 public class PlayerControlSystem implements IEntityProcessingService {
 
@@ -33,20 +28,6 @@ public class PlayerControlSystem implements IEntityProcessingService {
 
             movingPart.process(gameData, entity);
             animationPart.process(gameData,entity);
-            
-            if(gameData.getKeys().isDown(GameKeys.LEFT)){
-                animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.RUNNING_LEFT);
-            } else if(gameData.getKeys().isDown(GameKeys.RIGHT)){
-                animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.RUNNING_RIGHT);
-            } else if(gameData.getKeys().isDown(GameKeys.UP) || gameData.getKeys().isDown(GameKeys.DOWN)){
-                continue;
-            }
-            else{
-                animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.IDLE);
-            }
-
         }
     }
-
-
 }

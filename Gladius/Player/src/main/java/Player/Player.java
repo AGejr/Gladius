@@ -31,15 +31,21 @@ public class Player extends Entity {
 
             //idle animation
 
-            Array<TextureRegion> idleTextures = new Array<>();
-            idleTextures.add(new TextureRegion(this.getTexture(),0,0,32,32));
-            idleTextures.add(new TextureRegion(this.getTexture(),32,0,32,32));
-            idleTextures.add(new TextureRegion(this.getTexture(),64,0,32,32));
-            idleTextures.add(new TextureRegion(this.getTexture(),96,0,32,32));
-            idleTextures.add(new TextureRegion(this.getTexture(),128,0,32,32));
+            Array<TextureRegion> idleRightTextures = new Array<>();
+            Array<TextureRegion> idleLeftTextures = new Array<>();
+            for (int i = 0; i < 5; i++) {
+                idleRightTextures.add(new TextureRegion(this.getTexture(),32*i,0,32,32));
 
-            Animation idleAnimation = new Animation(0.10f,idleTextures);
-            animationPart.addAnimation(AnimationPart.ANIMATION_STATES.IDLE, idleAnimation);
+                TextureRegion idleLeftTexture = new TextureRegion(this.getTexture(),32*i,0,32,32);
+                idleLeftTexture.flip(true, false);
+                idleLeftTextures.add(idleLeftTexture);
+            }
+
+            Animation idleRightAnimation = new Animation(0.10f,idleRightTextures);
+            animationPart.addAnimation(AnimationPart.ANIMATION_STATES.IDLE_RIGHT, idleRightAnimation);
+
+            Animation leftIdleAnimation = new Animation(0.10f,idleLeftTextures);
+            animationPart.addAnimation(AnimationPart.ANIMATION_STATES.IDLE_LEFT, leftIdleAnimation);
 
             Array<TextureRegion> rightMoveTextures = new Array<>();
             Array<TextureRegion> leftMoveTextures = new Array<>();
