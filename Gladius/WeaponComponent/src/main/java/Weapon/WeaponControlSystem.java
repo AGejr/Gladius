@@ -3,15 +3,16 @@ package Weapon;
 import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
-import Common.data.entityparts.MovingPart;
-import Common.data.entityparts.PositionPart;
+// import Common.data.entityparts.MovingPart;
+// import Common.data.entityparts.PositionPart;
 import Common.services.IEntityProcessingService;
-import CommonWeapon.IWeaponService;
 import CommonWeapon.IWeaponUser;
+//import CommonWeapon.Weapon;
+import CommonWeapon.WeaponSPI;
 
 import java.util.List;
 
-public class WeaponControlSystem implements IEntityProcessingService, IWeaponService {
+public class WeaponControlSystem implements IEntityProcessingService, WeaponSPI {
     @Override
     public void process(GameData gameData, World world) {
         /*
@@ -22,13 +23,18 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponSer
 
     @Override
     public void attack(Entity attacker, GameData gameData, World world) {
-        MovingPart attackerMovingPart = attacker.getPart(MovingPart.class);
+        System.out.println("ATTACK");
         float xPos = attacker.getX();
         float yPos = attacker.getY();
         float deltaTime = gameData.getDelta();
+        //Weapon weaponEntity = ((IWeaponUser) attacker).getWeapon();
+        Weapon weaponEntity = Sword.getSword();
+        weaponEntity.setX(xPos + 100);
+        weaponEntity.setY(yPos + 30);
+        weaponEntity.setWeaponTexture();
+
         // TODO get attacker 'radians'
         // int radians = attacker.getRadians()
-
         /*
         Entity weapon = attacker.getWeapon();
         List<Entity> entitiesInRange = getEntitiesInRange(attacker, world);

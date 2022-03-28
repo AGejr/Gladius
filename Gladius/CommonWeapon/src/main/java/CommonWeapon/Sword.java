@@ -1,4 +1,4 @@
-package Weapon;
+package CommonWeapon;
 
 public class Sword extends Weapon {
     private static final String texturePath = "pictures\\sword.png";

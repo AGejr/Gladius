@@ -7,10 +7,11 @@ import Common.data.World;
 import Common.data.entityparts.LifePart;
 import Common.data.entityparts.MovingPart;
 import Common.services.IEntityProcessingService;
+import CommonWeapon.WeaponSPI;
 
 public class PlayerControlSystem implements IEntityProcessingService {
 
-    //TODO implement attack feature
+    private WeaponSPI weaponService;
 
     @Override
     public void process(GameData gameData, World world) {
@@ -25,10 +26,20 @@ public class PlayerControlSystem implements IEntityProcessingService {
             movingPart.setUp(gameData.getKeys().isDown(GameKeys.UP));
             movingPart.setDown(gameData.getKeys().isDown(GameKeys.DOWN));
 
-            movingPart.process(gameData, entity);
+            // Key 6 = SPACE
+            if (gameData.getKeys().isPressed(6) && weaponService != null) {
+                weaponService.attack(entity, gameData, world);
+            }
 
+            movingPart.process(gameData, entity);
         }
     }
 
+    public void setWeaponService(WeaponSPI weaponService) {
+        this.weaponService = weaponService;
+    }
 
+    public void removeWeaponService(WeaponSPI weaponService) {
+        this.weaponService = null;
+    }
 }

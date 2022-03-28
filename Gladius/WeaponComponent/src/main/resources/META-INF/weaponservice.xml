@@ -3,6 +3,6 @@
     <implementation class="Weapon.WeaponControlSystem"/>
 
     <service>
-        <provide interface="CommonWeapon.IWeaponService"/>
+        <provide interface="CommonWeapon.WeaponSPI"/>
     </service>
 </scr:component>

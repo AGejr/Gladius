@@ -1,4 +1,4 @@
-package Weapon;
+package CommonWeapon;
 
 public class Axe extends Weapon {
 

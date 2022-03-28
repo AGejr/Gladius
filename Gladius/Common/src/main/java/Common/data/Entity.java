@@ -67,4 +67,12 @@ public class Entity extends Sprite implements Serializable {
     public String getTexturePath() {
         return texturePath;
     }
+
+    public void setTexturePath(String texturePath) {
+        this.texturePath = texturePath;
+    }
+
+    public void removeTexturePath() {
+        this.texturePath = null;
+    }
 }

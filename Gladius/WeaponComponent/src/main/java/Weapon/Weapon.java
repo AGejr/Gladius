@@ -4,13 +4,14 @@ public abstract class Weapon extends Entity {
     private String name;
     private float damage;
     private float weight;
-    private float range;
+    private final String texturePath;
 
-    protected Weapon(String name, float damage, float weight, float range) {
+    protected Weapon(String name, float damage, float weight, float range, String texturePath) {
+        super(null, range);
         this.name = name;
         this.damage = damage;
         this.weight = weight;
-        this.setRadius(range);
+        this.texturePath = texturePath;
     }
 
     public String getName() {
@@ -24,4 +25,9 @@ public abstract class Weapon extends Entity {
     public float getWeight() {
         return this.weight;
     }
+
+    public float getRange() {return super.getRadius();}
+
+    public void removeWeaponTexture() { super.removeTexturePath();}
+    public void setWeaponTexture() {super.setTexturePath(this.texturePath);}
 }
