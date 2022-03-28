@@ -26,8 +26,7 @@
     <module>Core</module>
     <module>LibGDXImports</module>
     <module>Common</module>
-    <module>WeaponComponent</module>
-    <module>CommonWeapon</module>
+    <module>Player</module>
   </modules>
 
   <build>
@@ -42,6 +41,7 @@
                               -->
           <provision>
             <param>--platform=felix</param>
+            <param>--vmOptions=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005</param>
           </provision>
         </configuration>
         <executions>
