@@ -38,8 +38,6 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponSer
             float newHealth = entityLifePart.getLife() - damageGiven;
             entityLifePart.setHealth(newHealth);
          */
-
-
     }
 
     private List<Entity> getEntitiesInRange(IWeaponUser attacker, World world) {
