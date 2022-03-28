@@ -3,6 +3,7 @@ package Core;
 import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
+import Common.data.entityparts.AnimationPart;
 import Common.services.IEntityProcessingService;
 import Common.services.IGamePluginService;
 import Common.services.IPostEntityProcessingService;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -23,6 +25,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 
 import java.io.File;
 import java.util.List;
@@ -37,13 +40,13 @@ public class Game implements ApplicationListener {
     private static List<IPostEntityProcessingService> postEntityProcessorList = new CopyOnWriteArrayList<>();
 
     private static OrthographicCamera cam;
-    private ShapeRenderer sr;
     private final GameData gameData = new GameData();
     private static World world = new World();
     private TiledMap tiledMap;
     private OrthoCachedTiledMapRenderer tiledMapRenderer;
     private SpriteBatch batch;
 
+    private boolean isCreateRun = false;
 
     public Game(){
         init();
@@ -75,12 +78,14 @@ public class Game implements ApplicationListener {
         tiledMapRenderer = new OrthoCachedTiledMapRenderer(tiledMap);
         tiledMapRenderer.setBlending(true); //Makes tiles transparent
 
-        Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
-
-        sr = new ShapeRenderer();
-
         batch = new SpriteBatch();
 
+        Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
+
+        for(IGamePluginService plugin: this.gamePluginList) {
+            plugin.start(gameData, world);
+        }
+        isCreateRun = true;
     }
 
     @Override
@@ -100,17 +105,16 @@ public class Game implements ApplicationListener {
 
 
         batch.begin();
-        for (Entity entity :  world.getEntities()) {
 
-            if (entity.getTexture() == null) {
-                // if entity doesn't have texture, create and assign the texture
-                File textureFile = new File(entity.getTexturePath());
-                FileHandle fileHandle = new FileHandle(textureFile);
-                Texture playerTexture = new Texture(fileHandle);
-                entity.setTexture(playerTexture);
-                // Set the region of the texture we want to draw
-                entity.setRegion(0, 0, 32, 32);
+        for (Entity entity :  world.getEntities()){
 
+            if(entity.getTexture() == null){
+                entity.initTexture();
+            }
+            if(entity.getPart(AnimationPart.class) != null){
+                AnimationPart animationPart = entity.getPart(AnimationPart.class);
+
+                batch.draw(animationPart.getCurrentKeyFrame(), entity.getX(),entity.getY());
             }
             batch.draw(entity, entity.getX(), entity.getY());
             Vector3 position = cam.position;
@@ -169,7 +173,9 @@ public class Game implements ApplicationListener {
 
     public void addGamePluginService(IGamePluginService plugin) {
         this.gamePluginList.add(plugin);
-        plugin.start(gameData, world);
+        if(isCreateRun){
+            plugin.start(gameData,world);
+        }
 
     }
 
