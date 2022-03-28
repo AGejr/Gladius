@@ -27,10 +27,6 @@ public class Entity extends Sprite implements Serializable {
         this.texturePath = texturePath;
         this.radius = radius;
 
-        File textureFile = new File(this.getTexturePath());
-        FileHandle fileHandle = new FileHandle(textureFile);
-        Texture playerTexture = new Texture(fileHandle);
-        this.setTexture(playerTexture);
     }
 
 
@@ -40,10 +36,6 @@ public class Entity extends Sprite implements Serializable {
         this.radius = entity.getRadius();
         this.parts = entity.getParts();
 
-        File textureFile = new File(this.getTexturePath());
-        FileHandle fileHandle = new FileHandle(textureFile);
-        Texture playerTexture = new Texture(fileHandle);
-        this.setTexture(playerTexture);
     }
 
     public Entity() {
@@ -78,5 +70,12 @@ public class Entity extends Sprite implements Serializable {
 
     public String getTexturePath() {
         return texturePath;
+    }
+
+    public void initTexture(){
+        File textureFile = new File(this.getTexturePath());
+        FileHandle fileHandle = new FileHandle(textureFile);
+        Texture playerTexture = new Texture(fileHandle);
+        this.setTexture(playerTexture);
     }
 }

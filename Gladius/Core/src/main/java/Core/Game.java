@@ -73,6 +73,7 @@ public class Game implements ApplicationListener {
         batch = new SpriteBatch();
 
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
+
         for(IGamePluginService plugin: this.gamePluginList) {
             plugin.start(gameData, world);
         }
@@ -99,7 +100,13 @@ public class Game implements ApplicationListener {
 
         for (Entity entity :  world.getEntities()){
 
+            if(entity.getTexture() == null){
+                entity.initTexture();
+            }
+
             batch.draw(entity,entity.getX(),entity.getY());
+
+
             cam.position.y = entity.getY();
             cam.position.x = entity.getX();
         }
