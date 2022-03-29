@@ -28,14 +28,18 @@ public class AnimationPart implements EntityPart{
 
     @Override
     public void process(GameData gameData, Entity entity) {
+
         if(!this.getCurrentAnimation().isAnimationFinished(animationTime)){
             animationTime += Gdx.graphics.getDeltaTime();
         }else{
             animationTime = 0;
         }
+
         if (entity.getPart(MovingPart.class) != null) {
             processMovementAnimation(entity);
         }
+
+        entity.setRegion(getCurrentKeyFrame());
     }
 
     /**

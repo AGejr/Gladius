@@ -7,11 +7,6 @@ import Common.data.entityparts.AnimationPart;
 import Common.data.entityparts.MovingPart;
 import Common.services.IGamePluginService;
 import Common.tools.FileLoader;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Texture;
-
-import java.io.File;
-
 
 public class PlayerPlugin implements IGamePluginService {
 

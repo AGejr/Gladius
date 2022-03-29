@@ -2,13 +2,9 @@ package Player;
 
 import Common.data.Entity;
 import Common.data.entityparts.AnimationPart;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
-
-import java.io.File;
 
 public class Player extends Entity {
     int balance;
@@ -21,8 +17,8 @@ public class Player extends Entity {
     @Override
     public void initTexture(){
         super.initTexture();
-        initAnimation();
         this.setRegion(0,0,32,32);
+        initAnimation();
     }
 
    private void initAnimation(){
@@ -45,11 +41,11 @@ public class Player extends Entity {
             }
 
             // IDLE right animation
-            Animation idleRightAnimation = new Animation(0.10f,idleRightTextures);
+            Animation idleRightAnimation = new Animation(0.16f,idleRightTextures);
             animationPart.addAnimation(AnimationPart.ANIMATION_STATES.IDLE_RIGHT, idleRightAnimation);
 
             // IDLE left animation
-            Animation leftIdleAnimation = new Animation(0.10f,idleLeftTextures);
+            Animation leftIdleAnimation = new Animation(0.16f,idleLeftTextures);
             animationPart.addAnimation(AnimationPart.ANIMATION_STATES.IDLE_LEFT, leftIdleAnimation);
 
             // Running animation
