@@ -9,6 +9,7 @@ public class MovingPart implements EntityPart {
     private float speed;
     private boolean left, right, up, down, isSlow;
     private boolean colTop, colBot, colLeft,colRight;
+    private final float diagonalCorrectionVal = (float) (1 / sqrt(2));
 
     public MovingPart(float speed) {
         this.speed = speed;
@@ -84,21 +85,37 @@ public class MovingPart implements EntityPart {
         float x = entity.getX();
         float y = entity.getY();
 
-
         if (left && !colLeft) {
-            x -= Gdx.graphics.getDeltaTime() * speed;
+            // if moving left and either up or down, correct x speed according to pythagoras a^2+b^2=c^2
+            if(up ^ down){
+                x -= Gdx.graphics.getDeltaTime() * speed * diagonalCorrectionVal;
+            } else {
+                x -= Gdx.graphics.getDeltaTime() * speed;
+            }
         }
 
         if (right && !colRight) {
-            x += Gdx.graphics.getDeltaTime() * speed;
+            if(up ^ down){
+                x += Gdx.graphics.getDeltaTime() * speed * diagonalCorrectionVal;
+            } else {
+                x += Gdx.graphics.getDeltaTime() * speed;
+            }
         }
 
         if (up && !colTop) {
-            y += Gdx.graphics.getDeltaTime() * speed;
+            if(left ^ right){
+                y += Gdx.graphics.getDeltaTime() * speed * diagonalCorrectionVal;
+            } else {
+                y += Gdx.graphics.getDeltaTime() * speed;
+            }
         }
 
         if (down && !colBot){
-            y -= Gdx.graphics.getDeltaTime() * speed;
+            if(left ^ right){
+                y -= Gdx.graphics.getDeltaTime() * speed * diagonalCorrectionVal;
+            } else {
+                y -= Gdx.graphics.getDeltaTime() * speed;
+            }
         }
 
 
