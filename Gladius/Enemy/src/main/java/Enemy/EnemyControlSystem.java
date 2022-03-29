@@ -11,7 +11,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
     @Override
     public void process(GameData gameData, World world) {
         for (Entity enemy : world.getEntities(Enemy.class)){
-
             MovingPart movingPart = enemy.getPart(MovingPart.class);
 
             for (Entity player : world.getEntities(Player.class)) {

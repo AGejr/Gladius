@@ -92,17 +92,10 @@ public class Game implements ApplicationListener {
             if(entity.getTexture() == null){
                 entity.initTexture();
             }
-            if(entity.getPart(AnimationPart.class) != null){
-                AnimationPart animationPart = entity.getPart(AnimationPart.class);
-                batch.draw(animationPart.getCurrentKeyFrame(), entity.getX(),entity.getY());
-            } else {
-                batch.draw(entity, entity.getX(), entity.getY());
+            if (entity.getClass() == Player.class) {
+                cam.position.y = entity.getY();
+                cam.position.x = entity.getX();
             }
-        }
-        for (Entity entity : world.getEntities(Player.class)) {
-            cam.position.y = entity.getY();
-            cam.position.x = entity.getX();
-
             batch.draw(entity, entity.getX(), entity.getY());
         }
 
