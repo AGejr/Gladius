@@ -14,10 +14,8 @@ public class EnemyPlugin implements IGamePluginService {
 
     @Override
     public void start(GameData gameData, World world) {
-        for (int i = 0; i < 3; i++) {
             enemy = createEnemy(gameData);
             world.addEntity(enemy);
-        }
     }
 
     private Entity createEnemy(GameData gamedata) {
