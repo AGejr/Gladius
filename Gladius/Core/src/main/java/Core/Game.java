@@ -16,13 +16,19 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import static org.lwjgl.opengl.Display.update;
 
 public class Game implements ApplicationListener {
 
@@ -56,11 +62,14 @@ public class Game implements ApplicationListener {
     public void create() {
         cam = new OrthographicCamera();
         cam.setToOrtho(false, Gdx.graphics.getWidth() / 1.5f, Gdx.graphics.getHeight() / 1.5f);
+        cam.position.x = 800;
+        cam.position.y = 140;
         cam.update();
         String[] files = {"Map/Map.tmx", "Map/Arena_Tileset.tsx", "Map/Arena_Tileset.png"};
         FileLoader.loadFiles(files, getClass());
 
         tiledMap = new TmxMapLoader().load("Map/Map.tmx");
+        world.setTiledMap(tiledMap); //Saves tiledMap to the world
         tiledMapRenderer = new OrthoCachedTiledMapRenderer(tiledMap);
         tiledMapRenderer.setBlending(true); //Makes tiles transparent
 
@@ -87,18 +96,19 @@ public class Game implements ApplicationListener {
         tiledMapRenderer.render();
         batch.setProjectionMatrix(cam.combined);
 
+
         batch.begin();
         for (Entity entity :  world.getEntities()){
             if(entity.getTexture() == null){
                 entity.initTexture();
             }
             if (entity.getClass() == Player.class) {
-                cam.position.y = entity.getY();
-                cam.position.x = entity.getX();
+                Vector3 position = cam.position;
+                position.x += (entity.getX() - position.x) * gameData.getLerp() * Gdx.graphics.getDeltaTime();
+                position.y += (entity.getY() - position.y) * gameData.getLerp() * Gdx.graphics.getDeltaTime();
             }
             batch.draw(entity, entity.getX(), entity.getY());
         }
-
         batch.end();
         update();
     }

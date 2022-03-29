@@ -5,11 +5,9 @@ import Common.data.entityparts.EntityPart;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.io.File;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -41,15 +39,15 @@ public class Entity extends Sprite implements Serializable {
     public Entity() {
         parts = new ConcurrentHashMap<>();
     }
-    
+
     public void add(EntityPart part) {
         parts.put(part.getClass(), part);
     }
-    
+
     public void remove(Class partClass) {
         parts.remove(partClass);
     }
-    
+
     public <E extends EntityPart> E getPart(Class partClass) {
         return (E) parts.get(partClass);
     }
@@ -59,7 +57,7 @@ public class Entity extends Sprite implements Serializable {
     public void setRadius(float r){
         this.radius = r;
     }
-    
+
     public float getRadius(){
         return radius;
     }
