@@ -78,45 +78,41 @@ public class MovingPart implements EntityPart {
 
     @Override
     public void process(GameData gameData, Entity entity) {
-        float x = entity.getX();
-        float y = entity.getY();
+        float dx = 0;
+        float dy = 0;
 
         if (left && !colLeft) {
             // if moving left and either up or down, correct x speed according to pythagoras a^2+b^2=c^2
+            dx -= Gdx.graphics.getDeltaTime() * speed * slower;
             if(up ^ down){
-                x -= Gdx.graphics.getDeltaTime() * speed * diagonalCorrectionVal * slower;
-            } else {
-                x -= Gdx.graphics.getDeltaTime() * speed * slower;
+                dx *= diagonalCorrectionVal;
             }
         }
 
         if (right && !colRight) {
+            dx += Gdx.graphics.getDeltaTime() * speed * slower;
             if(up ^ down){
-                x += Gdx.graphics.getDeltaTime() * speed * diagonalCorrectionVal * slower;
-            } else {
-                x += Gdx.graphics.getDeltaTime() * speed * slower;
+                dx *= diagonalCorrectionVal;
             }
         }
 
         if (up && !colTop) {
+            dy += Gdx.graphics.getDeltaTime() * speed * slower;
             if(left ^ right){
-                y += Gdx.graphics.getDeltaTime() * speed * diagonalCorrectionVal * slower;
-            } else {
-                y += Gdx.graphics.getDeltaTime() * speed * slower;
+                dy *= diagonalCorrectionVal;
             }
         }
 
         if (down && !colBot){
+            dy -= Gdx.graphics.getDeltaTime() * speed * slower;
             if(left ^ right){
-                y -= Gdx.graphics.getDeltaTime() * speed * diagonalCorrectionVal * slower;
-            } else {
-                y -= Gdx.graphics.getDeltaTime() * speed * slower;
+                dy *= diagonalCorrectionVal;
             }
         }
 
 
         // set position
-        entity.setX(x);
-        entity.setY(y);
+        entity.setX(entity.getX() + dx);
+        entity.setY(entity.getY() + dy);
     }
 }
