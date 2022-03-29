@@ -10,6 +10,7 @@ public class MovingPart implements EntityPart {
 
     private float speed;
     private boolean left, right, up, down;
+    private final float diagonalCorrectionVal = (float) (1 / sqrt(2));
 
     public float getSpeed() {
         return speed;
@@ -59,19 +60,36 @@ public class MovingPart implements EntityPart {
         float y = entity.getY();
 
         if (left) {
-            x -= Gdx.graphics.getDeltaTime() * speed;
+            // if moving left and either up or down, correct x speed according to pythagoras a^2+b^2=c^2
+            if(up ^ down){
+                x -= Gdx.graphics.getDeltaTime() * speed * diagonalCorrectionVal;
+            } else {
+                x -= Gdx.graphics.getDeltaTime() * speed;
+            }
         }
 
         if (right) {
-            x += Gdx.graphics.getDeltaTime() * speed;
+            if(up ^ down){
+                x += Gdx.graphics.getDeltaTime() * speed * diagonalCorrectionVal;
+            } else {
+                x += Gdx.graphics.getDeltaTime() * speed;
+            }
         }
 
         if (up) {
-            y += Gdx.graphics.getDeltaTime() * speed;
+            if(left ^ right){
+                y += Gdx.graphics.getDeltaTime() * speed * diagonalCorrectionVal;
+            } else {
+                y += Gdx.graphics.getDeltaTime() * speed;
+            }
         }
 
         if (down){
-            y -= Gdx.graphics.getDeltaTime() * speed;
+            if(left ^ right){
+                y -= Gdx.graphics.getDeltaTime() * speed * diagonalCorrectionVal;
+            } else {
+                y -= Gdx.graphics.getDeltaTime() * speed;
+            }
         }
 
 

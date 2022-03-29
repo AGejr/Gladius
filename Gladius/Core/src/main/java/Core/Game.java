@@ -13,20 +13,14 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
-import com.badlogic.gdx.utils.Array;
 
-import java.io.File;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -42,8 +36,6 @@ public class Game implements ApplicationListener {
     private TiledMap tiledMap;
     private OrthoCachedTiledMapRenderer tiledMapRenderer;
     private SpriteBatch batch;
-
-    private boolean isCreateRun = false;
 
     public Game(){
         init();
@@ -76,10 +68,6 @@ public class Game implements ApplicationListener {
 
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
 
-        for(IGamePluginService plugin: this.gamePluginList) {
-            plugin.start(gameData, world);
-        }
-        isCreateRun = true;
     }
 
     @Override
@@ -89,6 +77,7 @@ public class Game implements ApplicationListener {
 
     @Override
     public void render() {
+
         //Gdx.gl.glClearColor(194/255f, 178/255f, 128/255f, 1); //Black = 0,0,0,1
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -113,7 +102,10 @@ public class Game implements ApplicationListener {
         for (Entity entity : world.getEntities(Player.class)) {
             cam.position.y = entity.getY();
             cam.position.x = entity.getX();
+
+            batch.draw(entity, entity.getX(), entity.getY());
         }
+
         batch.end();
         update();
     }
@@ -164,9 +156,8 @@ public class Game implements ApplicationListener {
 
     public void addGamePluginService(IGamePluginService plugin) {
         this.gamePluginList.add(plugin);
-        if(isCreateRun){
-            plugin.start(gameData,world);
-        }
+        plugin.start(gameData,world);
+
 
     }
 
