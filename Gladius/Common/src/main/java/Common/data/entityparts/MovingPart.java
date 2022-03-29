@@ -4,9 +4,11 @@ import Common.data.Entity;
 import Common.data.GameData;
 import com.badlogic.gdx.Gdx;
 
+import static java.lang.Math.*;
+
 public class MovingPart implements EntityPart {
 
-    private float speed;
+    private float speed, slowedSpeed;
     private boolean left, right, up, down, isSlow;
     private boolean colTop, colBot, colLeft,colRight;
     private final float diagonalCorrectionVal = (float) (1 / sqrt(2));
@@ -15,13 +17,14 @@ public class MovingPart implements EntityPart {
         this.speed = speed;
     }
 
-    public void setSlow(boolean slow) {
+    public void setSlow(boolean slow, int slowAmount) {
         if(slow && !isSlow) {
-            this.speed -= 30;
+            slowedSpeed = slowAmount;
+            this.speed -= slowedSpeed;
             isSlow = true;
         }
         else if(!slow && isSlow) {
-            this.speed += 30;
+            this.speed += slowedSpeed;
             isSlow = false;
         }
     }
