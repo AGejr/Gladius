@@ -3,10 +3,12 @@ package Core;
 import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
+import Common.data.entityparts.AnimationPart;
 import Common.services.IEntityProcessingService;
 import Common.services.IGamePluginService;
 import Common.services.IPostEntityProcessingService;
 import Common.tools.FileLoader;
+import CommonPlayer.Player;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
@@ -86,20 +88,18 @@ public class Game implements ApplicationListener {
         batch.setProjectionMatrix(cam.combined);
 
         batch.begin();
-
-        for (Entity entity :  world.getEntities()) {
-
-            if (entity.getTexture() == null) {
+        for (Entity entity :  world.getEntities()){
+            if(entity.getTexture() == null){
                 entity.initTexture();
             }
-            cam.position.y = entity.getY();
-            cam.position.x = entity.getX();
-
+            if (entity.getClass() == Player.class) {
+                cam.position.y = entity.getY();
+                cam.position.x = entity.getX();
+            }
             batch.draw(entity, entity.getX(), entity.getY());
         }
 
         batch.end();
-
         update();
     }
 

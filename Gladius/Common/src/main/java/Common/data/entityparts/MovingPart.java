@@ -12,6 +12,10 @@ public class MovingPart implements EntityPart {
     private boolean left, right, up, down;
     private final float diagonalCorrectionVal = (float) (1 / sqrt(2));
 
+    public float getSpeed() {
+        return speed;
+    }
+
     public MovingPart(float speed) {
         this.speed = speed;
     }
