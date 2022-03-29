@@ -28,6 +28,8 @@
     <module>Common</module>
     <module>Player</module>
     <module>Collision</module>
+    <module>Enemy</module>
+    <module>CommonPlayer</module>
   </modules>
 
   <build>

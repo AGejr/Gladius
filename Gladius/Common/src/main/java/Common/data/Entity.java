@@ -73,7 +73,7 @@ public class Entity extends Sprite implements Serializable {
     public void initTexture(){
         File textureFile = new File(this.getTexturePath());
         FileHandle fileHandle = new FileHandle(textureFile);
-        Texture playerTexture = new Texture(fileHandle);
-        this.setTexture(playerTexture);
+        Texture texture = new Texture(fileHandle);
+        this.setTexture(texture);
     }
 }

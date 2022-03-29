@@ -7,12 +7,14 @@ import Common.data.entityparts.AnimationPart;
 import Common.data.entityparts.MovingPart;
 import Common.services.IGamePluginService;
 import Common.tools.FileLoader;
+import CommonPlayer.Player;
 
 public class PlayerPlugin implements IGamePluginService {
+    private Entity player;
 
     @Override
     public void start(GameData gameData, World world) {
-        Entity player = createPlayer(gameData);
+        player = createPlayer(gameData);
         world.addEntity(player);
     }
 
@@ -31,8 +33,6 @@ public class PlayerPlugin implements IGamePluginService {
 
     @Override
     public void stop(GameData gameData, World world) {
-        for (Entity entity : world.getEntities()) {
-            world.removeEntity(entity);
-        }
+        world.removeEntity(player);
     }
 }

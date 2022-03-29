@@ -8,6 +8,7 @@ import Common.services.IEntityProcessingService;
 import Common.services.IGamePluginService;
 import Common.services.IPostEntityProcessingService;
 import Common.tools.FileLoader;
+import CommonPlayer.Player;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
@@ -97,26 +98,18 @@ public class Game implements ApplicationListener {
 
 
         batch.begin();
-
-        for (Entity entity :  world.getEntities()) {
-
-            if (entity.getTexture() == null) {
+        for (Entity entity :  world.getEntities()){
+            if(entity.getTexture() == null){
                 entity.initTexture();
             }
-            if(entity.getPart(AnimationPart.class) != null){
-                AnimationPart animationPart = entity.getPart(AnimationPart.class);
-
-                batch.draw(animationPart.getCurrentKeyFrame(), entity.getX(),entity.getY());
+            if (entity.getClass() == Player.class) {
+                Vector3 position = cam.position;
+                position.x += (entity.getX() - position.x) * gameData.getLerp() * Gdx.graphics.getDeltaTime();
+                position.y += (entity.getY() - position.y) * gameData.getLerp() * Gdx.graphics.getDeltaTime();
             }
             batch.draw(entity, entity.getX(), entity.getY());
-            Vector3 position = cam.position;
-            position.x += (entity.getX() - position.x) * gameData.getLerp() * Gdx.graphics.getDeltaTime();
-            position.y += (entity.getY() - position.y) * gameData.getLerp() * Gdx.graphics.getDeltaTime();
-
         }
-
         batch.end();
-
         update();
     }
 
