@@ -14,15 +14,12 @@ public class MovingPart implements EntityPart {
         this.speed = speed;
     }
 
-    public void setSlow() {
-        if(!isSlow) {
+    public void setSlow(boolean slow) {
+        if(slow && !isSlow) {
             this.speed -= 30;
             isSlow = true;
         }
-    }
-
-    public void setNormalSpeed() {
-        if(isSlow) {
+        else if(!slow && isSlow) {
             this.speed += 30;
             isSlow = false;
         }

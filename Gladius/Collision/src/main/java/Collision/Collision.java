@@ -62,10 +62,10 @@ public class Collision implements IPostEntityProcessingService {
             }
 
             if(Arrays.stream(water).anyMatch(i -> i == csv.get(y).get(x))) {
-                movingPart.setSlow();
+                movingPart.setSlow(true);
             }
             else {
-                movingPart.setNormalSpeed();
+                movingPart.setSlow(false);
             }
 
             if (Arrays.stream(gate).anyMatch(i -> i == tile)) {
