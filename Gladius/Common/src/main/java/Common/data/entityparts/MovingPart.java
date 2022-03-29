@@ -12,21 +12,14 @@ public class MovingPart implements EntityPart {
     private boolean left, right, up, down, isSlow;
     private boolean colTop, colBot, colLeft,colRight;
     private final float diagonalCorrectionVal = (float) (1 / sqrt(2));
+    private float slower = (float) 1;
 
     public MovingPart(float speed) {
         this.speed = speed;
     }
 
-    public void setSlow(boolean slow, int slowAmount) {
-        if(slow && !isSlow) {
-            slowedSpeed = slowAmount;
-            this.speed -= slowedSpeed;
-            isSlow = true;
-        }
-        else if(!slow && isSlow) {
-            this.speed += slowedSpeed;
-            isSlow = false;
-        }
+    public void setSlow(float slower) {
+        this.slower = slower;
     }
 
     public float getSpeed() {
@@ -91,33 +84,33 @@ public class MovingPart implements EntityPart {
         if (left && !colLeft) {
             // if moving left and either up or down, correct x speed according to pythagoras a^2+b^2=c^2
             if(up ^ down){
-                x -= Gdx.graphics.getDeltaTime() * speed * diagonalCorrectionVal;
+                x -= Gdx.graphics.getDeltaTime() * speed * diagonalCorrectionVal * slower;
             } else {
-                x -= Gdx.graphics.getDeltaTime() * speed;
+                x -= Gdx.graphics.getDeltaTime() * speed * slower;
             }
         }
 
         if (right && !colRight) {
             if(up ^ down){
-                x += Gdx.graphics.getDeltaTime() * speed * diagonalCorrectionVal;
+                x += Gdx.graphics.getDeltaTime() * speed * diagonalCorrectionVal * slower;
             } else {
-                x += Gdx.graphics.getDeltaTime() * speed;
+                x += Gdx.graphics.getDeltaTime() * speed * slower;
             }
         }
 
         if (up && !colTop) {
             if(left ^ right){
-                y += Gdx.graphics.getDeltaTime() * speed * diagonalCorrectionVal;
+                y += Gdx.graphics.getDeltaTime() * speed * diagonalCorrectionVal * slower;
             } else {
-                y += Gdx.graphics.getDeltaTime() * speed;
+                y += Gdx.graphics.getDeltaTime() * speed * slower;
             }
         }
 
         if (down && !colBot){
             if(left ^ right){
-                y -= Gdx.graphics.getDeltaTime() * speed * diagonalCorrectionVal;
+                y -= Gdx.graphics.getDeltaTime() * speed * diagonalCorrectionVal * slower;
             } else {
-                y -= Gdx.graphics.getDeltaTime() * speed;
+                y -= Gdx.graphics.getDeltaTime() * speed * slower;
             }
         }
 
