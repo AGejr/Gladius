@@ -109,6 +109,7 @@ public class Game implements ApplicationListener {
             }
             batch.draw(entity, entity.getX(), entity.getY());
         }
+
         batch.end();
         update();
     }
