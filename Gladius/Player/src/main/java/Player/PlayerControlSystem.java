@@ -30,7 +30,6 @@ public class PlayerControlSystem implements IEntityProcessingService {
 
             // Key 6 = SPACE
             if (gameData.getKeys().isPressed(6) && weaponService != null) {
-                System.out.println("Jens");
                 weaponService.attack(entity, gameData, world);
             }
 

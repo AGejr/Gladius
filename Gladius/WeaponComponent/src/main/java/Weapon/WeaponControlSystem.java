@@ -73,7 +73,6 @@ public class WeaponControlSystem implements IEntityProcessingService, WeaponSPI 
 
     @Override
     public void attack(Entity attacker, GameData gameData, World world) {
-        System.out.println("ATTACK");
         float xPos = attacker.getX();
         float yPos = attacker.getY();
         Weapon weaponEntity = Sword.getSword();
