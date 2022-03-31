@@ -3,6 +3,7 @@ package Enemy;
 import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
+import Common.data.entityparts.AnimationPart;
 import Common.data.entityparts.MovingPart;
 import Common.services.IEntityProcessingService;
 import CommonPlayer.Player;
@@ -12,6 +13,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
     public void process(GameData gameData, World world) {
         for (Entity enemy : world.getEntities(Enemy.class)){
             MovingPart movingPart = enemy.getPart(MovingPart.class);
+            AnimationPart animationPart = enemy.getPart(AnimationPart.class);
 
             for (Entity player : world.getEntities(Player.class)) {
                 if (player.getY() > 300) {
@@ -44,6 +46,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
             }
 
             movingPart.process(gameData, enemy);
+            animationPart.process(gameData, enemy);
 
         }
     }
