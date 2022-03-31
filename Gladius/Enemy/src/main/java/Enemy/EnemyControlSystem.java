@@ -15,20 +15,21 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
             for (Entity player : world.getEntities(Player.class)) {
                 if (player.getY() > 300) {
-                    if (player.getX() == enemy.getX()+40) {
+                    // todo : radius*16/2 should be changed to texture width / 2
+                    if (player.getX() + (player.getRadius()*16)/2 == enemy.getX() + (enemy.getRadius()*16)/2) {
                         movingPart.setLeft(false);
                         movingPart.setRight(false);
-                    } else if (player.getX() < enemy.getX()+40) {
+                    } else if (player.getX() + (player.getRadius()*16)/2 < enemy.getX() + (enemy.getRadius()*16)/2) {
                         movingPart.setLeft(true);
                         movingPart.setRight(false);
                     } else {
                         movingPart.setRight(true);
                         movingPart.setLeft(false);
                     }
-                    if (player.getY() == enemy.getY()+40) {
+                    if (player.getY() == enemy.getY()) {
                         movingPart.setUp(false);
                         movingPart.setDown(false);
-                    } else if (player.getY() < enemy.getY()+40) {
+                    } else if (player.getY() < enemy.getY()) {
                         movingPart.setUp(false);
                         movingPart.setDown(true);
                     } else {
