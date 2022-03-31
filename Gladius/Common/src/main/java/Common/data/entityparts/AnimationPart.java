@@ -24,18 +24,40 @@ public class AnimationPart implements EntityPart{
     private ANIMATION_STATES currentState = ANIMATION_STATES.IDLE_RIGHT;
     private HashMap<ANIMATION_STATES, Animation> animations = new HashMap<>();
     private float animationTime = 0;
-    private boolean isLeft = true;
+    private Boolean isLeft = true;
 
     @Override
     public void process(GameData gameData, Entity entity) {
+        LifePart lifePart = entity.getPart(LifePart.class);
+        MovingPart movingPart = entity.getPart(MovingPart.class);
+        boolean hasLifePart = lifePart != null;
+        boolean hasMovingPart = movingPart != null;
+        boolean isInDeathAnimationState = this.getCurrentState() == ANIMATION_STATES.DEATH_LEFT || this.getCurrentState() == ANIMATION_STATES.DEATH_RIGHT;
+
+        if (hasLifePart && lifePart.isDead() && !isInDeathAnimationState) {
+            // If the entity has just died
+            // Reset animationtime so that it uses the first keyframe
+            // Set animation state to a death animation state
+            this.animationTime = 0;
+            if (this.isLeft) {
+                this.setCurrentState(ANIMATION_STATES.DEATH_LEFT);
+            } else {
+                this.setCurrentState(ANIMATION_STATES.DEATH_RIGHT);
+            }
+        }
 
         if(!this.getCurrentAnimation().isAnimationFinished(animationTime)){
+            // Advance animation
             animationTime += Gdx.graphics.getDeltaTime();
-        }else{
+        } else if (hasLifePart && !lifePart.isDead()) {
+            // Loop animation if the entity has a lifepart, and it is alive
+            animationTime = 0;
+        } else if (lifePart == null) {
+            // Loop animation if entity is not a living entity
             animationTime = 0;
         }
 
-        if (entity.getPart(MovingPart.class) != null) {
+        if (hasMovingPart && hasLifePart && !lifePart.isDead()) {
             processMovementAnimation(entity);
         }
 
@@ -121,7 +143,7 @@ public class AnimationPart implements EntityPart{
     }
 
     public TextureRegion getCurrentKeyFrame(){
-        return getCurrentAnimation().getKeyFrame(animationTime,true);
+        return getCurrentAnimation().getKeyFrame(animationTime,false);
     }
 
     public boolean isLeft() {
