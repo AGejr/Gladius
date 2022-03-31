@@ -12,6 +12,7 @@ public class GameData {
     private float delta;
     private int displayWidth;
     private int displayHeight;
+    private float lerp = 3.0f;
     private final GameKeys keys = new GameKeys();
     private List<Event> events = new CopyOnWriteArrayList<>();
 
@@ -64,5 +65,13 @@ public class GameData {
         }
 
         return r;
+    }
+
+    public float getLerp() {
+        return lerp;
+    }
+
+    public void setLerp(float lerp) {
+        this.lerp = lerp;
     }
 }

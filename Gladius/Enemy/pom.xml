@@ -9,13 +9,13 @@
   </parent>
 
   <properties>
-    <bundle.symbolicName>Core</bundle.symbolicName>
-    <bundle.namespace>Core</bundle.namespace>
+    <bundle.symbolicName>Enemy</bundle.symbolicName>
+    <bundle.namespace>Enemy</bundle.namespace>
   </properties>
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.gladius.Gladius</groupId>
-  <artifactId>Core</artifactId>
+  <artifactId>Enemy</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <name>${bundle.symbolicName}</name>
@@ -26,12 +26,13 @@
     <dependency>
       <groupId>org.osgi</groupId>
       <artifactId>org.osgi.core</artifactId>
-      <optional>true</optional>
+      <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.osgi</groupId>
-      <artifactId>org.osgi.compendium</artifactId>
-      <optional>true</optional>
+      <groupId>org.gladius.Gladius</groupId>
+      <artifactId>Common</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.gladius.build</groupId>
@@ -40,15 +41,10 @@
     </dependency>
     <dependency>
       <groupId>org.gladius.Gladius</groupId>
-      <artifactId>Common</artifactId>
+      <artifactId>CommonPlayer</artifactId>
       <version>1.0-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
-      <dependency>
-          <groupId>org.gladius.Gladius</groupId>
-          <artifactId>CommonPlayer</artifactId>
-          <version>1.0-SNAPSHOT</version>
-          <scope>compile</scope>
-      </dependency>
   </dependencies>
+
 </project>

@@ -3,28 +3,32 @@ package Core;
 import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
+import Common.data.entityparts.AnimationPart;
 import Common.services.IEntityProcessingService;
 import Common.services.IGamePluginService;
 import Common.services.IPostEntityProcessingService;
 import Common.tools.FileLoader;
+import CommonPlayer.Player;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 
-import java.io.File;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import static org.lwjgl.opengl.Display.update;
 
 public class Game implements ApplicationListener {
 
@@ -33,13 +37,11 @@ public class Game implements ApplicationListener {
     private static List<IPostEntityProcessingService> postEntityProcessorList = new CopyOnWriteArrayList<>();
 
     private static OrthographicCamera cam;
-    private ShapeRenderer sr;
     private final GameData gameData = new GameData();
     private static World world = new World();
     private TiledMap tiledMap;
     private OrthoCachedTiledMapRenderer tiledMapRenderer;
     private SpriteBatch batch;
-
 
     public Game(){
         init();
@@ -60,19 +62,20 @@ public class Game implements ApplicationListener {
     public void create() {
         cam = new OrthographicCamera();
         cam.setToOrtho(false, Gdx.graphics.getWidth() / 1.5f, Gdx.graphics.getHeight() / 1.5f);
+        cam.position.x = 800;
+        cam.position.y = 140;
         cam.update();
         String[] files = {"Map/Map.tmx", "Map/Arena_Tileset.tsx", "Map/Arena_Tileset.png"};
         FileLoader.loadFiles(files, getClass());
 
         tiledMap = new TmxMapLoader().load("Map/Map.tmx");
+        world.setTiledMap(tiledMap); //Saves tiledMap to the world
         tiledMapRenderer = new OrthoCachedTiledMapRenderer(tiledMap);
         tiledMapRenderer.setBlending(true); //Makes tiles transparent
 
-        Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
-
-        sr = new ShapeRenderer();
-
         batch = new SpriteBatch();
+
+        Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
 
     }
 
@@ -83,6 +86,7 @@ public class Game implements ApplicationListener {
 
     @Override
     public void render() {
+
         //Gdx.gl.glClearColor(194/255f, 178/255f, 128/255f, 1); //Black = 0,0,0,1
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -92,26 +96,25 @@ public class Game implements ApplicationListener {
         tiledMapRenderer.render();
         batch.setProjectionMatrix(cam.combined);
 
+
         batch.begin();
         for (Entity entity :  world.getEntities()){
             if(entity.getTexturePath() != null) {
-                if (entity.getTexture() == null) {
-                    // if entity doesn't have texture, create and assign the texture
 
-                    File textureFile = new File(entity.getTexturePath());
-                    FileHandle fileHandle = new FileHandle(textureFile);
-                    Texture playerTexture = new Texture(fileHandle);
-                    entity.setTexture(playerTexture);
-                    // Set the region of the texture we want to draw
-                    entity.setRegion(0, 0, entity.getTextureWidth(), entity.getTextureHeight());
+                if(entity.getTexture() == null){
+                    entity.initTexture();
+                }
 
+                if (entity.getClass() == Player.class) {
+                    Vector3 position = cam.position;
+                    position.x += (entity.getX() - position.x) * gameData.getLerp() * Gdx.graphics.getDeltaTime();
+                    position.y += (entity.getY() - position.y) * gameData.getLerp() * Gdx.graphics.getDeltaTime();
                 }
                 // draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation)
                 batch.draw(entity, entity.getX(), entity.getY(), 0, 0, entity.getTextureWidth(), entity.getTextureHeight(), 1, 1, entity.getAngle());
-                cam.position.y = entity.getY();
-                cam.position.x = entity.getX();
             }
         }
+
         batch.end();
         update();
         gameData.getKeys().update();
@@ -163,7 +166,8 @@ public class Game implements ApplicationListener {
 
     public void addGamePluginService(IGamePluginService plugin) {
         this.gamePluginList.add(plugin);
-        plugin.start(gameData, world);
+        plugin.start(gameData,world);
+
 
     }
 

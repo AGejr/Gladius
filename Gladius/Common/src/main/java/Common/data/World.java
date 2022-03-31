@@ -1,5 +1,7 @@
 package Common.data;
 
+import com.badlogic.gdx.maps.tiled.TiledMap;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class World {
 
     private final Map<String, Entity> entityMap = new ConcurrentHashMap<>();
+    private TiledMap tiledMap;
 
     public String addEntity(Entity entity) {
         entityMap.put(entity.getID(), entity);
@@ -43,4 +46,11 @@ public class World {
         return entityMap.get(ID);
     }
 
+    public TiledMap getTiledMap() {
+        return tiledMap;
+    }
+
+    public void setTiledMap(TiledMap tiledMap) {
+        this.tiledMap = tiledMap;
+    }
 }

@@ -29,6 +29,9 @@
     <module>Player</module>
     <module>WeaponComponent</module>
     <module>CommonWeapon</module>
+    <module>Collision</module>
+    <module>Enemy</module>
+    <module>CommonPlayer</module>
   </modules>
 
   <build>

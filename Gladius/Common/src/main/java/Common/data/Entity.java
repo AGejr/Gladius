@@ -3,12 +3,12 @@ package Common.data;
 
 import Common.data.entityparts.EntityPart;
 import Common.tools.FileLoader;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import java.io.File;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -54,15 +54,15 @@ public class Entity extends Sprite implements Serializable {
     public Entity() {
         parts = new ConcurrentHashMap<>();
     }
-    
+
     public void add(EntityPart part) {
         parts.put(part.getClass(), part);
     }
-    
+
     public void remove(Class partClass) {
         parts.remove(partClass);
     }
-    
+
     public <E extends EntityPart> E getPart(Class partClass) {
         return (E) parts.get(partClass);
     }
@@ -72,7 +72,7 @@ public class Entity extends Sprite implements Serializable {
     public void setRadius(float r){
         this.radius = r;
     }
-    
+
     public float getRadius(){
         return radius;
     }
@@ -109,5 +109,12 @@ public class Entity extends Sprite implements Serializable {
     public void removeTexturePath() {
         this.texturePath = null;
         setTexture(null);
+    }
+
+    public void initTexture() {
+        File textureFile = new File(this.getTexturePath());
+        FileHandle fileHandle = new FileHandle(textureFile);
+        Texture texture = new Texture(fileHandle);
+        this.setTexture(texture);
     }
 }

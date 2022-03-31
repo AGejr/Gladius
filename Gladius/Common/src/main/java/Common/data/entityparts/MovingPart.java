@@ -8,11 +8,22 @@ import static java.lang.Math.*;
 
 public class MovingPart implements EntityPart {
 
-    private float speed;
-    private boolean left, right, up, down;
+    private float speed, slowedSpeed;
+    private boolean left, right, up, down, isSlow;
+    private boolean colTop, colBot, colLeft,colRight;
+    private final float diagonalCorrectionVal = (float) (1 / sqrt(2));
+    private float slower = (float) 1;
 
     public MovingPart(float speed) {
         this.speed = speed;
+    }
+
+    public void setSlow(float slower) {
+        this.slower = slower;
+    }
+
+    public float getSpeed() {
+        return speed;
     }
 
     public void setSpeed(float speed) {
@@ -33,31 +44,75 @@ public class MovingPart implements EntityPart {
 
     public void setDown(boolean down){ this.down = down; }
 
+    public boolean isLeft() {
+        return left;
+    }
+
+    public boolean isRight() {
+        return right;
+    }
+
+    public boolean isUp() {
+        return up;
+    }
+
+    public boolean isDown() {
+        return down;
+    }
+
+    public void setColTop(boolean top) {
+        this.colTop = top;
+    }
+
+    public void setColBot(boolean bottom) {
+        this.colBot = bottom;
+    }
+
+    public void setColLeft(boolean left) {
+        this.colLeft = left;
+    }
+
+    public void setColRight(boolean right) {
+        this.colRight = right;
+    }
+
     @Override
     public void process(GameData gameData, Entity entity) {
-        float x = entity.getX();
-        float y = entity.getY();
+        float dx = 0;
+        float dy = 0;
 
-
-        if (left) {
-            x -= Gdx.graphics.getDeltaTime() * speed;
+        if (left && !colLeft) {
+            // if moving left and either up or down, correct x speed according to pythagoras a^2+b^2=c^2
+            dx -= Gdx.graphics.getDeltaTime() * speed * slower;
+            if(up ^ down){
+                dx *= diagonalCorrectionVal;
+            }
         }
 
-        if (right) {
-            x += Gdx.graphics.getDeltaTime() * speed;
+        if (right && !colRight) {
+            dx += Gdx.graphics.getDeltaTime() * speed * slower;
+            if(up ^ down){
+                dx *= diagonalCorrectionVal;
+            }
         }
 
-        if (up) {
-            y += Gdx.graphics.getDeltaTime() * speed;
+        if (up && !colTop) {
+            dy += Gdx.graphics.getDeltaTime() * speed * slower;
+            if(left ^ right){
+                dy *= diagonalCorrectionVal;
+            }
         }
 
-        if (down){
-            y -= Gdx.graphics.getDeltaTime() * speed;
+        if (down && !colBot){
+            dy -= Gdx.graphics.getDeltaTime() * speed * slower;
+            if(left ^ right){
+                dy *= diagonalCorrectionVal;
+            }
         }
 
 
         // set position
-        entity.setX(x);
-        entity.setY(y);
+        entity.setX(entity.getX() + dx);
+        entity.setY(entity.getY() + dy);
     }
 }
