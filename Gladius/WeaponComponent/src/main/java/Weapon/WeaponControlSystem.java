@@ -39,7 +39,6 @@ public class WeaponControlSystem implements IEntityProcessingService, WeaponSPI 
                         if (counter < 15) {
                             entity.setAngle(rotationDegrees);
                             rotationDegrees = entity.getAngle() - 9.0f;
-                            System.out.println("RotationDegrees: " + rotationDegrees);
                         }
 
                     } else {
@@ -54,7 +53,6 @@ public class WeaponControlSystem implements IEntityProcessingService, WeaponSPI 
                         if (counter < 15) {
                             entity.setAngle(rotationDegrees);
                             rotationDegrees = entity.getAngle() + 9.0f;
-                            System.out.println("RotationDegrees: " + rotationDegrees);
                         }
                     }
 
