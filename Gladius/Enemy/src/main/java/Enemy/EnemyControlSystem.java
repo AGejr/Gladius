@@ -7,13 +7,29 @@ import Common.data.entityparts.MovingPart;
 import Common.services.IEntityProcessingService;
 import CommonPlayer.Player;
 
+import java.util.PriorityQueue;
+
 public class EnemyControlSystem implements IEntityProcessingService {
     @Override
     public void process(GameData gameData, World world) {
         for (Entity enemy : world.getEntities(Enemy.class)){
             MovingPart movingPart = enemy.getPart(MovingPart.class);
-
+            int enemyY = (int) (40 - ((enemy.getY() / 1280) * 40));
+            int enemyX = (int) (((enemy.getX()+32/2) / 1600) * 50);
             for (Entity player : world.getEntities(Player.class)) {
+                int playerY = (int) (40 - ((player.getY() / 1280) * 40));
+                int playerX = (int) (((player.getX()+32/2) / 1600) * 50);
+
+                System.out.println("ENEMY X: " + enemyX + " Y: " + enemyY);
+                System.out.println("PLAYER X: " + playerX + " Y: " + playerY);
+
+                PriorityQueue<Integer[]> frontier = new PriorityQueue();
+                Integer[] start = {enemyX, enemyY};
+                frontier.add(start);
+
+
+
+
                 if (player.getY() > 300) {
                     if (player.getX() == enemy.getX()+40) {
                         movingPart.setLeft(false);

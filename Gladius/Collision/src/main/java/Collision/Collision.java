@@ -21,7 +21,7 @@ public class Collision implements IPostEntityProcessingService {
     @Override
     public void process(GameData gameData, World world) {
         if (csv == null) {
-            fetchData();
+            csv = world.getCsvMap();
             height = 1280;
             width = 1600;
         }
@@ -73,29 +73,6 @@ public class Collision implements IPostEntityProcessingService {
             } else if (tile == 165) {
                 entity.setY(200);
             }
-        }
-    }
-
-    private void fetchData() {
-        Scanner scanner = null;
-        csv = new ArrayList<List<Integer>>();
-        try {
-            scanner = new Scanner(new File("Map/Map.tmx"));
-            for (int i = 0; i < 93; i++) {
-                if (scanner.hasNextLine()) scanner.nextLine();
-            }
-            scanner.useDelimiter(",");
-            for (int i = 1; i <= 40; i++) {
-                List<Integer> integers = new ArrayList<>();
-                for (int j = 1; j <= 50; j++) {
-                    integers.add(Integer.parseInt(scanner.next().trim()));
-                }
-                scanner.nextLine();
-                csv.add(integers);
-            }
-            scanner.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         }
     }
 }
