@@ -116,5 +116,6 @@ public class Entity extends Sprite implements Serializable {
         FileHandle fileHandle = new FileHandle(textureFile);
         Texture texture = new Texture(fileHandle);
         this.setTexture(texture);
+        this.setRegion(0,0,this.textureWidth, this.textureHeight);
     }
 }

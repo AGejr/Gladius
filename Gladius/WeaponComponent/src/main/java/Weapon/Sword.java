@@ -1,5 +1,7 @@
 package Weapon;
 
+import CommonWeapon.Weapon;
+
 public class Sword extends Weapon {
     private static final String texturePath = "swordMini.png";
     private static Weapon sword = new Sword("Sword", 10, 8, 10);
