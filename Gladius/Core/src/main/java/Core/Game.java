@@ -106,7 +106,8 @@ public class Game implements ApplicationListener {
                     entity.setRegion(0, 0, entity.getTextureWidth(), entity.getTextureHeight());
 
                 }
-                batch.draw(entity, entity.getX(), entity.getY());
+                // draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation)
+                batch.draw(entity, entity.getX(), entity.getY(), 0, 0, entity.getTextureWidth(), entity.getTextureHeight(), 1, 1, entity.getAngle());
                 cam.position.y = entity.getY();
                 cam.position.x = entity.getX();
             }

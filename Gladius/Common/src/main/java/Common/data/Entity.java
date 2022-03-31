@@ -21,16 +21,25 @@ public class Entity extends Sprite implements Serializable {
     private int textureWidth;
     private int textureHeight;
     private Map<Class, EntityPart> parts;
+    private float angle;
 
-    public Entity(String texturePath,float radius, int textureWidth, int textureHeight) {
+    public Entity(String texturePath,float radius, int textureWidth, int textureHeight, float angle) {
         super();
         this.parts = new ConcurrentHashMap<>();
         this.texturePath = texturePath;
         this.radius = radius;
         this.textureWidth = textureWidth;
         this.textureHeight = textureHeight;
+        this.angle = angle;
     }
 
+    public Entity(String texturePath,float radius, int textureWidth, int textureHeight) {
+        this(texturePath, radius, textureWidth, textureHeight, 0f);
+    }
+
+    public Entity(String texturePath,float radius) {
+        this(texturePath, radius, 0, 0, 0f);
+    }
 
     public Entity(Entity entity){
         super(entity);
@@ -82,6 +91,14 @@ public class Entity extends Sprite implements Serializable {
 
     public int getTextureHeight() {
         return this.textureHeight;
+    }
+
+    public float getAngle() {
+        return this.angle;
+    }
+
+    public void setAngle(float angle) {
+        this.angle = angle;
     }
 
     public void setTexturePath(String texturePath) {
