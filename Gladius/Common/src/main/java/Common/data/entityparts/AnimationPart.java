@@ -50,7 +50,6 @@ public class AnimationPart implements EntityPart{
      */
     private void processMovementAnimation(Entity entity){
         MovingPart movingPart = entity.getPart(MovingPart.class);
-        AnimationPart animationPart = this;
 
         boolean left = movingPart.isLeft();
         boolean right = movingPart.isRight();
@@ -59,32 +58,31 @@ public class AnimationPart implements EntityPart{
 
         // If either left or right keys are pressed, use the running animation
         if (left ^ right){
-            setAnimationDirection(animationPart, left, right, AnimationPart.ANIMATION_STATES.RUNNING_LEFT, AnimationPart.ANIMATION_STATES.RUNNING_RIGHT);
+            setAnimationDirection(left, right, ANIMATION_STATES.RUNNING_LEFT, ANIMATION_STATES.RUNNING_RIGHT);
         }
 
         // If either up or down keys are pressed, use the running animation
         if (up ^ down) {
-            setAnimationDirection(animationPart, animationPart.isLeft(), !animationPart.isLeft(), AnimationPart.ANIMATION_STATES.RUNNING_LEFT, AnimationPart.ANIMATION_STATES.RUNNING_RIGHT);
+            setAnimationDirection(isLeft(), !isLeft(), ANIMATION_STATES.RUNNING_LEFT, ANIMATION_STATES.RUNNING_RIGHT);
         }
 
         // If only left and right keys are pressed, use the idle animation
         if ((left && right) && (!up && !down)) {
-            setAnimationDirection(animationPart, animationPart.isLeft(), !animationPart.isLeft(), AnimationPart.ANIMATION_STATES.IDLE_LEFT, AnimationPart.ANIMATION_STATES.IDLE_RIGHT);
+            setAnimationDirection(isLeft(), !isLeft(), ANIMATION_STATES.IDLE_LEFT, ANIMATION_STATES.IDLE_RIGHT);
         }
 
         // If only up and down keys are pressed, use the idle animation
         if ((up && down) && (!left && !right)) {
-            setAnimationDirection(animationPart, animationPart.isLeft(), !animationPart.isLeft(), AnimationPart.ANIMATION_STATES.IDLE_LEFT, AnimationPart.ANIMATION_STATES.IDLE_RIGHT);
+            setAnimationDirection(isLeft(), !isLeft(), ANIMATION_STATES.IDLE_LEFT, ANIMATION_STATES.IDLE_RIGHT);
         }
 
         // If no keys are pressed, use the idle animation
         if (!left && !right && !up && !down){
-            setAnimationDirection(animationPart, animationPart.isLeft(), !animationPart.isLeft(), AnimationPart.ANIMATION_STATES.IDLE_LEFT, AnimationPart.ANIMATION_STATES.IDLE_RIGHT);
+            setAnimationDirection(isLeft(), !isLeft(), ANIMATION_STATES.IDLE_LEFT, ANIMATION_STATES.IDLE_RIGHT);
         }
     }
 
     /**
-     * @param animationPart
      * @param leftCondition
      * @param rightCondition
      * @param leftAnimationState
@@ -93,14 +91,14 @@ public class AnimationPart implements EntityPart{
      * This method sets the animation to either idle or running with a left or right orientation.
      * Left and right animation state is needed because both the running and idle animation has an orientation.
      */
-    private void setAnimationDirection(AnimationPart animationPart, boolean leftCondition, boolean rightCondition, AnimationPart.ANIMATION_STATES leftAnimationState, AnimationPart.ANIMATION_STATES rightAnimationState){
+    private void setAnimationDirection(boolean leftCondition, boolean rightCondition, AnimationPart.ANIMATION_STATES leftAnimationState, AnimationPart.ANIMATION_STATES rightAnimationState){
         if (leftCondition) {
-            animationPart.setCurrentState(leftAnimationState);
-            animationPart.setLeft(true);
+            this.setCurrentState(leftAnimationState);
+            this.setLeft(true);
         }
         if (rightCondition) {
-            animationPart.setCurrentState(rightAnimationState);
-            animationPart.setLeft(false);
+            this.setCurrentState(rightAnimationState);
+            this.setLeft(false);
         }
     }
 
