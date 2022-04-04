@@ -6,7 +6,9 @@ import Common.tools.FileLoader;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Polygon;
 
+import java.awt.*;
 import java.io.File;
 import java.io.Serializable;
 import java.util.Map;
@@ -22,6 +24,7 @@ public class Entity extends Sprite implements Serializable {
     private int textureHeight;
     private Map<Class, EntityPart> parts;
     private float angle;
+    private Polygon polygonBoundaries;
 
     public Entity(String texturePath,float radius, int textureWidth, int textureHeight, float angle) {
         super();
@@ -31,6 +34,7 @@ public class Entity extends Sprite implements Serializable {
         this.textureWidth = textureWidth;
         this.textureHeight = textureHeight;
         this.angle = angle;
+        polygonBoundaries = new Polygon(new float[]{super.getX(), super.getY(), super.getX(), super.getY() + textureHeight, super.getX() + textureWidth, super.getY(), super.getX() + textureWidth, super.getY() + textureHeight});
     }
 
     public Entity(String texturePath,float radius, int textureWidth, int textureHeight) {
@@ -117,5 +121,13 @@ public class Entity extends Sprite implements Serializable {
         Texture texture = new Texture(fileHandle);
         this.setTexture(texture);
         this.setRegion(0,0,this.textureWidth, this.textureHeight);
+    }
+
+    public Polygon getPolygonBoundaries() {
+        return this.polygonBoundaries;
+    }
+
+    public void updatePolygonBoundariesPosition() {
+        this.getPolygonBoundaries().setPosition(this.getX(), this.getY());
     }
 }

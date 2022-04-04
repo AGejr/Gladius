@@ -9,6 +9,7 @@ import CommonWeapon.Weapon;
 import CommonWeapon.IWeaponService;
 import CommonPlayer.Player;
 import Common.data.entityparts.AnimationPart;
+import com.badlogic.gdx.math.Polygon;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponSer
                 counter++;
                 for (Entity attacker: world.getEntities(Player.class)) {
                     AnimationPart attackerAnimationPart = attacker.getPart(AnimationPart.class);
+                    Polygon weaponBoundry = entity.getPolygonBoundaries();
                     if(!attackerAnimationPart.isLeft()) {
                         float xPos = attacker.getX();
                         float yPos = attacker.getY();
@@ -37,6 +39,8 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponSer
 
                         if (counter < 15) {
                             entity.setAngle(rotationDegrees);
+                            weaponBoundry.setRotation(rotationDegrees);
+                            entity.getBoundingRectangle();
                             rotationDegrees = entity.getAngle() - 9.0f;
                         }
 
@@ -51,6 +55,8 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponSer
 
                         if (counter < 15) {
                             entity.setAngle(rotationDegrees);
+                            weaponBoundry.setRotation(rotationDegrees);
+                            entity.getBoundingRectangle();
                             rotationDegrees = entity.getAngle() + 9.0f;
                         }
                     }
