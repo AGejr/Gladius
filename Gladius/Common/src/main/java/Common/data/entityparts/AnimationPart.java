@@ -24,18 +24,40 @@ public class AnimationPart implements EntityPart{
     private ANIMATION_STATES currentState = ANIMATION_STATES.IDLE_RIGHT;
     private HashMap<ANIMATION_STATES, Animation> animations = new HashMap<>();
     private float animationTime = 0;
-    private boolean isLeft = true;
+    private Boolean isLeft = true;
 
     @Override
     public void process(GameData gameData, Entity entity) {
+        LifePart lifePart = entity.getPart(LifePart.class);
+        MovingPart movingPart = entity.getPart(MovingPart.class);
+        boolean hasLifePart = lifePart != null;
+        boolean hasMovingPart = movingPart != null;
+        boolean isInDeathAnimationState = this.getCurrentState() == ANIMATION_STATES.DEATH_LEFT || this.getCurrentState() == ANIMATION_STATES.DEATH_RIGHT;
+
+        if (hasLifePart && lifePart.isDead() && !isInDeathAnimationState) {
+            // If the entity has just died
+            // Reset animationtime so that it uses the first keyframe
+            // Set animation state to a death animation state
+            this.animationTime = 0;
+            if (this.isLeft) {
+                this.setCurrentState(ANIMATION_STATES.DEATH_LEFT);
+            } else {
+                this.setCurrentState(ANIMATION_STATES.DEATH_RIGHT);
+            }
+        }
 
         if(!this.getCurrentAnimation().isAnimationFinished(animationTime)){
+            // Advance animation
             animationTime += Gdx.graphics.getDeltaTime();
-        }else{
+        } else if (hasLifePart && !lifePart.isDead()) {
+            // Loop animation if the entity has a lifepart, and it is alive
+            animationTime = 0;
+        } else if (lifePart == null) {
+            // Loop animation if entity is not a living entity
             animationTime = 0;
         }
 
-        if (entity.getPart(MovingPart.class) != null) {
+        if (hasMovingPart && hasLifePart && !lifePart.isDead()) {
             processMovementAnimation(entity);
         }
 
@@ -50,7 +72,6 @@ public class AnimationPart implements EntityPart{
      */
     private void processMovementAnimation(Entity entity){
         MovingPart movingPart = entity.getPart(MovingPart.class);
-        AnimationPart animationPart = this;
 
         boolean left = movingPart.isLeft();
         boolean right = movingPart.isRight();
@@ -59,32 +80,31 @@ public class AnimationPart implements EntityPart{
 
         // If either left or right keys are pressed, use the running animation
         if (left ^ right){
-            setAnimationDirection(animationPart, left, right, AnimationPart.ANIMATION_STATES.RUNNING_LEFT, AnimationPart.ANIMATION_STATES.RUNNING_RIGHT);
+            setAnimationDirection(left, right, ANIMATION_STATES.RUNNING_LEFT, ANIMATION_STATES.RUNNING_RIGHT);
         }
 
         // If either up or down keys are pressed, use the running animation
         if (up ^ down) {
-            setAnimationDirection(animationPart, animationPart.isLeft(), !animationPart.isLeft(), AnimationPart.ANIMATION_STATES.RUNNING_LEFT, AnimationPart.ANIMATION_STATES.RUNNING_RIGHT);
+            setAnimationDirection(isLeft(), !isLeft(), ANIMATION_STATES.RUNNING_LEFT, ANIMATION_STATES.RUNNING_RIGHT);
         }
 
         // If only left and right keys are pressed, use the idle animation
         if ((left && right) && (!up && !down)) {
-            setAnimationDirection(animationPart, animationPart.isLeft(), !animationPart.isLeft(), AnimationPart.ANIMATION_STATES.IDLE_LEFT, AnimationPart.ANIMATION_STATES.IDLE_RIGHT);
+            setAnimationDirection(isLeft(), !isLeft(), ANIMATION_STATES.IDLE_LEFT, ANIMATION_STATES.IDLE_RIGHT);
         }
 
         // If only up and down keys are pressed, use the idle animation
         if ((up && down) && (!left && !right)) {
-            setAnimationDirection(animationPart, animationPart.isLeft(), !animationPart.isLeft(), AnimationPart.ANIMATION_STATES.IDLE_LEFT, AnimationPart.ANIMATION_STATES.IDLE_RIGHT);
+            setAnimationDirection(isLeft(), !isLeft(), ANIMATION_STATES.IDLE_LEFT, ANIMATION_STATES.IDLE_RIGHT);
         }
 
         // If no keys are pressed, use the idle animation
         if (!left && !right && !up && !down){
-            setAnimationDirection(animationPart, animationPart.isLeft(), !animationPart.isLeft(), AnimationPart.ANIMATION_STATES.IDLE_LEFT, AnimationPart.ANIMATION_STATES.IDLE_RIGHT);
+            setAnimationDirection(isLeft(), !isLeft(), ANIMATION_STATES.IDLE_LEFT, ANIMATION_STATES.IDLE_RIGHT);
         }
     }
 
     /**
-     * @param animationPart
      * @param leftCondition
      * @param rightCondition
      * @param leftAnimationState
@@ -93,14 +113,14 @@ public class AnimationPart implements EntityPart{
      * This method sets the animation to either idle or running with a left or right orientation.
      * Left and right animation state is needed because both the running and idle animation has an orientation.
      */
-    private void setAnimationDirection(AnimationPart animationPart, boolean leftCondition, boolean rightCondition, AnimationPart.ANIMATION_STATES leftAnimationState, AnimationPart.ANIMATION_STATES rightAnimationState){
+    private void setAnimationDirection(boolean leftCondition, boolean rightCondition, AnimationPart.ANIMATION_STATES leftAnimationState, AnimationPart.ANIMATION_STATES rightAnimationState){
         if (leftCondition) {
-            animationPart.setCurrentState(leftAnimationState);
-            animationPart.setLeft(true);
+            this.setCurrentState(leftAnimationState);
+            this.setLeft(true);
         }
         if (rightCondition) {
-            animationPart.setCurrentState(rightAnimationState);
-            animationPart.setLeft(false);
+            this.setCurrentState(rightAnimationState);
+            this.setLeft(false);
         }
     }
 
@@ -121,7 +141,7 @@ public class AnimationPart implements EntityPart{
     }
 
     public TextureRegion getCurrentKeyFrame(){
-        return getCurrentAnimation().getKeyFrame(animationTime,true);
+        return getCurrentAnimation().getKeyFrame(animationTime,false);
     }
 
     public boolean isLeft() {

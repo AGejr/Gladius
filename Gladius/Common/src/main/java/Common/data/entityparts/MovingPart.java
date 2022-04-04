@@ -78,6 +78,11 @@ public class MovingPart implements EntityPart {
 
     @Override
     public void process(GameData gameData, Entity entity) {
+        LifePart lifePart = entity.getPart(LifePart.class);
+        if (lifePart != null && lifePart.isDead()) {
+            return;
+        }
+
         float dx = 0;
         float dy = 0;
 
@@ -109,7 +114,6 @@ public class MovingPart implements EntityPart {
                 dy *= diagonalCorrectionVal;
             }
         }
-
 
         // set position
         entity.setX(entity.getX() + dx);
