@@ -24,6 +24,8 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -42,6 +44,7 @@ public class Game implements ApplicationListener {
     private TiledMap tiledMap;
     private OrthoCachedTiledMapRenderer tiledMapRenderer;
     private SpriteBatch batch;
+    private ShapeRenderer shapeRenderer;
 
     public Game(){
         init();
@@ -74,6 +77,7 @@ public class Game implements ApplicationListener {
         tiledMapRenderer.setBlending(true); //Makes tiles transparent
 
         batch = new SpriteBatch();
+        shapeRenderer = new ShapeRenderer();
 
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
 
@@ -95,6 +99,7 @@ public class Game implements ApplicationListener {
         tiledMapRenderer.setView(cam);
         tiledMapRenderer.render();
         batch.setProjectionMatrix(cam.combined);
+        shapeRenderer.setProjectionMatrix(cam.combined);
 
 
         batch.begin();
@@ -117,6 +122,12 @@ public class Game implements ApplicationListener {
         }
 
         batch.end();
+        for (Entity entity :  world.getEntities()) {
+            shapeRenderer.setColor(Color.BLUE);
+            shapeRenderer.begin(ShapeType.Line);
+            shapeRenderer.polygon(entity.getPolygonBoundaries().getTransformedVertices());
+            shapeRenderer.end();
+        }
         update();
         gameData.getKeys().update();
     }

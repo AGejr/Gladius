@@ -34,7 +34,9 @@ public class Entity extends Sprite implements Serializable {
         this.textureWidth = textureWidth;
         this.textureHeight = textureHeight;
         this.angle = angle;
-        polygonBoundaries = new Polygon(new float[]{super.getX(), super.getY(), super.getX(), super.getY() + textureHeight, super.getX() + textureWidth, super.getY(), super.getX() + textureWidth, super.getY() + textureHeight});
+        this.polygonBoundaries = new Polygon(new float[]{super.getX(), super.getY(), super.getX(), super.getY() + textureHeight, super.getX() + textureWidth, super.getY() + textureHeight, super.getX() + textureWidth, super.getY()});
+        this.polygonBoundaries.setOrigin(0, 0);
+        this.polygonBoundaries.setScale(1,1);
     }
 
     public Entity(String texturePath,float radius, int textureWidth, int textureHeight) {
