@@ -1,5 +1,7 @@
 package Enemy;
 
+import Common.ai.AStarPathFinding;
+import Common.ai.Node;
 import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
@@ -8,7 +10,9 @@ import Common.data.entityparts.MovingPart;
 import Common.services.IEntityProcessingService;
 import CommonPlayer.Player;
 
-import java.util.PriorityQueue;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class EnemyControlSystem implements IEntityProcessingService {
     @Override
@@ -21,37 +25,25 @@ public class EnemyControlSystem implements IEntityProcessingService {
             for (Entity player : world.getEntities(Player.class)) {
                 int playerY = (int) (40 - ((player.getY() / 1280) * 40));
                 int playerX = (int) (((player.getX()+32/2) / 1600) * 50);
-
-                System.out.println("ENEMY X: " + enemyX + " Y: " + enemyY);
-                System.out.println("PLAYER X: " + playerX + " Y: " + playerY);
-                System.out.println(world.getCsvMap().get(enemyX+1).get(enemyY));
-                System.out.println(world.getCsvMap().get(enemyX-1).get(enemyY));
-                System.out.println(world.getCsvMap().get(enemyX).get(enemyY+1));
-                System.out.println(world.getCsvMap().get(enemyX).get(enemyY-1));
-
-                PriorityQueue<Integer[]> frontier = new PriorityQueue();
-                Integer[] start = {enemyX, enemyY};
-                frontier.add(start);
-
-
-
-
                 if (player.getY() > 300) {
-                    // todo : radius*16/2 should be changed to texture width / 2
+                    AStarPathFinding aStarPathFinding = new AStarPathFinding();
+                    List<Node> path = aStarPathFinding.treeSearch(new ArrayList<>(Arrays.asList(enemyX, enemyY)), new ArrayList<>(Arrays.asList(playerX, playerY)), world);
+                    float newX = path.get(path.size() -2).getX();
+                    float newY = path.get(path.size() -2).getY();
                     if (player.getX() + (player.getRadius()*16)/2 == enemy.getX() + (enemy.getRadius()*16)/2) {
                         movingPart.setLeft(false);
                         movingPart.setRight(false);
-                    } else if (player.getX() + (player.getRadius()*16)/2 < enemy.getX() + (enemy.getRadius()*16)/2) {
+                    } else if (newX < enemy.getX() + (enemy.getRadius()*16)/2) {
                         movingPart.setLeft(true);
                         movingPart.setRight(false);
                     } else {
                         movingPart.setRight(true);
                         movingPart.setLeft(false);
                     }
-                    if (player.getY() == enemy.getY()) {
+                    if (newY == enemy.getY()) {
                         movingPart.setUp(false);
                         movingPart.setDown(false);
-                    } else if (player.getY() < enemy.getY()) {
+                    } else if (newY < enemy.getY()) {
                         movingPart.setUp(false);
                         movingPart.setDown(true);
                     } else {

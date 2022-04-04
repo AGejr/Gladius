@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class GreedyBestFirst {
+public class AStarPathFinding {
     // TODO implement multiple goal states (e.g monster wanting multiple targets)
     private List<Integer> goalState;
     private final int[] noCollide = {0, 70, 71, 72, 78, 79, 86, 87, 88, 103, 104, 107, 123, 127, 159, 155, 108, 24, 25, 37, 98, 99, 159, 160, 161, 162, 163, 164, 165, 177, 178, 179};

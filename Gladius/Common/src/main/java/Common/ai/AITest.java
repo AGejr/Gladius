@@ -8,15 +8,15 @@ import java.util.List;
 
 public class AITest {
     public static void main(String[] args) {
-        GreedyBestFirst greedyBestFirst = new GreedyBestFirst();
+        AStarPathFinding pathFinding = new AStarPathFinding();
         List<Integer> initialState = new ArrayList<>();
         initialState.add(6);
         initialState.add(40 - 7);
 
 
         List<Integer> goalState = new ArrayList<>();
-        goalState.add(7);
-        goalState.add(40 - 26);//14
+        goalState.add(32);
+        goalState.add(40 - 10);//14
         World world = new World();
         String file = "C:/Users/janik/Downloads/Map.tmx/";
         world.setCsvMap(FileLoader.fetchData(file));
@@ -31,15 +31,15 @@ public class AITest {
             map.add(list);
         }
         System.out.println();
-        List<Node> result = greedyBestFirst.treeSearch(initialState, goalState, world);
+        List<Node> result = pathFinding.treeSearch(initialState, goalState, world);
         for (int i = 0; i < result.size(); i++) {
-            map.get(40 - result.get(i).getY()).set(result.get(i).getX(), 999);
+            map.get(40 - result.get(i).getY()).set(result.get(i).getX(), 99);
         }
         System.out.println(result);
         int count = 0;
         for (List<Integer> list1 : map) {
             count++;
-            System.out.println(count + " " + list1);
+            //System.out.println(count + " " + list1);
         }
     }
 }
