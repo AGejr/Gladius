@@ -26,9 +26,10 @@ public class Collision implements IPostEntityProcessingService {
             width = 1600;
         }
         for (Entity entity : world.getEntities()) {
-            int y = (int) (40 - ((entity.getY() / height) * 40));
-            int x = (int) (((entity.getX()+32/2) / width) * 50); // divide by 2 to get center
             float radius = entity.getRadius();
+            int y = (int) (40 - ((entity.getY() / height) * 40));
+            // todo : radius*16/2 should be changed to texture width / 2
+            int x = (int) (((entity.getX()+(radius*16)/2) / width) * 50); // divide by 2 to get center
             int tile = csv.get(y).get(x);
             int[] gate = new int[]{24, 25};
             int[] spawn = new int[]{161, 162};
@@ -50,12 +51,14 @@ public class Collision implements IPostEntityProcessingService {
             } else {
                 movingPart.setColBot(false);
             }
-            if(csv.get(y).get(x-1) != 0 && !Arrays.stream(noCollide).anyMatch(i -> i == csv.get(y).get(x-1)) && (entity.getX()+32/2) - (((x-1)*32)+32) < radius) {
+            // todo : radius*16/2 should be changed to texture width / 2
+            if(csv.get(y).get(x-1) != 0 && !Arrays.stream(noCollide).anyMatch(i -> i == csv.get(y).get(x-1)) && (entity.getX()+(radius*16)/2) - (((x-1)*32)+32) < radius) {
                 movingPart.setColLeft(true);
             } else {
                 movingPart.setColLeft(false);
             }
-            if(csv.get(y).get(x+1) != 0 && !Arrays.stream(noCollide).anyMatch(i -> i == csv.get(y).get(x+1)) && ((x+1)*32) - (entity.getX()+32/2) < radius) {
+            // todo : radius*16/2 should be changed to texture width / 2
+            if(csv.get(y).get(x+1) != 0 && !Arrays.stream(noCollide).anyMatch(i -> i == csv.get(y).get(x+1)) && ((x+1)*32) - (entity.getX()+(radius*16)/2) < radius) {
                 movingPart.setColRight(true);
             } else {
                 movingPart.setColRight(false);

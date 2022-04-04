@@ -22,7 +22,8 @@ public class EnemyPlugin implements IGamePluginService {
     private Entity createEnemy(GameData gamedata) {
         String file = "Minotaur.png";
 
-        Entity enemy = new Enemy(file, 2);
+        // radius should be texture width / 16
+        Entity enemy = new Enemy(file, 6);
         enemy.add(new MovingPart(30));
         enemy.add(new AnimationPart());
         FileLoader.loadFile(file, getClass());
