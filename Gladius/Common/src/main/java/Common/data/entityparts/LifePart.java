@@ -4,25 +4,31 @@ import Common.data.Entity;
 import Common.data.GameData;
 
 public class LifePart implements EntityPart {
+    private final int MAXLIFE;
     private int life;
-    private boolean dead = false;
 
     public LifePart(int life) {
         this.life = life;
+        this.MAXLIFE = life;
     }
 
     public int getLife() {
         return life;
     }
 
-    public void setLife(int life) {
-        this.life = life;
+    public void subtractLife(int damage) {
+        this.life = life - damage;
+    }
+
+    public void resetLife() {
+        this.life = MAXLIFE;
     }
 
     @Override
     public void process(GameData gameData, Entity entity) {
-        if (life <= 0) {
-            dead = true;
-        }
+    }
+
+    public boolean isDead(){
+        return this.life <= 0;
     }
 }
