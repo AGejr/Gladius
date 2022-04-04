@@ -42,12 +42,12 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponSer
 
                     } else {
                         if (counter == 1) {
-                            rotationDegrees = 60.0f;
+                            rotationDegrees = 0.0f;
                         }
                         float xPos = attacker.getX();
                         float yPos = attacker.getY();
                         entity.setX(xPos + 9);
-                        entity.setY(yPos + adjustY);
+                        entity.setY(yPos + adjustY - 7);
 
                         if (counter < 15) {
                             entity.setAngle(rotationDegrees);
