@@ -18,13 +18,16 @@ public class EnemyControlSystem implements IEntityProcessingService {
             int enemyY = (int) (40 - ((enemy.getY() / 1280) * 40));
             int enemyX = (int) (((enemy.getX()+32/2) / 1600) * 50);
             AnimationPart animationPart = enemy.getPart(AnimationPart.class);
-            
             for (Entity player : world.getEntities(Player.class)) {
                 int playerY = (int) (40 - ((player.getY() / 1280) * 40));
                 int playerX = (int) (((player.getX()+32/2) / 1600) * 50);
 
                 System.out.println("ENEMY X: " + enemyX + " Y: " + enemyY);
                 System.out.println("PLAYER X: " + playerX + " Y: " + playerY);
+                System.out.println(world.getCsvMap().get(enemyX+1).get(enemyY));
+                System.out.println(world.getCsvMap().get(enemyX-1).get(enemyY));
+                System.out.println(world.getCsvMap().get(enemyX).get(enemyY+1));
+                System.out.println(world.getCsvMap().get(enemyX).get(enemyY-1));
 
                 PriorityQueue<Integer[]> frontier = new PriorityQueue();
                 Integer[] start = {enemyX, enemyY};

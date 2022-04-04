@@ -5,20 +5,23 @@ import java.util.List;
 import java.util.Map;
 
 public class Node {
-    private Map<Integer, List<Integer>> state; //The list with integers contains the x and y coordinates.
+    private List<Integer> state; //The list with integers contains the x and y coordinates.
     private Node parentNode;
     private int depth;
+    private int pathCost;
 
-    public Node(Map<Integer, List<Integer>> state, Node parentNode, int depth) {
+    public Node(List<Integer> state, Node parentNode) {
         this.state = state;
         this.parentNode = parentNode;
-        this.depth = depth;
+        this.depth = parentNode.getDepth() + 1;
+        this.pathCost = parentNode.getPathCost();
     }
 
-    public Node(Map<Integer, List<Integer>> state) {
+    public Node(List<Integer> state) {
         this.state = state;
         this.parentNode = null;
         this.depth = 0;
+        this.pathCost = 0;
     }
 
     public List<Node> path() {
@@ -48,11 +51,30 @@ public class Node {
         this.depth = depth;
     }
 
-    public Map<Integer, List<Integer>> getState() {
+    public List<Integer> getState() {
         return state;
     }
 
-    public void setState(Map<Integer, List<Integer>> state) {
+    public void setState(List<Integer> state) {
         this.state = state;
+    }
+
+    public int getX() {
+        return this.getState().get(0);
+    }
+
+    public int getY(){
+        return this.getState().get(1);
+    }
+
+    @Override
+    public String toString() {
+        return "Node{" +
+                "state=" + state +
+                '}';
+    }
+
+    public int getPathCost() {
+        return pathCost;
     }
 }
