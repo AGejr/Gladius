@@ -4,16 +4,15 @@ import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
 import Common.services.IEntityProcessingService;
-import CommonWeapon.IWeaponUser;
+import CommonWeapon.IWeaponUserService;
 import CommonWeapon.Weapon;
-import CommonWeapon.WeaponSPI;
+import CommonWeapon.IWeaponService;
 import CommonPlayer.Player;
 import Common.data.entityparts.AnimationPart;
 
 import java.util.List;
 
-public class WeaponControlSystem implements IEntityProcessingService, WeaponSPI {
-    private int j = 0;
+public class IWeaponControlSystem implements IEntityProcessingService, IWeaponService {
     private int counter = 0;
     private float rotationDegrees = 0.0f;
     private final float adjustX = 20.0f;
@@ -82,7 +81,7 @@ public class WeaponControlSystem implements IEntityProcessingService, WeaponSPI 
     }
 
     //TODO change to check collision between weapon and enemy, if hit then remove HP
-    private List<Entity> getEntitiesInRange(IWeaponUser attacker, World world) {
+    private List<Entity> getEntitiesInRange(IWeaponUserService attacker, World world) {
         Entity weapon = attacker.getWeapon();
         Entity attackerEntity = (Entity) attacker;
         // float radians = attackerEntity.getRadians();

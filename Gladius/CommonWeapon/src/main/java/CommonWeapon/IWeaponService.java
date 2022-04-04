@@ -4,7 +4,7 @@ import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
 
-public interface WeaponSPI {
+public interface IWeaponService {
     /* TODO The return type might be the Entities that are hit, needs to be
        determined
     */

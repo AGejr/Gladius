@@ -7,13 +7,13 @@ import Common.data.World;
 import Common.data.entityparts.LifePart;
 import Common.data.entityparts.MovingPart;
 import Common.services.IEntityProcessingService;
-import CommonWeapon.WeaponSPI;
+import CommonWeapon.IWeaponService;
 import CommonPlayer.Player;
 import Common.data.entityparts.AnimationPart;
 
 public class PlayerControlSystem implements IEntityProcessingService {
 
-    private WeaponSPI weaponService;
+    private IWeaponService weaponService;
 
     @Override
     public void process(GameData gameData, World world) {
@@ -28,9 +28,8 @@ public class PlayerControlSystem implements IEntityProcessingService {
             movingPart.setRight(gameData.getKeys().isDown(GameKeys.RIGHT));
             movingPart.setUp(gameData.getKeys().isDown(GameKeys.UP));
             movingPart.setDown(gameData.getKeys().isDown(GameKeys.DOWN));
-
-            // Key 6 = SPACE
-            if (gameData.getKeys().isPressed(6) && weaponService != null) {
+            
+            if (gameData.getKeys().isPressed(GameKeys.SPACE) && weaponService != null) {
                 weaponService.attack(entity, gameData, world);
             }
 
@@ -40,11 +39,11 @@ public class PlayerControlSystem implements IEntityProcessingService {
         }
     }
 
-    public void setWeaponService(WeaponSPI weaponService) {
+    public void setWeaponService(IWeaponService weaponService) {
         this.weaponService = weaponService;
     }
 
-    public void removeWeaponService(WeaponSPI weaponService) {
+    public void removeWeaponService(IWeaponService weaponService) {
         this.weaponService = null;
     }
 }

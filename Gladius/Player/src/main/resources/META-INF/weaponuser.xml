@@ -3,6 +3,6 @@
     <implementation class="Player.Player"/>
 
     <service>
-        <provide interface="CommonWeapon.IWeaponUser"/>
+        <provide interface="CommonWeapon.IWeaponUserService"/>
     </service>
 </scr:component>
