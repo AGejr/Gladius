@@ -12,7 +12,7 @@ import Common.data.entityparts.AnimationPart;
 
 import java.util.List;
 
-public class IWeaponControlSystem implements IEntityProcessingService, IWeaponService {
+public class WeaponControlSystem implements IEntityProcessingService, IWeaponService {
     private int counter = 0;
     private float rotationDegrees = 0.0f;
     private final float adjustX = 20.0f;
