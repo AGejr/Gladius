@@ -58,7 +58,6 @@ public class WeaponControlSystem implements IEntityProcessingService, WeaponSPI 
 
 
                     if (counter >= 15) {
-                        ((Weapon) entity).removeWeaponTexture();
                         world.removeEntity(entity);
                         rotationDegrees = 20.0f;
                         counter = 0;
