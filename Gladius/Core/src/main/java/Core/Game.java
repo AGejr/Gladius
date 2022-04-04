@@ -5,6 +5,7 @@ import Common.data.GameData;
 import Common.data.World;
 import Common.data.entityparts.AnimationPart;
 import Common.services.IEntityProcessingService;
+import Common.services.IEventProcessingService;
 import Common.services.IGamePluginService;
 import Common.services.IPostEntityProcessingService;
 import Common.tools.FileLoader;
@@ -35,6 +36,7 @@ public class Game implements ApplicationListener {
     private static final List<IEntityProcessingService> entityProcessorList = new CopyOnWriteArrayList<>();
     private static final List<IGamePluginService> gamePluginList = new CopyOnWriteArrayList<>();
     private static List<IPostEntityProcessingService> postEntityProcessorList = new CopyOnWriteArrayList<>();
+    private static IEventProcessingService eventProcessingService = null;
 
     private static OrthographicCamera cam;
     private final GameData gameData = new GameData();
@@ -174,5 +176,13 @@ public class Game implements ApplicationListener {
     public void removeGamePluginService(IGamePluginService plugin) {
         this.gamePluginList.remove(plugin);
         plugin.stop(gameData, world);
+    }
+
+    public void addEventProcessingService(IEventProcessingService iEventProcessingService) {
+        eventProcessingService = iEventProcessingService;
+    }
+
+    public void removeEventProcessingService(IEventProcessingService iEventProcessingService) {
+        eventProcessingService = null;
     }
 }
