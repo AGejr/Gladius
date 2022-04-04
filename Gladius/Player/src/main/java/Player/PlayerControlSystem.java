@@ -4,6 +4,7 @@ import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.GameKeys;
 import Common.data.World;
+import Common.data.entityparts.LifePart;
 import Common.data.entityparts.MovingPart;
 import Common.services.IEntityProcessingService;
 import CommonPlayer.Player;
@@ -19,7 +20,7 @@ public class PlayerControlSystem implements IEntityProcessingService {
         for (Entity entity : world.getEntities(Player.class)){
 
             MovingPart movingPart = entity.getPart(MovingPart.class);
-            //LifePart lifePart = entity.getPart(LifePart.class);
+            LifePart lifePart = entity.getPart(LifePart.class);
             AnimationPart animationPart = entity.getPart(AnimationPart.class);
 
             movingPart.setLeft(gameData.getKeys().isDown(GameKeys.LEFT));
@@ -29,6 +30,7 @@ public class PlayerControlSystem implements IEntityProcessingService {
 
             movingPart.process(gameData, entity);
             animationPart.process(gameData,entity);
+            lifePart.process(gameData,entity);
         }
     }
 }
