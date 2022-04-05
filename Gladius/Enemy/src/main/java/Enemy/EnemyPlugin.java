@@ -4,6 +4,7 @@ import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
 import Common.data.entityparts.AnimationPart;
+import Common.data.entityparts.LifePart;
 import Common.data.entityparts.MovingPart;
 import Common.services.IGamePluginService;
 import Common.tools.FileLoader;
@@ -25,6 +26,7 @@ public class EnemyPlugin implements IGamePluginService {
         // radius should be texture width / 16
         Entity enemy = new Enemy(file, 6);
         enemy.add(new MovingPart(30));
+        enemy.add(new LifePart(100));
         enemy.add(new AnimationPart());
         FileLoader.loadFile(file, getClass());
 
