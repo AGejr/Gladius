@@ -19,6 +19,7 @@ public class AStarPathFinding {
         this.csv = world.getCsvMap();
         List<Node> fringe = new ArrayList<>();
         Node initialNode = new Node(initialState);
+        initialNode.setCsvVal(csv.get(initialNode.getY()).get(initialNode.getX()));
         fringe.add(initialNode);
         while (!fringe.isEmpty()) {
             Node node = removeLowestHeuristic(fringe);
@@ -27,6 +28,7 @@ public class AStarPathFinding {
             }
             List<Node> children = expand(node);
             fringe.addAll(children);
+            System.out.println(fringe);
         }
         return null;
     }
@@ -40,6 +42,7 @@ public class AStarPathFinding {
             successor.setState(child.getState());
             successor.setParentNode(parent);
             successor.setDepth(parent.getDepth() + 1);
+            successor.setCsvVal(csv.get(successor.getY()).get(successor.getX()));
             successors.add(successor);
         }
         return successors;
@@ -54,9 +57,8 @@ public class AStarPathFinding {
             successors.add(new Node(Arrays.asList(parent.getX(), parent.getY() + i), parent));
         }
         for (Node node : successors) {
-            int csvVal = csv.get(node.getY()).get(node.getX());
 
-            if (Arrays.stream(noCollide).noneMatch(i -> i == csvVal)) {
+            if (Arrays.stream(noCollide).noneMatch(i -> i == node.getCsvVal())) {
                 removeSuccessors.add(node);
             }
             if (!removeSuccessors.contains(node)) {

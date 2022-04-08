@@ -9,6 +9,7 @@ public class Node {
     private Node parentNode;
     private int depth;
     private int pathCost;
+    private int csvVal;
 
     public Node(List<Integer> state, Node parentNode) {
         this.state = state;
@@ -76,5 +77,13 @@ public class Node {
 
     public int getPathCost() {
         return pathCost;
+    }
+
+    public void setCsvVal(int csvVal) {
+        this.csvVal = csvVal;
+    }
+
+    public int getCsvVal() {
+        return csvVal;
     }
 }
