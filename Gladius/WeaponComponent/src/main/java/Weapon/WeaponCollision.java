@@ -13,8 +13,7 @@ public class WeaponCollision implements IPostEntityProcessingService {
     public void process(GameData gameData, World world) {
         for (Entity weapon: world.getEntities(Sword.class)) {
             if(weapon.getTexture() != null) {
-                System.out.println("Box " + weapon.getRotation());
-                System.out.println("Box2 " + weapon.getRegionX());
+
             }
             // System.out.println("Box3 " + weapon.getRegionX() + " G " + weapon.getRegionY());
         }

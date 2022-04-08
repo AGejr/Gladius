@@ -26,7 +26,7 @@ public class Entity extends Sprite implements Serializable {
     private float angle;
     private Polygon polygonBoundaries;
 
-    public Entity(String texturePath,float radius, int textureWidth, int textureHeight, float angle) {
+    public Entity(String texturePath,float radius, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX) {
         super();
         this.parts = new ConcurrentHashMap<>();
         this.texturePath = texturePath;
@@ -35,16 +35,24 @@ public class Entity extends Sprite implements Serializable {
         this.textureHeight = textureHeight;
         this.angle = angle;
         this.polygonBoundaries = new Polygon(new float[]{super.getX(), super.getY(), super.getX(), super.getY() + textureHeight, super.getX() + textureWidth, super.getY() + textureHeight, super.getX() + textureWidth, super.getY()});
-        this.polygonBoundaries.setOrigin(0, 0);
-        this.polygonBoundaries.setScale(1,1);
+        this.polygonBoundaries.setOrigin(hitboxOriginX, 0);
+        this.polygonBoundaries.setScale(hitboxScaleX, hitboxScaleY);
+    }
+
+    public Entity(String texturePath,float radius, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY) {
+        this(texturePath, radius, textureWidth, textureHeight, angle, hitboxScaleX, hitboxScaleY, (float) textureWidth / 2);
+    }
+
+    public Entity(String texturePath,float radius, int textureWidth, int textureHeight, float angle) {
+        this(texturePath, radius, textureWidth, textureHeight, angle, 0.9f, 0.9f, (float) textureWidth / 2);
     }
 
     public Entity(String texturePath,float radius, int textureWidth, int textureHeight) {
-        this(texturePath, radius, textureWidth, textureHeight, 0f);
+        this(texturePath, radius, textureWidth, textureHeight, 0f, 0.9f,0.9f, (float) textureWidth / 2);
     }
 
-    public Entity(String texturePath,float radius) {
-        this(texturePath, radius, 0, 0, 0f);
+    public Entity(String texturePath, float radius) {
+        this(texturePath, radius, 0, 0, 0f, 0.9f ,0.9f, 0);
     }
 
     public Entity(Entity entity){

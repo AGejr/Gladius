@@ -7,7 +7,7 @@ public abstract class Weapon extends Entity {
     private final String texturePath;
 
     public Weapon(String name, float damage, float weight, float range, String texturePath) {
-        super(null, range, 9, 36);
+        super(null, range, 9, 36, 0, 0.9f, 0.9f, 0);
         this.name = name;
         this.damage = damage;
         this.weight = weight;
