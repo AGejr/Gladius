@@ -1,0 +1,3 @@
+Bundle-SymbolicName: WeaponComponent
+Bundle-ActivationPolicy: lazy
+Service-Component: META-INF/gameplugin.xml, META-INF/entityprocessor.xml, META-INF/weaponservice.xml

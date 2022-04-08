@@ -10,14 +10,13 @@ public class Player extends Entity {
     int balance;
 
     public Player(String texturePath, int radius) {
-        super(texturePath,radius);
+        super(texturePath,radius, 32, 32);
         this.balance = 0;
     }
 
     @Override
     public void initTexture(){
         super.initTexture();
-        this.setRegion(0,0,32,32);
         initAnimation();
     }
 

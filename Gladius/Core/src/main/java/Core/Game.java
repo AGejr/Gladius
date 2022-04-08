@@ -95,19 +95,25 @@ public class Game implements ApplicationListener {
 
         batch.begin();
         for (Entity entity :  world.getEntities()){
-            if(entity.getTexture() == null){
-                entity.initTexture();
+            if(entity.getTexturePath() != null) {
+
+                if(entity.getTexture() == null){
+                    entity.initTexture();
+                }
+
+                if (entity.getClass() == Player.class) {
+                    Vector3 position = cam.position;
+                    position.x += (entity.getX() - position.x) * gameData.getLerp() * Gdx.graphics.getDeltaTime();
+                    position.y += (entity.getY() - position.y) * gameData.getLerp() * Gdx.graphics.getDeltaTime();
+                }
+                // draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation)
+                batch.draw(entity, entity.getX(), entity.getY(), 0, 0, entity.getTextureWidth(), entity.getTextureHeight(), 1, 1, entity.getAngle());
             }
-            if (entity.getClass() == Player.class) {
-                Vector3 position = cam.position;
-                position.x += (entity.getX() - position.x) * gameData.getLerp() * Gdx.graphics.getDeltaTime();
-                position.y += (entity.getY() - position.y) * gameData.getLerp() * Gdx.graphics.getDeltaTime();
-            }
-            batch.draw(entity, entity.getX(), entity.getY());
         }
 
         batch.end();
         update();
+        gameData.getKeys().update();
     }
 
 

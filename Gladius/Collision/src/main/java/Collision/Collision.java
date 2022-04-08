@@ -60,17 +60,17 @@ public class Collision implements IPostEntityProcessingService {
                 movingPart.setColRight(false);
             }
 
-            if(Arrays.stream(water).anyMatch(i -> i == csv.get(y).get(x))) {
-                movingPart.setSlow(0.5f);
-            }
-            else {
-                movingPart.setSlow(1f);
-            }
+                if (Arrays.stream(water).anyMatch(i -> i == csv.get(y).get(x))) {
+                    movingPart.setSlow(0.5f);
+                } else {
+                    movingPart.setSlow(1f);
+                }
 
-            if (Arrays.stream(gate).anyMatch(i -> i == tile)) {
-                entity.setY(400);
-            } else if (tile == 165) {
-                entity.setY(200);
+                if (Arrays.stream(gate).anyMatch(i -> i == tile)) {
+                    entity.setY(346);
+                } else if (tile == 165) {
+                    entity.setY(200);
+                }
             }
         }
     }

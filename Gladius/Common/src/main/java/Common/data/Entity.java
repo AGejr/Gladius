@@ -2,6 +2,7 @@ package Common.data;
 
 
 import Common.data.entityparts.EntityPart;
+import Common.tools.FileLoader;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -17,16 +18,28 @@ public class Entity extends Sprite implements Serializable {
 
     private float radius;
     private String texturePath;
+    private int textureWidth;
+    private int textureHeight;
     private Map<Class, EntityPart> parts;
+    private float angle;
 
-    public Entity(String texturePath,float radius) {
+    public Entity(String texturePath,float radius, int textureWidth, int textureHeight, float angle) {
         super();
         this.parts = new ConcurrentHashMap<>();
         this.texturePath = texturePath;
         this.radius = radius;
-
+        this.textureWidth = textureWidth;
+        this.textureHeight = textureHeight;
+        this.angle = angle;
     }
 
+    public Entity(String texturePath,float radius, int textureWidth, int textureHeight) {
+        this(texturePath, radius, textureWidth, textureHeight, 0f);
+    }
+
+    public Entity(String texturePath,float radius) {
+        this(texturePath, radius, 0, 0, 0f);
+    }
 
     public Entity(Entity entity){
         super(entity);
@@ -34,6 +47,8 @@ public class Entity extends Sprite implements Serializable {
         this.radius = entity.getRadius();
         this.parts = entity.getParts();
 
+        this.textureWidth = entity.getTextureWidth();
+        this.textureHeight = entity.getTextureWidth();
     }
 
     public Entity() {
@@ -70,10 +85,37 @@ public class Entity extends Sprite implements Serializable {
         return texturePath;
     }
 
-    public void initTexture(){
+    public int getTextureWidth() {
+        return this.textureWidth;
+    }
+
+    public int getTextureHeight() {
+        return this.textureHeight;
+    }
+
+    public float getAngle() {
+        return this.angle;
+    }
+
+    public void setAngle(float angle) {
+        this.angle = angle;
+    }
+
+    public void setTexturePath(String texturePath) {
+        this.texturePath = texturePath;
+        FileLoader.loadFile(texturePath, getClass());
+    }
+
+    public void removeTexturePath() {
+        this.texturePath = null;
+        setTexture(null);
+    }
+
+    public void initTexture() {
         File textureFile = new File(this.getTexturePath());
         FileHandle fileHandle = new FileHandle(textureFile);
         Texture texture = new Texture(fileHandle);
         this.setTexture(texture);
+        this.setRegion(0,0,this.textureWidth, this.textureHeight);
     }
 }
