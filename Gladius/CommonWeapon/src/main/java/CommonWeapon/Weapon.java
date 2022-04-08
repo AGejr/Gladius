@@ -1,6 +1,6 @@
 package CommonWeapon;
 import Common.data.Entity;
-public abstract class Weapon extends Entity {
+public class Weapon extends Entity {
     private String name;
     private int damage;
     private float weight;

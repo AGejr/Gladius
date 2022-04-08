@@ -15,20 +15,22 @@ public class WeaponCollision implements IPostEntityProcessingService {
     @Override
     public void process(GameData gameData, World world) {
         System.out.println("SA");
-        for (Entity weapon: world.getEntities(Sword.class)) {
+        for (Entity weapon: world.getEntities(Weapon.class)) {
             System.out.println("SA2");
             for (Entity hitEntity: world.getEntities()) {
                 System.out.println("SA3");
                 if (hitEntity.getPart(LifePart.class) != null && hitEntity.getPart(StatsPart.class) != null) {
                     System.out.println("SA4");
                     LifePart hitEntityLifePart = hitEntity.getPart(LifePart.class);
+                    // StatsPart attackerStats
                     StatsPart defenderStats = hitEntity.getPart(StatsPart.class);
                     if(weapon.getTexture() != null) {
                         System.out.println("SA5");
                         if (Intersector.overlapConvexPolygons(weapon.getPolygonBoundaries(), hitEntity.getPolygonBoundaries())) {
                             System.out.println("SA6");
-                            if (weapon instanceof Sword) {
-                                int totalDamage = ((Weapon) weapon).getDamage();
+                            if (weapon instanceof Weapon) {
+                                // int totalDamage = ((Weapon) weapon).getDamage() - defenderStats.getDefence() + attackerStats.getAttack();
+                                int totalDamage = ((Weapon) weapon).getDamage() - defenderStats.getDefence();
                                 hitEntityLifePart.subtractLife(totalDamage);
                                 System.out.println("Enemy life " + hitEntityLifePart.getLife());
                             }

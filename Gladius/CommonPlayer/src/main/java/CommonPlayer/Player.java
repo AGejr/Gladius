@@ -2,22 +2,52 @@ package CommonPlayer;
 
 import Common.data.Entity;
 import Common.data.entityparts.AnimationPart;
+import CommonWeapon.IWeaponUserService;
+import CommonWeapon.Weapon;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 
-public class Player extends Entity {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Player extends Entity implements IWeaponUserService {
     int balance;
+    private List<Weapon> ownedWeapons = new ArrayList<>();
+    private Weapon equippedWeapon;
 
     public Player(String texturePath, int radius) {
         super(texturePath,radius, 32, 32);
         this.balance = 0;
+        Weapon sword = new Weapon("Sword", 10, 8, 10, "swordMiniRect.png");
+        ownedWeapons.add(sword);
+        equippedWeapon = ownedWeapons.get(0);
     }
 
     @Override
     public void initTexture(){
         super.initTexture();
         initAnimation();
+    }
+
+    @Override
+    public Weapon getWeapon() {
+        return this.equippedWeapon;
+    }
+
+    @Override
+    public void equipWeapon(Weapon weapon) {
+        if(ownedWeapons.contains(weapon)) {
+            this.equippedWeapon = weapon;
+        }
+    }
+
+    public void addWeapon(Weapon weapon) {
+        ownedWeapons.add(weapon);
+    }
+
+    public void removeWeapon(Weapon weapon) {
+        ownedWeapons.remove(weapon);
     }
 
    private void initAnimation(){

@@ -22,4 +22,12 @@ public class StatsPart implements EntityPart {
     public void process(GameData gameData, Entity entity) {
 
     }
+
+    public int getAttack() {
+        return attack;
+    }
+
+    public int getDefence() {
+        return defence;
+    }
 }

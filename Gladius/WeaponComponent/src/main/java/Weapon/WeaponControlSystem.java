@@ -25,13 +25,13 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponSer
             TODO Make weapon follow player
          */
 
-        for (Entity entity: world.getEntities(Sword.class)) {
+        for (Entity entity: world.getEntities(Weapon.class)) {
             if(entity.getTexturePath() != null) {
                 counter++;
                 for (Entity attacker: world.getEntities(Player.class)) {
                     AnimationPart attackerAnimationPart = attacker.getPart(AnimationPart.class);
                     Polygon weaponBoundry = entity.getPolygonBoundaries();
-                    if(!attackerAnimationPart.isLeft()) {
+                    if (!attackerAnimationPart.isLeft()) {
                         float xPos = attacker.getX();
                         float yPos = attacker.getY();
                         entity.setX(xPos + adjustX);
@@ -77,24 +77,14 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponSer
     public void attack(Entity attacker, GameData gameData, World world) {
         float xPos = attacker.getX();
         float yPos = attacker.getY();
-        Weapon weaponEntity = Sword.getSword();
+        IWeaponUserService weaponUser = (IWeaponUserService) attacker;
+        Weapon weaponEntity = weaponUser.getWeapon();
         weaponEntity.setAngle(20.0f);
         rotationDegrees = weaponEntity.getAngle();
         weaponEntity.setX(xPos + adjustX);
         weaponEntity.setY(yPos + adjustY);
         weaponEntity.setWeaponTexture();
         world.addEntity(weaponEntity);
-    }
-
-    //TODO change to check collision between weapon and enemy, if hit then remove HP
-    private List<Entity> getEntitiesInRange(IWeaponUserService attacker, World world) {
-        Entity weapon = attacker.getWeapon();
-        Entity attackerEntity = (Entity) attacker;
-        // float radians = attackerEntity.getRadians();
-        // The range for weapon is the radius
-        float range = weapon.getRadius();
-        // float attackArea = (float) ((radians / 2) * Math.pow(range, 2)); //Circular sector area
-        return null;
     }
 
 
