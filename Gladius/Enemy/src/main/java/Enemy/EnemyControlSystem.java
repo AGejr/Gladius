@@ -4,6 +4,7 @@ import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
 import Common.data.entityparts.AnimationPart;
+import Common.data.entityparts.LifePart;
 import Common.data.entityparts.MovingPart;
 import Common.services.IEntityProcessingService;
 import CommonPlayer.Player;
@@ -14,6 +15,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
         for (Entity enemy : world.getEntities(Enemy.class)){
             MovingPart movingPart = enemy.getPart(MovingPart.class);
             AnimationPart animationPart = enemy.getPart(AnimationPart.class);
+            LifePart lifePart = enemy.getPart(LifePart.class);
 
             for (Entity player : world.getEntities(Player.class)) {
                 if (player.getY() > 300) {
@@ -48,7 +50,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
             movingPart.process(gameData, enemy);
             animationPart.process(gameData, enemy);
-
+            lifePart.process(gameData, enemy);
         }
     }
 }
