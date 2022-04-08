@@ -4,6 +4,7 @@ import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
 import Common.data.entityparts.MovingPart;
+import Common.events.GAME_EVENT;
 import Common.services.IPostEntityProcessingService;
 
 import java.io.File;
@@ -72,8 +73,10 @@ public class Collision implements IPostEntityProcessingService {
                 }
 
                 if (Arrays.stream(gate).anyMatch(i -> i == tile)) {
+                    gameData.createEvent(GAME_EVENT.ARENA_ENTERED);
                     entity.setY(346);
                 } else if (tile == 165) {
+                    gameData.createEvent(GAME_EVENT.ARENA_EXITED);
                     entity.setY(200);
                 }
             }

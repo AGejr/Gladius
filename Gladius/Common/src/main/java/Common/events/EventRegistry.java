@@ -1,19 +1,26 @@
 package Common.events;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class EventRegistry {
-    private static List<GAME_EVENT> events;
 
-    public static void addEvent(GAME_EVENT game_event) {
+    private List<GAME_EVENT> events;
+
+    public EventRegistry() {
+        this.events = new CopyOnWriteArrayList<>();
+    }
+
+    public void addEvent(GAME_EVENT game_event) {
         events.add(game_event);
     }
 
-    public static void removeEvent(GAME_EVENT game_event) {
+    public void removeEvent(GAME_EVENT game_event) {
         events.removeIf(game_event1 -> game_event1 == game_event);
     }
 
-    public static List<GAME_EVENT> getEvents() {
-        return EventRegistry.events;
+    public List<GAME_EVENT> getEvents() {
+        return events;
     }
 }

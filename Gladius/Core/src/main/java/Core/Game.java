@@ -133,6 +133,8 @@ public class Game implements ApplicationListener {
         for (IPostEntityProcessingService postEntityProcessorService : postEntityProcessorList) {
             postEntityProcessorService.process(gameData, world);
         }
+
+        eventProcessingService.process(gameData, world);
     }
 
     @Override

@@ -2,6 +2,8 @@ package Common.data;
 
 
 import Common.events.Event;
+import Common.events.EventRegistry;
+import Common.events.GAME_EVENT;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,19 +16,7 @@ public class GameData {
     private int displayHeight;
     private float lerp = 3.0f;
     private final GameKeys keys = new GameKeys();
-    private List<Event> events = new CopyOnWriteArrayList<>();
-
-    public void addEvent(Event e) {
-        events.add(e);
-    }
-
-    public void removeEvent(Event e) {
-        events.remove(e);
-    }
-
-    public List<Event> getEvents() {
-        return events;
-    }
+    private EventRegistry eventRegistry = new EventRegistry();
 
     public GameKeys getKeys() {
         return keys;
@@ -56,22 +46,19 @@ public class GameData {
         return displayHeight;
     }
 
-    public <E extends Event> List<Event> getEvents(Class<E> type, String sourceID) {
-        List<Event> r = new ArrayList();
-        for (Event event : events) {
-            if (event.getClass().equals(type) && event.getSource().getID().equals(sourceID)) {
-                r.add(event);
-            }
-        }
-
-        return r;
-    }
-
     public float getLerp() {
         return lerp;
     }
 
     public void setLerp(float lerp) {
         this.lerp = lerp;
+    }
+
+    public EventRegistry getEventRegistry() {
+        return eventRegistry;
+    }
+
+    public void createEvent(GAME_EVENT gameEvent) {
+        eventRegistry.addEvent(gameEvent);
     }
 }
