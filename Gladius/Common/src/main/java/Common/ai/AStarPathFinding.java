@@ -27,7 +27,6 @@ public class AStarPathFinding {
             }
             List<Node> children = expand(node);
             fringe.addAll(children);
-            System.out.println(node.getState());
         }
         return null;
     }
@@ -55,8 +54,9 @@ public class AStarPathFinding {
             successors.add(new Node(Arrays.asList(parent.getX(), parent.getY() + i), parent));
         }
         for (Node node : successors) {
-            int csvVal = csv.get(40-node.getY()).get(node.getX());
-                if (csvVal != 0) {
+            int csvVal = csv.get(node.getY()).get(node.getX());
+
+                if(Arrays.stream(noCollide).noneMatch(i -> i == csvVal)){
                     removeSuccessors.add(node);
             }
             if (!removeSuccessors.contains(node)) {
