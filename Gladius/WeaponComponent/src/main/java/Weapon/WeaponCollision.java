@@ -19,7 +19,7 @@ public class WeaponCollision implements IPostEntityProcessingService {
             System.out.println("SA2");
             for (Entity hitEntity: world.getEntities()) {
                 System.out.println("SA3");
-                if (hitEntity.getPart(LifePart.class) != null && hitEntity.getPart(StatsPart.class) != null) {
+                if (hitEntity.getPart(LifePart.class) != null && hitEntity.getPart(StatsPart.class) != null && !hitEntity.getID().equals(((Weapon) weapon).getOwner().getID())) {
                     System.out.println("SA4");
                     LifePart hitEntityLifePart = hitEntity.getPart(LifePart.class);
                     // StatsPart attackerStats
