@@ -22,16 +22,16 @@ public class EnemyControlSystem implements IEntityProcessingService {
     public void process(GameData gameData, World world) {
         for (Entity enemy : world.getEntities(Enemy.class)) {
             MovingPart movingPart = enemy.getPart(MovingPart.class);
-            int enemyY = (int) ((enemy.getY() / 1280) * 40);
-            int enemyX = (int) (((enemy.getX() + 32 / 2) / 1600) * 50);
+            int enemyY = (int) ((enemy.getY() / gameData.getMapHeight()) * 40);
+            int enemyX = (int) (((enemy.getX() + 32 / 2) / gameData.getMapWidth()) * 50);
             AnimationPart animationPart = enemy.getPart(AnimationPart.class);
             for (Entity player : world.getEntities(Player.class)) {
-                int playerY = (int) ((player.getY() / 1280) * 40);
-                int playerX = (int) (((player.getX() + 32 / 2) / 1600) * 50);
+                int playerY = (int) ((player.getY() / gameData.getMapHeight()) * 40);
+                int playerX = (int) (((player.getX() + 32 / 2) / gameData.getMapWidth()) * 50);
                 if (player.getY() > 300) {
                     List<Node> path = aStarPathFinding.treeSearch(new ArrayList<>(Arrays.asList(enemyX, 40 - enemyY)), new ArrayList<>(Arrays.asList(playerX, 40 - playerY)), world);
-                    float newY = 1280 - path.get(0).getY() * (1280f / 40f);
-                    float newX = path.get(0).getX() * (1600f / 50f) + (player.getRadius() * 16) / 2;
+                    float newY = gameData.getMapHeight() - path.get(0).getY() * (gameData.getMapHeight() / 40f);
+                    float newX = path.get(0).getX() * (gameData.getMapWidth() / 50f) + (player.getRadius() * 16) / 2;
 
                     if (newX < enemy.getX() + (enemy.getRadius() * 16) / 2) {
                         movingPart.setLeft(true);
@@ -41,7 +41,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
                         movingPart.setLeft(false);
                     }
 
-                     if (newY < enemy.getY()) {
+                    if (newY < enemy.getY()) {
                         movingPart.setUp(false);
                         movingPart.setDown(true);
                     } else {

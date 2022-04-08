@@ -15,21 +15,17 @@ import java.util.Scanner;
 
 public class Collision implements IPostEntityProcessingService {
     private List<List<Integer>> csv;
-    private int width;
-    private int height;
 
     @Override
     public void process(GameData gameData, World world) {
         if (csv == null) {
             csv = world.getCsvMap();
-            height = 1280;
-            width = 1600;
         }
         for (Entity entity : world.getEntities()) {
             float radius = entity.getRadius();
-            int y = (int) (40 - ((entity.getY() / height) * 40));
+            int y = (int) (40 - ((entity.getY() / gameData.getMapHeight()) * 40));
             // todo : radius*16/2 should be changed to texture width / 2
-            int x = (int) (((entity.getX()+(radius*16)/2) / width) * 50); // divide by 2 to get center
+            int x = (int) (((entity.getX()+(radius*16)/2) / gameData.getMapWidth()) * 50); // divide by 2 to get center
             int tile = csv.get(y).get(x);
             int[] gate = new int[]{24, 25};
             int[] spawn = new int[]{161, 162};
@@ -41,12 +37,12 @@ public class Collision implements IPostEntityProcessingService {
             // Check wall layer, if there is a wall (not 0)
             //      Should the tile be ignored?
             //      Is the distance between entity and tile < entity radius?
-            if(csv.get(y-1).get(x) != 0 && !Arrays.stream(noCollide).anyMatch(i -> i == csv.get(y-1).get(x)) && (height-((y-1)*32)-32) - entity.getY() <= radius) {
+            if(csv.get(y-1).get(x) != 0 && !Arrays.stream(noCollide).anyMatch(i -> i == csv.get(y-1).get(x)) && (gameData.getMapHeight()-((y-1)*32)-32) - entity.getY() <= radius) {
                 movingPart.setColTop(true);
             } else {
                 movingPart.setColTop(false);
             }
-            if(csv.get(y+1).get(x) != 0 && !Arrays.stream(noCollide).anyMatch(i -> i == csv.get(y+1).get(x)) && entity.getY() - (height-(y+1)*32) <= radius) {
+            if(csv.get(y+1).get(x) != 0 && !Arrays.stream(noCollide).anyMatch(i -> i == csv.get(y+1).get(x)) && entity.getY() - (gameData.getMapHeight()-(y+1)*32) <= radius) {
                 movingPart.setColBot(true);
             } else {
                 movingPart.setColBot(false);

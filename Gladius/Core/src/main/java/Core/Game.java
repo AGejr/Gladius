@@ -52,6 +52,8 @@ public class Game implements ApplicationListener {
 
     @Override
     public void create() {
+        gameData.setMapWidth(1600);
+        gameData.setMapHeight(1280);
         cam = new OrthographicCamera();
         cam.setToOrtho(false, Gdx.graphics.getWidth() / 1.5f, Gdx.graphics.getHeight() / 1.5f);
         cam.position.x = 800;

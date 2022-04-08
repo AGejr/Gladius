@@ -12,6 +12,8 @@ public class GameData {
     private float delta;
     private int displayWidth;
     private int displayHeight;
+    private int mapWidth;
+    private int mapHeight;
     private float lerp = 3.0f;
     private final GameKeys keys = new GameKeys();
     private List<Event> events = new CopyOnWriteArrayList<>();
@@ -73,5 +75,21 @@ public class GameData {
 
     public void setLerp(float lerp) {
         this.lerp = lerp;
+    }
+
+    public int getMapWidth() {
+        return mapWidth;
+    }
+
+    public void setMapWidth(int mapWidth) {
+        this.mapWidth = mapWidth;
+    }
+
+    public int getMapHeight() {
+        return mapHeight;
+    }
+
+    public void setMapHeight(int mapHeight) {
+        this.mapHeight = mapHeight;
     }
 }

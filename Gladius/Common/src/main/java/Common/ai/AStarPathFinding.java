@@ -56,8 +56,8 @@ public class AStarPathFinding {
         for (Node node : successors) {
             int csvVal = csv.get(node.getY()).get(node.getX());
 
-                if(Arrays.stream(noCollide).noneMatch(i -> i == csvVal)){
-                    removeSuccessors.add(node);
+            if (Arrays.stream(noCollide).noneMatch(i -> i == csvVal)) {
+                removeSuccessors.add(node);
             }
             if (!removeSuccessors.contains(node)) {
                 for (List<Integer> closedNode : closedNodes) {
