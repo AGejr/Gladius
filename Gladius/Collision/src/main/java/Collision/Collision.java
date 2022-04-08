@@ -72,7 +72,7 @@ public class Collision implements IPostEntityProcessingService {
             }
 
             if (Arrays.stream(gate).anyMatch(i -> i == tile)) {
-                entity.setY(346);
+                entity.setY(400);
             } else if (tile == 165) {
                 entity.setY(200);
             }

@@ -38,7 +38,7 @@ public class FileLoader {
 
     public static List<List<Integer>> fetchData(String map) {
         Scanner scanner = null;
-        List<List<Integer>> csv = new ArrayList<List<Integer>>();
+        List<List<Integer>> csv = new ArrayList<>();
         try {
             scanner = new Scanner(new File(map));
             for (int i = 0; i < 93; i++) {
@@ -53,9 +53,10 @@ public class FileLoader {
                 scanner.nextLine();
                 csv.add(integers);
             }
-            scanner.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } finally {
+            scanner.close();
         }
         return csv;
     }

@@ -27,6 +27,7 @@ public class AStarPathFinding {
             }
             List<Node> children = expand(node);
             fringe.addAll(children);
+            System.out.println(node.getState());
         }
         return null;
     }

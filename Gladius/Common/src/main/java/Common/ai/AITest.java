@@ -10,13 +10,13 @@ public class AITest {
     public static void main(String[] args) {
         AStarPathFinding pathFinding = new AStarPathFinding();
         List<Integer> initialState = new ArrayList<>();
-        initialState.add(6);
-        initialState.add(40 - 7);
+        initialState.add(17);
+        initialState.add(40-28);
 
 
         List<Integer> goalState = new ArrayList<>();
-        goalState.add(32);
-        goalState.add(40 - 10);//14
+        goalState.add(23);
+        goalState.add(40-27);//14
         World world = new World();
         String file = "C:/Users/janik/Downloads/Map.tmx/";
         world.setCsvMap(FileLoader.fetchData(file));
@@ -25,12 +25,10 @@ public class AITest {
 
         for (int i = 0; i < 40; i++) {
             List<Integer> list = world.getCsvMap().get(i);
-            for (int j = 0; j < 50; j++) {
-                list.add(j);
-            }
             map.add(list);
         }
-        System.out.println();
+        System.out.println(initialState);
+        System.out.println(goalState);
         List<Node> result = pathFinding.treeSearch(initialState, goalState, world);
         for (int i = 0; i < result.size(); i++) {
             map.get(40 - result.get(i).getY()).set(result.get(i).getX(), 99);
