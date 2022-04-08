@@ -1,24 +1,30 @@
 package CommonWeapon;
 import Common.data.Entity;
-public abstract class Weapon extends Entity {
+public class Weapon extends Entity {
     private String name;
-    private float damage;
+    private int damage;
     private float weight;
     private final String texturePath;
+    private Entity owner;
 
-    public Weapon(String name, float damage, float weight, float range, String texturePath) {
-        super(null, range, 26, 26);
+    public Weapon(String name, int damage, float weight, float range, String texturePath, Entity owner) {
+        super(null, range, 9, 36, 0, 0.9f, 0.9f, 0);
         this.name = name;
         this.damage = damage;
         this.weight = weight;
         this.texturePath = texturePath;
+        this.owner = owner;
     }
 
     public String getName() {
         return this.name;
     }
 
-    public float getDamage() {
+    public Entity getOwner() {
+        return this.owner;
+    }
+
+    public int getDamage() {
         return this.damage;
     }
 

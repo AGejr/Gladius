@@ -6,6 +6,7 @@ import Common.data.World;
 import Common.data.entityparts.AnimationPart;
 import Common.data.entityparts.LifePart;
 import Common.data.entityparts.MovingPart;
+import Common.data.entityparts.StatsPart;
 import Common.services.IGamePluginService;
 import Common.tools.FileLoader;
 import CommonPlayer.Player;
@@ -27,6 +28,7 @@ public class PlayerPlugin implements IGamePluginService {
         player.add(new MovingPart(100));
         player.add(new AnimationPart());
         player.add(new LifePart(100));
+        player.add(new StatsPart(20, 5));
         FileLoader.loadFile(file, getClass());
 
         player.setX(800);

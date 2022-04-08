@@ -4,7 +4,9 @@ import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
 import Common.data.entityparts.AnimationPart;
+import Common.data.entityparts.LifePart;
 import Common.data.entityparts.MovingPart;
+import Common.data.entityparts.StatsPart;
 import Common.services.IGamePluginService;
 import Common.tools.FileLoader;
 
@@ -26,6 +28,8 @@ public class EnemyPlugin implements IGamePluginService {
         Entity enemy = new Enemy(file, 20);
         enemy.add(new MovingPart(30));
         enemy.add(new AnimationPart());
+        enemy.add(new LifePart(100));
+        enemy.add(new StatsPart(5, 5));
         FileLoader.loadFile(file, getClass());
 
         enemy.setX(new Random().nextInt((1000 - 200) + 1) + 200);
