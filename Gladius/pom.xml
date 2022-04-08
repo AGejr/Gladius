@@ -32,6 +32,7 @@
     <module>Collision</module>
     <module>Enemy</module>
     <module>CommonPlayer</module>
+    <module>Obstacle</module>
   </modules>
 
   <build>

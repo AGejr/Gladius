@@ -4,6 +4,7 @@ import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
 import Common.data.entityparts.AnimationPart;
+import Common.data.entityparts.MovingPart;
 import Common.services.IEntityProcessingService;
 import Common.services.IGamePluginService;
 import Common.services.IPostEntityProcessingService;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -42,6 +44,9 @@ public class Game implements ApplicationListener {
     private TiledMap tiledMap;
     private OrthoCachedTiledMapRenderer tiledMapRenderer;
     private SpriteBatch batch;
+
+    // DEBUG
+    private ShapeRenderer sr;
 
     public Game(){
         init();
@@ -75,6 +80,8 @@ public class Game implements ApplicationListener {
 
         batch = new SpriteBatch();
 
+        sr = new ShapeRenderer();
+
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
 
     }
@@ -96,8 +103,9 @@ public class Game implements ApplicationListener {
         tiledMapRenderer.render();
         batch.setProjectionMatrix(cam.combined);
 
-
         batch.begin();
+        sr.setProjectionMatrix(cam.combined);
+        sr.begin(ShapeRenderer.ShapeType.Line);
         for (Entity entity :  world.getEntities()){
             if(entity.getTexturePath() != null) {
 
@@ -110,12 +118,24 @@ public class Game implements ApplicationListener {
                     position.x += (entity.getX() - position.x) * gameData.getLerp() * Gdx.graphics.getDeltaTime();
                     position.y += (entity.getY() - position.y) * gameData.getLerp() * Gdx.graphics.getDeltaTime();
                 }
+                // Full texture size
+                sr.setColor(new Color(0,0,1,0));
+                sr.rect(entity.getX(), entity.getY(), entity.getTextureWidth(), entity.getTextureHeight());
+                // Collision size
+                sr.setColor(new Color(1,0,0,0));
+                if(entity.getPart(MovingPart.class) != null) {
+                    sr.rect(entity.getX() + (entity.getTextureWidth()/2) - (entity.getRadius()/2), entity.getY(), entity.getRadius(), entity.getRadius());
+                }
+                else {
+                    sr.rect(entity.getX() + (entity.getTextureWidth()/2) - (entity.getRadius()/2), entity.getY() + (entity.getTextureHeight()/2) - (entity.getRadius()/2), entity.getRadius(), entity.getRadius());
+                }
                 // draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation)
                 batch.draw(entity, entity.getX(), entity.getY(), 0, 0, entity.getTextureWidth(), entity.getTextureHeight(), 1, 1, entity.getAngle());
             }
         }
 
         batch.end();
+        sr.end();
         update();
         gameData.getKeys().update();
     }

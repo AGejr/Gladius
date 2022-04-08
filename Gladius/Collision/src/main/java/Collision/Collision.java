@@ -26,11 +26,17 @@ public class Collision implements IPostEntityProcessingService {
             width = 1600;
         }
         for (Entity entity : world.getEntities()) {
+            // Collision with tiles
             if(entity.getPart(MovingPart.class) != null) {
+                float entityLeft = (entity.getX() + (entity.getTextureWidth()/2) - entity.getRadius()/2);
+                float entityRight = (entity.getX() + (entity.getTextureWidth()/2) + entity.getRadius()/2);
+                //float entityTop = (entity.getY() + (entity.getTextureHeight()/2) + entity.getRadius()/2);
+                float entityTop = (entity.getY() + entity.getRadius());
+                //float entityBottom = (entity.getY() + (entity.getTextureHeight()/2) - entity.getRadius()/2);
+                float entityBottom = entity.getY();
                 float radius = entity.getRadius();
                 int y = (int) (40 - ((entity.getY() / height) * 40));
-                // todo : radius*16/2 should be changed to texture width / 2
-                int x = (int) (((entity.getX()+(radius*16)/2) / width) * 50); // divide by 2 to get center
+                int x = (int) (((entity.getX()+(entity.getTextureWidth())/2) / width) * 50); // divide by 2 to get center
                 int tile = csv.get(y).get(x);
                 int[] gate = new int[]{24, 25};
                 int[] spawn = new int[]{161, 162};
@@ -39,27 +45,25 @@ public class Collision implements IPostEntityProcessingService {
                 int[] noCollide = new int[]{70, 71, 72, 78, 79, 86,87,88, 103, 104, 107, 123, 127, 159, 155, 108, 24, 25, 37, 98, 99, 159, 160, 161,162,163,164, 165, 177, 178, 179};
 
                 MovingPart movingPart = entity.getPart(MovingPart.class);
-                // Check wall layer, if there is a wall (not 0)
-                //      Should the tile be ignored?
-                //      Is the distance between entity and tile < entity radius?
-                if(csv.get(y-1).get(x) != 0 && !Arrays.stream(noCollide).anyMatch(i -> i == csv.get(y-1).get(x)) && (height-((y-1)*32)-32) - entity.getY() <= radius) {
+                // Checks wall layer, if there is a wall (not 0)
+                //      Checks should the tile be ignored
+                //      Checks if the distance between entity and tile < entity radius
+                if(csv.get(y-1).get(x) != 0 && !Arrays.stream(noCollide).anyMatch(i -> i == csv.get(y-1).get(x)) && (height-((y-1)*32)-32) - entityTop <= 2) {
                     movingPart.setColTop(true);
                 } else {
                     movingPart.setColTop(false);
                 }
-                if(csv.get(y+1).get(x) != 0 && !Arrays.stream(noCollide).anyMatch(i -> i == csv.get(y+1).get(x)) && entity.getY() - (height-(y+1)*32) <= radius) {
+                if(csv.get(y+1).get(x) != 0 && !Arrays.stream(noCollide).anyMatch(i -> i == csv.get(y+1).get(x)) && entityBottom - (height-(y+1)*32) <= 2) {
                     movingPart.setColBot(true);
                 } else {
                     movingPart.setColBot(false);
                 }
-                // todo : radius*16/2 should be changed to texture width / 2
-                if(csv.get(y).get(x-1) != 0 && !Arrays.stream(noCollide).anyMatch(i -> i == csv.get(y).get(x-1)) && (entity.getX()+(radius*16)/2) - (((x-1)*32)+32) < radius) {
+                if(csv.get(y).get(x-1) != 0 && !Arrays.stream(noCollide).anyMatch(i -> i == csv.get(y).get(x-1)) && entityLeft - (((x-1)*32)+32) < 2) {
                     movingPart.setColLeft(true);
                 } else {
                     movingPart.setColLeft(false);
                 }
-                // todo : radius*16/2 should be changed to texture width / 2
-                if(csv.get(y).get(x+1) != 0 && !Arrays.stream(noCollide).anyMatch(i -> i == csv.get(y).get(x+1)) && ((x+1)*32) - (entity.getX()+(radius*16)/2) < radius) {
+                if(csv.get(y).get(x+1) != 0 && !Arrays.stream(noCollide).anyMatch(i -> i == csv.get(y).get(x+1)) && ((x+1)*32) - entityRight < 2) {
                     movingPart.setColRight(true);
                 } else {
                     movingPart.setColRight(false);
@@ -75,6 +79,50 @@ public class Collision implements IPostEntityProcessingService {
                     entity.setY(346);
                 } else if (tile == 165) {
                     entity.setY(200);
+                }
+
+                // Collision with entities
+                for(Entity collidingEntity : world.getEntities()) {
+                    // TO AVOID COLLISION BETWEEN TWO MOVING ENTITIES
+                    // SHOULD MAYBE BE REMOVED!
+                    if(collidingEntity.getPart(MovingPart.class) == null) {
+                        float collidingEntityLeft = (collidingEntity.getX() + (collidingEntity.getTextureWidth()/2) - collidingEntity.getRadius()/2);
+                        float collidingEntityRight = (collidingEntity.getX() + (collidingEntity.getTextureWidth()/2) + collidingEntity.getRadius()/2);
+                        float collidingEntityTop = (collidingEntity.getY() + (collidingEntity.getTextureHeight()/2) + collidingEntity.getRadius()/2);
+                        float collidingEntityBottom = (collidingEntity.getY() + (collidingEntity.getTextureHeight()/2) - collidingEntity.getRadius()/2);
+                        // check left collision
+                        if(!entity.getClass().equals(collidingEntity.getClass()) &&
+                                entityLeft - collidingEntityRight <= 2 &&
+                                entityLeft >= collidingEntityLeft &&
+                                entityBottom <= collidingEntityTop &&
+                                entityTop >= collidingEntityBottom) {
+                            movingPart.setColLeft(true);
+                        }
+                        // check right collision
+                        if(!entity.getClass().equals(collidingEntity.getClass()) &&
+                                collidingEntityLeft - entityRight <= 2 &&
+                                entityRight <= collidingEntityRight &&
+                                entityBottom <= collidingEntityTop &&
+                                entityTop >= collidingEntityBottom){
+                            movingPart.setColRight(true);
+                        }
+                        // check top collision
+                        if(!entity.getClass().equals(collidingEntity.getClass()) &&
+                                entityRight >= collidingEntityLeft &&
+                                entityLeft <= collidingEntityRight &&
+                                entityBottom - collidingEntityTop <= 2 &&
+                                entityTop >= collidingEntityBottom){
+                            movingPart.setColBot(true);
+                        }
+                        // check bottom collision
+                        if(!entity.getClass().equals(collidingEntity.getClass()) &&
+                                entityRight >= collidingEntityLeft &&
+                                entityLeft <= collidingEntityRight &&
+                                collidingEntityBottom - entityTop <= 2 &&
+                                entityBottom <= collidingEntityTop){
+                            movingPart.setColTop(true);
+                        }
+                    }
                 }
             }
         }
