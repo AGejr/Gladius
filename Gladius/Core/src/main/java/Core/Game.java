@@ -4,10 +4,7 @@ import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
 import Common.data.entityparts.AnimationPart;
-import Common.services.IEntityProcessingService;
-import Common.services.IEventProcessingService;
-import Common.services.IGamePluginService;
-import Common.services.IPostEntityProcessingService;
+import Common.services.*;
 import Common.tools.FileLoader;
 import CommonPlayer.Player;
 import com.badlogic.gdx.ApplicationListener;
@@ -171,8 +168,6 @@ public class Game implements ApplicationListener {
     public void addGamePluginService(IGamePluginService plugin) {
         this.gamePluginList.add(plugin);
         plugin.start(gameData,world);
-
-
     }
 
     public void removeGamePluginService(IGamePluginService plugin) {
@@ -186,5 +181,13 @@ public class Game implements ApplicationListener {
 
     public void removeEventProcessingService(IEventProcessingService iEventProcessingService) {
         eventProcessingService = null;
+    }
+
+    public void addEntityFactoryService(IEntityFactoryService iEntityFactoryService) {
+        world.addEntityFactory(iEntityFactoryService);
+    }
+
+    public void removeEntityFactoryService(IEntityFactoryService iEntityFactoryService) {
+        world.removeEntityFactory(iEntityFactoryService);
     }
 }

@@ -17,4 +17,8 @@
     <reference bind="addEventProcessingService" cardinality="0..n"
                interface="Common.services.IEventProcessingService"
                name="IEventProcessingService" policy="dynamic" unbind="removeEventProcessingService"/>
+
+    <reference bind="addEntityFactoryService" cardinality="0..n"
+               interface="Common.services.IEntityFactoryService"
+               name="IEntityFactoryService" policy="dynamic" unbind="removeEventProcessingService"/>
 </scr:component>

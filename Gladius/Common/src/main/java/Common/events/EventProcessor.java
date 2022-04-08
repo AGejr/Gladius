@@ -2,9 +2,8 @@ package Common.events;
 
 import Common.data.GameData;
 import Common.data.World;
+import Common.services.IEntityFactoryService;
 import Common.services.IEventProcessingService;
-
-import java.util.List;
 
 public class EventProcessor implements IEventProcessingService {
 
@@ -33,6 +32,9 @@ public class EventProcessor implements IEventProcessingService {
     }
 
     private void processArenaEnteredEvent(GameData gameData, World world) {
+        for (IEntityFactoryService entityFactoryService: world.getEntityFactoryList()){
+            entityFactoryService.spawn(gameData, world, 4);
+        }
     }
 
     private void processArenaExitedEvent(GameData gameData, World world) {
