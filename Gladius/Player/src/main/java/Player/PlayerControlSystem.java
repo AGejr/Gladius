@@ -29,7 +29,7 @@ public class PlayerControlSystem implements IEntityProcessingService {
             movingPart.setUp(gameData.getKeys().isDown(GameKeys.UP));
             movingPart.setDown(gameData.getKeys().isDown(GameKeys.DOWN));
 
-            if (gameData.getKeys().isPressed(GameKeys.SPACE) && weaponService != null) {
+            if (gameData.getKeys().isPressed(GameKeys.SPACE) && weaponService != null && !lifePart.isDead()) {
                 weaponService.attack(entity, gameData, world);
             }
 

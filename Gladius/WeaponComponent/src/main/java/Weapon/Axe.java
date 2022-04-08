@@ -4,7 +4,7 @@ import CommonWeapon.Weapon;
 
 public class Axe extends Weapon {
 
-    protected Axe(String name, float damage, float weight, float range, String texturePath) {
+    protected Axe(String name, int damage, float weight, float range, String texturePath) {
         super(name, damage, weight, range, texturePath);
     }
 
