@@ -9,7 +9,6 @@ import java.util.List;
 public class AStarPathFinding {
     // TODO implement multiple goal states (e.g monster wanting multiple targets)
     private List<Integer> goalState;
-    private final int[] noCollide = {0, 70, 71, 72, 78, 79, 86, 87, 88, 103, 104, 107, 123, 127, 159, 155, 108, 24, 25, 37, 98, 99, 159, 160, 161, 162, 163, 164, 165, 177, 178, 179};
     private List<List<Integer>> csv;
     private List<List<Integer>> closedNodes;
 
@@ -57,8 +56,7 @@ public class AStarPathFinding {
             successors.add(new Node(Arrays.asList(parent.getX(), parent.getY() + i), parent));
         }
         for (Node node : successors) {
-
-            if (Arrays.stream(noCollide).noneMatch(i -> i == node.getCsvVal())) {
+            if (node.getCsvVal() != 0 && node.getCsvVal() != 2) {
                 removeSuccessors.add(node);
             }
             if (!removeSuccessors.contains(node)) {
