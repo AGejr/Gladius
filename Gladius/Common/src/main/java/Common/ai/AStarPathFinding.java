@@ -14,6 +14,8 @@ public class AStarPathFinding {
 
     public List<Node> treeSearch(List<Integer> initialState, List<Integer> goalState, World world) {
         this.goalState = goalState;
+        
+        // closednodes are the nodes already expanded.
         this.closedNodes = new ArrayList<>();
         this.csv = world.getCsvMap();
         List<Node> fringe = new ArrayList<>();
@@ -27,7 +29,6 @@ public class AStarPathFinding {
             }
             List<Node> children = expand(node);
             fringe.addAll(children);
-            System.out.println(fringe);
         }
         return null;
     }
@@ -41,6 +42,7 @@ public class AStarPathFinding {
             successor.setState(child.getState());
             successor.setParentNode(parent);
             successor.setDepth(parent.getDepth() + 1);
+            // csv val is the value of the tile the given node has. (0,1 or 2)
             successor.setCsvVal(csv.get(successor.getY()).get(successor.getX()));
             successors.add(successor);
         }
@@ -50,6 +52,7 @@ public class AStarPathFinding {
     private List<Node> successors(Node parent) {
         List<Node> successors = new ArrayList<>();
         List<Node> removeSuccessors = new ArrayList<>();
+        // around is an int array that make sure the coords to the tiles around the parent tile are found.
         int[] around = {1, -1};
         for (int i : around) {
             successors.add(new Node(Arrays.asList(parent.getX() + i, parent.getY()), parent));

@@ -29,14 +29,20 @@ public class EnemyControlSystem implements IEntityProcessingService {
             LifePart lifePart = enemy.getPart(LifePart.class);
 
             for (Entity player : world.getEntities(Player.class)) {
+                // getting player pos as its our "target"
                 int playerY = (int) ((player.getY() / gameData.getMapHeight()) * 40);
                 int playerX = (int) (((player.getX() + 32 / 2) / gameData.getMapWidth()) * 50);
                 if (player.getY() > 300) {
+                    // Inititilisation of a new search for the given positions
+                    // 40 - y is done to flip the y axis, as tile representation is flipped from out poistion repr
                     List<Node> path = aStarPathFinding.treeSearch(new ArrayList<>(Arrays.asList(enemyX, 40 - enemyY)), new ArrayList<>(Arrays.asList(playerX, 40 - playerY)), world);
-                    float newY = gameData.getMapHeight() - path.get(0).getY() * (gameData.getMapHeight() / 40f);
-                    float newX = path.get(0).getX() * (gameData.getMapWidth() / 50f) + (player.getRadius() * 16) / 2;
 
-                    if (newX < enemy.getX() + (enemy.getRadius() * 16) / 2) {
+                    // the y of the target tile, flipped to fit the position representation
+                    // the output from the search is given in tiles (0-40), so its scaled to fit the position representation (0-1280)
+                    float targetY = gameData.getMapHeight() - path.get(0).getY() * (gameData.getMapHeight() / 40f);
+                    float targetX = path.get(0).getX() * (gameData.getMapWidth() / 50f) + (player.getRadius() * 16) / 2;
+
+                    if (targetX < enemy.getX() + (enemy.getRadius() * 16) / 2) {
                         movingPart.setLeft(true);
                         movingPart.setRight(false);
                     } else {
@@ -44,7 +50,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
                         movingPart.setLeft(false);
                     }
 
-                    if (newY < enemy.getY()) {
+                    if (targetY < enemy.getY()) {
                         movingPart.setUp(false);
                         movingPart.setDown(true);
                     } else {
