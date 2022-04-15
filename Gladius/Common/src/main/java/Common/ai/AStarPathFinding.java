@@ -41,9 +41,13 @@ public class AStarPathFinding {
             Node successor = new Node(new ArrayList<>());
             successor.setState(child.getState());
             successor.setParentNode(parent);
-            successor.setDepth(parent.getDepth() + 1);
             // csv val is the value of the tile the given node has. (0,1 or 2)
-            successor.setCsvVal(csv.get(successor.getY()).get(successor.getX()));
+            successor.setCsvVal(csv.get(40 - successor.getY()).get(successor.getX()));
+            if (csv.get(40 - successor.getY()).get(successor.getX()) == 2) {
+                successor.setDepth(parent.getDepth() + 16);
+            } else {
+                successor.setDepth(parent.getDepth() + 1);
+            }
             successors.add(successor);
         }
         return successors;
@@ -77,7 +81,7 @@ public class AStarPathFinding {
     private Node removeLowestHeuristic(List<Node> fringe) {
         int lowest = 0;
         for (int i = 1; i < fringe.size(); i++) {
-            if (heuristic(fringe.get(i)) + fringe.get(i).getDepth() < heuristic(fringe.get(lowest)) + fringe.get(lowest).getDepth()) {
+            if ((heuristic(fringe.get(i)) + fringe.get(i).getDepth()) < (heuristic(fringe.get(lowest)) + fringe.get(lowest).getDepth())) {
                 lowest = i;
             }
         }
