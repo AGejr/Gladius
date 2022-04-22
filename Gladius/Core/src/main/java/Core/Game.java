@@ -92,6 +92,7 @@ public class Game implements ApplicationListener {
     public void render() {
 
         //Gdx.gl.glClearColor(194/255f, 178/255f, 128/255f, 1); //Black = 0,0,0,1
+
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -123,10 +124,13 @@ public class Game implements ApplicationListener {
 
         batch.end();
         for (Entity entity :  world.getEntities()) {
-            shapeRenderer.setColor(Color.BLUE);
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
             shapeRenderer.begin(ShapeType.Line);
+            shapeRenderer.setColor(Color.CLEAR);
             shapeRenderer.polygon(entity.getPolygonBoundaries().getTransformedVertices());
             shapeRenderer.end();
+            Gdx.gl.glDisable(GL20.GL_BLEND);
         }
         update();
         gameData.getKeys().update();

@@ -19,7 +19,7 @@ public class Player extends Entity implements IWeaponUserService {
     public Player(String texturePath, int radius) {
         super(texturePath,radius, 32, 32);
         this.balance = 0;
-        Weapon sword = new Weapon("Sword", 10, 8, 10, "swordMiniRect.png", 9, 36, 0.9f, 0.9f, 0, 20.0f, 9.0f, 20.0f, 10.0f, this);
+        Weapon sword = new Weapon("Sword", 25, 8, 10, "swordMiniRect.png", 9, 36, 0.9f, 0.9f, 0, 20.0f, 9.0f, 20.0f, 10.0f, this);
         ownedWeapons.add(sword);
         equippedWeapon = ownedWeapons.get(0);
     }
