@@ -15,23 +15,19 @@ public class WeaponCollision implements IPostEntityProcessingService {
     public void process(GameData gameData, World world) {
         for (Entity weapon: world.getEntities(Weapon.class)) {
             for (Entity hitEntity: world.getEntities()) {
-                if (hitEntity.getPart(LifePart.class) != null && hitEntity.getPart(StatsPart.class) != null && !hitEntity.getID().equals(((Weapon) weapon).getOwner().getID()) && !((Weapon) weapon).isEntityHitted(hitEntity)) {
+                if (hitEntity.getPart(LifePart.class) != null && hitEntity.getPart(StatsPart.class) != null && !hitEntity.getID().equals(((Weapon) weapon).getOwner().getID()) && !((Weapon) weapon).isEntityHit(hitEntity)) {
                     LifePart hitEntityLifePart = hitEntity.getPart(LifePart.class);
-                    // StatsPart attackerStats
+                    StatsPart attackerStats = ((Weapon) weapon).getOwner().getPart(StatsPart.class);
                     StatsPart defenderStats = hitEntity.getPart(StatsPart.class);
                     if(weapon.getTexture() != null) {
-                        // the if statement below checks if the invisible rectangles on the entities collide.
+                        // The if statement below checks if the invisible rectangles on the entities collide.
                         if (Intersector.overlapConvexPolygons(weapon.getPolygonBoundaries(), hitEntity.getPolygonBoundaries())) {
                             if (weapon instanceof Weapon) {
-                                if (defenderStats.getDefence() < ((Weapon) weapon).getDamage()) {
-                                    /*
-                                    TODO When player has his own stats use the line below
-                                    int totalDamage = ((Weapon) weapon).getDamage() - defenderStats.getDefence() + attackerStats.getAttack();
-                                    */
-                                    int totalDamage = ((Weapon) weapon).getDamage() - defenderStats.getDefence();
+                                if (defenderStats.getDefence() < ((Weapon) weapon).getDamage() + attackerStats.getAttack()) {
+                                    int totalDamage = ((Weapon) weapon).getDamage() + attackerStats.getAttack() - defenderStats.getDefence();
                                     hitEntityLifePart.subtractLife(totalDamage);
                                 }
-                                ((Weapon) weapon).addEntityHitted(hitEntity);
+                                ((Weapon) weapon).addEntityHit(hitEntity);
                             }
                         }
                     }

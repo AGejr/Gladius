@@ -45,6 +45,7 @@ public class Game implements ApplicationListener {
     private OrthoCachedTiledMapRenderer tiledMapRenderer;
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
+    private final boolean DEBUG_MODE = false; //Set this to true to get hitbox lines
 
     public Game(){
         init();
@@ -127,11 +128,11 @@ public class Game implements ApplicationListener {
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
             shapeRenderer.begin(ShapeType.Line);
-            /*
-            For testing:
-            shapeRenderer.setColor(Color.BLUE);
-             */
-            shapeRenderer.setColor(Color.CLEAR);
+            if (DEBUG_MODE) {
+                shapeRenderer.setColor(Color.BLUE);
+            } else {
+                shapeRenderer.setColor(Color.CLEAR);
+            }
             shapeRenderer.polygon(entity.getPolygonBoundaries().getTransformedVertices());
             shapeRenderer.end();
             Gdx.gl.glDisable(GL20.GL_BLEND);

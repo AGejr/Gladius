@@ -9,11 +9,11 @@ public class Weapon extends Entity {
     private int damage;
     private float weight;
     private final String texturePath;
-    private Entity owner;
-    private List<Entity> hitEntityList;
-    private float angleAdjustment;
-    private float positionAdjustX;
-    private float positionAdjustY;
+    private Entity owner; //The owner of the weapon, aka the entity holding the weapon ex player. Used to stop hitting the entity itself and spawn positions
+    private List<Entity> hitEntityList; //Contains every entity the weapon hits in one swing. This is cleared after each swing.
+    private float angleAdjustment; //Used to make the weapon spawn at the right angle
+    private float positionAdjustX; //Used to align the weapon to ex. the player
+    private float positionAdjustY; //Used to align the weapon to ex. the player
 
     public Weapon(String name, int damage, float weight, float range, String texturePath, int textureWidth, int textureHeight, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float angle, float angleAdjustment, float positionAdjustX, float positionAdjustY, Entity owner) {
         super(null, range, textureWidth, textureHeight, angle, hitboxScaleX, hitboxScaleY, hitboxOriginX);
@@ -97,11 +97,11 @@ public class Weapon extends Entity {
         this.owner = owner;
     }
 
-    public void addEntityHitted(Entity entity) {
+    public void addEntityHit(Entity entity) {
         this.hitEntityList.add(entity);
     }
 
-    public boolean isEntityHitted(Entity entity) {
+    public boolean isEntityHit(Entity entity) {
         return this.hitEntityList.contains(entity);
     }
 

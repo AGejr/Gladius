@@ -34,6 +34,10 @@ public class Entity extends Sprite implements Serializable {
         this.textureWidth = textureWidth;
         this.textureHeight = textureHeight;
         this.angle = angle;
+        /*The polygon is the hitbox for the entity, this is used to register hits with the weapon. It is drawn rom the center of the entity's x-axis
+        * The scale is used to make the hitbox fit the texture of the entity better, because of transparent areas in the texture.
+        * The hitboxOriginX, defines the center of the x-axis where the box is made from.
+        * The hitbox aligns with the bottom of the texture.*/
         this.polygonBoundaries = new Polygon(new float[]{super.getX(), super.getY(), super.getX(), super.getY() + textureHeight, super.getX() + textureWidth, super.getY() + textureHeight, super.getX() + textureWidth, super.getY()});
         this.polygonBoundaries.setOrigin(hitboxOriginX, 0);
         this.polygonBoundaries.setScale(hitboxScaleX, hitboxScaleY);
