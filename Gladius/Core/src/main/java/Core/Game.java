@@ -127,6 +127,10 @@ public class Game implements ApplicationListener {
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
             shapeRenderer.begin(ShapeType.Line);
+            /*
+            For testing:
+            shapeRenderer.setColor(Color.BLUE);
+             */
             shapeRenderer.setColor(Color.CLEAR);
             shapeRenderer.polygon(entity.getPolygonBoundaries().getTransformedVertices());
             shapeRenderer.end();
