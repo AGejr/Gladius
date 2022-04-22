@@ -20,6 +20,7 @@ public class WeaponCollision implements IPostEntityProcessingService {
                     // StatsPart attackerStats
                     StatsPart defenderStats = hitEntity.getPart(StatsPart.class);
                     if(weapon.getTexture() != null) {
+                        // the if statement below checks if the invisible rectangles on the entities collide.
                         if (Intersector.overlapConvexPolygons(weapon.getPolygonBoundaries(), hitEntity.getPolygonBoundaries())) {
                             if (weapon instanceof Weapon) {
                                 if (defenderStats.getDefence() < ((Weapon) weapon).getDamage()) {

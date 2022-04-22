@@ -13,6 +13,8 @@ import com.badlogic.gdx.math.Polygon;
 public class WeaponControlSystem implements IEntityProcessingService, IWeaponService {
     private int counter = 0;
     private float rotationDegrees = 0.0f;
+    // rotationDuration is used for the number of frames it should rotate. The game runs with 30 frames so it will swing for half a second if rotationDuration is 15.
+    private final int rotationDuration = 15;
 
     @Override
     public void process(GameData gameData, World world) {
@@ -31,7 +33,7 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponSer
                     weapon.setX(xPos + ((Weapon) weapon).getPositionAdjustX());
                     weapon.setY(yPos + ((Weapon) weapon).getPositionAdjustY());
 
-                    if (counter < 15) {
+                    if (counter < rotationDuration) {
                         weapon.setAngle(rotationDegrees);
                         weaponBoundry.setRotation(rotationDegrees);
                         weapon.getBoundingRectangle();
@@ -47,7 +49,7 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponSer
                     weapon.setX(xPos + 9);
                     weapon.setY(yPos + ((Weapon) weapon).getPositionAdjustY() - 7);
 
-                    if (counter < 15) {
+                    if (counter < rotationDuration) {
                         weapon.setAngle(rotationDegrees);
                         weaponBoundry.setRotation(rotationDegrees);
                         weapon.getBoundingRectangle();
@@ -56,7 +58,7 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponSer
                 }
 
 
-                if (counter >= 15) {
+                if (counter >= rotationDuration) {
                     ((Weapon) weapon).resetHitEntityList();
                     world.removeEntity(weapon);
                     rotationDegrees = 20.0f;
