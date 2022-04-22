@@ -6,7 +6,6 @@ import Common.data.World;
 import Common.data.entityparts.LifePart;
 import Common.data.entityparts.StatsPart;
 import Common.services.IPostEntityProcessingService;
-import CommonWeapon.IWeaponUserService;
 import com.badlogic.gdx.math.Intersector;
 import CommonWeapon.Weapon;
 
@@ -32,14 +31,11 @@ public class WeaponCollision implements IPostEntityProcessingService {
                                     hitEntityLifePart.subtractLife(totalDamage);
                                 }
                                 ((Weapon) weapon).addEntityHitted(hitEntity);
-                                System.out.println("Enemy hit");
                             }
                         }
                     }
                 }
             }
-
-            // System.out.println("Box3 " + weapon.getRegionX() + " G " + weapon.getRegionY());
         }
     }
 }
