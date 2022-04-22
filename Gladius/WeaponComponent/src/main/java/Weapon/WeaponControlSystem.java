@@ -28,46 +28,49 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponSer
         for (Entity entity: world.getEntities(Weapon.class)) {
             if(entity.getTexturePath() != null) {
                 counter++;
-                for (Entity attacker: world.getEntities(Player.class)) {
-                    AnimationPart attackerAnimationPart = attacker.getPart(AnimationPart.class);
-                    Polygon weaponBoundry = entity.getPolygonBoundaries();
-                    if (!attackerAnimationPart.isLeft()) {
-                        float xPos = attacker.getX();
-                        float yPos = attacker.getY();
-                        entity.setX(xPos + adjustX);
-                        entity.setY(yPos + adjustY);
+                Entity attacker = ((Weapon) entity).getOwner();
+                // for (Entity attacker: world.getEntities(entity.getOwner().class)) {
+                AnimationPart attackerAnimationPart = attacker.getPart(AnimationPart.class);
+                Polygon weaponBoundry = entity.getPolygonBoundaries();
+                if (attackerAnimationPart == null) {
+                    continue;
+                }
+                if (!attackerAnimationPart.isLeft()) {
+                    float xPos = attacker.getX();
+                    float yPos = attacker.getY();
+                    entity.setX(xPos + adjustX);
+                    entity.setY(yPos + adjustY);
 
-                        if (counter < 15) {
-                            entity.setAngle(rotationDegrees);
-                            weaponBoundry.setRotation(rotationDegrees);
-                            entity.getBoundingRectangle();
-                            rotationDegrees = entity.getAngle() - 9.0f;
-                        }
-
-                    } else {
-                        if (counter == 1) {
-                            rotationDegrees = 0.0f;
-                        }
-                        float xPos = attacker.getX();
-                        float yPos = attacker.getY();
-                        entity.setX(xPos + 9);
-                        entity.setY(yPos + adjustY - 7);
-
-                        if (counter < 15) {
-                            entity.setAngle(rotationDegrees);
-                            weaponBoundry.setRotation(rotationDegrees);
-                            entity.getBoundingRectangle();
-                            rotationDegrees = entity.getAngle() + 9.0f;
-                        }
+                    if (counter < 15) {
+                        entity.setAngle(rotationDegrees);
+                        weaponBoundry.setRotation(rotationDegrees);
+                        entity.getBoundingRectangle();
+                        rotationDegrees = entity.getAngle() - 9.0f;
                     }
 
-
-                    if (counter >= 15) {
-                        world.removeEntity(entity);
-                        rotationDegrees = 20.0f;
-                        counter = 0;
+                } else {
+                    if (counter == 1) {
+                        rotationDegrees = 0.0f;
                     }
+                    float xPos = attacker.getX();
+                    float yPos = attacker.getY();
+                    entity.setX(xPos + 9);
+                    entity.setY(yPos + adjustY - 7);
 
+                    if (counter < 15) {
+                        entity.setAngle(rotationDegrees);
+                        weaponBoundry.setRotation(rotationDegrees);
+                        entity.getBoundingRectangle();
+                        rotationDegrees = entity.getAngle() + 9.0f;
+                    }
+                }
+
+
+                if (counter >= 15) {
+                    ((Weapon) entity).resetHitEntityList();
+                    world.removeEntity(entity);
+                    rotationDegrees = 20.0f;
+                    counter = 0;
                 }
             }
         }
