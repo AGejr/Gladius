@@ -93,6 +93,10 @@ public class AStarPathFinding {
 
     //GoalState is constant, currentNode is the one getting closer
     private float heuristic(Node currentNode) {
+        //if (csv.get(40 - currentNode.getY()).get(currentNode.getX()) == 2) {
+        //    return (float) (Math.pow(Math.abs(currentNode.getX() - goalState.get(0)), 2) + Math.pow(Math.abs(currentNode.getY() - goalState.get(1)), 2))*1.3f;
+        //} else {
         return (float) (Math.pow(Math.abs(currentNode.getX() - goalState.get(0)), 2) + Math.pow(Math.abs(currentNode.getY() - goalState.get(1)), 2));
+        //}
     }
 }

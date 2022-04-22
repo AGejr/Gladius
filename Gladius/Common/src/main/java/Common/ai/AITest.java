@@ -11,12 +11,12 @@ public class AITest {
         AStarPathFinding pathFinding = new AStarPathFinding();
         List<Integer> initialState = new ArrayList<>();
         initialState.add(18);
-        initialState.add(40-18);
+        initialState.add(40-17);
 
 
         List<Integer> goalState = new ArrayList<>();
         goalState.add(30);
-        goalState.add(40-18);//14
+        goalState.add(40-17);//14
         World world = new World();
         String file = "C:/Users/janik/Downloads/Map.tmx/";
         world.setCsvMap(FileLoader.fetchData(file));

@@ -27,20 +27,24 @@ public class EnemyControlSystem implements IEntityProcessingService {
             int enemyX = (int) (((enemy.getX() + 32 / 2) / gameData.getMapWidth()) * 50);
             AnimationPart animationPart = enemy.getPart(AnimationPart.class);
             LifePart lifePart = enemy.getPart(LifePart.class);
-
             for (Entity player : world.getEntities(Player.class)) {
-                // getting player pos as its our "target"
+                // getting player position
                 int playerY = (int) ((player.getY() / gameData.getMapHeight()) * 40);
                 int playerX = (int) (((player.getX() + 32 / 2) / gameData.getMapWidth()) * 50);
                 if (player.getY() > 300) {
-                    // Inititilisation of a new search for the given positions
-                    // 40 - y is done to flip the y axis, as tile representation is flipped from out poistion repr
+                    // Initialization of a new search for the given positions
+                    // 40 - y is done to flip the y-axis, as tile representation is flipped from our position representation
                     List<Node> path = aStarPathFinding.treeSearch(new ArrayList<>(Arrays.asList(enemyX, 40 - enemyY)), new ArrayList<>(Arrays.asList(playerX, 40 - playerY)), world);
+                    //Removes the initial node so it does not move there
+                    if (path.size() > 1) {
+                        path.remove(path.size() - 1);
+                    }
 
-                    // the y of the target tile, flipped to fit the position representation
-                    // the output from the search is given in tiles (0-40), so its scaled to fit the position representation (0-1280)
-                    float targetY = gameData.getMapHeight() - path.get(0).getY() * (gameData.getMapHeight() / 40f);
-                    float targetX = path.get(0).getX() * (gameData.getMapWidth() / 50f) + (player.getRadius() * 16) / 2;
+                    Node nextPoint = path.get(path.size()-1);
+                    // the y of the target tile is flipped to fit the position representation
+                    // the output from the search is given in tiles (0-40), so it's scaled to fit the position representation (0-1280)
+                    float targetY = (gameData.getMapHeight() - (nextPoint.getY() * (gameData.getMapHeight() / 40f)));
+                    float targetX = (nextPoint.getX() * (gameData.getMapWidth() / 50f));
 
                     if (targetX < enemy.getX() + (enemy.getRadius() * 16) / 2) {
                         movingPart.setLeft(true);
