@@ -7,4 +7,5 @@ import Common.data.Entity;
  */
 public interface IWeaponUserService {
     Weapon getWeapon();
+    void equipWeapon(Weapon weapon);
 }

@@ -9,14 +9,14 @@ import com.badlogic.gdx.utils.Array;
 public class Enemy extends Entity {
 
     public Enemy(String texturePath, int radius) {
-        super(texturePath, radius, 96, 96);
+        super(texturePath, radius, 96, 96, 0, 0.5f, 0.5f);
     }
 
 
     @Override
     public void initTexture(){
         super.initTexture();
-        this.setRegion(0,0,96,96);
+        this.setRegion(0,0,96, 96);
         initAnimation();
     }
 

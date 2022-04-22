@@ -7,61 +7,66 @@ import Common.services.IEntityProcessingService;
 import CommonWeapon.IWeaponUserService;
 import CommonWeapon.Weapon;
 import CommonWeapon.IWeaponService;
-import CommonPlayer.Player;
 import Common.data.entityparts.AnimationPart;
-
-import java.util.List;
+import com.badlogic.gdx.math.Polygon;
 
 public class WeaponControlSystem implements IEntityProcessingService, IWeaponService {
     private int counter = 0;
     private float rotationDegrees = 0.0f;
-    private final float adjustX = 20.0f;
-    private final float adjustY = 10.0f;
+    // rotationDuration is used for the number of frames it should rotate. The game runs with 30 frames so it will swing for half a second if rotationDuration is 15.
+    private final int rotationDuration = 15;
 
     @Override
     public void process(GameData gameData, World world) {
-        /*
-            TODO Make weapon follow player
-         */
-
-        for (Entity entity: world.getEntities(Sword.class)) {
-            if(entity.getTexturePath() != null) {
+        for (Entity weapon: world.getEntities(Weapon.class)) {
+            if(weapon.getTexturePath() != null) {
                 counter++;
-                for (Entity attacker: world.getEntities(Player.class)) {
-                    AnimationPart attackerAnimationPart = attacker.getPart(AnimationPart.class);
-                    if(!attackerAnimationPart.isLeft()) {
-                        float xPos = attacker.getX();
-                        float yPos = attacker.getY();
-                        entity.setX(xPos + adjustX);
-                        entity.setY(yPos + adjustY);
+                Entity attacker = ((Weapon) weapon).getOwner();
+                float xPos = attacker.getX();
+                float yPos = attacker.getY();
+                AnimationPart attackerAnimationPart = attacker.getPart(AnimationPart.class);
+                Polygon weaponBoundry = weapon.getPolygonBoundaries();
+                /*The animation only works if there is an animation part.*/
+                if (attackerAnimationPart == null) {
+                    continue;
+                }
+                /*The animationpart is used to figure out which way the entity is pointing, so the weapon spawns the right place*/
+                if (!attackerAnimationPart.isLeft()) {
+                    weapon.setX(xPos + ((Weapon) weapon).getPositionAdjustX());
+                    weapon.setY(yPos + ((Weapon) weapon).getPositionAdjustY());
 
-                        if (counter < 15) {
-                            entity.setAngle(rotationDegrees);
-                            rotationDegrees = entity.getAngle() - 9.0f;
-                        }
-
-                    } else {
-                        if (counter == 1) {
-                            rotationDegrees = 60.0f;
-                        }
-                        float xPos = attacker.getX();
-                        float yPos = attacker.getY();
-                        entity.setX(xPos + 9);
-                        entity.setY(yPos + adjustY);
-
-                        if (counter < 15) {
-                            entity.setAngle(rotationDegrees);
-                            rotationDegrees = entity.getAngle() + 9.0f;
-                        }
+                    /*While the counter is less than the duration of the rotation, the rotation continues*/
+                    if (counter < rotationDuration) {
+                        weapon.setAngle(rotationDegrees);
+                        weaponBoundry.setRotation(rotationDegrees);
+                        weapon.getBoundingRectangle();
+                        rotationDegrees = weapon.getAngle() - ((Weapon) weapon).getAngleAdjustment();
                     }
 
-
-                    if (counter >= 15) {
-                        world.removeEntity(entity);
-                        rotationDegrees = 20.0f;
-                        counter = 0;
+                } else {
+                    if (counter == 1) {
+                        rotationDegrees = 0.0f;
                     }
+                    weapon.setX(xPos + 9);
+                    weapon.setY(yPos + ((Weapon) weapon).getPositionAdjustY() - 7);
 
+                    /*While the counter is less than the duration of the rotation, the rotation continues*/
+                    if (counter < rotationDuration) {
+                        weapon.setAngle(rotationDegrees);
+                        weaponBoundry.setRotation(rotationDegrees);
+                        // getBoundingRectangle updates the rectangle's position
+                        weapon.getBoundingRectangle();
+                        rotationDegrees = weapon.getAngle() + ((Weapon) weapon).getAngleAdjustment();
+                    }
+                }
+
+                /*If the counter is above the duration of the rotation, 'stop' rotaion of weapon, remove it from world, and reset the list containing the hit entities
+                * The weapon still exists, it's just not in the world.*/
+                if (counter >= rotationDuration) {
+                    ((Weapon) weapon).resetHitEntityList();
+                    world.removeEntity(weapon);
+                    rotationDegrees = 20.0f;
+                    counter = 0;
                 }
             }
         }
@@ -69,26 +74,16 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponSer
 
     @Override
     public void attack(Entity attacker, GameData gameData, World world) {
+        /*This method starts the attack animation of the weapon. It adds the weapon to the world, and adds its texture back and sets the rotation to start at the correct angle*/
         float xPos = attacker.getX();
         float yPos = attacker.getY();
-        Weapon weaponEntity = Sword.getSword();
-        weaponEntity.setAngle(20.0f);
+        IWeaponUserService weaponUser = (IWeaponUserService) attacker;
+        Weapon weaponEntity = weaponUser.getWeapon();
         rotationDegrees = weaponEntity.getAngle();
-        weaponEntity.setX(xPos + adjustX);
-        weaponEntity.setY(yPos + adjustY);
+        weaponEntity.setX(xPos + weaponEntity.getPositionAdjustX());
+        weaponEntity.setY(yPos + weaponEntity.getPositionAdjustY());
         weaponEntity.setWeaponTexture();
         world.addEntity(weaponEntity);
-    }
-
-    //TODO change to check collision between weapon and enemy, if hit then remove HP
-    private List<Entity> getEntitiesInRange(IWeaponUserService attacker, World world) {
-        Entity weapon = attacker.getWeapon();
-        Entity attackerEntity = (Entity) attacker;
-        // float radians = attackerEntity.getRadians();
-        // The range for weapon is the radius
-        float range = weapon.getRadius();
-        // float attackArea = (float) ((radians / 2) * Math.pow(range, 2)); //Circular sector area
-        return null;
     }
 
 
