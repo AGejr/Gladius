@@ -6,6 +6,7 @@ import Common.data.World;
 import Common.data.entityparts.MovingPart;
 import Common.events.GAME_EVENT;
 import Common.services.IPostEntityProcessingService;
+import CommonPlayer.Player;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -72,12 +73,15 @@ public class Collision implements IPostEntityProcessingService {
                     movingPart.setSlow(1f);
                 }
 
-                if (Arrays.stream(gate).anyMatch(i -> i == tile)) {
-                    gameData.createEvent(GAME_EVENT.ARENA_ENTERED);
-                    entity.setY(346);
-                } else if (tile == 165) {
-                    gameData.createEvent(GAME_EVENT.ARENA_EXITED);
-                    entity.setY(200);
+                if (entity instanceof Player && gameData.isGateEnabled()) {
+                    if (Arrays.stream(gate).anyMatch(i -> i == tile)) {
+                        gameData.createEvent(GAME_EVENT.ARENA_ENTERED);
+                        gameData.setGateEnabled(false);
+                        entity.setY(346);
+                    } else if (tile == 165) {
+                        gameData.createEvent(GAME_EVENT.ARENA_EXITED);
+                        entity.setY(200);
+                    }
                 }
             }
         }

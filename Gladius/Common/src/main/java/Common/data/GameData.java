@@ -17,6 +17,7 @@ public class GameData {
     private float lerp = 3.0f;
     private final GameKeys keys = new GameKeys();
     private EventRegistry eventRegistry = new EventRegistry();
+    private boolean gateEnabled = true;
 
     public GameKeys getKeys() {
         return keys;
@@ -60,5 +61,13 @@ public class GameData {
 
     public void createEvent(GAME_EVENT gameEvent) {
         eventRegistry.addEvent(gameEvent);
+    }
+
+    public boolean isGateEnabled() {
+        return gateEnabled;
+    }
+
+    public void setGateEnabled(boolean gateEnabled) {
+        this.gateEnabled = gateEnabled;
     }
 }

@@ -44,6 +44,7 @@ public class EventProcessor implements IEventProcessingService {
     }
 
     private void processWaveCompletedEvent(GameData gameData, World world) {
+        gameData.setGateEnabled(true);
     }
 
     private void processPlayerDiedEvent(GameData gameData, World world) {
