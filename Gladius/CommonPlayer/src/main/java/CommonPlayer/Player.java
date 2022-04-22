@@ -19,7 +19,7 @@ public class Player extends Entity implements IWeaponUserService {
     public Player(String texturePath, int radius) {
         super(texturePath,radius, 32, 32);
         this.balance = 0;
-        Weapon sword = new Weapon("Sword", 10, 8, 10, "swordMiniRect.png", this);
+        Weapon sword = new Weapon("Sword", 10, 8, 10, "C:\\Users\\Mikkel P Larsen\\Documents\\GitHub\\Gladius\\Gladius\\CommonPlayer\\src\\main\\resources\\swordMiniRect.png", this);
         ownedWeapons.add(sword);
         equippedWeapon = ownedWeapons.get(0);
     }

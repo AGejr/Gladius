@@ -18,13 +18,15 @@ public class AnimationPart implements EntityPart{
         ATTACK_RIGHT,
         ATTACK_LEFT,
         DEATH_RIGHT,
-        DEATH_LEFT
+        DEATH_LEFT,
+        TAKE_DAMAGE
     }
 
     private ANIMATION_STATES currentState = ANIMATION_STATES.IDLE_RIGHT;
     private HashMap<ANIMATION_STATES, Animation> animations = new HashMap<>();
     private float animationTime = 0;
     private Boolean isLeft = true;
+    private Boolean takeDamage = false;
 
     @Override
     public void process(GameData gameData, Entity entity) {
@@ -33,6 +35,7 @@ public class AnimationPart implements EntityPart{
         boolean hasLifePart = lifePart != null;
         boolean hasMovingPart = movingPart != null;
         boolean isInDeathAnimationState = this.getCurrentState() == ANIMATION_STATES.DEATH_LEFT || this.getCurrentState() == ANIMATION_STATES.DEATH_RIGHT;
+        boolean isInTakeDamageAnimationState = this.getCurrentState() == ANIMATION_STATES.TAKE_DAMAGE;
 
         if (hasLifePart && lifePart.isDead() && !isInDeathAnimationState) {
             // If the entity has just died
@@ -46,14 +49,34 @@ public class AnimationPart implements EntityPart{
             }
         }
 
-        if(!this.getCurrentAnimation().isAnimationFinished(animationTime)){
+        if(isInTakeDamageAnimationState && this.getCurrentAnimation().isAnimationFinished(animationTime)) {
+            if(hasLifePart && !lifePart.isDead() && !hasMovingPart) {
+                this.animationTime = 0;
+                if (this.isLeft) {
+                    this.setCurrentState(ANIMATION_STATES.IDLE_LEFT);
+                } else {
+                    this.setCurrentState(ANIMATION_STATES.IDLE_RIGHT);
+                }
+            }
+        }
+
+        if(takeDamage && hasLifePart && !lifePart.isDead() && !hasMovingPart) {
+            // If the entity isn't dead but takes damage
+            // reset animationTime so that it uses the first keyframe
+            this.animationTime = 0;
+            if (this.isLeft) {
+                this.setCurrentState(ANIMATION_STATES.TAKE_DAMAGE);
+            } else {
+                this.setCurrentState(ANIMATION_STATES.TAKE_DAMAGE);
+            }
+            takeDamage = false;
+        }
+
+        if (!this.getCurrentAnimation().isAnimationFinished(animationTime)){
             // Advance animation
             animationTime += Gdx.graphics.getDeltaTime();
         } else if (hasLifePart && !lifePart.isDead()) {
             // Loop animation if the entity has a lifepart, and it is alive
-            animationTime = 0;
-        } else if (lifePart == null) {
-            // Loop animation if entity is not a living entity
             animationTime = 0;
         }
 
@@ -150,5 +173,9 @@ public class AnimationPart implements EntityPart{
 
     public void setLeft(boolean left) {
         isLeft = left;
+    }
+
+    public void setTakeDamage() {
+        takeDamage = true;
     }
 }

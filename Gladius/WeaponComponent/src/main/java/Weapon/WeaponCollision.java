@@ -3,6 +3,7 @@ package Weapon;
 import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
+import Common.data.entityparts.AnimationPart;
 import Common.data.entityparts.LifePart;
 import Common.data.entityparts.StatsPart;
 import Common.services.IPostEntityProcessingService;
@@ -32,6 +33,8 @@ public class WeaponCollision implements IPostEntityProcessingService {
                                 // int totalDamage = ((Weapon) weapon).getDamage() - defenderStats.getDefence() + attackerStats.getAttack();
                                 int totalDamage = ((Weapon) weapon).getDamage() - defenderStats.getDefence();
                                 hitEntityLifePart.subtractLife(totalDamage);
+                                AnimationPart hitEntityAnimationPart = hitEntity.getPart(AnimationPart.class);
+                                hitEntityAnimationPart.setTakeDamage();
                                 System.out.println("Enemy life " + hitEntityLifePart.getLife());
                             }
                         }

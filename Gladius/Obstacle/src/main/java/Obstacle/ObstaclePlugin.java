@@ -5,6 +5,7 @@ import Common.data.GameData;
 import Common.data.World;
 import Common.data.entityparts.AnimationPart;
 import Common.data.entityparts.LifePart;
+import Common.data.entityparts.StatsPart;
 import Common.services.IGamePluginService;
 import Common.tools.FileLoader;
 
@@ -58,7 +59,9 @@ public class ObstaclePlugin implements IGamePluginService {
         String file = "Barrel.png";
         // radius should be texture width / 16
         Entity barrel = new Obstacle(file, 20);
-        barrel.add(new LifePart(3));
+        barrel.add(new LifePart(500));
+        barrel.add(new StatsPart(10, 0));
+        barrel.add(new AnimationPart());
         // todo : implement animation when attacked
         FileLoader.loadFile(file, getClass());
 
@@ -72,7 +75,9 @@ public class ObstaclePlugin implements IGamePluginService {
         String file = "Chest.png";
         // radius should be texture width / 16
         Entity chest = new Obstacle(file, 16);
-        chest.add(new LifePart(3));
+        chest.add(new LifePart(500));
+        chest.add(new StatsPart(0, 0));
+        chest.add(new AnimationPart());
         FileLoader.loadFile(file, getClass());
 
         chest.setX(new Random().nextInt((1000 - 200) + 1) + 200);
@@ -86,7 +91,9 @@ public class ObstaclePlugin implements IGamePluginService {
         String file = "Crate.png";
         // radius should be texture width / 16
         Entity crate = new Obstacle(file, 20);
-        crate.add(new LifePart(3));
+        crate.add(new LifePart(500));
+        crate.add(new StatsPart(0, 0));
+        crate.add(new AnimationPart());
         FileLoader.loadFile(file, getClass());
 
         crate.setX(new Random().nextInt((1000 - 200) + 1) + 200);
@@ -99,7 +106,9 @@ public class ObstaclePlugin implements IGamePluginService {
         String file = "Jar.png";
         // radius should be texture width / 16
         Entity jar = new Obstacle(file, 14);
-        jar.add(new LifePart(3));
+        jar.add(new LifePart(500));
+        jar.add(new StatsPart(0, 0));
+        jar.add(new AnimationPart());
         FileLoader.loadFile(file, getClass());
 
         jar.setX(new Random().nextInt((1000 - 200) + 1) + 200);
