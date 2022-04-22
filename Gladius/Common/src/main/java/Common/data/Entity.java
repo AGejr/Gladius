@@ -117,7 +117,7 @@ public class Entity extends Sprite implements Serializable {
 
     public void setTexturePath(String texturePath) {
         this.texturePath = texturePath;
-        FileLoader.loadFile(texturePath, getClass());
+
     }
 
     public void removeTexturePath() {

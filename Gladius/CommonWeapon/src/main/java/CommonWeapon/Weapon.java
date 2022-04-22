@@ -1,5 +1,7 @@
 package CommonWeapon;
 import Common.data.Entity;
+import Common.tools.FileLoader;
+
 import java.util.List;
 import java.util.ArrayList;
 public class Weapon extends Entity {
@@ -75,6 +77,7 @@ public class Weapon extends Entity {
     }
 
     public void setWeaponTexture() {
+        FileLoader.loadFile(texturePath, getClass());
         super.setTexturePath(this.texturePath);
     }
 
