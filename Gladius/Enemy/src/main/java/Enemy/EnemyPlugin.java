@@ -27,6 +27,7 @@ public class EnemyPlugin implements IGamePluginService {
         // radius should be texture width / 16
         Entity enemy = new Enemy(file, 6);
         enemy.add(new MovingPart(30));
+        enemy.add(new LifePart(100));
         enemy.add(new AnimationPart());
         enemy.add(new LifePart(100));
         enemy.add(new StatsPart(5, 5));
