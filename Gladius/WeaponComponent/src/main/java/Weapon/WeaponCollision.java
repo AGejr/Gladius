@@ -23,9 +23,14 @@ public class WeaponCollision implements IPostEntityProcessingService {
                     if(weapon.getTexture() != null) {
                         if (Intersector.overlapConvexPolygons(weapon.getPolygonBoundaries(), hitEntity.getPolygonBoundaries())) {
                             if (weapon instanceof Weapon) {
-                                // int totalDamage = ((Weapon) weapon).getDamage() - defenderStats.getDefence() + attackerStats.getAttack();
-                                int totalDamage = ((Weapon) weapon).getDamage() - defenderStats.getDefence();
-                                hitEntityLifePart.subtractLife(totalDamage);
+                                if (defenderStats.getDefence() < ((Weapon) weapon).getDamage()) {
+                                    /*
+                                    TODO When player has his own stats use the line below
+                                    int totalDamage = ((Weapon) weapon).getDamage() - defenderStats.getDefence() + attackerStats.getAttack();
+                                    */
+                                    int totalDamage = ((Weapon) weapon).getDamage() - defenderStats.getDefence();
+                                    hitEntityLifePart.subtractLife(totalDamage);
+                                }
                                 ((Weapon) weapon).addEntityHitted(hitEntity);
                                 System.out.println("Enemy hit");
                             }

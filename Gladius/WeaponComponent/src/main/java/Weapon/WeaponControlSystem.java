@@ -7,45 +7,35 @@ import Common.services.IEntityProcessingService;
 import CommonWeapon.IWeaponUserService;
 import CommonWeapon.Weapon;
 import CommonWeapon.IWeaponService;
-import CommonPlayer.Player;
 import Common.data.entityparts.AnimationPart;
 import com.badlogic.gdx.math.Polygon;
-
-import java.util.List;
 
 public class WeaponControlSystem implements IEntityProcessingService, IWeaponService {
     private int counter = 0;
     private float rotationDegrees = 0.0f;
-    private final float adjustX = 20.0f;
-    private final float adjustY = 10.0f;
 
     @Override
     public void process(GameData gameData, World world) {
-        /*
-            TODO Make weapon follow player
-         */
-
-        for (Entity entity: world.getEntities(Weapon.class)) {
-            if(entity.getTexturePath() != null) {
+        for (Entity weapon: world.getEntities(Weapon.class)) {
+            if(weapon.getTexturePath() != null) {
                 counter++;
-                Entity attacker = ((Weapon) entity).getOwner();
-                // for (Entity attacker: world.getEntities(entity.getOwner().class)) {
+                Entity attacker = ((Weapon) weapon).getOwner();
                 AnimationPart attackerAnimationPart = attacker.getPart(AnimationPart.class);
-                Polygon weaponBoundry = entity.getPolygonBoundaries();
+                Polygon weaponBoundry = weapon.getPolygonBoundaries();
                 if (attackerAnimationPart == null) {
                     continue;
                 }
                 if (!attackerAnimationPart.isLeft()) {
                     float xPos = attacker.getX();
                     float yPos = attacker.getY();
-                    entity.setX(xPos + adjustX);
-                    entity.setY(yPos + adjustY);
+                    weapon.setX(xPos + ((Weapon) weapon).getPositionAdjustX());
+                    weapon.setY(yPos + ((Weapon) weapon).getPositionAdjustY());
 
                     if (counter < 15) {
-                        entity.setAngle(rotationDegrees);
+                        weapon.setAngle(rotationDegrees);
                         weaponBoundry.setRotation(rotationDegrees);
-                        entity.getBoundingRectangle();
-                        rotationDegrees = entity.getAngle() - 9.0f;
+                        weapon.getBoundingRectangle();
+                        rotationDegrees = weapon.getAngle() - ((Weapon) weapon).getAngleAdjustment();
                     }
 
                 } else {
@@ -54,21 +44,21 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponSer
                     }
                     float xPos = attacker.getX();
                     float yPos = attacker.getY();
-                    entity.setX(xPos + 9);
-                    entity.setY(yPos + adjustY - 7);
+                    weapon.setX(xPos + 9);
+                    weapon.setY(yPos + ((Weapon) weapon).getPositionAdjustY() - 7);
 
                     if (counter < 15) {
-                        entity.setAngle(rotationDegrees);
+                        weapon.setAngle(rotationDegrees);
                         weaponBoundry.setRotation(rotationDegrees);
-                        entity.getBoundingRectangle();
-                        rotationDegrees = entity.getAngle() + 9.0f;
+                        weapon.getBoundingRectangle();
+                        rotationDegrees = weapon.getAngle() + ((Weapon) weapon).getAngleAdjustment();
                     }
                 }
 
 
                 if (counter >= 15) {
-                    ((Weapon) entity).resetHitEntityList();
-                    world.removeEntity(entity);
+                    ((Weapon) weapon).resetHitEntityList();
+                    world.removeEntity(weapon);
                     rotationDegrees = 20.0f;
                     counter = 0;
                 }
@@ -82,10 +72,9 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponSer
         float yPos = attacker.getY();
         IWeaponUserService weaponUser = (IWeaponUserService) attacker;
         Weapon weaponEntity = weaponUser.getWeapon();
-        weaponEntity.setAngle(20.0f);
         rotationDegrees = weaponEntity.getAngle();
-        weaponEntity.setX(xPos + adjustX);
-        weaponEntity.setY(yPos + adjustY);
+        weaponEntity.setX(xPos + weaponEntity.getPositionAdjustX());
+        weaponEntity.setY(yPos + weaponEntity.getPositionAdjustY());
         weaponEntity.setWeaponTexture();
         world.addEntity(weaponEntity);
     }
