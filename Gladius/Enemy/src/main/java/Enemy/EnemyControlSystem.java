@@ -10,6 +10,7 @@ import Common.data.entityparts.LifePart;
 import Common.data.entityparts.MovingPart;
 import Common.services.IEntityProcessingService;
 import CommonPlayer.Player;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,7 +24,9 @@ public class EnemyControlSystem implements IEntityProcessingService {
     public void process(GameData gameData, World world) {
         for (Entity enemy : world.getEntities(Enemy.class)) {
             MovingPart movingPart = enemy.getPart(MovingPart.class);
+
             int enemyY = (int) ((enemy.getY() / gameData.getMapHeight()) * 40);
+
             int enemyX = (int) (((enemy.getX() + 32 / 2) / gameData.getMapWidth()) * 50);
             AnimationPart animationPart = enemy.getPart(AnimationPart.class);
             LifePart lifePart = enemy.getPart(LifePart.class);
@@ -34,19 +37,45 @@ public class EnemyControlSystem implements IEntityProcessingService {
                 if (player.getY() > 300) {
                     // Initialization of a new search for the given positions
                     // 40 - y is done to flip the y-axis, as tile representation is flipped from our position representation
-                    List<Node> path = aStarPathFinding.treeSearch(new ArrayList<>(Arrays.asList(enemyX, 40 - enemyY)), new ArrayList<>(Arrays.asList(playerX, 40 - playerY)), world);
+                    List<Node> path = aStarPathFinding.treeSearch(new ArrayList<>(Arrays.asList(enemyX, enemyY)), new ArrayList<>(Arrays.asList(playerX, playerY)), world);
                     //Removes the initial node so it does not move there
                     if (path.size() > 1) {
                         path.remove(path.size() - 1);
                     }
 
-                    Node nextPoint = path.get(path.size()-1);
+
+
+
+
+                    Node nextPoint;
+                    if(path.size() > 2) {
+                        nextPoint = path.get(path.size() - 2);
+                    }
+                    else{
+                        nextPoint = path.get(0);
+                    }
                     // the y of the target tile is flipped to fit the position representation
                     // the output from the search is given in tiles (0-40), so it's scaled to fit the position representation (0-1280)
-                    float targetY = (gameData.getMapHeight() - (nextPoint.getY() * (gameData.getMapHeight() / 40f)));
-                    float targetX = (nextPoint.getX() * (gameData.getMapWidth() / 50f));
+                    float targetY = (nextPoint.getY() *32)+16;
+                    float targetX = (nextPoint.getX() * 32)+16;
+                    float currentX = (int) enemy.getX() + (enemy.getRadius() * 16) / 2;
+                    float currentY = (int) enemy.getY();
 
-                    if (targetX < enemy.getX() + (enemy.getRadius() * 16) / 2) {
+                    //used to show path
+                    ShapeRenderer sr = new ShapeRenderer();
+                    sr.begin(ShapeRenderer.ShapeType.Line);
+                    for(Node node : path){
+                        int nodeX = node.getX()*32;
+                        int nodeY = (node.getY())*32;
+                        sr.line(nodeX,nodeY,nodeX+32,nodeY);
+                        sr.line(nodeX,nodeY,nodeX,nodeY-32);
+
+                        sr.line(nodeX+32,nodeY-32,nodeX+32,nodeY);
+                        sr.line(nodeX+32,nodeY-32,nodeX,nodeY-32);
+                    }
+                    sr.end();
+
+                    if (targetX < currentX) {
                         movingPart.setLeft(true);
                         movingPart.setRight(false);
                     } else {
@@ -54,7 +83,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
                         movingPart.setLeft(false);
                     }
 
-                    if (targetY < enemy.getY()) {
+                    if (targetY < currentY) {
                         movingPart.setUp(false);
                         movingPart.setDown(true);
                     } else {

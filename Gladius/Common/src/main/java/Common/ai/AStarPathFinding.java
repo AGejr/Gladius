@@ -41,9 +41,7 @@ public class AStarPathFinding {
             Node successor = new Node(new ArrayList<>());
             successor.setState(child.getState());
             successor.setParentNode(parent);
-            // csv val is the value of the tile the given node has. (0,1 or 2)
             successor.setDepth(parent.getDepth() + 1);
-            successor.setCsvVal(csv.get(40 - successor.getY()).get(successor.getX())); //Maybe remove (needs more testing)
             successors.add(successor);
         }
         return successors;
