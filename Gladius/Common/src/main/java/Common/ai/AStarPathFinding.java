@@ -20,7 +20,7 @@ public class AStarPathFinding {
         this.csv = world.getCsvMap();
         List<Node> fringe = new ArrayList<>();
         Node initialNode = new Node(initialState);
-        initialNode.setCsvVal(csv.get(initialNode.getY()).get(initialNode.getX()));
+        initialNode.setCsvVal(csv.get(40 - initialNode.getY()).get(initialNode.getX()));
         fringe.add(initialNode);
         while (!fringe.isEmpty()) {
             Node node = removeLowestHeuristic(fringe);
@@ -35,19 +35,15 @@ public class AStarPathFinding {
 
     private List<Node> expand(Node parent) {
         List<Node> successors = new ArrayList<>();
-
         List<Node> children = successors(parent);
+
         for (Node child : children) {
             Node successor = new Node(new ArrayList<>());
             successor.setState(child.getState());
             successor.setParentNode(parent);
             // csv val is the value of the tile the given node has. (0,1 or 2)
-            successor.setCsvVal(csv.get(40 - successor.getY()).get(successor.getX()));
-            if (csv.get(40 - successor.getY()).get(successor.getX()) == 2) {
-                successor.setDepth(parent.getDepth() + 16);
-            } else {
-                successor.setDepth(parent.getDepth() + 1);
-            }
+            successor.setDepth(parent.getDepth() + 1);
+            successor.setCsvVal(csv.get(40 - successor.getY()).get(successor.getX())); //Maybe remove (needs more testing)
             successors.add(successor);
         }
         return successors;
@@ -62,6 +58,7 @@ public class AStarPathFinding {
             successors.add(new Node(Arrays.asList(parent.getX() + i, parent.getY()), parent));
             successors.add(new Node(Arrays.asList(parent.getX(), parent.getY() + i), parent));
         }
+
         for (Node node : successors) {
             if (node.getCsvVal() == 1) {
                 removeSuccessors.add(node);
@@ -82,7 +79,7 @@ public class AStarPathFinding {
     private Node removeLowestHeuristic(List<Node> fringe) {
         int lowest = 0;
         for (int i = 1; i < fringe.size(); i++) {
-            if ((heuristic(fringe.get(i)) + fringe.get(i).getDepth()) < (heuristic(fringe.get(lowest)) + fringe.get(lowest).getDepth())) {
+            if (heuristic(fringe.get(i)) + fringe.get(i).getDepth() < heuristic(fringe.get(lowest)) + fringe.get(lowest).getDepth()) {
                 lowest = i;
             }
         }
