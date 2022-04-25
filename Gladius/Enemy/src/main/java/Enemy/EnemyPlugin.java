@@ -9,6 +9,7 @@ import Common.data.entityparts.MovingPart;
 import Common.data.entityparts.StatsPart;
 import Common.services.IGamePluginService;
 import Common.tools.FileLoader;
+import CommonEnemy.Enemy;
 
 import java.util.Random;
 
