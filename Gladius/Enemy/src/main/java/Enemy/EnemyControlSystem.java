@@ -42,11 +42,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
                     if (path.size() > 1) {
                         path.remove(path.size() - 1);
                     }
-
-
-
-
-
+                    
                     Node nextPoint;
                     if(path.size() > 2) {
                         nextPoint = path.get(path.size() - 2);
@@ -63,6 +59,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
                     //used to show path
                     ShapeRenderer sr = new ShapeRenderer();
+                    sr.setProjectionMatrix(gameData.getCam().combined);
                     sr.begin(ShapeRenderer.ShapeType.Line);
                     for(Node node : path){
                         int nodeX = node.getX()*32;

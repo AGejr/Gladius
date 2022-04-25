@@ -59,6 +59,8 @@ public class Game implements ApplicationListener {
         cam.position.x = 800;
         cam.position.y = 140;
         cam.update();
+        gameData.setCam(cam);
+
         String[] files = {"Map/Map.tmx", "Map/Arena_Tileset.tsx", "Map/Arena_Tileset.png"};
         FileLoader.loadFiles(files, getClass());
 

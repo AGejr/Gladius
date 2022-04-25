@@ -58,7 +58,8 @@ public class AStarPathFinding {
         }
 
         for (Node node : successors) {
-            if (node.getCsvVal() == 1) {
+            node.setCsvVal(csv.get(40 - node.getY()).get(node.getX()));
+            if (node.getCsvVal() != 0 && node.getCsvVal() != 2) {
                 removeSuccessors.add(node);
                 continue;
             }
