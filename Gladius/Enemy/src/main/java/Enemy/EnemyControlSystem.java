@@ -10,6 +10,7 @@ import Common.data.entityparts.LifePart;
 import Common.data.entityparts.MovingPart;
 import Common.services.IEntityProcessingService;
 import CommonPlayer.Player;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
             int enemyY = (int) ((enemy.getY() / gameData.getMapHeight()) * 40);
 
-            int enemyX = (int) (((enemy.getX() + 32 / 2) / gameData.getMapWidth()) * 50);
+            int enemyX = (int) ((((enemy.getRegionWidth()/2)+enemy.getX()) / gameData.getMapWidth()) * 50);
             AnimationPart animationPart = enemy.getPart(AnimationPart.class);
             LifePart lifePart = enemy.getPart(LifePart.class);
             for (Entity player : world.getEntities(Player.class)) {
@@ -39,13 +40,13 @@ public class EnemyControlSystem implements IEntityProcessingService {
                     // 40 - y is done to flip the y-axis, as tile representation is flipped from our position representation
                     List<Node> path = aStarPathFinding.treeSearch(new ArrayList<>(Arrays.asList(enemyX, enemyY)), new ArrayList<>(Arrays.asList(playerX, playerY)), world);
                     //Removes the initial node so it does not move there
-                    if (path.size() > 1) {
+                    /*if (path.size() > 1) {
                         path.remove(path.size() - 1);
-                    }
-                    
+                    } */
+
                     Node nextPoint;
                     if(path.size() > 2) {
-                        nextPoint = path.get(path.size() - 2);
+                        nextPoint = path.get(path.size() - 3);
                     }
                     else{
                         nextPoint = path.get(0);
@@ -59,11 +60,15 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
                     //used to show path
                     ShapeRenderer sr = new ShapeRenderer();
+
                     sr.setProjectionMatrix(gameData.getCam().combined);
                     sr.begin(ShapeRenderer.ShapeType.Line);
+                    sr.setColor(Color.GREEN);
+
                     for(Node node : path){
                         int nodeX = node.getX()*32;
-                        int nodeY = (node.getY())*32;
+                        int nodeY = 32+(node.getY())*32;
+
                         sr.line(nodeX,nodeY,nodeX+32,nodeY);
                         sr.line(nodeX,nodeY,nodeX,nodeY-32);
 

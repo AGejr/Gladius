@@ -20,7 +20,7 @@ public class AStarPathFinding {
         this.csv = world.getCsvMap();
         List<Node> fringe = new ArrayList<>();
         Node initialNode = new Node(initialState);
-        initialNode.setCsvVal(csv.get(40 - initialNode.getY()).get(initialNode.getX()));
+        initialNode.setCsvVal(csv.get(39 - initialNode.getY()).get(initialNode.getX()));
         fringe.add(initialNode);
         while (!fringe.isEmpty()) {
             Node node = removeLowestHeuristic(fringe);
@@ -58,7 +58,7 @@ public class AStarPathFinding {
         }
 
         for (Node node : successors) {
-            node.setCsvVal(csv.get(40 - node.getY()).get(node.getX()));
+            node.setCsvVal(csv.get(39 - node.getY()).get(node.getX()));
             if (node.getCsvVal() != 0 && node.getCsvVal() != 2) {
                 removeSuccessors.add(node);
                 continue;
@@ -90,10 +90,10 @@ public class AStarPathFinding {
 
     //GoalState is constant, currentNode is the one getting closer
     private float heuristic(Node currentNode) {
-        //if (csv.get(40 - currentNode.getY()).get(currentNode.getX()) == 2) {
-        //    return (float) (Math.pow(Math.abs(currentNode.getX() - goalState.get(0)), 2) + Math.pow(Math.abs(currentNode.getY() - goalState.get(1)), 2))*1.3f;
-        //} else {
-        return (float) (Math.pow(Math.abs(currentNode.getX() - goalState.get(0)), 2) + Math.pow(Math.abs(currentNode.getY() - goalState.get(1)), 2));
-        //}
+        if (csv.get(39 - currentNode.getY()).get(currentNode.getX()) == 2) {
+           return (float) (Math.pow(Math.abs(currentNode.getX() - goalState.get(0)), 2) + Math.pow(Math.abs(currentNode.getY() - goalState.get(1)), 2))*1.7f;
+        } else {
+            return (float) (Math.pow(Math.abs(currentNode.getX() - goalState.get(0)), 2) + Math.pow(Math.abs(currentNode.getY() - goalState.get(1)), 2));
+        }
     }
 }
