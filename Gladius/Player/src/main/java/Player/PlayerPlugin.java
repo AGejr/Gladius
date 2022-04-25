@@ -22,6 +22,7 @@ public class PlayerPlugin implements IGamePluginService {
 
     private Entity createPlayer(GameData gamedata) {
         String file = "GladiatorSpriteSheet.png";
+        FileLoader.loadFile(file, getClass());
 
         // radius should be texture width / 16
         Entity player = new Player(file, 2);
@@ -29,7 +30,6 @@ public class PlayerPlugin implements IGamePluginService {
         player.add(new AnimationPart());
         player.add(new LifePart(100));
         player.add(new StatsPart(20, 5));
-        FileLoader.loadFile(file, getClass());
 
         player.setX(800);
         player.setY(140);
