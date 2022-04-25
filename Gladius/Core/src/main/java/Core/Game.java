@@ -35,7 +35,6 @@ import static org.lwjgl.opengl.Display.update;
 public class Game implements ApplicationListener {
 
     private static final List<IEntityProcessingService> entityProcessorList = new CopyOnWriteArrayList<>();
-    private static final List<IGamePluginService> gamePluginList = new CopyOnWriteArrayList<>();
     private static List<IPostEntityProcessingService> postEntityProcessorList = new CopyOnWriteArrayList<>();
 
     private static OrthographicCamera cam;
@@ -186,14 +185,12 @@ public class Game implements ApplicationListener {
     }
 
     public void addGamePluginService(IGamePluginService plugin) {
-        this.gamePluginList.add(plugin);
         plugin.start(gameData,world);
 
 
     }
 
     public void removeGamePluginService(IGamePluginService plugin) {
-        this.gamePluginList.remove(plugin);
         plugin.stop(gameData, world);
     }
 }
