@@ -14,6 +14,7 @@ public class World {
 
     private final Map<String, Entity> entityMap = new ConcurrentHashMap<>();
     private TiledMap tiledMap;
+    private List<List<Integer>> csvMap;
     private static List<IEntityFactoryService> entityFactoryList = new CopyOnWriteArrayList<>();
 
     public String addEntity(Entity entity) {
@@ -68,5 +69,13 @@ public class World {
 
     public void setTiledMap(TiledMap tiledMap) {
         this.tiledMap = tiledMap;
+    }
+
+    public List<List<Integer>> getCsvMap() {
+        return csvMap;
+    }
+
+    public void setCsvMap(List<List<Integer>> csvMap) {
+        this.csvMap = csvMap;
     }
 }

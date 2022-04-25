@@ -1,6 +1,8 @@
 package Common.data;
 
 
+import com.badlogic.gdx.graphics.Camera;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -10,10 +12,14 @@ public class GameData {
     private float delta;
     private int displayWidth;
     private int displayHeight;
+    private int mapWidth;
+    private int mapHeight;
     private float lerp = 3.0f;
     private final GameKeys keys = new GameKeys();
     private boolean gateEnabled = true;
     private int wave = 1;
+    private Camera cam;
+    private boolean debugMode = false;
 
     public int getWave() {
         return wave;
@@ -65,5 +71,37 @@ public class GameData {
 
     public void setGateEnabled(boolean gateEnabled) {
         this.gateEnabled = gateEnabled;
+    }
+
+    public int getMapWidth() {
+        return mapWidth;
+    }
+
+    public void setMapWidth(int mapWidth) {
+        this.mapWidth = mapWidth;
+    }
+
+    public int getMapHeight() {
+        return mapHeight;
+    }
+
+    public void setMapHeight(int mapHeight) {
+        this.mapHeight = mapHeight;
+    }
+
+    public Camera getCam() {
+        return cam;
+    }
+
+    public void setCam(Camera cam) {
+        this.cam = cam;
+    }
+
+    public boolean isDebugMode() {
+        return debugMode;
+    }
+
+    public void setDebugMode(boolean debugMode) {
+        this.debugMode = debugMode;
     }
 }
