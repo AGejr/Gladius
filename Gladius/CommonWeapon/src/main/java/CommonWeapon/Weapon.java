@@ -40,6 +40,10 @@ public class Weapon extends Entity {
         this(name, damage, weight, range, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, owner);
     }
 
+    public Weapon() {
+        texturePath = null;
+    }
+
     public String getName() {
         return this.name;
     }
