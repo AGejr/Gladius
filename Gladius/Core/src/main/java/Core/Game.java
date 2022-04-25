@@ -7,6 +7,7 @@ import Common.data.entityparts.AnimationPart;
 import Common.services.*;
 import Common.tools.FileLoader;
 import CommonPlayer.Player;
+import Event.EventRegistry;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
@@ -35,7 +36,7 @@ public class Game implements ApplicationListener {
     private static final List<IEntityProcessingService> entityProcessorList = new CopyOnWriteArrayList<>();
     private static final List<IGamePluginService> gamePluginList = new CopyOnWriteArrayList<>();
     private static List<IPostEntityProcessingService> postEntityProcessorList = new CopyOnWriteArrayList<>();
-    private static IEventProcessingService eventProcessingService = null;
+    private static List<IEventProcessingService> eventProcessingServiceList = new CopyOnWriteArrayList<>();
 
     private static OrthographicCamera cam;
     private final GameData gameData = new GameData();
@@ -152,7 +153,9 @@ public class Game implements ApplicationListener {
             postEntityProcessorService.process(gameData, world);
         }
 
-        eventProcessingService.process(gameData, world);
+        for (IEventProcessingService eventProcessingService: eventProcessingServiceList) {
+            eventProcessingService.process(gameData, world);
+        }
     }
 
     @Override
@@ -197,11 +200,12 @@ public class Game implements ApplicationListener {
     }
 
     public void addEventProcessingService(IEventProcessingService iEventProcessingService) {
-        eventProcessingService = iEventProcessingService;
+        EventRegistry.removeAllEvents();
+        this.eventProcessingServiceList.add(iEventProcessingService);
     }
 
     public void removeEventProcessingService(IEventProcessingService iEventProcessingService) {
-        eventProcessingService = null;
+        this.eventProcessingServiceList.remove(iEventProcessingService);
     }
 
     public void addEntityFactoryService(IEntityFactoryService iEntityFactoryService) {

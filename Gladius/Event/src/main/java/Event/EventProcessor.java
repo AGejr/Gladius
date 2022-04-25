@@ -1,4 +1,4 @@
-package Common.events;
+package Event;
 
 import Common.data.GameData;
 import Common.data.World;
@@ -9,7 +9,7 @@ public class EventProcessor implements IEventProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
-        for (GAME_EVENT game_event: gameData.getEventRegistry().getEvents()){
+        for (GAME_EVENT game_event: EventRegistry.getEvents()){
             switch (game_event) {
                 case ARENA_ENTERED:
                     processArenaEnteredEvent(gameData, world);
@@ -27,11 +27,12 @@ public class EventProcessor implements IEventProcessingService {
                     processPlayerDiedEvent(gameData, world);
                     break;
             }
-            gameData.getEventRegistry().removeEvent(game_event);
+            EventRegistry.removeEvent(game_event);
         }
     }
 
     private void processArenaEnteredEvent(GameData gameData, World world) {
+        gameData.setGateEnabled(false);
         for (IEntityFactoryService entityFactoryService: world.getEntityFactoryList()){
             entityFactoryService.spawn(gameData, world, 4);
         }

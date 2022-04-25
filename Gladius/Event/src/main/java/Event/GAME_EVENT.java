@@ -1,4 +1,4 @@
-package Common.events;
+package Event;
 
 public enum GAME_EVENT {
     ARENA_ENTERED,

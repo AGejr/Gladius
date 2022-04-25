@@ -4,10 +4,10 @@ import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
 import Common.data.entityparts.MovingPart;
-import Common.events.GAME_EVENT;
 import Common.services.IPostEntityProcessingService;
 import CommonPlayer.Player;
-
+import Event.EventRegistry;
+import Event.GAME_EVENT;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -75,11 +75,10 @@ public class Collision implements IPostEntityProcessingService {
 
                 if (entity instanceof Player && gameData.isGateEnabled()) {
                     if (Arrays.stream(gate).anyMatch(i -> i == tile)) {
-                        gameData.createEvent(GAME_EVENT.ARENA_ENTERED);
-                        gameData.setGateEnabled(false);
+                        EventRegistry.addEvent(GAME_EVENT.ARENA_ENTERED);
                         entity.setY(346);
                     } else if (tile == 165) {
-                        gameData.createEvent(GAME_EVENT.ARENA_EXITED);
+                        EventRegistry.addEvent(GAME_EVENT.ARENA_EXITED);
                         entity.setY(200);
                     }
                 }

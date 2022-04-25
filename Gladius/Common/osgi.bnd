@@ -1,3 +1,2 @@
 Export-Package: Common.*
-Bundle-ActivationPolicy: lazy
-Service-Component: META-INF/eventprocessing.xml
+

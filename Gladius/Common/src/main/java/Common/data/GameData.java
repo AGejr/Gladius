@@ -1,10 +1,6 @@
 package Common.data;
 
 
-import Common.events.Event;
-import Common.events.EventRegistry;
-import Common.events.GAME_EVENT;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -16,7 +12,6 @@ public class GameData {
     private int displayHeight;
     private float lerp = 3.0f;
     private final GameKeys keys = new GameKeys();
-    private EventRegistry eventRegistry = new EventRegistry();
     private boolean gateEnabled = true;
 
     public GameKeys getKeys() {
@@ -53,14 +48,6 @@ public class GameData {
 
     public void setLerp(float lerp) {
         this.lerp = lerp;
-    }
-
-    public EventRegistry getEventRegistry() {
-        return eventRegistry;
-    }
-
-    public void createEvent(GAME_EVENT gameEvent) {
-        eventRegistry.addEvent(gameEvent);
     }
 
     public boolean isGateEnabled() {
