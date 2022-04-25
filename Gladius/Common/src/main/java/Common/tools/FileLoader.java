@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class FileLoader {
-    private static int[] noCollide = new int[]{70, 71, 72, 78, 79, 86, 87, 88, 103, 104, 107, 123, 127, 159, 155, 108, 24, 25, 37, 98, 99, 159, 160, 161, 162, 163, 164, 165, 177, 178, 179};
+    private static int[] noCollide = new int[]{70, 71, 72, 78, 79, 86, 87, 88, 103, 104, 107, 123, 127, 159, 155, 108, 37, 98, 99, 159, 160, 161, 162, 163, 164, 165, 177, 178, 179};
     private static int[] water = new int[]{70, 71, 78, 79, 86, 87, 88, 103, 123, 127, 159, 155, 108, 107};
 
     public static void loadFiles(String[] files, Class<?> importClass) {
@@ -54,8 +54,6 @@ public class FileLoader {
                     int nextInt = Integer.parseInt(scanner.next().trim());
                     if (Arrays.stream(water).anyMatch(w -> w == nextInt)) {
                         integers.add(2);
-                    } else if (nextInt == 24 || nextInt == 25) {
-                        integers.add(3);
                     } else if (nextInt == 0 || Arrays.stream(noCollide).anyMatch(c -> c == nextInt)) {
                         integers.add(0);
                     } else {
