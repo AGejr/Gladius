@@ -40,6 +40,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
                 int playerY = (int) ((player.getY() / gameData.getMapHeight()) * 40);
                 int playerX = (int) (((player.getX() + player.getTextureWidth() / 2) / gameData.getMapWidth()) * 50);
 
+                if(world.getCsvMap().get(39-playerY).get(playerX) != 1){
                 if (player.getY() > 300) {
 
                     // listing the positions of enemy and the target (player) in Lists
@@ -57,32 +58,31 @@ public class EnemyControlSystem implements IEntityProcessingService {
                     // choose the point to go to
                     Node nextPoint;
                     // if there are over 2 points in the path
-                    if(path.size() > 2) {
+                    if (path.size() > 2) {
                         //get the 3rd node from start (including start node).
                         //Makes it possible to walk diagonal
                         nextPoint = path.get(path.size() - 3);
-                    }
-                    else{
+                    } else {
                         // get goal node
                         nextPoint = path.get(0);
                     }
                     // the y of the target tile is flipped to fit the position representation
                     // the output from the search is given in tiles (0-40), so it's scaled to fit the position representation (0-1280)
-                    float targetY = (nextPoint.getY() *32)+16;
-                    float targetX = (nextPoint.getX() * 32)+16;
+                    float targetY = (nextPoint.getY() * 32) + 16;
+                    float targetX = (nextPoint.getX() * 32) + 16;
                     float currentX = (int) enemy.getX() + (enemy.getRadius() * 16) / 2;
                     float currentY = (int) enemy.getY();
 
-                    if(gameData.isDebugMode()) {
-                    //used to show path
-                    ShapeRenderer sr = new ShapeRenderer();
+                    if (gameData.isDebugMode()) {
+                        //used to show path
+                        ShapeRenderer sr = new ShapeRenderer();
 
-                    //set projection to not follow camera
-                    sr.setProjectionMatrix(gameData.getCam().combined);
-                    sr.begin(ShapeRenderer.ShapeType.Line);
-                    sr.setColor(Color.GREEN);
+                        //set projection to not follow camera
+                        sr.setProjectionMatrix(gameData.getCam().combined);
+                        sr.begin(ShapeRenderer.ShapeType.Line);
+                        sr.setColor(Color.GREEN);
 
-                    // for every node, draw its outline
+                        // for every node, draw its outline
 
                         for (Node node : path) {
                             int nodeX = node.getX() * 32;
@@ -98,7 +98,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
                     }
 
                     //if not at/near end goal
-                    if(!(path.size() <= 1)) {
+                    if (!(path.size() <= 1)) {
 
                         // if the targetX and EnemyX is not the same
                         if (!((int) targetX == (int) currentX)) {
@@ -136,20 +136,16 @@ public class EnemyControlSystem implements IEntityProcessingService {
                         }
                     } else {
                         //if at goal node
-                        movingPart.setDown(false);
-                        movingPart.setUp(false);
-                        movingPart.setLeft(false);
-                        movingPart.setRight(false);
+                        stopMovement(movingPart);
                     }
                 } else {
                     //if player is not inside arena
-                    movingPart.setDown(false);
-                    movingPart.setUp(false);
-                    movingPart.setLeft(false);
-                    movingPart.setRight(false);
+                    stopMovement(movingPart);
                 }
-
-
+            } else {
+                    //if target is inside a wall
+                    stopMovement(movingPart);
+                }
             }
 
             movingPart.process(gameData, enemy);
@@ -157,6 +153,12 @@ public class EnemyControlSystem implements IEntityProcessingService {
             lifePart.process(gameData, enemy);
         }
 
+    }
 
+    private void stopMovement(MovingPart movingPart){
+        movingPart.setDown(false);
+        movingPart.setUp(false);
+        movingPart.setLeft(false);
+        movingPart.setRight(false);
     }
 }
