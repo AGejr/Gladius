@@ -22,6 +22,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -39,7 +40,6 @@ public class Game implements ApplicationListener {
     private OrthoCachedTiledMapRenderer tiledMapRenderer;
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
-    private final boolean DEBUG_MODE = false; //Set this to true to get hitbox lines
 
     public Game(){
         init();
@@ -128,7 +128,7 @@ public class Game implements ApplicationListener {
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
             shapeRenderer.begin(ShapeType.Line);
-            if (DEBUG_MODE) {
+            if (gameData.isDebugMode()) {
                 shapeRenderer.setColor(Color.BLUE);
             } else {
                 shapeRenderer.setColor(Color.CLEAR);
