@@ -15,6 +15,11 @@ public class FileLoader {
     private static int[] noCollide = new int[]{70, 71, 72, 78, 79, 86, 87, 88, 103, 104, 107, 123, 127, 159, 155, 108, 37, 98, 99, 159, 160, 161, 162, 163, 164, 165, 177, 178, 179};
     private static int[] water = new int[]{70, 71, 78, 79, 86, 87, 88, 103, 123, 127, 159, 155, 108, 107};
 
+    /**
+     * loadFiles method takes the files in the parameter and transfer them from resources to runner
+     * @param files List with file paths to resources
+     * @param importClass The class of where the method is called
+     */
     public static void loadFiles(String[] files, Class<?> importClass) {
         for (String file : files) {
             try (InputStream inputStream = importClass.getClassLoader().getResourceAsStream(file)) {
@@ -28,6 +33,11 @@ public class FileLoader {
         }
     }
 
+    /**
+     * loadFiles method takes the files in the parameter and transfer it from resources to runner
+     * @param file File path to resources
+     * @param importClass The class of where the method is called
+     */
     public static void loadFile(String file, Class<?> importClass) {
         try (InputStream inputStream = importClass.getClassLoader().getResourceAsStream(file)) {
             File newFile = new File(file);
@@ -39,6 +49,11 @@ public class FileLoader {
         }
     }
 
+    /**
+     * Takes the map.tmx csv map and convert it to have fewer values.
+     * @param map file path to the map.tmx
+     * @return Returns a multi array with tile values
+     */
     public static List<List<Integer>> fetchData(String map) {
         Scanner scanner = null;
         List<List<Integer>> csv = new ArrayList<>();

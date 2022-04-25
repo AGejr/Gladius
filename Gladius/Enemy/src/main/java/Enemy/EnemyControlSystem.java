@@ -28,7 +28,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
         for (Entity enemy : world.getEntities(Enemy.class)) {
             MovingPart movingPart = enemy.getPart(MovingPart.class);
 
-            // get the enemy position
+            // get the enemy position on the tile map
             int enemyY = (int) ((enemy.getY() / gameData.getMapHeight()) * 40);
             int enemyX = (int) ((((enemy.getRegionWidth() / 2) + enemy.getX()) / gameData.getMapWidth()) * 50);
 
@@ -36,11 +36,12 @@ public class EnemyControlSystem implements IEntityProcessingService {
             LifePart lifePart = enemy.getPart(LifePart.class);
 
             for (Entity player : world.getEntities(Player.class)) {
-                // getting player position
+                // getting player position on the tile map
                 int playerY = (int) ((player.getY() / gameData.getMapHeight()) * 40);
                 int playerX = (int) (((player.getX() + player.getTextureWidth() / 2) / gameData.getMapWidth()) * 50);
 
                 if (!lifePart.isDead()) {
+                    // if player is in hub (<300) && player is inside the wall (39 is gridMapHeight)
                         if (player.getY() > 300 && world.getCsvMap().get(39 - playerY).get(playerX) != 1) {
 
                             // listing the positions of enemy and the target (player) in Lists
@@ -48,7 +49,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
                             List<Integer> targetPos = new ArrayList<>(Arrays.asList(playerX, playerY));
 
                             // Initialization of a new search for the given positions
-                            List<Node> path = aStarPathFinding.treeSearch(enemyPos, targetPos, world);
+                            List<Node> path = aStarPathFinding.treeSearch(enemyPos, targetPos, world.getCsvMap());
 
                             //Removes the goal node so it does not stand on the goal, but next to it
                             if (path.size() > 1) {
