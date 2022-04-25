@@ -36,13 +36,16 @@ public class EnemyControlSystem implements IEntityProcessingService {
                 int playerY = (int) ((player.getY() / gameData.getMapHeight()) * 40);
                 int playerX = (int) (((player.getX() + 32 / 2) / gameData.getMapWidth()) * 50);
                 if (player.getY() > 300) {
+                    
                     // Initialization of a new search for the given positions
-                    // 40 - y is done to flip the y-axis, as tile representation is flipped from our position representation
-                    List<Node> path = aStarPathFinding.treeSearch(new ArrayList<>(Arrays.asList(enemyX, enemyY)), new ArrayList<>(Arrays.asList(playerX, playerY)), world);
-                    //Removes the initial node so it does not move there
-                    /*if (path.size() > 1) {
-                        path.remove(path.size() - 1);
-                    } */
+                    List<Integer> enemyPos = new ArrayList<>(Arrays.asList(enemyX, enemyY));
+                    List<Integer> targetPos = new ArrayList<>(Arrays.asList(playerX, playerY));
+                    List<Node> path = aStarPathFinding.treeSearch(enemyPos, targetPos, world);
+
+                    //Removes the goal node so it does not stand on the goal, but next to it
+                    if (path.size() > 1) {
+                        path.remove(0);
+                    }
 
                     Node nextPoint;
                     if(path.size() > 2) {
@@ -77,20 +80,45 @@ public class EnemyControlSystem implements IEntityProcessingService {
                     }
                     sr.end();
 
-                    if (targetX < currentX) {
-                        movingPart.setLeft(true);
-                        movingPart.setRight(false);
-                    } else {
-                        movingPart.setRight(true);
-                        movingPart.setLeft(false);
-                    }
+                    //if not at/near end goal
+                    if(!(path.size() <= 1)) {
 
-                    if (targetY < currentY) {
-                        movingPart.setUp(false);
-                        movingPart.setDown(true);
+                        // if the targetX and EnemyX is not the same
+                        if (!((int) targetX == (int) currentX)) {
+
+                            if (targetX < currentX) {
+                                movingPart.setLeft(true);
+                                movingPart.setRight(false);
+                            } else {
+                                movingPart.setRight(true);
+                                movingPart.setLeft(false);
+                            }
+
+                            if (targetY < currentY) {
+                                movingPart.setUp(false);
+                                movingPart.setDown(true);
+                            } else {
+                                movingPart.setDown(false);
+                                movingPart.setUp(true);
+                            }
+                        } else {
+
+                            movingPart.setLeft(false);
+                            movingPart.setRight(false);
+                            if (targetY < currentY) {
+                                movingPart.setUp(false);
+                                movingPart.setDown(true);
+                            } else {
+                                movingPart.setDown(false);
+                                movingPart.setUp(true);
+
+                            }
+                        }
                     } else {
                         movingPart.setDown(false);
-                        movingPart.setUp(true);
+                        movingPart.setUp(false);
+                        movingPart.setLeft(false);
+                        movingPart.setRight(false);
                     }
                 } else {
                     movingPart.setDown(false);
