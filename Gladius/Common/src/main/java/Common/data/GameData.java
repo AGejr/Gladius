@@ -13,6 +13,15 @@ public class GameData {
     private float lerp = 3.0f;
     private final GameKeys keys = new GameKeys();
     private boolean gateEnabled = true;
+    private int wave = 1;
+
+    public int getWave() {
+        return wave;
+    }
+
+    public void incrementWave() {
+        this.wave++;
+    }
 
     public GameKeys getKeys() {
         return keys;

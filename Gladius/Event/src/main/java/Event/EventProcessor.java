@@ -27,7 +27,7 @@ public class EventProcessor implements IEventProcessingService {
                     processWaveCompletedEvent(gameData, world);
                     break;
                 case ENTITY_KILLED:
-                    if (wave_completed(world)) {EventRegistry.addEvent(GAME_EVENT.WAVE_COMPLETED);}
+                    process_entity_killed(gameData, world);
                     break;
                 case PLAYER_DIED:
                     processPlayerDiedEvent(gameData, world);
@@ -37,33 +37,46 @@ public class EventProcessor implements IEventProcessingService {
         }
     }
 
-    private boolean wave_completed(World world){
-        for (Entity entity: world.getEntities()){
-            if (entity instanceof Enemy){
-                LifePart lifePart = entity.getPart(LifePart.class);
-                if (!lifePart.isDead()){
-                    return false;
-                }
+    /**
+     * @param world
+     * @return true if all enemies are dead, otherwise return false
+     */
+    private boolean wave_is_completed(World world){
+        for (Entity entity: world.getEntities(Enemy.class)){
+            LifePart lifePart = entity.getPart(LifePart.class);
+            if (!lifePart.isDead()){
+                return false;
             }
         }
         return true;
     }
 
-    private void processArenaEnteredEvent(GameData gameData, World world) {
-        gameData.setGateEnabled(false);
-        for (IEntityFactoryService entityFactoryService: world.getEntityFactoryList()){
-            entityFactoryService.spawn(gameData, world, 1);
+    private void process_entity_killed(GameData gameData, World world) {
+        if (wave_is_completed(world)) {
+            EventRegistry.addEvent(GAME_EVENT.WAVE_COMPLETED);
         }
     }
 
+    private void processArenaEnteredEvent(GameData gameData, World world) {
+        gameData.setGateEnabled(false);
+        EventRegistry.addEvent(GAME_EVENT.WAVE_STARTED);
+    }
+
     private void processArenaExitedEvent(GameData gameData, World world) {
+        for(Entity enemy: world.getEntities(Enemy.class)){
+            world.removeEntity(enemy);
+        }
     }
 
     private void processWaveStartedEvent(GameData gameData, World world) {
+        for (IEntityFactoryService entityFactoryService: world.getEntityFactoryList()){
+            entityFactoryService.spawn(gameData, world, gameData.getWave());
+        }
     }
 
     private void processWaveCompletedEvent(GameData gameData, World world) {
         gameData.setGateEnabled(true);
+        gameData.incrementWave();
     }
 
     private void processPlayerDiedEvent(GameData gameData, World world) {
