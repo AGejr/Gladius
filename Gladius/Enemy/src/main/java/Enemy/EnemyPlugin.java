@@ -6,6 +6,7 @@ import Common.data.World;
 import Common.data.entityparts.AnimationPart;
 import Common.data.entityparts.LifePart;
 import Common.data.entityparts.MovingPart;
+import Common.data.entityparts.StatsPart;
 import Common.services.IGamePluginService;
 import Common.tools.FileLoader;
 
@@ -28,6 +29,8 @@ public class EnemyPlugin implements IGamePluginService {
         enemy.add(new MovingPart(30));
         enemy.add(new LifePart(100));
         enemy.add(new AnimationPart());
+        enemy.add(new LifePart(100));
+        enemy.add(new StatsPart(5, 5));
         FileLoader.loadFile(file, getClass());
 
         //400 is max, 280 is min
