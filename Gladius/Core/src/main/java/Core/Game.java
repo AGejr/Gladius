@@ -3,7 +3,6 @@ package Core;
 import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
-import Common.data.entityparts.AnimationPart;
 import Common.services.IEntityProcessingService;
 import Common.services.IGamePluginService;
 import Common.services.IPostEntityProcessingService;
@@ -16,9 +15,6 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
@@ -26,11 +22,10 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import static org.lwjgl.opengl.Display.update;
 
 public class Game implements ApplicationListener {
 
@@ -44,7 +39,6 @@ public class Game implements ApplicationListener {
     private OrthoCachedTiledMapRenderer tiledMapRenderer;
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
-    private final boolean DEBUG_MODE = false; //Set this to true to get hitbox lines
 
     public Game(){
         init();
@@ -63,18 +57,24 @@ public class Game implements ApplicationListener {
 
     @Override
     public void create() {
+        gameData.setMapWidth(1600);
+        gameData.setMapHeight(1280);
         cam = new OrthographicCamera();
         cam.setToOrtho(false, Gdx.graphics.getWidth() / 1.5f, Gdx.graphics.getHeight() / 1.5f);
         cam.position.x = 800;
         cam.position.y = 140;
         cam.update();
+        gameData.setCam(cam);
+
         String[] files = {"Map/Map.tmx", "Map/Arena_Tileset.tsx", "Map/Arena_Tileset.png"};
         FileLoader.loadFiles(files, getClass());
 
-        tiledMap = new TmxMapLoader().load("Map/Map.tmx");
+        tiledMap = new TmxMapLoader().load(files[0]);
         world.setTiledMap(tiledMap); //Saves tiledMap to the world
         tiledMapRenderer = new OrthoCachedTiledMapRenderer(tiledMap);
         tiledMapRenderer.setBlending(true); //Makes tiles transparent
+
+        world.setCsvMap(FileLoader.fetchData(files[0]));
 
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
@@ -127,7 +127,7 @@ public class Game implements ApplicationListener {
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
             shapeRenderer.begin(ShapeType.Line);
-            if (DEBUG_MODE) {
+            if (gameData.isDebugMode()) {
                 shapeRenderer.setColor(Color.BLUE);
             } else {
                 shapeRenderer.setColor(Color.CLEAR);

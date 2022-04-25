@@ -2,6 +2,7 @@ package Common.data;
 
 
 import Common.events.Event;
+import com.badlogic.gdx.graphics.Camera;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +13,13 @@ public class GameData {
     private float delta;
     private int displayWidth;
     private int displayHeight;
+    private int mapWidth;
+    private int mapHeight;
     private float lerp = 3.0f;
     private final GameKeys keys = new GameKeys();
     private List<Event> events = new CopyOnWriteArrayList<>();
+    private Camera cam;
+    private boolean debugMode = false;
 
     public void addEvent(Event e) {
         events.add(e);
@@ -73,5 +78,37 @@ public class GameData {
 
     public void setLerp(float lerp) {
         this.lerp = lerp;
+    }
+
+    public int getMapWidth() {
+        return mapWidth;
+    }
+
+    public void setMapWidth(int mapWidth) {
+        this.mapWidth = mapWidth;
+    }
+
+    public int getMapHeight() {
+        return mapHeight;
+    }
+
+    public void setMapHeight(int mapHeight) {
+        this.mapHeight = mapHeight;
+    }
+
+    public Camera getCam() {
+        return cam;
+    }
+
+    public void setCam(Camera cam) {
+        this.cam = cam;
+    }
+
+    public boolean isDebugMode() {
+        return debugMode;
+    }
+
+    public void setDebugMode(boolean debugMode) {
+        this.debugMode = debugMode;
     }
 }

@@ -12,6 +12,7 @@ public class World {
 
     private final Map<String, Entity> entityMap = new ConcurrentHashMap<>();
     private TiledMap tiledMap;
+    private List<List<Integer>> csvMap;
 
     public String addEntity(Entity entity) {
         entityMap.put(entity.getID(), entity);
@@ -53,5 +54,13 @@ public class World {
 
     public void setTiledMap(TiledMap tiledMap) {
         this.tiledMap = tiledMap;
+    }
+
+    public List<List<Integer>> getCsvMap() {
+        return csvMap;
+    }
+
+    public void setCsvMap(List<List<Integer>> csvMap) {
+        this.csvMap = csvMap;
     }
 }
