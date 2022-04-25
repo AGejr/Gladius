@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class AStarPathFinding {
-    // TODO implement multiple goal states (e.g monster wanting multiple targets)
     private List<Integer> goalState;
     private List<List<Integer>> csv;
     private List<List<Integer>> closedNodes;
