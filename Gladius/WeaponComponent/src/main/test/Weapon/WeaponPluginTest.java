@@ -1,5 +1,6 @@
 package Weapon;
 
+import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
 import CommonWeapon.Weapon;
@@ -7,14 +8,13 @@ import Common.services.IGamePluginService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import static org.junit.Assert.assertNotEquals;
 
 public class WeaponPluginTest {
     IGamePluginService plugin;
     GameData gameData;
     World world;
-    Weapon weapon;
+    Entity weapon;
 
 
     @Before
