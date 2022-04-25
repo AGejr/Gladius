@@ -19,6 +19,8 @@ import java.util.List;
 
 public class EnemyControlSystem implements IEntityProcessingService {
 
+    //TODO enemy attack implementation
+
     private AStarPathFinding aStarPathFinding = new AStarPathFinding();
 
     @Override
@@ -71,6 +73,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
                     float currentX = (int) enemy.getX() + (enemy.getRadius() * 16) / 2;
                     float currentY = (int) enemy.getY();
 
+                    if(gameData.isDebugMode()) {
                     //used to show path
                     ShapeRenderer sr = new ShapeRenderer();
 
@@ -80,17 +83,19 @@ public class EnemyControlSystem implements IEntityProcessingService {
                     sr.setColor(Color.GREEN);
 
                     // for every node, draw its outline
-                    for(Node node : path){
-                        int nodeX = node.getX()*32;
-                        int nodeY = 32+(node.getY())*32;
 
-                        sr.line(nodeX,nodeY,nodeX+32,nodeY);
-                        sr.line(nodeX,nodeY,nodeX,nodeY-32);
+                        for (Node node : path) {
+                            int nodeX = node.getX() * 32;
+                            int nodeY = 32 + (node.getY()) * 32;
 
-                        sr.line(nodeX+32,nodeY-32,nodeX+32,nodeY);
-                        sr.line(nodeX+32,nodeY-32,nodeX,nodeY-32);
+                            sr.line(nodeX, nodeY, nodeX + 32, nodeY);
+                            sr.line(nodeX, nodeY, nodeX, nodeY - 32);
+
+                            sr.line(nodeX + 32, nodeY - 32, nodeX + 32, nodeY);
+                            sr.line(nodeX + 32, nodeY - 32, nodeX, nodeY - 32);
+                        }
+                        sr.end();
                     }
-                    sr.end();
 
                     //if not at/near end goal
                     if(!(path.size() <= 1)) {
@@ -146,7 +151,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
 
             }
-            
+
             movingPart.process(gameData, enemy);
             animationPart.process(gameData, enemy);
             lifePart.process(gameData, enemy);

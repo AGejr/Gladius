@@ -11,6 +11,7 @@ public class AStarPathFinding {
     private List<Integer> goalState;
     private List<List<Integer>> csv;
     private List<List<Integer>> closedNodes;
+    private final int gridMapWidth = 39;
 
     public List<Node> treeSearch(List<Integer> initialState, List<Integer> goalState, World world) {
         this.goalState = goalState;
@@ -20,13 +21,17 @@ public class AStarPathFinding {
         this.csv = world.getCsvMap();
         List<Node> fringe = new ArrayList<>();
         Node initialNode = new Node(initialState);
-        initialNode.setCsvVal(csv.get(39 - initialNode.getY()).get(initialNode.getX()));
+        initialNode.setCsvVal(csv.get(gridMapWidth - initialNode.getY()).get(initialNode.getX()));
+
         fringe.add(initialNode);
         while (!fringe.isEmpty()) {
+            // remove the best node
             Node node = removeLowestHeuristic(fringe);
+
             if (goalState.equals(node.getState())) {
                 return node.path();
             }
+            // if its not goal state, expand the node
             List<Node> children = expand(node);
             fringe.addAll(children);
         }
@@ -49,16 +54,21 @@ public class AStarPathFinding {
 
     private List<Node> successors(Node parent) {
         List<Node> successors = new ArrayList<>();
+
+        //array for the nodes in successors that should be removed before return
         List<Node> removeSuccessors = new ArrayList<>();
-        // around is an int array that make sure the coords to the tiles around the parent tile are found.
-        int[] around = {1, -1};
-        for (int i : around) {
-            successors.add(new Node(Arrays.asList(parent.getX() + i, parent.getY()), parent));
-            successors.add(new Node(Arrays.asList(parent.getX(), parent.getY() + i), parent));
-        }
+
+        // Add all nodes around the parent node
+        successors.add(new Node(Arrays.asList(parent.getX() + 1, parent.getY()), parent));
+        successors.add(new Node(Arrays.asList(parent.getX(), parent.getY() + 1), parent));
+        successors.add(new Node(Arrays.asList(parent.getX() - 1, parent.getY()), parent));
+        successors.add(new Node(Arrays.asList(parent.getX(), parent.getY() - 1), parent));
+
 
         for (Node node : successors) {
-            node.setCsvVal(csv.get(39 - node.getY()).get(node.getX()));
+            //set the CSV val of the node. Minus is used to flip the map
+            node.setCsvVal(csv.get(gridMapWidth - node.getY()).get(node.getX()));
+            // if node is a collideable object
             if (node.getCsvVal() != 0 && node.getCsvVal() != 2) {
                 removeSuccessors.add(node);
                 continue;
@@ -76,6 +86,7 @@ public class AStarPathFinding {
     }
 
     private Node removeLowestHeuristic(List<Node> fringe) {
+
         int lowest = 0;
         for (int i = 1; i < fringe.size(); i++) {
             if (heuristic(fringe.get(i)) + fringe.get(i).getDepth() < heuristic(fringe.get(lowest)) + fringe.get(lowest).getDepth()) {
@@ -83,14 +94,18 @@ public class AStarPathFinding {
             }
         }
         Node last = fringe.get(lowest);
+        //add node to closed nodes, as it will be used and therefore "closed"
         closedNodes.add(last.getState());
         fringe.remove(lowest);
         return last;
     }
 
-    //GoalState is constant, currentNode is the one getting closer
+
+    //Heuristic is the diagonal length between the node and the target
+    //Pythagoras a^2 + b^2 = c^2 is used.
     private float heuristic(Node currentNode) {
-        if (csv.get(39 - currentNode.getY()).get(currentNode.getX()) == 2) {
+        //if current node is 2 (water), the heuristic will be scaled
+        if (csv.get(gridMapWidth - currentNode.getY()).get(currentNode.getX()) == 2) {
            return (float) (Math.pow(Math.abs(currentNode.getX() - goalState.get(0)), 2) + Math.pow(Math.abs(currentNode.getY() - goalState.get(1)), 2))*1.7f;
         } else {
             return (float) (Math.pow(Math.abs(currentNode.getX() - goalState.get(0)), 2) + Math.pow(Math.abs(currentNode.getY() - goalState.get(1)), 2));

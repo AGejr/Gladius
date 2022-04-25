@@ -19,6 +19,7 @@ public class GameData {
     private final GameKeys keys = new GameKeys();
     private List<Event> events = new CopyOnWriteArrayList<>();
     private Camera cam;
+    private boolean debugMode = false;
 
     public void addEvent(Event e) {
         events.add(e);
@@ -101,5 +102,13 @@ public class GameData {
 
     public void setCam(Camera cam) {
         this.cam = cam;
+    }
+
+    public boolean isDebugMode() {
+        return debugMode;
+    }
+
+    public void setDebugMode(boolean debugMode) {
+        this.debugMode = debugMode;
     }
 }
