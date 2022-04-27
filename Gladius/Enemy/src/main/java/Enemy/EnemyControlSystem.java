@@ -135,7 +135,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
                                         animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.IDLE_RIGHT);
                                     }
                                 }
-
                             }
 
                             //if not at/near end goal

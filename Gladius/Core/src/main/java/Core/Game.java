@@ -135,7 +135,6 @@ public class Game implements ApplicationListener {
                 shapeRenderer.setColor(Color.CLEAR);
             }
             shapeRenderer.polygon(entity.getPolygonBoundaries().getTransformedVertices());
-            System.out.println(entity.getPolygonBoundaries().getTransformedVertices()[0]);
             shapeRenderer.end();
             Gdx.gl.glDisable(GL20.GL_BLEND);
         }
