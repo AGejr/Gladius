@@ -71,9 +71,10 @@ public class EnemyControlSystem implements IEntityProcessingService {
                             }
                             // the y of the target tile is flipped to fit the position representation
                             // the output from the search is given in tiles (0-40), so it's scaled to fit the position representation (0-1280)
+                            // + 16 to hit the center of the grid
                             float targetY = (nextPoint.getY() * 32) + 16;
                             float targetX = (nextPoint.getX() * 32) + 16;
-                            float currentX = (int) enemy.getX() + (enemy.getRadius() * 16) / 2;
+                            float currentX = (int) enemy.getX() + enemy.getTextureWidth() / 2f;
                             float currentY = (int) enemy.getY();
 
                             if (gameData.isDebugMode()) {
@@ -100,7 +101,8 @@ public class EnemyControlSystem implements IEntityProcessingService {
                                 sr.end();
                             }
 
-                            double lengthToTarget = Math.sqrt(Math.pow(Math.abs(currentX - player.getX()), 2) + Math.pow(Math.abs(currentY - player.getY()), 2));
+                            float playerFullX = player.getX() + player.getTextureWidth()/2f;
+                            double lengthToTarget = Math.sqrt(Math.pow(Math.abs(currentX - playerFullX), 2) + Math.pow(Math.abs(currentY - player.getY()), 2));
                             //if not at/near end goal
                             if (!(lengthToTarget <= 96)) {
 
@@ -140,16 +142,17 @@ public class EnemyControlSystem implements IEntityProcessingService {
                                 }
                             } else {
                                 //if distance is <96
-                                currentX += enemy.getTextureWidth()/2f;
-                                double angle = Math.asin(Math.abs(currentX - player.getX())/lengthToTarget);
-                                if(lengthToTarget >= attackRange) {
-                                    decideMovement(currentX, currentY, player.getX()+player.getTextureWidth()/2f, player.getY(), movingPart);
-                                } else if(lengthToTarget < attackRange && lengthToTarget > attackRange*0.9f){
+                                //currentX += enemy.getTextureWidth()/2f;
+
+                                double angle = Math.asin(Math.abs(currentX - playerFullX)/lengthToTarget);
+                                if(lengthToTarget > attackRange) {
+                                    decideMovement(currentX, currentY, playerFullX, player.getY(), movingPart);
+                                } else if(lengthToTarget <= attackRange && lengthToTarget >= attackRange*0.9f){
                                     stopMovement(movingPart);
                                 } else{
                                     int yModifier = player.getY() < currentY ? 1 : -1;
-                                    int xModifier = player.getX() < currentX ? 1 : -1;
-                                    decideMovement(currentX, currentY, (player.getX()+player.getTextureWidth()/2f) + (attackRange*xModifier),player.getY() + (attackRange*yModifier), movingPart);
+                                    int xModifier = playerFullX < currentX ? 1 : -1;
+                                    decideMovement(currentX, currentY, playerFullX + (attackRange*xModifier),player.getY() + (attackRange*yModifier), movingPart);
                                 }
                             }
                         } else {
