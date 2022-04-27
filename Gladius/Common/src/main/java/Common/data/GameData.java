@@ -2,6 +2,7 @@ package Common.data;
 
 
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ public class GameData {
     private int wave = 1;
     private Camera cam;
     private boolean debugMode = false;
+    private Stage stage;
 
     public int getWave() {
         return wave;
@@ -103,5 +105,12 @@ public class GameData {
 
     public void setDebugMode(boolean debugMode) {
         this.debugMode = debugMode;
+    }
+
+    public Stage getStage() {
+        if (stage == null) {
+            stage = new Stage();
+        }
+        return stage;
     }
 }
