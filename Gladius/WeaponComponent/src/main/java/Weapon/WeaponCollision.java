@@ -28,6 +28,10 @@ public class WeaponCollision implements IPostEntityProcessingService {
                                     int totalDamage = ((Weapon) weapon).getDamage() + attackerStats.getAttack() - defenderStats.getDefence();
                                     hitEntityLifePart.subtractLife(totalDamage);
                                 }
+                                AnimationPart hitEntityAnimationPart = hitEntity.getPart(AnimationPart.class);
+                                if (hitEntityAnimationPart != null) {
+                                    hitEntityAnimationPart.setTakeDamage();
+                                }
                                 ((Weapon) weapon).addEntityHit(hitEntity);
                             }
                         }

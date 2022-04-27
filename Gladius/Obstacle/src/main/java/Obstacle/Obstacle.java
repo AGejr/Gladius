@@ -12,6 +12,10 @@ public class Obstacle extends Entity {
         super(texturePath, radius, 64, 64);
     }
 
+    public Obstacle(String texturePath,float radius, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float hitboxOriginY) {
+        super(texturePath, radius, textureWidth, textureHeight, angle, hitboxScaleX, hitboxScaleY, hitboxOriginX, hitboxOriginY);
+    }
+
     @Override
     public void initTexture(){
         super.initTexture();
@@ -28,7 +32,7 @@ public class Obstacle extends Entity {
             for (int i = 0; i < 1; i++) {
                 idleTextures.add(new TextureRegion(this.getTexture(),64*i,0,64,64));
             }
-            Animation idleAnimation = new Animation(0.24f,idleTextures);
+            Animation idleAnimation = new Animation(0.10f,idleTextures);
             animationPart.addAnimation(AnimationPart.ANIMATION_STATES.IDLE_RIGHT, idleAnimation);
             animationPart.addAnimation(AnimationPart.ANIMATION_STATES.IDLE_LEFT, idleAnimation);
 
@@ -37,8 +41,9 @@ public class Obstacle extends Entity {
             for (int i = 0; i < 3; i++) {
                 takeDamageTextures.add(new TextureRegion(this.getTexture(),64*i,0,64,64));
             }
-            Animation takeDamageAnimation = new Animation(0.16f,takeDamageTextures);
-            animationPart.addAnimation(AnimationPart.ANIMATION_STATES.TAKE_DAMAGE, takeDamageAnimation);
+            Animation takeDamageAnimation = new Animation(0.06f,takeDamageTextures);
+            animationPart.addAnimation(AnimationPart.ANIMATION_STATES.TAKE_DAMAGE_LEFT, takeDamageAnimation);
+            animationPart.addAnimation(AnimationPart.ANIMATION_STATES.TAKE_DAMAGE_RIGHT, takeDamageAnimation);
 
             // DEATH animation
             Array<TextureRegion> DeathTextures = new Array<>();

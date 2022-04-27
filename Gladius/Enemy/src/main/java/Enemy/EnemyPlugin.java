@@ -29,8 +29,7 @@ public class EnemyPlugin implements IGamePluginService {
         enemy.add(new MovingPart(30));
         enemy.add(new LifePart(100));
         enemy.add(new AnimationPart());
-        enemy.add(new LifePart(100));
-        enemy.add(new StatsPart(5, 5));
+        enemy.add(new StatsPart(5,0,0, 0, 5));
         FileLoader.loadFile(file, getClass());
 
         enemy.setX(new Random().nextInt((1000 - 200) + 1) + 200);

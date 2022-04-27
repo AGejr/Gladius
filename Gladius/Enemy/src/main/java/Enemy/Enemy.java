@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.Array;
 public class Enemy extends Entity {
 
     public Enemy(String texturePath, int radius) {
-        super(texturePath, radius, 96, 96, 0, 0.5f, 0.5f);
+        super(texturePath, radius, 96, 96, 0, 0.3f, 0.5f);
     }
 
 

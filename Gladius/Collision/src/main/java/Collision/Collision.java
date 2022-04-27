@@ -10,10 +10,7 @@ import Common.services.IPostEntityProcessingService;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Collision implements IPostEntityProcessingService {
     private List<List<Integer>> csv;
@@ -32,9 +29,7 @@ public class Collision implements IPostEntityProcessingService {
             if(entity.getPart(MovingPart.class) != null) {
                 float entityLeft = (entity.getX() + ((float) entity.getTextureWidth()/2) - entity.getRadius()/2);
                 float entityRight = (entity.getX() + ((float) entity.getTextureWidth()/2) + entity.getRadius()/2);
-                //float entityTop = (entity.getY() + (entity.getTextureHeight()/2) + entity.getRadius()/2);
                 float entityTop = (entity.getY() + entity.getRadius());
-                //float entityBottom = (entity.getY() + (entity.getTextureHeight()/2) - entity.getRadius()/2);
                 float entityBottom = entity.getY();
                 float radius = entity.getRadius();
                 int y = (int) (40 - ((entity.getY() / height) * 40));
@@ -87,7 +82,8 @@ public class Collision implements IPostEntityProcessingService {
                 for(Entity collidingEntity : world.getEntities()) {
                     // ^ TO AVOID COLLISION BETWEEN TWO MOVING ENTITIES
                     // SHOULD MAYBE BE REMOVED!
-                    if(collidingEntity.getPart(MovingPart.class) == null) {
+                    LifePart collidingEntityLifePart = collidingEntity.getPart(LifePart.class);
+                    if(collidingEntity.getPart(MovingPart.class) == null && collidingEntityLifePart != null && collidingEntityLifePart.getLife() > 0) {
                         float collidingEntityLeft = (collidingEntity.getX() + ((float) collidingEntity.getTextureWidth()/2) - collidingEntity.getRadius()/2);
                         float collidingEntityRight = (collidingEntity.getX() + ((float) collidingEntity.getTextureWidth()/2) + collidingEntity.getRadius()/2);
                         float collidingEntityTop = (collidingEntity.getY() + ((float) collidingEntity.getTextureHeight()/2) + collidingEntity.getRadius()/2);
@@ -106,7 +102,6 @@ public class Collision implements IPostEntityProcessingService {
                                 if(collidingEntityStats.getAttack() != 0) {
                                     int totalDamage = collidingEntityStats.getAttack() - defenderStats.getDefence();
                                     defendingEntity.subtractLife(totalDamage);
-                                    System.out.println("Entity life " + defendingEntity.getLife());
                                 }
                             }
                         }
@@ -123,7 +118,6 @@ public class Collision implements IPostEntityProcessingService {
                                 if(collidingEntityStats.getAttack() != 0) {
                                     int totalDamage = collidingEntityStats.getAttack() - defenderStats.getDefence();
                                     defendingEntity.subtractLife(totalDamage);
-                                    System.out.println("Entity life " + defendingEntity.getLife());
                                 }
                             }
                         }
@@ -140,7 +134,6 @@ public class Collision implements IPostEntityProcessingService {
                                 if(collidingEntityStats.getAttack() != 0) {
                                     int totalDamage = collidingEntityStats.getAttack() - defenderStats.getDefence();
                                     defendingEntity.subtractLife(totalDamage);
-                                    System.out.println("Entity life " + defendingEntity.getLife());
                                 }
                             }
                         }
@@ -157,11 +150,21 @@ public class Collision implements IPostEntityProcessingService {
                                 if(collidingEntityStats.getAttack() != 0) {
                                     int totalDamage = collidingEntityStats.getAttack() - defenderStats.getDefence();
                                     defendingEntity.subtractLife(totalDamage);
-                                    System.out.println("Entity life " + defendingEntity.getLife());
                                 }
                             }
                         }
                     }
+                }
+            } else if(entity.getPart(MovingPart.class) == null && entity.getPart(LifePart.class) != null){
+                // Entity is a spawned object
+                // Makes sure spawned objects aren't inside walls
+                int y = (int) (40 - (((entity.getY() + entity.getTextureHeight()/2) / height) * 40));
+                int x = (int) ((entity.getX() + entity.getTextureWidth()/2) / width) * 50; // divide by 2 to get center
+                if(csv.get(y).get(x) == 1) {
+                    // Entity is inside a wall
+                    entity.setX(new Random().nextInt((1000 - 400) + 1) + 400);
+                    entity.setY(new Random().nextInt((1000 - 400) + 1) + 400);
+                    System.out.println("Moving Object");
                 }
             }
         }

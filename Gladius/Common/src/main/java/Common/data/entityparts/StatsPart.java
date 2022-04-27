@@ -11,10 +11,16 @@ public class StatsPart implements EntityPart {
      */
 
     private int attack;
+    private int spikeAttack;
+    private int explosiveAttack;
+    private int explosionRadius;
     private int defence;
 
-    public StatsPart(int attack, int defence) {
+    public StatsPart(int attack, int spikeAttack, int explosiveAttack, int explosionRadius, int defence) {
         this.attack = attack;
+        this.spikeAttack = spikeAttack;
+        this.explosiveAttack = explosiveAttack;
+        this.explosionRadius = explosionRadius;
         this.defence = defence;
     }
 
@@ -29,5 +35,21 @@ public class StatsPart implements EntityPart {
 
     public int getDefence() {
         return defence;
+    }
+
+    public int getExplosiveAttack() {
+        return explosiveAttack;
+    }
+
+    public void setExplosiveAttack(int explosiveAttack) {
+        this.explosiveAttack = explosiveAttack;
+    }
+
+    public int getExplosionRadius() {
+        return explosionRadius;
+    }
+
+    public int getSpikeAttack() {
+        return spikeAttack;
     }
 }
