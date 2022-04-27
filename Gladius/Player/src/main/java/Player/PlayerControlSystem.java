@@ -10,6 +10,8 @@ import Common.services.IEntityProcessingService;
 import CommonWeapon.IWeaponService;
 import CommonPlayer.Player;
 import Common.data.entityparts.AnimationPart;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 
 public class PlayerControlSystem implements IEntityProcessingService {
 
@@ -19,6 +21,10 @@ public class PlayerControlSystem implements IEntityProcessingService {
     public void process(GameData gameData, World world) {
 
         for (Entity entity : world.getEntities(Player.class)){
+
+
+
+
 
             MovingPart movingPart = entity.getPart(MovingPart.class);
             LifePart lifePart = entity.getPart(LifePart.class);
@@ -30,7 +36,10 @@ public class PlayerControlSystem implements IEntityProcessingService {
             movingPart.setDown(gameData.getKeys().isDown(GameKeys.DOWN));
 
             if (gameData.getKeys().isPressed(GameKeys.SPACE) && weaponService != null && !lifePart.isDead()) {
+                Sound sound = Gdx.audio.newSound(Gdx.files.internal("hitSound.mp3"));
+                sound.play(1.0f);
                 weaponService.attack(entity, gameData, world);
+
             }
 
             movingPart.process(gameData, entity);
