@@ -184,32 +184,22 @@ public class EnemyControlSystem implements IEntityProcessingService {
                 movingPart.setLeft(false);
             }
 
-            // needed only IF walking diagonal
-                if (targetY < Y) {
-                    movingPart.setUp(false);
-                    movingPart.setDown(true);
-                } else if (targetY > Y) {
-                    movingPart.setDown(false);
-                    movingPart.setUp(true);
-                }else {
-                        movingPart.setUp(false);
-                        movingPart.setDown(false);
-                    }
+
 
         } else {
 
             movingPart.setLeft(false);
             movingPart.setRight(false);
-            if (targetY < Y) {
-                movingPart.setUp(false);
-                movingPart.setDown(true);
-            } else if (targetY > Y) {
-                movingPart.setDown(false);
-                movingPart.setUp(true);
-            }else {
-                movingPart.setUp(false);
-                movingPart.setDown(false);
-            }
+        }
+       if (targetY < Y) {
+            movingPart.setUp(false);
+            movingPart.setDown(true);
+        } else if (targetY > Y) {
+            movingPart.setDown(false);
+            movingPart.setUp(true);
+        }else {
+            movingPart.setUp(false);
+            movingPart.setDown(false);
         }
     }
 }
