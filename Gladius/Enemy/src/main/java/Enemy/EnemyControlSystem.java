@@ -121,7 +121,27 @@ public class EnemyControlSystem implements IEntityProcessingService {
                                     // decide whether to modify position positively or negatively
                                     int yModifier = player.getY() < currentY ? 1 : -1;
                                     int xModifier = playerFullX < currentX ? 1 : -1;
-                                    decideMovement(currentX, currentY, playerFullX + (attackRange*xModifier),player.getY() + (attackRange*yModifier), movingPart);
+                                    /*
+                                       modifiers are used to figure out which direction the enemy is to its target
+                                       used to modify the attackRange variable
+                                       Tells the enemy if it should walk left or right, up or down
+                                    */
+
+                                    // if the enemy within 2 pixels on the same horizontal plane as the player (2 pixels up and 2 pixels down)
+                                    if(Math.abs(player.getY()-currentY) <= 2){
+                                        // decide movement with the Y parameter of both entities as the same (0)
+                                        decideMovement(currentX,0,playerFullX + (attackRange * xModifier), 0, movingPart);
+
+                                    }
+                                    // else if the enemy within 2 pixels on the same vertical plane as the player (2 pixels left and 2 pixels right)
+                                    else if (Math.abs(playerFullX-currentX) <= 2){
+                                        // decide movement with the X parameter of both entities as the same (0)
+                                        decideMovement(0, currentY, 0, player.getY() + (attackRange * yModifier), movingPart);
+                                    }
+                                    // else do movement as with the current values.
+                                    else {
+                                        decideMovement(currentX, currentY, playerFullX + (attackRange * xModifier), player.getY() + (attackRange * yModifier), movingPart);
+                                    }
                                 }
                             }
                         } else {
@@ -147,7 +167,13 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
     private void decideMovement(float X, float Y, float targetX, float targetY, MovingPart movingPart){
         // if the targetX and EnemyX is not the same
-        if (!((int) targetX == (int) X)) {
+        X = (int) X;
+        Y = (int) Y;
+        targetX = (int) targetX;
+        targetY = (int) targetY;
+
+
+        if (!(targetX == X)) {
 
 
             if (targetX < X) {
@@ -158,14 +184,17 @@ public class EnemyControlSystem implements IEntityProcessingService {
                 movingPart.setLeft(false);
             }
 
-            // needed if walking diagonal
-            if (targetY < Y) {
-                movingPart.setUp(false);
-                movingPart.setDown(true);
-            } else {
-                movingPart.setDown(false);
-                movingPart.setUp(true);
-            }
+            // needed only IF walking diagonal
+                if (targetY < Y) {
+                    movingPart.setUp(false);
+                    movingPart.setDown(true);
+                } else if (targetY > Y) {
+                    movingPart.setDown(false);
+                    movingPart.setUp(true);
+                }else {
+                        movingPart.setUp(false);
+                        movingPart.setDown(false);
+                    }
 
         } else {
 
@@ -174,10 +203,12 @@ public class EnemyControlSystem implements IEntityProcessingService {
             if (targetY < Y) {
                 movingPart.setUp(false);
                 movingPart.setDown(true);
-            } else {
+            } else if (targetY > Y) {
                 movingPart.setDown(false);
                 movingPart.setUp(true);
-
+            }else {
+                movingPart.setUp(false);
+                movingPart.setDown(false);
             }
         }
     }
