@@ -43,7 +43,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
                 int playerX = (int) (((player.getX() + player.getTextureWidth() / 2) / gameData.getMapWidth()) * 50);
 
                 if (!lifePart.isDead()) {
-                    // if player is in hub (<300) && player is inside the wall (39 is gridMapHeight)
+                    // if player is not in hub (>300) && player is not inside the wall (39 is gridMapHeight)
                         if (player.getY() > 300 && world.getCsvMap().get(39 - playerY).get(playerX) != 1) {
 
                             // listing the positions of enemy and the target (player) in Lists
@@ -103,53 +103,22 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
                             float playerFullX = player.getX() + player.getTextureWidth()/2f;
                             double lengthToTarget = Math.sqrt(Math.pow(Math.abs(currentX - playerFullX), 2) + Math.pow(Math.abs(currentY - player.getY()), 2));
-                            //if not at/near end goal
+                            //if not within 96 pixels (3 tiles) of the goal target
                             if (!(lengthToTarget <= 96)) {
 
-                                // if the targetX and EnemyX is not the same
-                                if (!((int) targetX == (int) currentX)) {
+                                decideMovement(currentX,currentY,targetX,targetY,movingPart);
 
-
-                                    if (targetX < currentX) {
-                                        movingPart.setLeft(true);
-                                        movingPart.setRight(false);
-                                    } else {
-                                        movingPart.setRight(true);
-                                        movingPart.setLeft(false);
-                                    }
-
-                                    // needed if walking diagonal
-                                    if (targetY < currentY) {
-                                        movingPart.setUp(false);
-                                        movingPart.setDown(true);
-                                    } else {
-                                        movingPart.setDown(false);
-                                        movingPart.setUp(true);
-                                    }
-
-                                } else {
-
-                                    movingPart.setLeft(false);
-                                    movingPart.setRight(false);
-                                    if (targetY < currentY) {
-                                        movingPart.setUp(false);
-                                        movingPart.setDown(true);
-                                    } else {
-                                        movingPart.setDown(false);
-                                        movingPart.setUp(true);
-
-                                    }
-                                }
                             } else {
                                 //if distance is <96
-                                //currentX += enemy.getTextureWidth()/2f;
-
-                                double angle = Math.asin(Math.abs(currentX - playerFullX)/lengthToTarget);
                                 if(lengthToTarget > attackRange) {
                                     decideMovement(currentX, currentY, playerFullX, player.getY(), movingPart);
-                                } else if(lengthToTarget <= attackRange && lengthToTarget >= attackRange*0.9f){
+                                }
+                                // if inside attack range, either max range, 90 % of attack range
+                                else if(lengthToTarget <= attackRange && lengthToTarget >= attackRange*0.9f){
                                     stopMovement(movingPart);
-                                } else{
+
+                                } else {
+                                    // decide whether to modify position positively or negatively
                                     int yModifier = player.getY() < currentY ? 1 : -1;
                                     int xModifier = playerFullX < currentX ? 1 : -1;
                                     decideMovement(currentX, currentY, playerFullX + (attackRange*xModifier),player.getY() + (attackRange*yModifier), movingPart);
