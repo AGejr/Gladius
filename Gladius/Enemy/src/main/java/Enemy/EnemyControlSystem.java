@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 
 import java.util.ArrayList;
@@ -79,6 +80,8 @@ public class EnemyControlSystem implements IEntityProcessingService {
                             float currentX = (int) enemy.getX() + (enemy.getRadius() * 16) / 2;
                             float currentY = (int) enemy.getY();
 
+                            Polygon attackRange = ((Enemy) enemy).getAttackRange();
+
                             if (gameData.isDebugMode()) {
                                 //used to show path
                                 ShapeRenderer sr = new ShapeRenderer();
@@ -106,7 +109,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
                                 Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
                                 sr.begin(ShapeRenderer.ShapeType.Line);
                                 sr.setColor(Color.RED);
-                                Polygon attackRange = ((Enemy) enemy).getAttackRange();
                                 attackRange.setPosition(enemy.getX(), enemy.getY());
                                 attackRange.getBoundingRectangle();
                                 sr.polygon(attackRange.getTransformedVertices());
@@ -114,9 +116,24 @@ public class EnemyControlSystem implements IEntityProcessingService {
                                 Gdx.gl.glDisable(GL20.GL_BLEND);
                             }
 
+                            // Checking if player is inside of enemy's attack range
+                            if (Intersector.overlapConvexPolygons(attackRange, player.getPolygonBoundaries())) {
+                                System.out.println("Player is inside enemy's attack range");
+                                if (animationPart.isLeft() && animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime())) {
+                                    animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.ATTACK_LEFT);
+                                } else if (animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime())) {
+                                    animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.ATTACK_RIGHT);
+                                }
+                            } else {
+                                if (animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime())) {
+                                    if (animationPart.isLeft()) {
+                                        animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.IDLE_LEFT);
+                                    } else {
+                                        animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.IDLE_RIGHT);
+                                    }
+                                }
 
-                            // TODO Should check if player is inside of the attack circle. If the enemy is already attacking it should not attack.
-                            // if ()
+                            }
 
                             //if not at/near end goal
                             if (!(path.size() <= 1)) {
