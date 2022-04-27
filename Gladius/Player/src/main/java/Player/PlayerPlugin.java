@@ -11,6 +11,8 @@ import Common.services.IGamePluginService;
 import Common.tools.FileLoader;
 import CommonPlayer.Player;
 
+import java.io.File;
+
 public class PlayerPlugin implements IGamePluginService {
     private Entity player;
 
@@ -30,6 +32,7 @@ public class PlayerPlugin implements IGamePluginService {
         player.add(new LifePart(100));
         player.add(new StatsPart(20, 5));
         FileLoader.loadFile(file, getClass());
+        FileLoader.loadFile("hitSound.mp3",getClass());
 
         player.setX(800);
         player.setY(140);
