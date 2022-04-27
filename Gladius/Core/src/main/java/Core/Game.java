@@ -77,6 +77,8 @@ public class Game implements ApplicationListener {
         String[] files = {"Map/Map.tmx", "Map/Arena_Tileset.tsx", "Map/Arena_Tileset.png"};
         FileLoader.loadFiles(files, getClass());
 
+        FileLoader.loadFile("mc.otf", getClass());
+
         tiledMap = new TmxMapLoader().load(files[0]);
         world.setTiledMap(tiledMap); //Saves tiledMap to the world
         tiledMapRenderer = new OrthoCachedTiledMapRenderer(tiledMap);

@@ -33,10 +33,10 @@ public class UI {
         stage.act();
     }
 
-    public static void add_text(GameData gameData, String text,float x, float y, float scale) {
+    // TODO: add timeout option
+    public static void addFreeTypeText(GameData gameData, String text,float x, float y, float scale) {
         Stage stage = gameData.getStage();
-        // TODO: load font
-        FreeTypeFontGenerator freeTypeFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/mc.otf"));
+        FreeTypeFontGenerator freeTypeFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("mc.otf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 20;
         BitmapFont bitmapFont = freeTypeFontGenerator.generateFont(parameter);
