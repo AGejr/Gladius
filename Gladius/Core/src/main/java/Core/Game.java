@@ -113,7 +113,7 @@ public class Game implements ApplicationListener {
                     position.y += (entity.getY() - position.y) * gameData.getLerp() * Gdx.graphics.getDeltaTime();
                 }
                 // draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation)
-                batch.draw(entity, entity.getX(), entity.getY(), 0, 0, entity.getTextureWidth(), entity.getTextureHeight(), 1, 1, entity.getAngle());
+                batch.draw(entity, entity.getX(), entity.getY(), 0, 0, entity.getTextureWidth(), entity.getTextureHeight(), entity.getScaling(), entity.getScaling(), entity.getAngle());
                 entity.updatePolygonBoundariesPosition();
             }
         }

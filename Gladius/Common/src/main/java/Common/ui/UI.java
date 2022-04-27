@@ -21,8 +21,9 @@ public class UI {
         text(gameData, text, x, y);
     }
 
-    private static void text(GameData gameData, String text, float x, float y) {
+    public static void text(GameData gameData, String text, float x, float y) {
         Stage stage = gameData.getStage();
+        stage.clear();
         Label.LabelStyle labelStyle = new Label.LabelStyle(new BitmapFont(), new Color(Color.WHITE));
         Label label = new Label(text, labelStyle);
         label.setPosition(x, y);

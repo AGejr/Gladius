@@ -2,13 +2,11 @@ package Common.data;
 
 
 import Common.data.entityparts.EntityPart;
-import Common.tools.FileLoader;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Polygon;
 
-import java.awt.*;
 import java.io.File;
 import java.io.Serializable;
 import java.util.Map;
@@ -25,6 +23,7 @@ public class Entity extends Sprite implements Serializable {
     private Map<Class, EntityPart> parts;
     private float angle;
     private Polygon polygonBoundaries;
+    private float scaling = 1f;
 
     public Entity(String texturePath,float radius, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX) {
         super();
@@ -143,5 +142,13 @@ public class Entity extends Sprite implements Serializable {
 
     public void updatePolygonBoundariesPosition() {
         this.getPolygonBoundaries().setPosition(this.getX(), this.getY());
+    }
+
+    public void setScaling(float scaling) {
+        this.scaling = scaling;
+    }
+
+    public float getScaling() {
+        return scaling;
     }
 }

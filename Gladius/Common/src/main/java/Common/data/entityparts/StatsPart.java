@@ -5,6 +5,8 @@ import Common.data.GameData;
 
 public class StatsPart implements EntityPart {
 
+
+
     /***
         @param attack Damage modifier for entity
         @param defence Protects makes an attack deal less damage
@@ -12,10 +14,12 @@ public class StatsPart implements EntityPart {
 
     private int attack;
     private int defence;
+    private int balance;
 
-    public StatsPart(int attack, int defence) {
+    public StatsPart(int attack, int defence, int balance) {
         this.attack = attack;
         this.defence = defence;
+        this.balance = balance;
     }
 
     @Override
@@ -39,4 +43,11 @@ public class StatsPart implements EntityPart {
         this.defence = defence;
     }
 
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
+
+    public int getBalance() {
+        return balance;
+    }
 }

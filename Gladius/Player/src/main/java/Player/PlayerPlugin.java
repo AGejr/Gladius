@@ -29,7 +29,7 @@ public class PlayerPlugin implements IGamePluginService {
         player.add(new MovingPart(100));
         player.add(new AnimationPart());
         player.add(new LifePart(100));
-        player.add(new StatsPart(20, 5));
+        player.add(new StatsPart(20, 5, 0));
 
         player.setX(800);
         player.setY(140);
