@@ -10,6 +10,7 @@ import Common.tools.FileLoader;
 import CommonPlayer.Player;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.GL20;
@@ -39,6 +40,7 @@ public class Game implements ApplicationListener {
     private OrthoCachedTiledMapRenderer tiledMapRenderer;
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
+    private Music theme;
 
     public Game(){
         init();
@@ -68,13 +70,20 @@ public class Game implements ApplicationListener {
 
         String[] files = {"Map/Map.tmx", "Map/Arena_Tileset.tsx", "Map/Arena_Tileset.png"};
         FileLoader.loadFiles(files, getClass());
-
         tiledMap = new TmxMapLoader().load(files[0]);
         world.setTiledMap(tiledMap); //Saves tiledMap to the world
         tiledMapRenderer = new OrthoCachedTiledMapRenderer(tiledMap);
         tiledMapRenderer.setBlending(true); //Makes tiles transparent
 
         world.setCsvMap(FileLoader.fetchData(files[0]));
+
+        FileLoader.loadFile("theme.ogg",getClass());
+
+            Music theme = Gdx.audio.newMusic(Gdx.files.internal("theme.ogg"));
+            theme.setVolume(0.75f);
+            theme.setLooping(true);
+            theme.play();
+
 
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
@@ -101,6 +110,7 @@ public class Game implements ApplicationListener {
         tiledMapRenderer.render();
         batch.setProjectionMatrix(cam.combined);
         shapeRenderer.setProjectionMatrix(cam.combined);
+
 
 
         batch.begin();

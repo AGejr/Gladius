@@ -22,10 +22,6 @@ public class PlayerControlSystem implements IEntityProcessingService {
 
         for (Entity entity : world.getEntities(Player.class)){
 
-
-
-
-
             MovingPart movingPart = entity.getPart(MovingPart.class);
             LifePart lifePart = entity.getPart(LifePart.class);
             AnimationPart animationPart = entity.getPart(AnimationPart.class);
