@@ -1,8 +1,11 @@
 package Common.ui;
 
 import Common.data.GameData;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -28,6 +31,20 @@ public class UI {
         label.setPosition(x, y);
         stage.addActor(label);
         stage.act();
-        stage.draw();
+    }
+
+    public static void add_text(GameData gameData, String text,float x, float y, float scale) {
+        Stage stage = gameData.getStage();
+        // TODO: load font
+        FreeTypeFontGenerator freeTypeFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/mc.otf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 20;
+        BitmapFont bitmapFont = freeTypeFontGenerator.generateFont(parameter);
+        freeTypeFontGenerator.dispose();
+        Label label = new Label(text, new Label.LabelStyle(bitmapFont, new Color(Color.WHITE)));
+        label.setFontScale(scale);
+        label.setPosition(x, y);
+        stage.addActor(label);
+        stage.act();
     }
 }

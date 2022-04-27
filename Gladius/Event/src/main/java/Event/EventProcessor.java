@@ -6,7 +6,11 @@ import Common.data.World;
 import Common.data.entityparts.LifePart;
 import Common.services.IEntityFactoryService;
 import Common.services.IEventProcessingService;
+import Common.ui.UI;
 import Enemy.Enemy;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 public class EventProcessor implements IEventProcessingService {
 
@@ -76,6 +80,7 @@ public class EventProcessor implements IEventProcessingService {
 
     private void processWaveCompletedEvent(GameData gameData, World world) {
         gameData.setGateEnabled(true);
+        UI.add_text(gameData, "Wave" + Integer.toString(gameData.getWave()) + " cleared!", 250f, 320f, 3f);
         gameData.incrementWave();
     }
 

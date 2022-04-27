@@ -51,8 +51,12 @@ public class Game implements ApplicationListener {
     public void init() {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "Gladius";
-        cfg.width = 800;
-        cfg.height = 640;
+        int displayWidth = 800;
+        int displayHeight = 640;
+        cfg.width = displayWidth;
+        cfg.height = displayHeight;
+        gameData.setDisplayWidth(displayWidth);
+        gameData.setDisplayHeight(displayHeight);
         cfg.useGL30 = false;
         cfg.resizable = false;
 
@@ -106,7 +110,6 @@ public class Game implements ApplicationListener {
         batch.setProjectionMatrix(cam.combined);
         shapeRenderer.setProjectionMatrix(cam.combined);
 
-
         batch.begin();
         for (Entity entity :  world.getEntities()){
             if(entity.getTexturePath() != null) {
@@ -140,6 +143,7 @@ public class Game implements ApplicationListener {
             shapeRenderer.end();
             Gdx.gl.glDisable(GL20.GL_BLEND);
         }
+        gameData.getStage().draw();
         update();
         gameData.getKeys().update();
     }
