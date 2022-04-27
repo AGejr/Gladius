@@ -11,8 +11,12 @@ import Common.data.entityparts.MovingPart;
 import Common.services.IEntityProcessingService;
 import CommonPlayer.Player;
 import CommonEnemy.Enemy;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Polygon;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -97,7 +101,22 @@ public class EnemyControlSystem implements IEntityProcessingService {
                                     sr.line(nodeX + 32, nodeY - 32, nodeX, nodeY - 32);
                                 }
                                 sr.end();
+
+                                Gdx.gl.glEnable(GL20.GL_BLEND);
+                                Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+                                sr.begin(ShapeRenderer.ShapeType.Line);
+                                sr.setColor(Color.RED);
+                                Polygon attackRange = ((Enemy) enemy).getAttackRange();
+                                attackRange.setPosition(enemy.getX(), enemy.getY());
+                                attackRange.getBoundingRectangle();
+                                sr.polygon(attackRange.getTransformedVertices());
+                                sr.end();
+                                Gdx.gl.glDisable(GL20.GL_BLEND);
                             }
+
+
+                            // TODO Should check if player is inside of the attack circle. If the enemy is already attacking it should not attack.
+                            // if ()
 
                             //if not at/near end goal
                             if (!(path.size() <= 1)) {

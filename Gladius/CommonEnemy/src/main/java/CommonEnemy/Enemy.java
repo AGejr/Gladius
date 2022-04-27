@@ -2,16 +2,38 @@ package CommonEnemy;
 
 import Common.data.Entity;
 import Common.data.entityparts.AnimationPart;
+import CommonWeapon.IWeaponUserService;
+import CommonWeapon.WeaponImages;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.utils.Array;
+import CommonWeapon.Weapon;
 
-public class Enemy extends Entity {
+public class Enemy extends Entity implements IWeaponUserService {
+    private Weapon equippedWeapon;
+    private Polygon attackRange;
 
     public Enemy(String texturePath, int radius) {
         super(texturePath, radius, 96, 96, 0, 0.5f, 0.5f);
+        //TODO align weapon hitbox to the axe and swinging animation
+        this.equippedWeapon = new Weapon("Axe", 25, 8, 35, null, 0, 0, 0.9f, 0.9f, 0, 20.0f, 9.0f, 20.0f, 10.0f, this);
+
+        // this.getX(), this.getY(), this.equippedWeapon.getRange()
+        this.attackRange = new Polygon(new float[]{super.getX(), super.getY(), super.getX(), super.getY() + super.getTextureHeight(), super.getX() + super.getTextureWidth(), super.getY() + super.getTextureHeight(), super.getX() + super.getTextureWidth(), super.getY()});
+        this.attackRange.setOrigin(super.getTextureWidth() / 2f, -15);
+        this.attackRange.setScale(0.9f, 0.7f);
     }
 
+    @Override
+    public Weapon getWeapon() {
+        return this.equippedWeapon;
+    }
+
+    @Override
+    public void equipWeapon(Weapon weapon) {
+        this.equippedWeapon = weapon;
+    }
 
     @Override
     public void initTexture(){
@@ -20,8 +42,12 @@ public class Enemy extends Entity {
         initAnimation();
     }
 
+    public Polygon getAttackRange() {
+        return this.attackRange;
+    }
+
     private void initAnimation(){
-        if(this.getPart(AnimationPart.class) != null){
+        if (this.getPart(AnimationPart.class) != null) {
             AnimationPart animationPart = this.getPart(AnimationPart.class);
 
             // IDLE animation
