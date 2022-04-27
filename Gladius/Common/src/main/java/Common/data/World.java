@@ -63,4 +63,12 @@ public class World {
     public void setCsvMap(List<List<Integer>> csvMap) {
         this.csvMap = csvMap;
     }
+
+    public <E extends Entity> void putBehind(Class<E>... entityTypes) {
+        List<Entity> entityList = getEntities(entityTypes);
+        for (Entity entity : entityList) {
+            entityMap.remove(entity.getID());
+            entityMap.put(entity.getID(), entity);
+        }
+    }
 }

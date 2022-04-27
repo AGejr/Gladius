@@ -3,6 +3,7 @@ package Common.data;
 
 import Common.events.Event;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ public class GameData {
     private List<Event> events = new CopyOnWriteArrayList<>();
     private Camera cam;
     private boolean debugMode = false;
+    private Stage stage;
 
     public void addEvent(Event e) {
         events.add(e);
@@ -110,5 +112,12 @@ public class GameData {
 
     public void setDebugMode(boolean debugMode) {
         this.debugMode = debugMode;
+    }
+
+    public Stage getStage() {
+        if (stage == null) {
+            stage = new Stage();
+        }
+        return stage;
     }
 }

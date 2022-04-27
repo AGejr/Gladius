@@ -30,4 +30,13 @@ public class StatsPart implements EntityPart {
     public int getDefence() {
         return defence;
     }
+
+    public void setAttack(int attack) {
+        this.attack = attack;
+    }
+
+    public void setDefence(int defence) {
+        this.defence = defence;
+    }
+
 }

@@ -6,6 +6,8 @@ import Common.data.World;
 import Common.services.IGamePluginService;
 import Common.tools.FileLoader;
 
+import java.util.List;
+
 public class ShopPlugin implements IGamePluginService {
     private Entity shop;
 
@@ -16,13 +18,13 @@ public class ShopPlugin implements IGamePluginService {
     }
 
     private Entity createShop() {
-        String file = "Shop.png";
-        FileLoader.loadFile(file, this.getClass());
+        String[] files = {"Shop.png", "ShopItems.png"};
+        FileLoader.loadFiles(files, this.getClass());
 
-        Entity shop = new Shop(file);
+        Entity shop = new Shop(files[0]);
 
         shop.setX(608);
-        shop.setY(160);
+        shop.setY(192);
         return shop;
     }
 
