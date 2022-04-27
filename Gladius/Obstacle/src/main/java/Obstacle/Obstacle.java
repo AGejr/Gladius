@@ -16,6 +16,10 @@ public class Obstacle extends Entity {
         super(texturePath, radius, textureWidth, textureHeight, angle, hitboxScaleX, hitboxScaleY, hitboxOriginX, hitboxOriginY);
     }
 
+    public Obstacle(String texturePath,float radius, int radiusOffsetX, int radiusOffsetY, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float hitboxOriginY) {
+        super(texturePath, radius, radiusOffsetX, radiusOffsetY, textureWidth, textureHeight, angle, hitboxScaleX, hitboxScaleY, hitboxOriginX, hitboxOriginY);
+    }
+
     @Override
     public void initTexture(){
         super.initTexture();

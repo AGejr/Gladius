@@ -27,10 +27,10 @@ public class Collision implements IPostEntityProcessingService {
         for (Entity entity : world.getEntities()) {
             // Collision with tiles
             if(entity.getPart(MovingPart.class) != null) {
-                float entityLeft = (entity.getX() + ((float) entity.getTextureWidth()/2) - entity.getRadius()/2);
-                float entityRight = (entity.getX() + ((float) entity.getTextureWidth()/2) + entity.getRadius()/2);
-                float entityTop = (entity.getY() + entity.getRadius());
-                float entityBottom = entity.getY();
+                float entityLeft = (entity.getX() + entity.getRadiusOffsetX() + ((float) entity.getTextureWidth()/2) - entity.getRadius()/2);
+                float entityRight = (entity.getX() + entity.getRadiusOffsetX() + ((float) entity.getTextureWidth()/2) + entity.getRadius()/2);
+                float entityTop = (entity.getY() + entity.getRadiusOffsetY() + entity.getRadius());
+                float entityBottom = entity.getY() + entity.getRadiusOffsetY();
                 float radius = entity.getRadius();
                 int y = (int) (40 - ((entity.getY() / height) * 40));
                 int x = (int) (((entity.getX()+(entity.getTextureWidth())/2) / width) * 50); // divide by 2 to get center
@@ -84,10 +84,10 @@ public class Collision implements IPostEntityProcessingService {
                     // SHOULD MAYBE BE REMOVED!
                     LifePart collidingEntityLifePart = collidingEntity.getPart(LifePart.class);
                     if(collidingEntity.getPart(MovingPart.class) == null && collidingEntityLifePart != null && collidingEntityLifePart.getLife() > 0) {
-                        float collidingEntityLeft = (collidingEntity.getX() + ((float) collidingEntity.getTextureWidth()/2) - collidingEntity.getRadius()/2);
-                        float collidingEntityRight = (collidingEntity.getX() + ((float) collidingEntity.getTextureWidth()/2) + collidingEntity.getRadius()/2);
-                        float collidingEntityTop = (collidingEntity.getY() + ((float) collidingEntity.getTextureHeight()/2) + collidingEntity.getRadius()/2);
-                        float collidingEntityBottom = (collidingEntity.getY() + ((float) collidingEntity.getTextureHeight()/2) - collidingEntity.getRadius()/2);
+                        float collidingEntityLeft = (collidingEntity.getX() + collidingEntity.getRadiusOffsetX() + ((float) collidingEntity.getTextureWidth()/2) - collidingEntity.getRadius()/2);
+                        float collidingEntityRight = (collidingEntity.getX() + collidingEntity.getRadiusOffsetX() + ((float) collidingEntity.getTextureWidth()/2) + collidingEntity.getRadius()/2);
+                        float collidingEntityTop = (collidingEntity.getY() + collidingEntity.getRadiusOffsetY() + ((float) collidingEntity.getTextureHeight()/2) + collidingEntity.getRadius()/2);
+                        float collidingEntityBottom = (collidingEntity.getY() + collidingEntity.getRadiusOffsetY() + ((float) collidingEntity.getTextureHeight()/2) - collidingEntity.getRadius()/2);
                         StatsPart collidingEntityStats = collidingEntity.getPart(StatsPart.class);
                         // check left collision
                         if(!entity.getClass().equals(collidingEntity.getClass()) &&
@@ -99,7 +99,7 @@ public class Collision implements IPostEntityProcessingService {
                             if(collidingEntityStats != null && collidingEntity.getPart(MovingPart.class) == null) {
                                 LifePart defendingEntity = entity.getPart(LifePart.class);
                                 StatsPart defenderStats = entity.getPart(StatsPart.class);
-                                if(collidingEntityStats.getAttack() != 0) {
+                                if(collidingEntityStats.getSpikeAttack() != 0) {
                                     int totalDamage = collidingEntityStats.getAttack() - defenderStats.getDefence();
                                     defendingEntity.subtractLife(totalDamage);
                                 }
@@ -115,7 +115,7 @@ public class Collision implements IPostEntityProcessingService {
                             if(collidingEntityStats != null && collidingEntity.getPart(MovingPart.class) == null) {
                                 LifePart defendingEntity = entity.getPart(LifePart.class);
                                 StatsPart defenderStats = entity.getPart(StatsPart.class);
-                                if(collidingEntityStats.getAttack() != 0) {
+                                if(collidingEntityStats.getSpikeAttack() != 0) {
                                     int totalDamage = collidingEntityStats.getAttack() - defenderStats.getDefence();
                                     defendingEntity.subtractLife(totalDamage);
                                 }
@@ -131,7 +131,7 @@ public class Collision implements IPostEntityProcessingService {
                             if(collidingEntityStats != null && collidingEntity.getPart(MovingPart.class) == null) {
                                 LifePart defendingEntity = entity.getPart(LifePart.class);
                                 StatsPart defenderStats = entity.getPart(StatsPart.class);
-                                if(collidingEntityStats.getAttack() != 0) {
+                                if(collidingEntityStats.getSpikeAttack() != 0) {
                                     int totalDamage = collidingEntityStats.getAttack() - defenderStats.getDefence();
                                     defendingEntity.subtractLife(totalDamage);
                                 }
@@ -147,7 +147,7 @@ public class Collision implements IPostEntityProcessingService {
                             if(collidingEntityStats != null && collidingEntity.getPart(MovingPart.class) == null) {
                                 LifePart defendingEntity = entity.getPart(LifePart.class);
                                 StatsPart defenderStats = entity.getPart(StatsPart.class);
-                                if(collidingEntityStats.getAttack() != 0) {
+                                if(collidingEntityStats.getSpikeAttack() != 0) {
                                     int totalDamage = collidingEntityStats.getAttack() - defenderStats.getDefence();
                                     defendingEntity.subtractLife(totalDamage);
                                 }

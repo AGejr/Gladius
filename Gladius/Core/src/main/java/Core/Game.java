@@ -160,10 +160,12 @@ public class Game implements ApplicationListener {
                 shapeRenderer.setColor(Color.CLEAR);
             }
             if(entity.getPart(MovingPart.class) != null) {
-                shapeRenderer.rect(entity.getX() + ((float) entity.getTextureWidth()/2) - (entity.getRadius()/2), entity.getY(), entity.getRadius(), entity.getRadius());
+                // because enemy and player is in the bottom of the image
+                shapeRenderer.rect(entity.getX() + entity.getRadiusOffsetX() + (float) (entity.getTextureWidth()/2) - (entity.getRadius()/2), entity.getY() + entity.getRadiusOffsetY(), entity.getRadius(), entity.getRadius());
             }
             else {
-                shapeRenderer.rect(entity.getX() + ((float) entity.getTextureWidth()/2) - (entity.getRadius()/2), entity.getY() + ((float) entity.getTextureHeight()/2) - (entity.getRadius()/2), entity.getRadius(), entity.getRadius());
+                // obstacles are in the center of the image
+                shapeRenderer.rect(entity.getX() + entity.getRadiusOffsetX() + (float) (entity.getTextureWidth()/2) - (entity.getRadius()/2), entity.getY() + entity.getRadiusOffsetY() + ((float) entity.getTextureHeight()/2) - (entity.getRadius()/2), entity.getRadius(), entity.getRadius());
             }
             // Explosion range
             if (DEBUG_MODE) {

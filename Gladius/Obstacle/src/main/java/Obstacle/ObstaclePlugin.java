@@ -35,9 +35,9 @@ public class ObstaclePlugin implements IGamePluginService {
 
     private Entity createBarrel(GameData gamedata) {
         String file = "Barrel.png";
-        // radius should be texture width / 16
-        Entity barrel = new Obstacle(file, 20, 64, 64, 0, 0.3f, 0.3f, 32, 32);
+        Entity barrel = new Obstacle(file, 10, 0, -5, 64, 64, 0, 0.3f, 0.3f, 32, 32);
         barrel.add(new LifePart(100));
+        // BARREL HAS A SPIKE ATTACK FOR TEST PURPOSES
         barrel.add(new StatsPart(0,10,0,0, 0));
         barrel.add(new AnimationPart());
         FileLoader.loadFile(file, getClass());
@@ -50,8 +50,7 @@ public class ObstaclePlugin implements IGamePluginService {
 
     private Entity createExplosiveBarrel(GameData gamedata) {
         String file = "ExplosiveBarrel.png";
-        // radius should be texture width / 16
-        Entity explosiveBarrel = new Obstacle(file, 20, 64, 64, 0, 0.3f, 0.3f, 32, 32);
+        Entity explosiveBarrel = new Obstacle(file, 10, 0, -5, 64, 64, 0, 0.3f, 0.3f, 32, 32);
         explosiveBarrel.add(new LifePart(100));
         explosiveBarrel.add(new StatsPart(0,0,50,40, 0));
         explosiveBarrel.add(new AnimationPart());
@@ -65,8 +64,7 @@ public class ObstaclePlugin implements IGamePluginService {
 
     private Entity createChest(GameData gamedata) {
         String file = "Chest.png";
-        // radius should be texture width / 16
-        Entity chest = new Obstacle(file, 16, 64, 64, 0, 0.3f, 0.2f, 32, 32);
+        Entity chest = new Obstacle(file, 10, 0 ,-2, 64, 64, 0, 0.3f, 0.2f, 32, 32);
         chest.add(new LifePart(100));
         chest.add(new StatsPart(0,0,0, 0,0));
         chest.add(new AnimationPart());
@@ -74,15 +72,13 @@ public class ObstaclePlugin implements IGamePluginService {
 
         chest.setX(new Random().nextInt((1000 - 200) + 1) + 200);
         chest.setY(new Random().nextInt((1000 - 400) + 1) + 400);
-        System.out.println(chest.getX() + ", " + chest.getY());
 
         return chest;
     }
 
     private Entity createCrate(GameData gamedata) {
         String file = "Crate.png";
-        // radius should be texture width / 16
-        Entity crate = new Obstacle(file, 20, 64, 64, 0, 0.3f, 0.3f, 32, 32);
+        Entity crate = new Obstacle(file, 14, 0 ,-4, 64, 64, 0, 0.3f, 0.3f, 32, 32);
         crate.add(new LifePart(100));
         crate.add(new StatsPart(0,0,0, 0,0));
         crate.add(new AnimationPart());
@@ -96,8 +92,7 @@ public class ObstaclePlugin implements IGamePluginService {
 
     private Entity createJar(GameData gamedata) {
         String file = "Jar.png";
-        // radius should be texture width / 16
-        Entity jar = new Obstacle(file, 14, 64, 64, 0, 0.2f, 0.2f, 32, 32);
+        Entity jar = new Obstacle(file, 10, 0, -2, 64, 64, 0, 0.2f, 0.2f, 32, 32);
         jar.add(new LifePart(100));
         jar.add(new StatsPart(0,0,0, 0,0));
         jar.add(new AnimationPart());

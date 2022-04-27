@@ -19,12 +19,33 @@ public class Entity extends Sprite implements Serializable {
     private final UUID ID = UUID.randomUUID();
 
     private float radius;
+    private int radiusOffsetX = 0;
+    private int radiusOffsetY = 0;
     private String texturePath;
     private int textureWidth;
     private int textureHeight;
     private Map<Class, EntityPart> parts;
     private float angle;
     private Polygon polygonBoundaries;
+
+    public Entity(String texturePath,float radius, int radiusOffsetX, int radiusOffsetY, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float hitboxOriginY) {
+        super();
+        this.parts = new ConcurrentHashMap<>();
+        this.texturePath = texturePath;
+        this.radius = radius;
+        this.radiusOffsetX = radiusOffsetX;
+        this.radiusOffsetY = radiusOffsetY;
+        this.textureWidth = textureWidth;
+        this.textureHeight = textureHeight;
+        this.angle = angle;
+        /*The polygon is the hitbox for the entity, this is used to register hits with the weapon. It is drawn rom the center of the entity's x-axis
+         * The scale is used to make the hitbox fit the texture of the entity better, because of transparent areas in the texture.
+         * The hitboxOriginX, defines the center of the x-axis where the box is made from.
+         * The hitbox aligns with the bottom of the texture.*/
+        this.polygonBoundaries = new Polygon(new float[]{super.getX(), super.getY(), super.getX(), super.getY() + textureHeight, super.getX() + textureWidth, super.getY() + textureHeight, super.getX() + textureWidth, super.getY()});
+        this.polygonBoundaries.setOrigin(hitboxOriginX, hitboxOriginY);
+        this.polygonBoundaries.setScale(hitboxScaleX, hitboxScaleY);
+    }
 
     public Entity(String texturePath,float radius, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float hitboxOriginY) {
         super();
@@ -160,5 +181,13 @@ public class Entity extends Sprite implements Serializable {
 
     public void updatePolygonBoundariesPosition() {
         this.getPolygonBoundaries().setPosition(this.getX(), this.getY());
+    }
+
+    public int getRadiusOffsetX() {
+        return radiusOffsetX;
+    }
+
+    public int getRadiusOffsetY() {
+        return radiusOffsetY;
     }
 }

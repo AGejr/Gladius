@@ -25,7 +25,7 @@ public class PlayerPlugin implements IGamePluginService {
 
         // radius should be texture width / 16
         //Entity player = new Player(file, 16);
-        Entity player = new Player(file, 16, 32, 32, 0, 0.5f, 0.8f);
+        Entity player = new Player(file, 10, 32, 32, 0, 0.5f, 0.8f);
         player.add(new MovingPart(100));
         player.add(new AnimationPart());
         player.add(new LifePart(100));
