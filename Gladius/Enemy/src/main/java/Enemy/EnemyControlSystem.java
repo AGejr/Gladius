@@ -83,6 +83,8 @@ public class EnemyControlSystem implements IEntityProcessingService {
                             float currentY = (int) enemy.getY();
 
                             Polygon attackRange = ((Enemy) enemy).getAttackRange();
+                            attackRange.setPosition(enemy.getX(), enemy.getY());
+                            attackRange.getBoundingRectangle();
 
                             if (gameData.isDebugMode()) {
                                 //used to show path
@@ -111,8 +113,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
                                 Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
                                 sr.begin(ShapeRenderer.ShapeType.Line);
                                 sr.setColor(Color.RED);
-                                attackRange.setPosition(enemy.getX(), enemy.getY());
-                                attackRange.getBoundingRectangle();
                                 sr.polygon(attackRange.getTransformedVertices());
                                 sr.end();
                                 Gdx.gl.glDisable(GL20.GL_BLEND);

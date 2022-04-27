@@ -17,8 +17,8 @@ public class Enemy extends Entity implements IWeaponUserService {
     public Enemy(String texturePath, int radius) {
         super(texturePath, radius, 96, 96, 0, 0.5f, 0.5f);
         //TODO align weapon hitbox to the axe and swinging animation
-        this.equippedWeapon = new Weapon("Axe", 25, 8, 35, "", 9, 36, 0.9f, 0.9f, 30, 20.0f, 9.0f, 20.0f, 10.0f, this);
-
+        this.equippedWeapon = new Weapon("Axe", 25, 8, 35, "", 9, 55, 0.9f, 0.9f, 0, 30.0f, 6.0f, 42.0f, 63.0f, 17.0f, this);
+        this.equippedWeapon.setRotationDuration(23);
         // this.getX(), this.getY(), this.equippedWeapon.getRange()
         this.attackRange = new Polygon(new float[]{super.getX(), super.getY(), super.getX(), super.getY() + super.getTextureHeight(), super.getX() + super.getTextureWidth(), super.getY() + super.getTextureHeight(), super.getX() + super.getTextureWidth(), super.getY()});
         this.attackRange.setOrigin(super.getTextureWidth() / 2f, -15);

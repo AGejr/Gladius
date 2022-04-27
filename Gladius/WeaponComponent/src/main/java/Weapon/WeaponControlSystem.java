@@ -31,7 +31,7 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponSer
                     ((Weapon) weapon).setRotationDegrees(0.0f);
                 }
 
-                weapon.setX(xPos + ((Weapon) weapon).getPositionAdjustX());
+                weapon.setX(xPos + ((Weapon) weapon).getPositionAdjustRightX());
                 weapon.setY(yPos + ((Weapon) weapon).getPositionAdjustY());
 
                 /*While the counter is less than the duration of the rotation, the rotation continues*/
@@ -46,7 +46,7 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponSer
                 if (((Weapon) weapon).getCounter() == 1) {
                     ((Weapon) weapon).setRotationDegrees(0.0f);
                 }
-                weapon.setX(xPos + 9);
+                weapon.setX(xPos + ((Weapon) weapon).getPositionAdjustLeftX());
                 weapon.setY(yPos + ((Weapon) weapon).getPositionAdjustY() - 7);
 
                 /*While the counter is less than the duration of the rotation, the rotation continues*/
@@ -63,7 +63,6 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponSer
             * The weapon still exists, it's just not in the world.*/
             if (((Weapon) weapon).getCounter() >= ((Weapon) weapon).getRotationDuration()) {
                 ((Weapon) weapon).resetHitEntityList();
-                ((Weapon) weapon).setRotationDegrees(20.0f);
                 ((Weapon) weapon).resetCounter();
                 world.removeEntity(weapon);
             }
@@ -80,7 +79,7 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponSer
         IWeaponUserService weaponUser = (IWeaponUserService) attacker;
         Weapon weaponEntity = weaponUser.getWeapon();
         weaponEntity.setRotationDegrees(weaponEntity.getAngle());
-        weaponEntity.setX(xPos + weaponEntity.getPositionAdjustX());
+        weaponEntity.setX(xPos + weaponEntity.getPositionAdjustRightX());
         weaponEntity.setY(yPos + weaponEntity.getPositionAdjustY());
         weaponEntity.setWeaponTexture();
         world.addEntity(weaponEntity);
