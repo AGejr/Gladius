@@ -11,6 +11,7 @@ import Common.data.entityparts.MovingPart;
 import Common.services.IEntityProcessingService;
 import CommonPlayer.Player;
 import CommonEnemy.Enemy;
+import CommonWeapon.IWeaponService;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -28,6 +29,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
     //TODO enemy attack implementation
 
     private AStarPathFinding aStarPathFinding = new AStarPathFinding();
+    private IWeaponService weaponService;
 
     @Override
     public void process(GameData gameData, World world) {
@@ -118,11 +120,12 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
                             // Checking if player is inside of enemy's attack range
                             if (Intersector.overlapConvexPolygons(attackRange, player.getPolygonBoundaries())) {
-                                System.out.println("Player is inside enemy's attack range");
                                 if (animationPart.isLeft() && animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime())) {
                                     animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.ATTACK_LEFT);
+                                    weaponService.attack(enemy, gameData, world);
                                 } else if (animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime())) {
                                     animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.ATTACK_RIGHT);
+                                    weaponService.attack(enemy, gameData, world);
                                 }
                             } else {
                                 if (animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime())) {
@@ -195,5 +198,13 @@ public class EnemyControlSystem implements IEntityProcessingService {
         movingPart.setUp(false);
         movingPart.setLeft(false);
         movingPart.setRight(false);
+    }
+
+    public void setWeaponService(IWeaponService weaponService) {
+        this.weaponService = weaponService;
+    }
+
+    public void removeWeaponService(IWeaponService weaponService) {
+        this.weaponService = null;
     }
 }

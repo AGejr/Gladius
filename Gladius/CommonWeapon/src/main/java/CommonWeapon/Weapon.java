@@ -14,6 +14,10 @@ public class Weapon extends Entity {
     private float angleAdjustment; //Used to make the weapon spawn at the right angle
     private float positionAdjustX; //Used to align the weapon to ex. the player
     private float positionAdjustY; //Used to align the weapon to ex. the player
+    private int counter = 0;
+    private float rotationDegrees = 0.0f;
+    // rotationDuration is used for the number of frames it should rotate. The game runs with 30 frames so it will swing for half a second if rotationDuration is 15.
+    private int rotationDuration = 15;
 
     public Weapon(String name, int damage, float weight, float range, String texturePath, int textureWidth, int textureHeight, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float angle, float angleAdjustment, float positionAdjustX, float positionAdjustY, Entity owner) {
         super(null, range, textureWidth, textureHeight, angle, hitboxScaleX, hitboxScaleY, hitboxOriginX);
@@ -81,8 +85,10 @@ public class Weapon extends Entity {
     }
 
     public void setWeaponTexture() {
-        FileLoader.loadFile(texturePath, getClass());
-        super.setTexturePath(this.texturePath);
+        if(texturePath != null && !texturePath.equals("")) {
+            FileLoader.loadFile(texturePath, getClass());
+            super.setTexturePath(this.texturePath);
+        }
     }
 
     public void setAngleAdjustment(float angleAdjustment) {
@@ -111,5 +117,36 @@ public class Weapon extends Entity {
 
     public void resetHitEntityList() {
         this.hitEntityList.clear();
+    }
+
+    public int getCounter() {
+        return counter;
+    }
+
+    public void incrementCounter() {
+        this.counter++;
+    }
+
+    public void incrementCounter(int amount) {
+        this.counter += amount;
+    }
+    public void resetCounter() {
+        this.counter = 0;
+    }
+
+    public int getRotationDuration() {
+        return this.rotationDuration;
+    }
+
+    public void setRotationDuration(int rotationDuration) {
+        this.rotationDuration = rotationDuration;
+    }
+
+    public float getRotationDegrees() {
+        return rotationDegrees;
+    }
+
+    public void setRotationDegrees(float rotationDegrees) {
+        this.rotationDegrees = rotationDegrees;
     }
 }
