@@ -21,6 +21,8 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
     //TODO enemy attack implementation
 
+    private int attackRange = 26;
+
     private AStarPathFinding aStarPathFinding = new AStarPathFinding();
 
     @Override
@@ -98,8 +100,9 @@ public class EnemyControlSystem implements IEntityProcessingService {
                                 sr.end();
                             }
 
+                            double lengthToTarget = Math.sqrt(Math.pow(Math.abs(currentX - player.getX()), 2) + Math.pow(Math.abs(currentY - player.getY()), 2));
                             //if not at/near end goal
-                            if (!(path.size() <= 1)) {
+                            if (!(lengthToTarget <= 96)) {
 
                                 // if the targetX and EnemyX is not the same
                                 if (!((int) targetX == (int) currentX)) {
@@ -136,8 +139,18 @@ public class EnemyControlSystem implements IEntityProcessingService {
                                     }
                                 }
                             } else {
-                                //if at goal node
-                                stopMovement(movingPart);
+                                //if distance is <96
+                                currentX += enemy.getTextureWidth()/2f;
+                                double angle = Math.asin(Math.abs(currentX - player.getX())/lengthToTarget);
+                                if(lengthToTarget >= attackRange) {
+                                    decideMovement(currentX, currentY, player.getX()+player.getTextureWidth()/2f, player.getY(), movingPart);
+                                } else if(lengthToTarget < attackRange && lengthToTarget > attackRange*0.9f){
+                                    stopMovement(movingPart);
+                                } else{
+                                    int yModifier = player.getY() < currentY ? 1 : -1;
+                                    int xModifier = player.getX() < currentX ? 1 : -1;
+                                    decideMovement(currentX, currentY, (player.getX()+player.getTextureWidth()/2f) + (attackRange*xModifier),player.getY() + (attackRange*yModifier), movingPart);
+                                }
                             }
                         } else {
                             //if player is not inside arena
@@ -158,5 +171,42 @@ public class EnemyControlSystem implements IEntityProcessingService {
         movingPart.setUp(false);
         movingPart.setLeft(false);
         movingPart.setRight(false);
+    }
+
+    private void decideMovement(float X, float Y, float targetX, float targetY, MovingPart movingPart){
+        // if the targetX and EnemyX is not the same
+        if (!((int) targetX == (int) X)) {
+
+
+            if (targetX < X) {
+                movingPart.setLeft(true);
+                movingPart.setRight(false);
+            } else {
+                movingPart.setRight(true);
+                movingPart.setLeft(false);
+            }
+
+            // needed if walking diagonal
+            if (targetY < Y) {
+                movingPart.setUp(false);
+                movingPart.setDown(true);
+            } else {
+                movingPart.setDown(false);
+                movingPart.setUp(true);
+            }
+
+        } else {
+
+            movingPart.setLeft(false);
+            movingPart.setRight(false);
+            if (targetY < Y) {
+                movingPart.setUp(false);
+                movingPart.setDown(true);
+            } else {
+                movingPart.setDown(false);
+                movingPart.setUp(true);
+
+            }
+        }
     }
 }
