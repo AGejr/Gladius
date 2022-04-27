@@ -32,8 +32,9 @@ public class EnemyPlugin implements IGamePluginService {
         enemy.add(new StatsPart(5,0,0, 0, 5));
         FileLoader.loadFile(file, getClass());
 
-        enemy.setX(new Random().nextInt((1000 - 200) + 1) + 200);
-        enemy.setY(new Random().nextInt((1000 - 400) + 1) + 400);
+        //400 is max, 280 is min
+        enemy.setX(new Random().nextInt((580 - 385) + 1) + 385);
+        enemy.setY(new Random().nextInt((1000 - 350) + 1) + 350);
 
         return enemy;
     }
