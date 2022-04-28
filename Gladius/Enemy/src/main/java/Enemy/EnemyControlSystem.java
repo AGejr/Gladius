@@ -120,11 +120,13 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
                             // Checking if player is inside of enemy's attack range
                             if (Intersector.overlapConvexPolygons(attackRange, player.getPolygonBoundaries())) {
-                                if (animationPart.isLeft() && animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime())) {
-                                    animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.ATTACK_LEFT);
-                                    weaponService.attack(enemy, gameData, world);
-                                } else if (animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime())) {
-                                    animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.ATTACK_RIGHT);
+                                LifePart playerLifePart = player.getPart(LifePart.class);
+                                if (animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime()) && !playerLifePart.isDead()) {
+                                    if (enemy.getX() > player.getX()) {
+                                        animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.ATTACK_LEFT);
+                                    } else {
+                                        animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.ATTACK_RIGHT);
+                                    }
                                     weaponService.attack(enemy, gameData, world);
                                 }
                             } else {
