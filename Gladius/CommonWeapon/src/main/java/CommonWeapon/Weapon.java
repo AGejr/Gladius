@@ -11,11 +11,16 @@ public class Weapon extends Entity {
     private final String texturePath;
     private Entity owner; //The owner of the weapon, aka the entity holding the weapon ex player. Used to stop hitting the entity itself and spawn positions
     private List<Entity> hitEntityList; //Contains every entity the weapon hits in one swing. This is cleared after each swing.
-    private float angleAdjustment; //Used to make the weapon spawn at the right angle
-    private float positionAdjustX; //Used to align the weapon to ex. the player
+    private float angleAdjustment; //Used to make the weapon rotate
+    private float positionAdjustRightX; //Used to align the weapon to ex. the player
+    private float positionAdjustLeftX; //Used to align the weapon to ex. the player
     private float positionAdjustY; //Used to align the weapon to ex. the player
+    private int counter = 0;
+    private float rotationDegrees = 0.0f;
+    // rotationDuration is used for the number of frames it should rotate. The game runs with 30 frames, so it will swing for half a second if rotationDuration is 15.
+    private int rotationDuration = 15;
 
-    public Weapon(String name, int damage, float weight, float range, String texturePath, int textureWidth, int textureHeight, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float angle, float angleAdjustment, float positionAdjustX, float positionAdjustY, Entity owner) {
+    public Weapon(String name, int damage, float weight, float range, String texturePath, int textureWidth, int textureHeight, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float angle, float angleAdjustment, float positionAdjustRightX, float positionAdjustLeftX, float positionAdjustY, Entity owner) {
         super(null, range, textureWidth, textureHeight, angle, hitboxScaleX, hitboxScaleY, hitboxOriginX);
         this.name = name;
         this.damage = damage;
@@ -24,20 +29,21 @@ public class Weapon extends Entity {
         this.owner = owner;
         this.hitEntityList = new ArrayList<>();
         this.angleAdjustment = angleAdjustment;
-        this.positionAdjustX = positionAdjustX;
+        this.positionAdjustRightX = positionAdjustRightX;
+        this.positionAdjustLeftX = positionAdjustLeftX;
         this.positionAdjustY = positionAdjustY;
     }
     public Weapon(String name, int damage, float weight, float range, String texturePath, int textureWidth, int textureHeight, float hitboxScaleX,  float hitboxScaleY, float hitboxOriginX, float angle, float angleAdjustment, Entity owner) {
-        this(name, damage, weight, range, texturePath, textureWidth, textureHeight, hitboxScaleX, hitboxScaleY, hitboxOriginX, angle, angleAdjustment, 0, 0, owner);
+        this(name, damage, weight, range, texturePath, textureWidth, textureHeight, hitboxScaleX, hitboxScaleY, hitboxOriginX, angle, angleAdjustment, 0, 0, 0, owner);
     }
     public Weapon(String name, int damage, float weight, float range, String texturePath, int textureWidth, int textureHeight, float hitboxScaleX,  float hitboxScaleY, float hitboxOriginX, Entity owner) {
-        this(name, damage, weight, range, texturePath, textureWidth, textureHeight, hitboxScaleX, hitboxScaleY, hitboxOriginX, 0, 0, 0, 0, owner);
+        this(name, damage, weight, range, texturePath, textureWidth, textureHeight, hitboxScaleX, hitboxScaleY, hitboxOriginX, 0, 0,  0, 0, 0, owner);
     }
     public Weapon(String name, int damage, float weight, float range, String texturePath, int textureWidth, int textureHeight, Entity owner) {
-        this(name, damage, weight, range, texturePath, textureWidth, textureHeight, 0, 0, 0, 0, 0, 0, 0, owner);
+        this(name, damage, weight, range, texturePath, textureWidth, textureHeight, 0, 0, 0, 0, 0, 0, 0, 0, owner);
     }
     public Weapon(String name, int damage, float weight, float range, Entity owner) {
-        this(name, damage, weight, range, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, owner);
+        this(name, damage, weight, range, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, owner);
     }
 
     public Weapon() {
@@ -68,8 +74,12 @@ public class Weapon extends Entity {
         return this.angleAdjustment;
     }
 
-    public float getPositionAdjustX() {
-        return this.positionAdjustX;
+    public float getPositionAdjustRightX() {
+        return this.positionAdjustRightX;
+    }
+
+    public float getPositionAdjustLeftX() {
+        return this.positionAdjustLeftX;
     }
 
     public float getPositionAdjustY() {
@@ -81,16 +91,22 @@ public class Weapon extends Entity {
     }
 
     public void setWeaponTexture() {
-        FileLoader.loadFile(texturePath, getClass());
-        super.setTexturePath(this.texturePath);
+        if(texturePath != null && !texturePath.equals("")) {
+            FileLoader.loadFile(texturePath, getClass());
+            super.setTexturePath(this.texturePath);
+        }
     }
 
     public void setAngleAdjustment(float angleAdjustment) {
         this.angleAdjustment = angleAdjustment;
     }
 
-    public void setPositionAdjustX(float positionAdjustX) {
-        this.positionAdjustX = positionAdjustX;
+    public void setPositionAdjustRightX(float positionAdjustRightX) {
+        this.positionAdjustRightX = positionAdjustRightX;
+    }
+
+    public void setPositionAdjustLeftX(float positionAdjustLeftX) {
+        this.positionAdjustLeftX = positionAdjustLeftX;
     }
 
     public void setPositionAdjustY(float positionAdjustY) {
@@ -111,5 +127,36 @@ public class Weapon extends Entity {
 
     public void resetHitEntityList() {
         this.hitEntityList.clear();
+    }
+
+    public int getCounter() {
+        return counter;
+    }
+
+    public void incrementCounter() {
+        this.counter++;
+    }
+
+    public void incrementCounter(int amount) {
+        this.counter += amount;
+    }
+    public void resetCounter() {
+        this.counter = 0;
+    }
+
+    public int getRotationDuration() {
+        return this.rotationDuration;
+    }
+
+    public void setRotationDuration(int rotationDuration) {
+        this.rotationDuration = rotationDuration;
+    }
+
+    public float getRotationDegrees() {
+        return rotationDegrees;
+    }
+
+    public void setRotationDegrees(float rotationDegrees) {
+        this.rotationDegrees = rotationDegrees;
     }
 }
