@@ -81,9 +81,8 @@ public class EventProcessor implements IEventProcessingService {
     private void processWaveCompletedEvent(GameData gameData, World world) {
         gameData.setGateEnabled(true);
         // TODO: center text
-        float width = gameData.getDisplayWidth();
-        float height = gameData.getDisplayHeight();
-        UI.addFreeTypeText(gameData, "Wave" + Integer.toString(gameData.getWave()) + " cleared!", (float)(width/2), (float)(height/2), 3f);
+
+        UI.addCenteredPrompt(gameData, "Wave" + Integer.toString(gameData.getWave()) + " cleared!", 3f, 3);
         gameData.incrementWave();
     }
 

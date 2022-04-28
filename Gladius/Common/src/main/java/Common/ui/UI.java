@@ -33,8 +33,10 @@ public class UI {
         stage.act();
     }
 
-    // TODO: add timeout option
-    public static void addFreeTypeText(GameData gameData, String text,float x, float y, float scale) {
+    // TODO: add fade out effect, based on duration
+    public static void addCenteredPrompt(GameData gameData, String text, float scale, int duration) {
+        float x = (float)(gameData.getDisplayWidth() / 2);
+        float y = (float)(gameData.getDisplayHeight() / 2);
         Stage stage = gameData.getStage();
         FreeTypeFontGenerator freeTypeFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("mc.otf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
