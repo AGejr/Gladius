@@ -31,4 +31,9 @@ public class UI {
         stage.act();
         stage.draw();
     }
+
+    public static void box(GameData gameData, ShapeRenderer shapeRenderer, float x, float y, int width, int height, Color color) {
+        shapeRenderer.setColor(color);
+        shapeRenderer.rect(x, y, width, height);
+    }
 }
