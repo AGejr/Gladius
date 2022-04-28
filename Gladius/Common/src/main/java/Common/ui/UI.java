@@ -38,11 +38,14 @@ public class UI {
         Stage stage = gameData.getStage();
         FreeTypeFontGenerator freeTypeFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("mc.otf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 20;
+        int fontSize = 20;
+        parameter.size = fontSize;
         BitmapFont bitmapFont = freeTypeFontGenerator.generateFont(parameter);
         freeTypeFontGenerator.dispose();
         Label label = new Label(text, new Label.LabelStyle(bitmapFont, new Color(Color.WHITE)));
         label.setFontScale(scale);
+        x -= ((label.getPrefWidth())/2);
+        y += ((label.getPrefHeight())/2);
         label.setPosition(x, y);
         stage.addActor(label);
         stage.act();
