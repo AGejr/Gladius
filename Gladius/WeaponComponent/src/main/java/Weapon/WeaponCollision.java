@@ -20,22 +20,21 @@ public class WeaponCollision implements IPostEntityProcessingService {
                     LifePart hitEntityLifePart = hitEntity.getPart(LifePart.class);
                     StatsPart attackerStats = ((Weapon) weapon).getOwner().getPart(StatsPart.class);
                     StatsPart defenderStats = hitEntity.getPart(StatsPart.class);
-                    if(weapon.getTexture() != null) {
-                        // The if statement below checks if the invisible rectangles on the entities collide.
-                        if (Intersector.overlapConvexPolygons(weapon.getPolygonBoundaries(), hitEntity.getPolygonBoundaries())) {
-                            if (weapon instanceof Weapon) {
-                                if (defenderStats.getDefence() < ((Weapon) weapon).getDamage() + attackerStats.getAttack()) {
-                                    int totalDamage = ((Weapon) weapon).getDamage() + attackerStats.getAttack() - defenderStats.getDefence();
-                                    hitEntityLifePart.subtractLife(totalDamage);
-                                }
-                                AnimationPart hitEntityAnimationPart = hitEntity.getPart(AnimationPart.class);
-                                if (hitEntityAnimationPart != null) {
-                                    hitEntityAnimationPart.setTakeDamage();
-                                }
-                                ((Weapon) weapon).addEntityHit(hitEntity);
+                    // The if statement below checks if the invisible rectangles on the entities collide.
+                    if (Intersector.overlapConvexPolygons(weapon.getPolygonBoundaries(), hitEntity.getPolygonBoundaries()) && !hitEntityLifePart.isDead()) {
+                        if (weapon instanceof Weapon) {
+                            if (defenderStats.getDefence() < ((Weapon) weapon).getDamage() + attackerStats.getAttack()) {
+                                int totalDamage = ((Weapon) weapon).getDamage() + attackerStats.getAttack() - defenderStats.getDefence();
+                                hitEntityLifePart.subtractLife(totalDamage);
                             }
+                            AnimationPart hitEntityAnimationPart = hitEntity.getPart(AnimationPart.class);
+                            if (hitEntityAnimationPart != null) {
+                                hitEntityAnimationPart.setTakeDamage();
+                            }
+                            ((Weapon) weapon).addEntityHit(hitEntity);
                         }
                     }
+
                 }
             }
         }
