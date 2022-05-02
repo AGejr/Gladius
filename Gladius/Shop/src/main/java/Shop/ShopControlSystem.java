@@ -71,7 +71,6 @@ y1  StrElixir StrElixir DefElixir DefElixir Exit
                     shopEntered = true;
                     MovingPart movingPart = player.getPart(MovingPart.class);
                     movingPart.setSpeed(0);
-                    statsPart.setBalance(200);
                 }
             }
 
@@ -93,50 +92,50 @@ y1  StrElixir StrElixir DefElixir DefElixir Exit
         if (gameData.getKeys().isPressed(GameKeys.ENTER)) {
             if (cursorX == x1 && cursorY == y2) {
                 if (statsPart.getBalance() >= swordMap.get(WeaponImages.CLUB).getPrice()) {
-                    statsPart.setBalance(statsPart.getBalance() - swordMap.get(WeaponImages.CLUB).getPrice());
+                    statsPart.withdrawBalance(swordMap.get(WeaponImages.CLUB).getPrice());
                     Weapon weapon = swordMap.get(WeaponImages.CLUB);
                     player.addWeapon(weapon);
                     player.equipWeapon(weapon);
                 }
             } else if (cursorX == x3 && cursorY == y2) {
                 if (statsPart.getBalance() >= swordMap.get(WeaponImages.DIAMONDSWORD).getPrice()) {
-                    statsPart.setBalance(statsPart.getBalance() - swordMap.get(WeaponImages.DIAMONDSWORD).getPrice());
+                    statsPart.withdrawBalance(swordMap.get(WeaponImages.DIAMONDSWORD).getPrice());
                     Weapon weapon = swordMap.get(WeaponImages.DIAMONDSWORD);
                     player.addWeapon(weapon);
                     player.equipWeapon(weapon);
                 }
             } else if (cursorX == x5 && cursorY == y2) {
                 if (statsPart.getBalance() >= swordMap.get(WeaponImages.GOLDSWORD).getPrice()) {
-                    statsPart.setBalance(statsPart.getBalance() - swordMap.get(WeaponImages.GOLDSWORD).getPrice());
+                    statsPart.withdrawBalance(swordMap.get(WeaponImages.GOLDSWORD).getPrice());
                     Weapon weapon = swordMap.get(WeaponImages.GOLDSWORD);
                     player.addWeapon(weapon);
                     player.equipWeapon(weapon);
                 }
             } else if (cursorX == x6 && cursorY == y2) {
                 if (statsPart.getBalance() >= swordMap.get(WeaponImages.STARTSWORD).getPrice()) {
-                    statsPart.setBalance(statsPart.getBalance() - swordMap.get(WeaponImages.STARTSWORD).getPrice());
+                    statsPart.withdrawBalance(swordMap.get(WeaponImages.STARTSWORD).getPrice());
                     Weapon weapon = swordMap.get(WeaponImages.STARTSWORD);
                     player.addWeapon(weapon);
                     player.equipWeapon(weapon);
                 }
             } else if (cursorX == x1 && cursorY == y1) {
                 if (statsPart.getBalance() >= largeElixirCost) {
-                    statsPart.setBalance(statsPart.getBalance() - largeElixirCost);
+                    statsPart.withdrawBalance(largeElixirCost);
                     statsPart.setAttack(statsPart.getAttack() + largeElixir);
                 }
             } else if (cursorX == x2 && cursorY == y1) {
                 if (statsPart.getBalance() >= smallElixirCost) {
-                    statsPart.setBalance(statsPart.getBalance() - smallElixirCost);
+                    statsPart.withdrawBalance(smallElixirCost);
                     statsPart.setAttack(statsPart.getAttack() + smallElixir);
                 }
             } else if (cursorX == x3 && cursorY == y1) {
                 if (statsPart.getBalance() >= largeElixirCost) {
-                    statsPart.setBalance(statsPart.getBalance() - largeElixirCost);
+                    statsPart.withdrawBalance(largeElixirCost);
                     statsPart.setDefence(statsPart.getDefence() + largeElixir);
                 }
             } else if (cursorX == x4 && cursorY == y1) {
                 if (statsPart.getBalance() >= smallElixirCost) {
-                    statsPart.setBalance(statsPart.getBalance() - smallElixirCost);
+                    statsPart.withdrawBalance(smallElixirCost);
                     statsPart.setDefence(statsPart.getDefence() + smallElixir);
                 }
             } else if (cursorX == x5 && cursorY == y1) {
@@ -204,7 +203,6 @@ y1  StrElixir StrElixir DefElixir DefElixir Exit
         UI.box(gameData, shapeRenderer, 0, gameData.getMapHeight() / 4f, gameData.getMapWidth() / 2, 5, new Color(66 / 255f, 40 / 255f, 14 / 255f, 1));
         UI.box(gameData, shapeRenderer, 0, gameData.getMapHeight() / 8f, gameData.getMapWidth() / 2, 5, new Color(66 / 255f, 40 / 255f, 14 / 255f, 1));
         shapeRenderer.end();
-
 
         //initializing the image
         SpriteBatch batch = new SpriteBatch();

@@ -50,4 +50,8 @@ public class StatsPart implements EntityPart {
     public int getBalance() {
         return balance;
     }
+
+    public int withdrawBalance(int amount) {
+        balance -= amount;
+    }
 }
