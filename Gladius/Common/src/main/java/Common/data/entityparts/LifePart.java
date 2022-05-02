@@ -13,7 +13,7 @@ public class LifePart implements EntityPart {
      * @param color is the color of the remaining life in the health bar
      */
     private int life;
-    private Color color = null;
+    private Color healthbarColor = null;
     private final float healthbarWidth = 0.2f; //When 0.2 then the healthbar is 20 units wide total
     private final float healthbarHeight = 5.0f;
 
@@ -22,9 +22,9 @@ public class LifePart implements EntityPart {
         this.MAXLIFE = life;
     }
 
-    public LifePart(int life, Color color) {
+    public LifePart(int life, Color healthbarColor) {
         this(life);
-        this.color = color;
+        this.healthbarColor = healthbarColor;
     }
 
     public int getLife() {
@@ -41,12 +41,12 @@ public class LifePart implements EntityPart {
 
     @Override
     public void process(GameData gameData, Entity entity) {
-        if (this.color != null) {
+        if (this.healthbarColor != null) {
             ShapeRenderer sr = new ShapeRenderer();
             sr.setProjectionMatrix(gameData.getCam().combined);
             float lifePercent = ((float) life / (float) MAXLIFE) * 100;
             sr.begin(ShapeType.Filled);
-            sr.setColor(this.color);
+            sr.setColor(this.healthbarColor);
             sr.rect(entity.getX() + entity.getTextureWidth() / 2 - 10, entity.getY() - 10, (healthbarWidth * lifePercent), healthbarHeight);
             sr.setColor(Color.LIGHT_GRAY);
             sr.rect(entity.getX() + entity.getTextureWidth() / 2 - 10 + (float) (healthbarWidth * lifePercent), entity.getY() - 10,  healthbarWidth * (100 - lifePercent), healthbarHeight);
@@ -58,7 +58,7 @@ public class LifePart implements EntityPart {
         return this.life <= 0;
     }
 
-    public void setColor(Color color) {
-        this.color = color;
+    public void setHealthbarColor (Color healthbarColor) {
+        this.healthbarColor  = healthbarColor;
     }
 }
