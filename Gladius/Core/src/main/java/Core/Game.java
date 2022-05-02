@@ -45,7 +45,6 @@ public class Game implements ApplicationListener {
     private OrthoCachedTiledMapRenderer tiledMapRenderer;
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
-    private final boolean DEBUG_MODE = true; //Set this to true to get hitbox lines
 
     // DEBUG
     private ShapeRenderer sr;
@@ -85,6 +84,7 @@ public class Game implements ApplicationListener {
         tiledMapRenderer.setBlending(true); //Makes tiles transparent
 
         world.setCsvMap(FileLoader.fetchData(files[0]));
+        world.setIsMapLoaded(true);
 
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
@@ -148,14 +148,14 @@ public class Game implements ApplicationListener {
             }
             shapeRenderer.polygon(entity.getPolygonBoundaries().getTransformedVertices());
             // Full texture size
-            /*if (DEBUG_MODE) {
+            /*if (gameData.isDebugMode()) {
                 shapeRenderer.setColor(Color.GREEN);
             } else {
                 shapeRenderer.setColor(Color.CLEAR);
             }
             shapeRenderer.rect(entity.getX(), entity.getY(), entity.getTextureWidth(), entity.getTextureHeight());*/
             // Collision size
-            if (DEBUG_MODE) {
+            if (gameData.isDebugMode()) {
                 shapeRenderer.setColor(Color.RED);
             } else {
                 shapeRenderer.setColor(Color.CLEAR);
@@ -169,7 +169,7 @@ public class Game implements ApplicationListener {
                 shapeRenderer.rect(entity.getX() + entity.getRadiusOffsetX() + (float) (entity.getTextureWidth()/2) - (entity.getRadius()/2), entity.getY() + entity.getRadiusOffsetY() + ((float) entity.getTextureHeight()/2) - (entity.getRadius()/2), entity.getRadius(), entity.getRadius());
             }
             // Explosion range
-            if (DEBUG_MODE) {
+            if (gameData.isDebugMode()) {
                 shapeRenderer.setColor(Color.GREEN
                 );
             } else {

@@ -16,7 +16,8 @@ public class ObstacleControlSystem implements IEntityProcessingService {
         for (Entity entity : world.getEntities(Obstacle.class)) {
             LifePart lifePart = entity.getPart(LifePart.class);
             AnimationPart animationPart = entity.getPart(AnimationPart.class);
-            if(entity.getPart(AnimationPart.class) != null) {
+            Obstacle entityObstacle = (Obstacle) entity;
+            if(entity.getPart(AnimationPart.class) != null && world.isMapLoaded()) { // && entityObstacle.isMapLoaded()
                 animationPart.process(gameData, entity);
             }
 

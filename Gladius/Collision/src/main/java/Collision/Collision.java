@@ -65,7 +65,7 @@ public class Collision implements IPostEntityProcessingService {
                     movingPart.setSlow(1f);
                 }
 
-                if (entity.getY() > 220 && entity.getY() < 240 && entity.getX() > 770 && entity.getX() < 810) {
+                if (entity.getY() > 210 && entity.getY() < 240 && entity.getX() > 770 && entity.getX() < 810) {
                     entity.setY(420);
                 } else if (entity.getY() > 350 && entity.getY() < 360 && entity.getX() > 770 && entity.getX() < 810) {
                     entity.setY(150);
@@ -148,18 +148,18 @@ public class Collision implements IPostEntityProcessingService {
                         }
                     }
                 }
-            } else if(entity.getPart(MovingPart.class) == null && entity.getPart(LifePart.class) != null){
+            } /*else if(entity.getPart(MovingPart.class) == null && entity.getPart(LifePart.class) != null){
                 // Entity is a spawned object
                 // Makes sure spawned objects aren't inside walls
-                int y = (int) (40 - (((entity.getY() + entity.getTextureHeight()/2) / height) * 40));
-                int x = (int) ((entity.getX() + entity.getTextureWidth()/2) / width) * 50; // divide by 2 to get center
-                if(csv.get(y).get(x) == 1) {
+                int y = (int) (40 - (((entity.getY() + entity.getTextureHeight()/2) / gameData.getMapHeight()) * 40));
+                int x = (int) ((entity.getX() + entity.getTextureWidth()/2) / gameData.getMapWidth()) * 50; // divide by 2 to get center
+                if(csv.get(y).get(x) != 0) {
                     // Entity is inside a wall
                     entity.setX(new Random().nextInt((1000 - 400) + 1) + 400);
                     entity.setY(new Random().nextInt((1000 - 400) + 1) + 400);
                     System.out.println("Moving Object");
                 }
-            }
+            }*/
         }
     }
 }

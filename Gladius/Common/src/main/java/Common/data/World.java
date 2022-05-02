@@ -13,6 +13,7 @@ public class World {
     private final Map<String, Entity> entityMap = new ConcurrentHashMap<>();
     private TiledMap tiledMap;
     private List<List<Integer>> csvMap;
+    private boolean isMapLoaded = false;
 
     public String addEntity(Entity entity) {
         entityMap.put(entity.getID(), entity);
@@ -62,5 +63,17 @@ public class World {
 
     public void setCsvMap(List<List<Integer>> csvMap) {
         this.csvMap = csvMap;
+    }
+
+    public void setIsMapLoaded(boolean isLoaded) {
+        isMapLoaded = isLoaded;
+    }
+
+    public boolean isMapLoaded() {
+        return isMapLoaded;
+    }
+
+    public void setTileInMap(int Y, int X, int value) {
+        getCsvMap().get(Y).set(X, value);
     }
 }

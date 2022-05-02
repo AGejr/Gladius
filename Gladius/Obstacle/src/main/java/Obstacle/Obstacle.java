@@ -8,6 +8,8 @@ import com.badlogic.gdx.utils.Array;
 
 public class Obstacle extends Entity {
 
+    private boolean isMapLoaded = false;
+
     public Obstacle(String texturePath, int radius) {
         super(texturePath, radius, 64, 64);
     }
@@ -45,7 +47,7 @@ public class Obstacle extends Entity {
             for (int i = 0; i < 3; i++) {
                 takeDamageTextures.add(new TextureRegion(this.getTexture(),64*i,0,64,64));
             }
-            Animation takeDamageAnimation = new Animation(0.06f,takeDamageTextures);
+            Animation takeDamageAnimation = new Animation(0.04f,takeDamageTextures);
             animationPart.addAnimation(AnimationPart.ANIMATION_STATES.TAKE_DAMAGE_LEFT, takeDamageAnimation);
             animationPart.addAnimation(AnimationPart.ANIMATION_STATES.TAKE_DAMAGE_RIGHT, takeDamageAnimation);
 
@@ -55,10 +57,18 @@ public class Obstacle extends Entity {
                 TextureRegion DeathTexture = new TextureRegion(this.getTexture(),64*i,64,64,64);
                 DeathTextures.add(DeathTexture);
             }
-            Animation DeathAnimation = new Animation(0.10f,DeathTextures);
+            Animation DeathAnimation = new Animation(0.08f,DeathTextures);
             animationPart.addAnimation(AnimationPart.ANIMATION_STATES.DEATH_RIGHT, DeathAnimation);
             animationPart.addAnimation(AnimationPart.ANIMATION_STATES.DEATH_LEFT, DeathAnimation);
         }
 
+    }
+
+    public boolean isMapLoaded() {
+        return isMapLoaded;
+    }
+
+    public void setMapLoaded(boolean mapLoaded) {
+        isMapLoaded = mapLoaded;
     }
 }

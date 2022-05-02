@@ -34,6 +34,15 @@ public class PlayerControlSystem implements IEntityProcessingService {
                 animationPart.setAttack();
             }
 
+            if (gameData.getKeys().isPressed(GameKeys.P)) {
+                System.out.println("DEBUG MODE: " + gameData.isDebugMode());
+                if(gameData.isDebugMode()) {
+                    gameData.setDebugMode(false);
+                } else {
+                    gameData.setDebugMode(true);
+                }
+            }
+
             movingPart.process(gameData, entity);
             animationPart.process(gameData,entity);
             lifePart.process(gameData,entity);
