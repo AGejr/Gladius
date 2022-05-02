@@ -38,7 +38,6 @@ y2  Club                Diamond             Gold Stone
 y1  StrElixir StrElixir DefElixir DefElixir Exit
     */
 
-
     @Override
     public void process(GameData gameData, World world) {
         for (Entity entity : world.getEntities(Player.class)) {
@@ -58,7 +57,6 @@ y1  StrElixir StrElixir DefElixir DefElixir Exit
             batch.end();
 
             if (shopEntered) {
-                stopMoving(player.getPart(MovingPart.class), true);
                 drawShop(gameData, player);
                 moveCursor(gameData);
 
@@ -69,12 +67,14 @@ y1  StrElixir StrElixir DefElixir DefElixir Exit
                 shapeRenderer.end();
                 processBuy(gameData, player, statsPart);
             } else {
-                stopMoving(player.getPart(MovingPart.class), false);
                 if (gameData.getKeys().isPressed(GameKeys.ENTER)) {
                     shopEntered = true;
+                    MovingPart movingPart = player.getPart(MovingPart.class);
+                    movingPart.setSpeed(0);
                     statsPart.setBalance(200);
                 }
             }
+
             for (Entity shop : world.getEntities(Shop.class)) {
                 if (player.getY() > shop.getY() - shop.getTextureHeight() / 2f && player.getX() < shop.getX() + shop.getTextureWidth() && player.getY() < shop.getY() + shop.getTextureHeight()) {
                     if (!shopEntered) {
@@ -92,55 +92,57 @@ y1  StrElixir StrElixir DefElixir DefElixir Exit
     private void processBuy(GameData gameData, Player player, StatsPart statsPart) {
         if (gameData.getKeys().isPressed(GameKeys.ENTER)) {
             if (cursorX == x1 && cursorY == y2) {
-                if (statsPart.getBalance() > swordMap.get(WeaponImages.CLUB).getPrice()) {
+                if (statsPart.getBalance() >= swordMap.get(WeaponImages.CLUB).getPrice()) {
                     statsPart.setBalance(statsPart.getBalance() - swordMap.get(WeaponImages.CLUB).getPrice());
                     Weapon weapon = swordMap.get(WeaponImages.CLUB);
                     player.addWeapon(weapon);
                     player.equipWeapon(weapon);
                 }
             } else if (cursorX == x3 && cursorY == y2) {
-                if (statsPart.getBalance() > swordMap.get(WeaponImages.DIAMONDSWORD).getPrice()) {
+                if (statsPart.getBalance() >= swordMap.get(WeaponImages.DIAMONDSWORD).getPrice()) {
                     statsPart.setBalance(statsPart.getBalance() - swordMap.get(WeaponImages.DIAMONDSWORD).getPrice());
                     Weapon weapon = swordMap.get(WeaponImages.DIAMONDSWORD);
                     player.addWeapon(weapon);
                     player.equipWeapon(weapon);
                 }
             } else if (cursorX == x5 && cursorY == y2) {
-                if (statsPart.getBalance() > swordMap.get(WeaponImages.GOLDSWORD).getPrice()) {
+                if (statsPart.getBalance() >= swordMap.get(WeaponImages.GOLDSWORD).getPrice()) {
                     statsPart.setBalance(statsPart.getBalance() - swordMap.get(WeaponImages.GOLDSWORD).getPrice());
                     Weapon weapon = swordMap.get(WeaponImages.GOLDSWORD);
                     player.addWeapon(weapon);
                     player.equipWeapon(weapon);
                 }
             } else if (cursorX == x6 && cursorY == y2) {
-                if (statsPart.getBalance() > swordMap.get(WeaponImages.STARTSWORD).getPrice()) {
+                if (statsPart.getBalance() >= swordMap.get(WeaponImages.STARTSWORD).getPrice()) {
                     statsPart.setBalance(statsPart.getBalance() - swordMap.get(WeaponImages.STARTSWORD).getPrice());
                     Weapon weapon = swordMap.get(WeaponImages.STARTSWORD);
                     player.addWeapon(weapon);
                     player.equipWeapon(weapon);
                 }
             } else if (cursorX == x1 && cursorY == y1) {
-                if (statsPart.getBalance() > smallElixirCost) {
-                    statsPart.setBalance(statsPart.getBalance() - smallElixirCost);
-                    statsPart.setAttack(statsPart.getAttack() + smallElixir);
-                }
-            } else if (cursorX == x2 && cursorY == y1) {
-                if (statsPart.getBalance() > largeElixirCost) {
+                if (statsPart.getBalance() >= largeElixirCost) {
                     statsPart.setBalance(statsPart.getBalance() - largeElixirCost);
                     statsPart.setAttack(statsPart.getAttack() + largeElixir);
                 }
-            } else if (cursorX == x3 && cursorY == y1) {
-                if (statsPart.getBalance() > smallElixirCost) {
+            } else if (cursorX == x2 && cursorY == y1) {
+                if (statsPart.getBalance() >= smallElixirCost) {
                     statsPart.setBalance(statsPart.getBalance() - smallElixirCost);
-                    statsPart.setDefence(statsPart.getDefence() + smallElixir);
+                    statsPart.setAttack(statsPart.getAttack() + smallElixir);
                 }
-            } else if (cursorX == x4 && cursorY == y1) {
-                if (statsPart.getBalance() > largeElixirCost) {
+            } else if (cursorX == x3 && cursorY == y1) {
+                if (statsPart.getBalance() >= largeElixirCost) {
                     statsPart.setBalance(statsPart.getBalance() - largeElixirCost);
                     statsPart.setDefence(statsPart.getDefence() + largeElixir);
                 }
+            } else if (cursorX == x4 && cursorY == y1) {
+                if (statsPart.getBalance() >= smallElixirCost) {
+                    statsPart.setBalance(statsPart.getBalance() - smallElixirCost);
+                    statsPart.setDefence(statsPart.getDefence() + smallElixir);
+                }
             } else if (cursorX == x5 && cursorY == y1) {
                 shopEntered = false;
+                MovingPart movingPart = player.getPart(MovingPart.class);
+                movingPart.setSpeed(100);
             }
         }
     }
@@ -186,17 +188,6 @@ y1  StrElixir StrElixir DefElixir DefElixir Exit
                 }
             }
         }
-    }
-
-    /**
-     * Stops the player from playing when navigating the shop.
-     * @param movingPart players movingPart
-     */
-    private void stopMoving(MovingPart movingPart, boolean move) {
-        movingPart.setColTop(move);
-        movingPart.setColBot(move);
-        movingPart.setColRight(move);
-        movingPart.setColLeft(move);
     }
 
     /**
