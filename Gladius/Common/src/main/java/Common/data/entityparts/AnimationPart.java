@@ -25,6 +25,7 @@ public class AnimationPart implements EntityPart{
     private HashMap<ANIMATION_STATES, Animation> animations = new HashMap<>();
     private float animationTime = 0;
     private Boolean isLeft = true;
+    private boolean isAttacking = false;
 
     @Override
     public void process(GameData gameData, Entity entity) {
@@ -33,6 +34,8 @@ public class AnimationPart implements EntityPart{
         boolean hasLifePart = lifePart != null;
         boolean hasMovingPart = movingPart != null;
         boolean isInDeathAnimationState = this.getCurrentState() == ANIMATION_STATES.DEATH_LEFT || this.getCurrentState() == ANIMATION_STATES.DEATH_RIGHT;
+        boolean isInAttackAnimationState = this.getCurrentState() == ANIMATION_STATES.ATTACK_LEFT || this.getCurrentState() == ANIMATION_STATES.ATTACK_RIGHT;
+
 
         if (hasLifePart && lifePart.isDead() && !isInDeathAnimationState) {
             // If the entity has just died
@@ -46,6 +49,11 @@ public class AnimationPart implements EntityPart{
             }
         }
 
+        if (hasLifePart && !lifePart.isDead() && isInAttackAnimationState && !this.isAttacking) {
+            this.animationTime = 0;
+            this.isAttacking = true;
+        }
+
         if(!this.getCurrentAnimation().isAnimationFinished(animationTime)){
             // Advance animation
             animationTime += Gdx.graphics.getDeltaTime();
@@ -57,7 +65,8 @@ public class AnimationPart implements EntityPart{
             animationTime = 0;
         }
 
-        if (hasMovingPart && hasLifePart && !lifePart.isDead()) {
+        if (hasMovingPart && hasLifePart && !lifePart.isDead() && !isInAttackAnimationState) {
+            this.isAttacking = false;
             processMovementAnimation(entity);
         }
 
@@ -150,5 +159,9 @@ public class AnimationPart implements EntityPart{
 
     public void setLeft(boolean left) {
         isLeft = left;
+    }
+
+    public float getAnimationTime() {
+        return this.animationTime;
     }
 }

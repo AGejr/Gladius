@@ -10,8 +10,15 @@ import Common.data.entityparts.LifePart;
 import Common.data.entityparts.MovingPart;
 import Common.services.IEntityProcessingService;
 import CommonPlayer.Player;
+import CommonEnemy.Enemy;
+import CommonWeapon.IWeaponService;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Polygon;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +31,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
     private int attackRange = 26;
 
     private AStarPathFinding aStarPathFinding = new AStarPathFinding();
+    private IWeaponService weaponService;
 
     @Override
     public void process(GameData gameData, World world) {
@@ -77,6 +85,10 @@ public class EnemyControlSystem implements IEntityProcessingService {
                             float currentX = (int) enemy.getX() + enemy.getTextureWidth() / 2f;
                             float currentY = (int) enemy.getY();
 
+                            Polygon attackRange = ((Enemy) enemy).getAttackRange();
+                            attackRange.setPosition(enemy.getX(), enemy.getY());
+                            attackRange.getBoundingRectangle();
+
                             if (gameData.isDebugMode()) {
                                 //used to show path
                                 ShapeRenderer sr = new ShapeRenderer();
@@ -99,6 +111,35 @@ public class EnemyControlSystem implements IEntityProcessingService {
                                     sr.line(nodeX + 32, nodeY - 32, nodeX, nodeY - 32);
                                 }
                                 sr.end();
+
+                                Gdx.gl.glEnable(GL20.GL_BLEND);
+                                Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+                                sr.begin(ShapeRenderer.ShapeType.Line);
+                                sr.setColor(Color.RED);
+                                sr.polygon(attackRange.getTransformedVertices());
+                                sr.end();
+                                Gdx.gl.glDisable(GL20.GL_BLEND);
+                            }
+
+                            // Checking if player is inside of enemy's attack range
+                            if (Intersector.overlapConvexPolygons(attackRange, player.getPolygonBoundaries())) {
+                                LifePart playerLifePart = player.getPart(LifePart.class);
+                                if (animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime()) && !playerLifePart.isDead()) {
+                                    if (enemy.getX() > player.getX()) {
+                                        animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.ATTACK_LEFT);
+                                    } else {
+                                        animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.ATTACK_RIGHT);
+                                    }
+                                    weaponService.attack(enemy, gameData, world);
+                                }
+                            } else {
+                                if (animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime())) {
+                                    if (animationPart.isLeft()) {
+                                        animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.IDLE_LEFT);
+                                    } else {
+                                        animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.IDLE_RIGHT);
+                                    }
+                                }
                             }
 
                             float playerFullX = player.getX() + player.getTextureWidth()/2f;
@@ -201,5 +242,13 @@ public class EnemyControlSystem implements IEntityProcessingService {
             movingPart.setUp(false);
             movingPart.setDown(false);
         }
+    }
+
+    public void setWeaponService(IWeaponService weaponService) {
+        this.weaponService = weaponService;
+    }
+
+    public void removeWeaponService(IWeaponService weaponService) {
+        this.weaponService = null;
     }
 }
