@@ -12,6 +12,7 @@ import Common.tools.FileLoader;
 import CommonEnemy.Enemy;
 
 import java.util.Random;
+import com.badlogic.gdx.graphics.Color;
 
 public class EnemyPlugin implements IGamePluginService {
     private Entity enemy;
@@ -28,7 +29,7 @@ public class EnemyPlugin implements IGamePluginService {
         // radius should be texture width / 16
         Entity enemy = new Enemy(file, 6);
         enemy.add(new MovingPart(30));
-        enemy.add(new LifePart(100));
+        enemy.add(new LifePart(100, Color.RED));
         enemy.add(new AnimationPart());
         enemy.add(new StatsPart(20, 5));
         FileLoader.loadFile(file, getClass());
