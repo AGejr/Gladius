@@ -14,12 +14,14 @@ public class LifePart implements EntityPart {
      */
     private int life;
     private Color healthbarColor = null;
+    private Color lostHealthColor = Color.LIGHT_GRAY;
     private final float healthbarWidth = 0.2f; //When 0.2 then the healthbar is 20 units wide total
     private final float healthbarHeight = 5.0f;
-
+    private float lifePercent;
     public LifePart(int life) {
         this.life = life;
         this.MAXLIFE = life;
+        this.lifePercent = ((float) life / (float) MAXLIFE) * 100;
     }
 
     public LifePart(int life, Color healthbarColor) {
@@ -39,19 +41,33 @@ public class LifePart implements EntityPart {
         this.life = MAXLIFE;
     }
 
+    private void updateLifePercent() {
+        this.lifePercent = ((float) life / (float) MAXLIFE) * 100;
+    }
+
+    public float getLifePercent() {
+        return this.lifePercent;
+    }
+
+    public float getHealthbarWidth() {
+        return this.healthbarWidth;
+    }
+
+    public float getHealthbarHeight() {
+        return this.healthbarHeight;
+    }
+
+    public Color getHealthColor() {
+        return this.healthbarColor;
+    }
+
+    public Color getLostHealthColor() {
+        return this.lostHealthColor;
+    }
+
     @Override
     public void process(GameData gameData, Entity entity) {
-        if (this.healthbarColor != null) {
-            ShapeRenderer sr = new ShapeRenderer();
-            sr.setProjectionMatrix(gameData.getCam().combined);
-            float lifePercent = ((float) life / (float) MAXLIFE) * 100;
-            sr.begin(ShapeType.Filled);
-            sr.setColor(this.healthbarColor);
-            sr.rect(entity.getX() + entity.getTextureWidth() / 2 - 10, entity.getY() - 10, (healthbarWidth * lifePercent), healthbarHeight);
-            sr.setColor(Color.LIGHT_GRAY);
-            sr.rect(entity.getX() + entity.getTextureWidth() / 2 - 10 + (float) (healthbarWidth * lifePercent), entity.getY() - 10,  healthbarWidth * (100 - lifePercent), healthbarHeight);
-            sr.end();
-        }
+        updateLifePercent();
     }
 
     public boolean isDead() {
