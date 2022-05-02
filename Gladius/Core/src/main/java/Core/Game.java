@@ -3,6 +3,7 @@ package Core;
 import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
+import Common.data.entityparts.LifePart;
 import Common.services.IEntityProcessingService;
 import Common.services.IGamePluginService;
 import Common.services.IPostEntityProcessingService;
@@ -125,19 +126,31 @@ public class Game implements ApplicationListener {
         }
 
         batch.end();
+
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        shapeRenderer.begin(ShapeType.Line);
         for (Entity entity :  world.getEntities()) {
-            Gdx.gl.glEnable(GL20.GL_BLEND);
-            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-            shapeRenderer.begin(ShapeType.Line);
             if (gameData.isDebugMode()) {
                 shapeRenderer.setColor(Color.BLUE);
             } else {
                 shapeRenderer.setColor(Color.CLEAR);
             }
             shapeRenderer.polygon(entity.getPolygonBoundaries().getTransformedVertices());
-            shapeRenderer.end();
-            Gdx.gl.glDisable(GL20.GL_BLEND);
         }
+        shapeRenderer.end();
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+
+        // To begin a new batch takes a lot of memory. Because of that it needs to happen in Game and not in process in LifePart to prevent to many batches getting created
+        shapeRenderer.begin(ShapeType.Filled);
+        for (Entity entity: world.getEntities()) {
+            LifePart lifePart = entity.getPart(LifePart.class);
+            if (lifePart != null) {
+                lifePart.drawHealthBar(shapeRenderer, entity);
+            }
+        }
+        shapeRenderer.end();
+
         update();
         gameData.getKeys().update();
     }
