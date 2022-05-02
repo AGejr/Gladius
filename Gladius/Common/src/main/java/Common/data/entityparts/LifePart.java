@@ -2,14 +2,29 @@ package Common.data.entityparts;
 
 import Common.data.Entity;
 import Common.data.GameData;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class LifePart implements EntityPart {
-    private final int MAXLIFE;
+    private final int MAXLIFE; // Maximum life possible for the entity
+    /***
+     * @param life is the beginning life of the entity
+     * @param color is the color of the remaining life in the health bar
+     */
     private int life;
+    private Color color = null;
+    private final float healthbarWidth = 0.2f; //When 0.2 then the healthbar is 20 units wide total
+    private final float healthbarHeight = 5.0f;
 
     public LifePart(int life) {
         this.life = life;
         this.MAXLIFE = life;
+    }
+
+    public LifePart(int life, Color color) {
+        this(life);
+        this.color = color;
     }
 
     public int getLife() {
@@ -26,9 +41,24 @@ public class LifePart implements EntityPart {
 
     @Override
     public void process(GameData gameData, Entity entity) {
+        if (this.color != null) {
+            ShapeRenderer sr = new ShapeRenderer();
+            sr.setProjectionMatrix(gameData.getCam().combined);
+            float lifePercent = ((float) life / (float) MAXLIFE) * 100;
+            sr.begin(ShapeType.Filled);
+            sr.setColor(this.color);
+            sr.rect(entity.getX() + entity.getTextureWidth() / 2 - 10, entity.getY() - 10, (healthbarWidth * lifePercent), healthbarHeight);
+            sr.setColor(Color.LIGHT_GRAY);
+            sr.rect(entity.getX() + entity.getTextureWidth() / 2 - 10 + (float) (healthbarWidth * lifePercent), entity.getY() - 10,  healthbarWidth * (100 - lifePercent), healthbarHeight);
+            sr.end();
+        }
     }
 
-    public boolean isDead(){
+    public boolean isDead() {
         return this.life <= 0;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 }
