@@ -78,6 +78,8 @@ public class MovingPart implements EntityPart {
 
     @Override
     public void process(GameData gameData, Entity entity) {
+        isSlow = slower != 1f;
+
         LifePart lifePart = entity.getPart(LifePart.class);
         if (lifePart != null && lifePart.isDead()) {
             return;
@@ -118,5 +120,9 @@ public class MovingPart implements EntityPart {
         // set position
         entity.setX(entity.getX() + dx);
         entity.setY(entity.getY() + dy);
+    }
+
+    public boolean isSlow() {
+        return isSlow;
     }
 }

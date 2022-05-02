@@ -2,6 +2,7 @@ package Core;
 
 import Common.data.Entity;
 import Common.data.GameData;
+import Common.data.SoundData;
 import Common.data.World;
 import Common.services.IEntityProcessingService;
 import Common.services.IGamePluginService;
@@ -25,7 +26,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import java.io.File;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Game implements ApplicationListener {
@@ -68,21 +73,32 @@ public class Game implements ApplicationListener {
         cam.update();
         gameData.setCam(cam);
 
-        String[] files = {"Map/Map.tmx", "Map/Arena_Tileset.tsx", "Map/Arena_Tileset.png"};
-        FileLoader.loadFiles(files, getClass());
-        tiledMap = new TmxMapLoader().load(files[0]);
+        String[] mapFiles = {"Map/Map.tmx", "Map/Arena_Tileset.tsx", "Map/Arena_Tileset.png"};
+        FileLoader.loadFiles(mapFiles, getClass());
+        tiledMap = new TmxMapLoader().load(mapFiles[0]);
         world.setTiledMap(tiledMap); //Saves tiledMap to the world
         tiledMapRenderer = new OrthoCachedTiledMapRenderer(tiledMap);
         tiledMapRenderer.setBlending(true); //Makes tiles transparent
 
-        world.setCsvMap(FileLoader.fetchData(files[0]));
+        world.setCsvMap(FileLoader.fetchData(mapFiles[0]));
 
-        FileLoader.loadFile("theme.ogg",getClass());
+        gameData.setSoundData(new SoundData());
 
-            Music theme = Gdx.audio.newMusic(Gdx.files.internal("theme.ogg"));
-            theme.setVolume(0.75f);
-            theme.setLooping(true);
-            theme.play();
+        // Game sounds loader
+        Collection<String> soundFileMap = gameData.getSoundData().getSoundFileMap().values();
+
+        for(String soundFile : soundFileMap){
+            FileLoader.loadFile(soundFile,getClass());
+        }
+
+        gameData.getSoundData().initSound();
+
+        // Background music
+        FileLoader.loadFile("Sounds/theme.ogg" ,getClass());
+        Music theme = Gdx.audio.newMusic(Gdx.files.internal("Sounds/theme.ogg"));
+        theme.setVolume(0.5f);
+        theme.setLooping(true);
+        theme.play();
 
 
         batch = new SpriteBatch();

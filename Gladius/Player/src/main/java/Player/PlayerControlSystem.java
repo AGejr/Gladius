@@ -1,11 +1,9 @@
 package Player;
 
-import Common.data.Entity;
-import Common.data.GameData;
-import Common.data.GameKeys;
-import Common.data.World;
+import Common.data.*;
 import Common.data.entityparts.LifePart;
 import Common.data.entityparts.MovingPart;
+import Common.data.entityparts.SoundPart;
 import Common.services.IEntityProcessingService;
 import CommonWeapon.IWeaponService;
 import CommonPlayer.Player;
@@ -25,6 +23,7 @@ public class PlayerControlSystem implements IEntityProcessingService {
             MovingPart movingPart = entity.getPart(MovingPart.class);
             LifePart lifePart = entity.getPart(LifePart.class);
             AnimationPart animationPart = entity.getPart(AnimationPart.class);
+            SoundPart soundPart = entity.getPart(SoundPart.class);
 
             movingPart.setLeft(gameData.getKeys().isDown(GameKeys.LEFT));
             movingPart.setRight(gameData.getKeys().isDown(GameKeys.RIGHT));
@@ -32,15 +31,17 @@ public class PlayerControlSystem implements IEntityProcessingService {
             movingPart.setDown(gameData.getKeys().isDown(GameKeys.DOWN));
 
             if (gameData.getKeys().isPressed(GameKeys.SPACE) && weaponService != null && !lifePart.isDead()) {
-                Sound sound = Gdx.audio.newSound(Gdx.files.internal("hitSound.mp3"));
-                sound.play(1.0f);
+                soundPart.playAudio(SoundData.SOUND.ATTACK);
+
                 weaponService.attack(entity, gameData, world);
 
             }
 
+
             movingPart.process(gameData, entity);
             animationPart.process(gameData,entity);
             lifePart.process(gameData,entity);
+            soundPart.process(gameData,entity);
         }
     }
 

@@ -19,6 +19,8 @@ public class GameData {
     private final GameKeys keys = new GameKeys();
     private List<Event> events = new CopyOnWriteArrayList<>();
     private Camera cam;
+    private SoundData soundData;
+
     private boolean debugMode = false;
 
     public void addEvent(Event e) {
@@ -110,5 +112,13 @@ public class GameData {
 
     public void setDebugMode(boolean debugMode) {
         this.debugMode = debugMode;
+    }
+
+    public SoundData getSoundData() {
+        return soundData;
+    }
+
+    public void setSoundData(SoundData soundData) {
+        this.soundData = soundData;
     }
 }
