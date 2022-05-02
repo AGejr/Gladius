@@ -9,6 +9,8 @@ import Common.services.IEntityProcessingService;
 import Common.services.IGamePluginService;
 import Common.services.IPostEntityProcessingService;
 import Common.tools.FileLoader;
+import Common.ui.Text;
+import Common.ui.UI;
 import CommonPlayer.Player;
 import Event.EventRegistry;
 import com.badlogic.gdx.ApplicationListener;
@@ -22,6 +24,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -146,6 +149,8 @@ public class Game implements ApplicationListener {
             Gdx.gl.glDisable(GL20.GL_BLEND);
         }
         gameData.getStage().draw();
+        UI.draw();
+
         update();
         gameData.getKeys().update();
     }

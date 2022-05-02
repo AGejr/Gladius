@@ -6,6 +6,7 @@ import Common.data.World;
 import Common.data.entityparts.LifePart;
 import Common.services.IEntityFactoryService;
 import Common.services.IEventProcessingService;
+import Common.ui.Text;
 import Common.ui.UI;
 import Enemy.Enemy;
 import com.badlogic.gdx.graphics.Color;
@@ -80,12 +81,14 @@ public class EventProcessor implements IEventProcessingService {
 
     private void processWaveCompletedEvent(GameData gameData, World world) {
         gameData.setGateEnabled(true);
-        // TODO: center text
-
-        UI.addCenteredPrompt(gameData, "Wave" + Integer.toString(gameData.getWave()) + " cleared!", 3f, 3);
+        String string = "Wave " + Integer.toString(gameData.getWave()) + " cleared!";
+        Text text = new Text(string,3,20,3);
+        text.alignScreenCenter(gameData);
+        UI.addText(text);
         gameData.incrementWave();
     }
 
     private void processPlayerDiedEvent(GameData gameData, World world) {
+        // TODO: Implement this
     }
 }
