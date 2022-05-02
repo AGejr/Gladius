@@ -9,10 +9,22 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import java.util.ArrayList;
 
 public class UI {
 
+    /**
+     * Used for time-based / permanent text
+     * such as prompts or menu screen
+     */
+    public static ArrayList<Text> textList = new ArrayList<>();
+
     public static void textBox(GameData gameData, String text, float x, float y, int width, int height) {
+        rectangle(x,y,width, height);
+        text(gameData, text, x, y);
+    }
+
+    private static void rectangle(float x,float y,int width, int height){
         ShapeRenderer shapeRenderer = new ShapeRenderer();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.BLACK);
@@ -20,36 +32,45 @@ public class UI {
         shapeRenderer.setColor(Color.DARK_GRAY);
         shapeRenderer.rect(x - 20, y - 10, width-10, height-10);
         shapeRenderer.end();
-
-        text(gameData, text, x, y);
     }
 
     private static void text(GameData gameData, String text, float x, float y) {
         Stage stage = gameData.getStage();
+        stage.clear();
         Label.LabelStyle labelStyle = new Label.LabelStyle(new BitmapFont(), new Color(Color.WHITE));
         Label label = new Label(text, labelStyle);
         label.setPosition(x, y);
         stage.addActor(label);
         stage.act();
+        stage.draw();
     }
 
-    // TODO: add fade out effect, based on duration
-    public static void addCenteredPrompt(GameData gameData, String text, float scale, int duration) {
-        float x = (float)(gameData.getDisplayWidth() / 2);
-        float y = (float)(gameData.getDisplayHeight() / 2);
-        Stage stage = gameData.getStage();
-        FreeTypeFontGenerator freeTypeFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("mc.otf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        int fontSize = 20;
-        parameter.size = fontSize;
-        BitmapFont bitmapFont = freeTypeFontGenerator.generateFont(parameter);
-        freeTypeFontGenerator.dispose();
-        Label label = new Label(text, new Label.LabelStyle(bitmapFont, new Color(Color.WHITE)));
-        label.setFontScale(scale);
-        x -= ((label.getPrefWidth())/2);
-        y += ((label.getPrefHeight())/2);
-        label.setPosition(x, y);
-        stage.addActor(label);
+    /**
+     * Draws all the texts in this.textList
+     */
+    public static void draw(){
+        Stage stage = new Stage();
+        ArrayList<Text> removeText = new ArrayList<>();
+        for (Text text: textList){
+            stage.addActor(text.getLabel());
+            text.updateText();
+            if (!text.isVisible()){
+                removeText.add(text);
+            }
+        }
+        for (Text text: removeText){
+            textList.remove(text);
+        }
         stage.act();
+        stage.draw();
+    }
+
+    /**
+     * Add text to the UI
+     * (Use this for persistent text which needs effects)
+     * @param text
+     */
+    public static void addText(Text text){
+        textList.add(text);
     }
 }
