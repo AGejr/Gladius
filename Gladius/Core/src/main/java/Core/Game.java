@@ -125,19 +125,21 @@ public class Game implements ApplicationListener {
         }
 
         batch.end();
+
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        shapeRenderer.begin(ShapeType.Line);
         for (Entity entity :  world.getEntities()) {
-            Gdx.gl.glEnable(GL20.GL_BLEND);
-            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-            shapeRenderer.begin(ShapeType.Line);
             if (gameData.isDebugMode()) {
                 shapeRenderer.setColor(Color.BLUE);
             } else {
                 shapeRenderer.setColor(Color.CLEAR);
             }
             shapeRenderer.polygon(entity.getPolygonBoundaries().getTransformedVertices());
-            shapeRenderer.end();
-            Gdx.gl.glDisable(GL20.GL_BLEND);
         }
+        shapeRenderer.end();
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+
         update();
         gameData.getKeys().update();
     }

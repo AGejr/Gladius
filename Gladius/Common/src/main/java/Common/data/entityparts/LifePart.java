@@ -47,11 +47,12 @@ public class LifePart implements EntityPart {
             float lifePercent = ((float) life / (float) MAXLIFE) * 100;
             sr.begin(ShapeType.Filled);
             sr.setColor(this.healthbarColor);
-            sr.rect(entity.getX() + entity.getTextureWidth() / 2 - 10, entity.getY() - 10, (healthbarWidth * lifePercent), healthbarHeight);
+            sr.rect(entity.getX() + entity.getTextureWidth() / 2 - 10, entity.getY() - 10, healthbarWidth * lifePercent, healthbarHeight);
             sr.setColor(Color.LIGHT_GRAY);
-            sr.rect(entity.getX() + entity.getTextureWidth() / 2 - 10 + (float) (healthbarWidth * lifePercent), entity.getY() - 10,  healthbarWidth * (100 - lifePercent), healthbarHeight);
+            sr.rect(entity.getX() + entity.getTextureWidth() / 2 - 10 + healthbarWidth * lifePercent, entity.getY() - 10,  healthbarWidth * (100 - lifePercent), healthbarHeight);
             sr.end();
         }
+
     }
 
     public boolean isDead() {

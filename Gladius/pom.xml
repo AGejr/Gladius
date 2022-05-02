@@ -33,6 +33,8 @@
     <module>Enemy</module>
     <module>CommonPlayer</module>
     <module>CommonEnemy</module>
+    <module>Monster</module>
+    <module>CommonMonster</module>
   </modules>
 
   <build>
@@ -47,7 +49,7 @@
                               -->
           <provision>
             <param>--platform=felix</param>
-            <param>--vmOptions=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005</param>
+            <!-- <param>&#45;&#45;vmOptions=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005</param> -->
           </provision>
         </configuration>
         <executions>
