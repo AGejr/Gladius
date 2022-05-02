@@ -14,8 +14,9 @@ public class Weapon extends Entity {
     private float angleAdjustment; //Used to make the weapon spawn at the right angle
     private float positionAdjustX; //Used to align the weapon to ex. the player
     private float positionAdjustY; //Used to align the weapon to ex. the player
+    private int price;
 
-    public Weapon(String name, int damage, float weight, float range, String texturePath, int textureWidth, int textureHeight, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float angle, float angleAdjustment, float positionAdjustX, float positionAdjustY, Entity owner) {
+    public Weapon(String name, int damage, float weight, float range, String texturePath, int textureWidth, int textureHeight, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float angle, float angleAdjustment, float positionAdjustX, float positionAdjustY, Entity owner, int price) {
         super(null, range, textureWidth, textureHeight, angle, hitboxScaleX, hitboxScaleY, hitboxOriginX);
         this.name = name;
         this.damage = damage;
@@ -26,18 +27,20 @@ public class Weapon extends Entity {
         this.angleAdjustment = angleAdjustment;
         this.positionAdjustX = positionAdjustX;
         this.positionAdjustY = positionAdjustY;
+        this.price = price;
+        this.setScaling(0.3f);
     }
-    public Weapon(String name, int damage, float weight, float range, String texturePath, int textureWidth, int textureHeight, float hitboxScaleX,  float hitboxScaleY, float hitboxOriginX, float angle, float angleAdjustment, Entity owner) {
-        this(name, damage, weight, range, texturePath, textureWidth, textureHeight, hitboxScaleX, hitboxScaleY, hitboxOriginX, angle, angleAdjustment, 0, 0, owner);
+    public Weapon(String name, int damage, float weight, float range, String texturePath, int textureWidth, int textureHeight, float hitboxScaleX,  float hitboxScaleY, float hitboxOriginX, float angle, float angleAdjustment, Entity owner, int price) {
+        this(name, damage, weight, range, texturePath, textureWidth, textureHeight, hitboxScaleX, hitboxScaleY, hitboxOriginX, angle, angleAdjustment, 0, 0, owner, price);
     }
-    public Weapon(String name, int damage, float weight, float range, String texturePath, int textureWidth, int textureHeight, float hitboxScaleX,  float hitboxScaleY, float hitboxOriginX, Entity owner) {
-        this(name, damage, weight, range, texturePath, textureWidth, textureHeight, hitboxScaleX, hitboxScaleY, hitboxOriginX, 0, 0, 0, 0, owner);
+    public Weapon(String name, int damage, float weight, float range, String texturePath, int textureWidth, int textureHeight, float hitboxScaleX,  float hitboxScaleY, float hitboxOriginX, Entity owner, int price) {
+        this(name, damage, weight, range, texturePath, textureWidth, textureHeight, hitboxScaleX, hitboxScaleY, hitboxOriginX, 0, 0, 0, 0, owner, price);
     }
-    public Weapon(String name, int damage, float weight, float range, String texturePath, int textureWidth, int textureHeight, Entity owner) {
-        this(name, damage, weight, range, texturePath, textureWidth, textureHeight, 0, 0, 0, 0, 0, 0, 0, owner);
+    public Weapon(String name, int damage, float weight, float range, String texturePath, int textureWidth, int textureHeight, Entity owner, int price) {
+        this(name, damage, weight, range, texturePath, textureWidth, textureHeight, 0, 0, 0, 0, 0, 0, 0, owner, price);
     }
-    public Weapon(String name, int damage, float weight, float range, Entity owner) {
-        this(name, damage, weight, range, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, owner);
+    public Weapon(String name, int damage, float weight, float range, Entity owner, int price) {
+        this(name, damage, weight, range, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, owner, price);
     }
 
     public Weapon() {
@@ -111,5 +114,9 @@ public class Weapon extends Entity {
 
     public void resetHitEntityList() {
         this.hitEntityList.clear();
+    }
+
+    public int getPrice() {
+        return price;
     }
 }
