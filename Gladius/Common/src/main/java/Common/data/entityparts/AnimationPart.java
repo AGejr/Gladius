@@ -28,7 +28,7 @@ public class AnimationPart implements EntityPart{
     private float animationTime = 0;
     private Boolean isLeft = true;
     private Boolean takeDamage = false;
-    private boolean isAttacking = false;
+    private Boolean attack = false;
 
     @Override
     public void process(GameData gameData, Entity entity) {
@@ -78,11 +78,6 @@ public class AnimationPart implements EntityPart{
             takeDamage = false;
         }
 
-        if (hasLifePart && !lifePart.isDead() && isInAttackAnimationState && !this.isAttacking) {
-            this.animationTime = 0;
-            this.isAttacking = true;
-        }
-
         if (hasMovingPart && hasLifePart && !lifePart.isDead()) {
             processMovementAnimation(entity);
         }
@@ -93,14 +88,6 @@ public class AnimationPart implements EntityPart{
         } else if (hasLifePart && !lifePart.isDead()) {
             // Loop animation if the entity has a lifepart, and it is alive
             animationTime = 0;
-        } else if (lifePart == null) {
-            // Loop animation if entity is not a living entity
-            animationTime = 0;
-        }
-
-        if (hasMovingPart && hasLifePart && !lifePart.isDead() && !isInAttackAnimationState) {
-            this.isAttacking = false;
-            processMovementAnimation(entity);
         }
 
         entity.setRegion(getCurrentKeyFrame());
@@ -206,7 +193,4 @@ public class AnimationPart implements EntityPart{
         attack = true;
     }
 
-    public float getAnimationTime() {
-        return this.animationTime;
-    }
 }

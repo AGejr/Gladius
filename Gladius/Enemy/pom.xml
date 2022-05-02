@@ -35,12 +35,6 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>org.gladius.Gladius</groupId>
-      <artifactId>CommonEnemy</artifactId>
-      <version>1.0-SNAPSHOT</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
       <groupId>org.gladius.build</groupId>
       <artifactId>LibGDXImports</artifactId>
       <version>1.0-SNAPSHOT</version>

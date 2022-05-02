@@ -32,7 +32,6 @@
     <module>Collision</module>
     <module>Enemy</module>
     <module>CommonPlayer</module>
-    <module>CommonEnemy</module>
     <module>Obstacle</module>
   </modules>
 

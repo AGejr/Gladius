@@ -5,8 +5,4 @@
         <provide interface="Common.services.IEntityProcessingService"/>
     </service>
 
-    <reference bind="setWeaponService" cardinality="0..1"
-               interface="CommonWeapon.IWeaponService"
-               name="WeaponSPI" policy="dynamic" unbind="removeWeaponService"/>
-
 </scr:component>
