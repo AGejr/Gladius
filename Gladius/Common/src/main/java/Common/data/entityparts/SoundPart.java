@@ -3,15 +3,11 @@ package Common.data.entityparts;
 import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.SoundData;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.utils.Disposable;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class SoundPart implements EntityPart {
 
@@ -21,11 +17,13 @@ public class SoundPart implements EntityPart {
 
     private boolean isInit = false;
     private boolean isMoving = false;
+    private boolean hasChangedTiles = false;
 
     private Map<SoundData.SOUND, String> localSoundFileMap = new HashMap<>();
     private Map<SoundData.SOUND, Sound> localSoundMap = new HashMap<>();
 
-    private Sound movmentSound = null;
+    private Sound movementSound = null;
+    private SoundData.SOUND prevSound = null;
 
     public SoundPart(GameData gameData){
         localSoundFileMap.put(SoundData.SOUND.WALK, "");
@@ -67,19 +65,39 @@ public class SoundPart implements EntityPart {
 
 
         if(hasMovingPart) {
-            if ((movingPart.isUp() ^ movingPart.isDown() || movingPart.isLeft() ^ movingPart.isRight()) && !isMoving) {
+            //if player is moving
+            if ((movingPart.isUp() ^ movingPart.isDown() || movingPart.isLeft() ^ movingPart.isRight())) {
 
+                //if the entity is slowed
                 if (movingPart.isSlow()) {
-                    movmentSound = this.getSound(SoundData.SOUND.WALK_WATER);
+                    // if the previous sound is different from the sound needed to be played now
+                    if(prevSound != SoundData.SOUND.WALK_WATER && movementSound != null){
+                        //stop the playing loop
+                        movementSound.stop();
+                        hasChangedTiles = true;
+                    }
+                    movementSound = this.getSound(SoundData.SOUND.WALK_WATER);
+                    prevSound = SoundData.SOUND.WALK_WATER;
                 } else {
-                    movmentSound = this.getSound(SoundData.SOUND.WALK);
+
+                    if(prevSound != SoundData.SOUND.WALK && movementSound != null){
+                        movementSound.stop();
+                        hasChangedTiles = true;
+                    }
+                    movementSound = this.getSound(SoundData.SOUND.WALK);
+                    prevSound = SoundData.SOUND.WALK;
                 }
-                movmentSound.loop(1.0f);
-                isMoving = true;
+                // if the flag for not moving or changed tiles, is true, start the loop
+                if( !isMoving || hasChangedTiles) {
+                    movementSound.loop(1.0f);
+                    isMoving = true;
+                    hasChangedTiles = false;
+                }
             }
             if (!(movingPart.isUp() || movingPart.isDown() || movingPart.isLeft() || movingPart.isRight()) &&isMoving){
-                movmentSound.stop();
+                movementSound.stop();
                 isMoving = false;
+
             }
         }
 

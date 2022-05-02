@@ -31,10 +31,10 @@ public class SoundData {
 
         //TODO record sounds
         soundFileMap.put(SOUND.WALK, "walk.mp3");
-        soundFileMap.put(SOUND.WALK_WATER, "walk.mp3");
-        soundFileMap.put(SOUND.ATTACK, "hit.mp3");
+        soundFileMap.put(SOUND.WALK_WATER, "water_walk.mp3");
+        soundFileMap.put(SOUND.ATTACK, "attack.mp3");
         soundFileMap.put(SOUND.DAMAGE, "walk.mp3");
-        soundFileMap.put(SOUND.DEATH, "walk.mp3");
+        soundFileMap.put(SOUND.DEATH, "death.mp3");
         soundFileMap.put(SOUND.EXPLOSION, "walk.mp3");
         soundFileMap.put(SOUND.BUY, "walk.mp3");
         soundFileMap.put(SOUND.INTERACT, "walk.mp3");
