@@ -146,10 +146,7 @@ public class Game implements ApplicationListener {
         for (Entity entity: world.getEntities()) {
             LifePart lifePart = entity.getPart(LifePart.class);
             if (lifePart != null) {
-                shapeRenderer.setColor(lifePart.getHealthColor());
-                shapeRenderer.rect(entity.getX() + entity.getTextureWidth() / 2 - 10, entity.getY() - 10, (lifePart.getHealthbarWidth() * lifePart.getLifePercent()), lifePart.getHealthbarHeight());
-                shapeRenderer.setColor(lifePart.getLostHealthColor());
-                shapeRenderer.rect(entity.getX() + entity.getTextureWidth() / 2 - 10 + lifePart.getHealthbarWidth() * lifePart.getLifePercent(), entity.getY() - 10,  lifePart.getHealthbarWidth()  * (100 - lifePart.getLifePercent()), lifePart.getHealthbarHeight());
+                lifePart.drawHealthBar(shapeRenderer, entity);
             }
         }
         shapeRenderer.end();
