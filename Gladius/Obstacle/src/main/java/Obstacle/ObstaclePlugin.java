@@ -10,57 +10,41 @@ import Common.services.IGamePluginService;
 import Common.tools.FileLoader;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class ObstaclePlugin implements IGamePluginService {
 
     private ArrayList<Entity> obstacles;
-    private List<List<Integer>> csv;
     Random rand;
 
     @Override
     public void start(GameData gameData, World world) {
-        // todo : move location into ControlSystem
-        while(csv == null) {
-            csv = world.getCsvMap();
-            System.out.println("TEST");
-        }
-
-        //csv = world.getCsvMap();
-
-        rand = new Random();
-
         obstacles = new ArrayList<>();
+        rand = new Random();
 
         // Random spawn
         // spawn barrel
         int randomNumber = rand.nextInt(5) + 1;
-        System.out.println("Barrel: " + randomNumber);
         for(int i = 0; i < randomNumber; i++) {
             obstacles.add(createBarrel(gameData, world));
         }
         // spawn explosion barrel
         randomNumber = rand.nextInt(5) + 1;
-        System.out.println("Explosive Barrel: " + randomNumber);
         for(int i = 0; i < randomNumber; i++) {
             obstacles.add(createExplosiveBarrel(gameData, world));
         }
         // spawn chest
         randomNumber = rand.nextInt(5) + 1;
-        System.out.println("Chest: " + randomNumber);
         for(int i = 0; i < randomNumber; i++) {
             obstacles.add(createChest(gameData, world));
         }
         // spawn crate
         randomNumber = rand.nextInt(5) + 1;
-        System.out.println("Crate: " + randomNumber);
         for(int i = 0; i < randomNumber; i++) {
             obstacles.add(createCrate(gameData, world));
         }
         // spawn jar
         randomNumber = rand.nextInt(5) + 1;
-        System.out.println("Jar: " + randomNumber);
         for(int i = 0; i < randomNumber; i++) {
             obstacles.add(createJar(gameData, world));
         }
@@ -78,16 +62,8 @@ public class ObstaclePlugin implements IGamePluginService {
         barrel.add(new StatsPart(0,10,0,0, 0));
         FileLoader.loadFile(file, getClass());
 
-        int randX = rand.nextInt(48 - 2) + 2; // random x spawn point from 0 to width of the map in tiles
-        int randY = rand.nextInt(40 - 10) + 3; // random y spawn point from 0 to height of the map in tiles
-        while(csv.get(randY).get(randX) != 0) {
-            randX = rand.nextInt(48 - 2) + 2; // random x spawn point from 0 to width of the map in tiles
-            randY = rand.nextInt(40 - 10) + 3; // random y spawn point from 0 to height of the map in tiles
-        }
-        int spawnX = (randX * 32) - barrel.getTextureWidth()/2 + 32/2;
-        int spawnY = gamedata.getMapHeight() - (randY * 32) - barrel.getTextureHeight()/2 - barrel.getRadiusOffsetY() - 32/2;
-        barrel.setX(spawnX);
-        barrel.setY(spawnY);
+        barrel.setX(0);
+        barrel.setY(0);
         barrel.add(new AnimationPart());
         //world.setTileInMap(randY, randX, 3);
 
@@ -101,16 +77,8 @@ public class ObstaclePlugin implements IGamePluginService {
         explosiveBarrel.add(new StatsPart(0,0,50,50, 0));
         FileLoader.loadFile(file, getClass());
 
-        int randX = rand.nextInt(48 - 2) + 2; // random x spawn point from 0 to width of the map in tiles
-        int randY = rand.nextInt(40 - 10) + 3; // random y spawn point from 0 to height of the map in tiles
-        while(csv.get(randY).get(randX) != 0) {
-            randX = rand.nextInt(48 - 2) + 2; // random x spawn point from 0 to width of the map in tiles
-            randY = rand.nextInt(40 - 10) + 3; // random y spawn point from 0 to height of the map in tiles
-        }
-        int spawnX = (randX * 32) - explosiveBarrel.getTextureWidth()/2 + 32/2;
-        int spawnY = gamedata.getMapHeight() - (randY * 32) - explosiveBarrel.getTextureHeight()/2 - explosiveBarrel.getRadiusOffsetY() - 32/2;
-        explosiveBarrel.setX(spawnX);
-        explosiveBarrel.setY(spawnY);
+        explosiveBarrel.setX(0);
+        explosiveBarrel.setY(0);
         //world.setTileInMap(randY, randX, 3);
 
         explosiveBarrel.add(new AnimationPart());
@@ -125,16 +93,8 @@ public class ObstaclePlugin implements IGamePluginService {
         chest.add(new StatsPart(0,0,0, 0,0));
         FileLoader.loadFile(file, getClass());
 
-        int randX = rand.nextInt(48 - 2) + 2; // random x spawn point from 0 to width of the map in tiles
-        int randY = rand.nextInt(40 - 10) + 3; // random y spawn point from 0 to height of the map in tiles
-        while(csv.get(randY).get(randX) != 0) {
-            randX = rand.nextInt(48 - 2) + 2; // random x spawn point from 0 to width of the map in tiles
-            randY = rand.nextInt(40 - 10) + 3; // random y spawn point from 0 to height of the map in tiles
-        }
-        int spawnX = (randX * 32) - chest.getTextureWidth()/2 + 32/2;
-        int spawnY = gamedata.getMapHeight() - (randY * 32) - chest.getTextureHeight()/2 - chest.getRadiusOffsetY() - 32/2;
-        chest.setX(spawnX);
-        chest.setY(spawnY);
+        chest.setX(0);
+        chest.setY(0);
         //world.setTileInMap(randY, randX, 3);
 
         chest.add(new AnimationPart());
@@ -149,16 +109,8 @@ public class ObstaclePlugin implements IGamePluginService {
         crate.add(new StatsPart(0,0,0, 0,0));
         FileLoader.loadFile(file, getClass());
 
-        int randX = rand.nextInt(48 - 2) + 2; // random x spawn point from 0 to width of the map in tiles
-        int randY = rand.nextInt(40 - 10) + 3; // random y spawn point from 0 to height of the map in tiles
-        while(csv.get(randY).get(randX) != 0) {
-            randX = rand.nextInt(48 - 2) + 2; // random x spawn point from 0 to width of the map in tiles
-            randY = rand.nextInt(40 - 10) + 3; // random y spawn point from 0 to height of the map in tiles
-        }
-        int spawnX = (randX * 32) - crate.getTextureWidth()/2 + 32/2;
-        int spawnY = gamedata.getMapHeight() - (randY * 32) - crate.getTextureHeight()/2 - crate.getRadiusOffsetY() - 32/2;
-        crate.setX(spawnX);
-        crate.setY(spawnY);
+        crate.setX(0);
+        crate.setY(0);
         //world.setTileInMap(randY, randX, 3);
 
         crate.add(new AnimationPart());
@@ -173,16 +125,8 @@ public class ObstaclePlugin implements IGamePluginService {
         jar.add(new StatsPart(0,0,0, 0,0));
         FileLoader.loadFile(file, getClass());
 
-        int randX = rand.nextInt(48 - 2) + 2; // random x spawn point from 0 to width of the map in tiles
-        int randY = rand.nextInt(40 - 10) + 3; // random y spawn point from 0 to height of the map in tiles
-        while(csv.get(randY).get(randX) != 0) {
-            randX = rand.nextInt(48 - 2) + 2; // random x spawn point from 0 to width of the map in tiles
-            randY = rand.nextInt(40 - 10) + 3; // random y spawn point from 0 to height of the map in tiles
-        }
-        int spawnX = (randX * 32) - jar.getTextureWidth()/2 + 32/2;
-        int spawnY = gamedata.getMapHeight() - (randY * 32) - jar.getTextureHeight()/2 - jar.getRadiusOffsetY() - 32/2;
-        jar.setX(spawnX);
-        jar.setY(spawnY);
+        jar.setX(0);
+        jar.setY(0);
         //world.setTileInMap(randY, randX, 3);
 
         jar.add(new AnimationPart());

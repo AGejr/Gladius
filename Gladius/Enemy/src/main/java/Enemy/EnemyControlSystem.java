@@ -71,7 +71,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
                             // the output from the search is given in tiles (0-40), so it's scaled to fit the position representation (0-1280)
                             float targetY = (nextPoint.getY() * 32) + 16;
                             float targetX = (nextPoint.getX() * 32) + 16;
-                            float currentX = (int) enemy.getX() + (enemy.getRadius() * 16) / 2;
+                            float currentX = (int) (enemy.getRegionWidth() / 2) + enemy.getX();
                             float currentY = (int) enemy.getY();
 
                             if (gameData.isDebugMode()) {

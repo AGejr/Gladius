@@ -8,8 +8,6 @@ import Common.data.entityparts.MovingPart;
 import Common.data.entityparts.StatsPart;
 import Common.services.IPostEntityProcessingService;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.*;
 
 public class Collision implements IPostEntityProcessingService {
@@ -32,7 +30,6 @@ public class Collision implements IPostEntityProcessingService {
                 float radius = entity.getRadius();
                 int y = (int) (40 - ((entity.getY() / gameData.getMapHeight()) * 40));
                 int x = (int) (((entity.getX()+(entity.getTextureWidth())/2) / gameData.getMapWidth()) * 50); // divide by 2 to get center
-                System.out.println("X: " + x + ", Y: " + y + ", CSV: " + csv.get(y).get(x));
 
                 MovingPart movingPart = entity.getPart(MovingPart.class);
                 // Checks wall layer, if there is a wall (not 0)
