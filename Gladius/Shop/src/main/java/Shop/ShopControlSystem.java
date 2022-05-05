@@ -91,33 +91,13 @@ y1  StrElixir StrElixir DefElixir DefElixir Exit
     private void processBuy(GameData gameData, Player player, StatsPart statsPart) {
         if (gameData.getKeys().isPressed(GameKeys.ENTER)) {
             if (cursorX == x1 && cursorY == y2) {
-                if (statsPart.getBalance() >= swordMap.get(WeaponImages.CLUB).getPrice()) {
-                    statsPart.withdrawBalance(swordMap.get(WeaponImages.CLUB).getPrice());
-                    Weapon weapon = swordMap.get(WeaponImages.CLUB);
-                    player.addWeapon(weapon);
-                    player.equipWeapon(weapon);
-                }
+                buyWeapon(statsPart, WeaponImages.CLUB, player);
             } else if (cursorX == x3 && cursorY == y2) {
-                if (statsPart.getBalance() >= swordMap.get(WeaponImages.DIAMONDSWORD).getPrice()) {
-                    statsPart.withdrawBalance(swordMap.get(WeaponImages.DIAMONDSWORD).getPrice());
-                    Weapon weapon = swordMap.get(WeaponImages.DIAMONDSWORD);
-                    player.addWeapon(weapon);
-                    player.equipWeapon(weapon);
-                }
+                buyWeapon(statsPart, WeaponImages.DIAMONDSWORD, player);
             } else if (cursorX == x5 && cursorY == y2) {
-                if (statsPart.getBalance() >= swordMap.get(WeaponImages.GOLDSWORD).getPrice()) {
-                    statsPart.withdrawBalance(swordMap.get(WeaponImages.GOLDSWORD).getPrice());
-                    Weapon weapon = swordMap.get(WeaponImages.GOLDSWORD);
-                    player.addWeapon(weapon);
-                    player.equipWeapon(weapon);
-                }
+                buyWeapon(statsPart, WeaponImages.GOLDSWORD, player);
             } else if (cursorX == x6 && cursorY == y2) {
-                if (statsPart.getBalance() >= swordMap.get(WeaponImages.STARTSWORD).getPrice()) {
-                    statsPart.withdrawBalance(swordMap.get(WeaponImages.STARTSWORD).getPrice());
-                    Weapon weapon = swordMap.get(WeaponImages.STARTSWORD);
-                    player.addWeapon(weapon);
-                    player.equipWeapon(weapon);
-                }
+                buyWeapon(statsPart, WeaponImages.STARTSWORD, player);
             } else if (cursorX == x1 && cursorY == y1) {
                 if (statsPart.getBalance() >= largeElixirCost) {
                     statsPart.withdrawBalance(largeElixirCost);
@@ -143,6 +123,15 @@ y1  StrElixir StrElixir DefElixir DefElixir Exit
                 MovingPart movingPart = player.getPart(MovingPart.class);
                 movingPart.setSpeed(100);
             }
+        }
+    }
+
+    private void buyWeapon(StatsPart statsPart, WeaponImages weaponEnum, Player player) {
+        if (statsPart.getBalance() >= swordMap.get(weaponEnum).getPrice()) {
+            statsPart.withdrawBalance(swordMap.get(weaponEnum).getPrice());
+            Weapon weapon = swordMap.get(weaponEnum);
+            player.addWeapon(weapon);
+            player.equipWeapon(weapon);
         }
     }
 

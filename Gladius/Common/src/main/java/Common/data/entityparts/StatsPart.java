@@ -52,4 +52,8 @@ public class StatsPart implements EntityPart {
         balance -= amount;
     }
 
+    public void depositBalance(int amount) {
+        balance += amount;
+    }
+
 }
