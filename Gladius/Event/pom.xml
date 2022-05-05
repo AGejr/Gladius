@@ -59,7 +59,7 @@
     </dependency>
       <dependency>
           <groupId>org.gladius.Gladius</groupId>
-          <artifactId>Enemy</artifactId>
+          <artifactId>CommonEnemy</artifactId>
           <version>1.0-SNAPSHOT</version>
           <scope>compile</scope>
       </dependency>

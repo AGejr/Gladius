@@ -8,7 +8,7 @@ import Common.services.IEntityFactoryService;
 import Common.services.IEventProcessingService;
 import Common.ui.Text;
 import Common.ui.UI;
-import Enemy.Enemy;
+import CommonEnemy.Enemy;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
