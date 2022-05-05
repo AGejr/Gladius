@@ -21,15 +21,13 @@ public class ObstaclePlugin implements IGamePluginService {
 
     @Override
     public void start(GameData gameData, World world) {
-        while (!world.isMapLoaded()) {
-            // Wait until map is loaded
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        // todo : move location into ControlSystem
+        while(csv == null) {
+            csv = world.getCsvMap();
+            System.out.println("TEST");
         }
-        csv = world.getCsvMap();
+
+        //csv = world.getCsvMap();
 
         rand = new Random();
 
@@ -37,23 +35,33 @@ public class ObstaclePlugin implements IGamePluginService {
 
         // Random spawn
         // spawn barrel
-        for(int i = 0; i < rand.nextInt(5); i++) {
+        int randomNumber = rand.nextInt(5) + 1;
+        System.out.println("Barrel: " + randomNumber);
+        for(int i = 0; i < randomNumber; i++) {
             obstacles.add(createBarrel(gameData, world));
         }
         // spawn explosion barrel
-        for(int i = 0; i < rand.nextInt(5); i++) {
+        randomNumber = rand.nextInt(5) + 1;
+        System.out.println("Explosive Barrel: " + randomNumber);
+        for(int i = 0; i < randomNumber; i++) {
             obstacles.add(createExplosiveBarrel(gameData, world));
         }
         // spawn chest
-        for(int i = 0; i < rand.nextInt(5); i++) {
+        randomNumber = rand.nextInt(5) + 1;
+        System.out.println("Chest: " + randomNumber);
+        for(int i = 0; i < randomNumber; i++) {
             obstacles.add(createChest(gameData, world));
         }
         // spawn crate
-        for(int i = 0; i < rand.nextInt(5); i++) {
+        randomNumber = rand.nextInt(5) + 1;
+        System.out.println("Crate: " + randomNumber);
+        for(int i = 0; i < randomNumber; i++) {
             obstacles.add(createCrate(gameData, world));
         }
         // spawn jar
-        for(int i = 0; i < rand.nextInt(5); i++) {
+        randomNumber = rand.nextInt(5) + 1;
+        System.out.println("Jar: " + randomNumber);
+        for(int i = 0; i < randomNumber; i++) {
             obstacles.add(createJar(gameData, world));
         }
 
@@ -81,7 +89,7 @@ public class ObstaclePlugin implements IGamePluginService {
         barrel.setX(spawnX);
         barrel.setY(spawnY);
         barrel.add(new AnimationPart());
-        world.setTileInMap(randY, randX, 3);
+        //world.setTileInMap(randY, randX, 3);
 
         return barrel;
     }
@@ -90,7 +98,7 @@ public class ObstaclePlugin implements IGamePluginService {
         String file = "ExplosiveBarrel.png";
         Entity explosiveBarrel = new Obstacle(file, 10, 0, -5, 64, 64, 0, 0.3f, 0.3f, 32, 32);
         explosiveBarrel.add(new LifePart(50));
-        explosiveBarrel.add(new StatsPart(0,0,50,100, 0));
+        explosiveBarrel.add(new StatsPart(0,0,50,50, 0));
         FileLoader.loadFile(file, getClass());
 
         int randX = rand.nextInt(48 - 2) + 2; // random x spawn point from 0 to width of the map in tiles
@@ -103,7 +111,7 @@ public class ObstaclePlugin implements IGamePluginService {
         int spawnY = gamedata.getMapHeight() - (randY * 32) - explosiveBarrel.getTextureHeight()/2 - explosiveBarrel.getRadiusOffsetY() - 32/2;
         explosiveBarrel.setX(spawnX);
         explosiveBarrel.setY(spawnY);
-        world.setTileInMap(randY, randX, 3);
+        //world.setTileInMap(randY, randX, 3);
 
         explosiveBarrel.add(new AnimationPart());
 
@@ -127,7 +135,7 @@ public class ObstaclePlugin implements IGamePluginService {
         int spawnY = gamedata.getMapHeight() - (randY * 32) - chest.getTextureHeight()/2 - chest.getRadiusOffsetY() - 32/2;
         chest.setX(spawnX);
         chest.setY(spawnY);
-        world.setTileInMap(randY, randX, 3);
+        //world.setTileInMap(randY, randX, 3);
 
         chest.add(new AnimationPart());
 
@@ -151,7 +159,7 @@ public class ObstaclePlugin implements IGamePluginService {
         int spawnY = gamedata.getMapHeight() - (randY * 32) - crate.getTextureHeight()/2 - crate.getRadiusOffsetY() - 32/2;
         crate.setX(spawnX);
         crate.setY(spawnY);
-        world.setTileInMap(randY, randX, 3);
+        //world.setTileInMap(randY, randX, 3);
 
         crate.add(new AnimationPart());
 
@@ -175,7 +183,7 @@ public class ObstaclePlugin implements IGamePluginService {
         int spawnY = gamedata.getMapHeight() - (randY * 32) - jar.getTextureHeight()/2 - jar.getRadiusOffsetY() - 32/2;
         jar.setX(spawnX);
         jar.setY(spawnY);
-        world.setTileInMap(randY, randX, 3);
+        //world.setTileInMap(randY, randX, 3);
 
         jar.add(new AnimationPart());
 
