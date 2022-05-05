@@ -10,9 +10,11 @@ import Common.data.entityparts.StatsPart;
 import Common.services.IGamePluginService;
 import Common.services.IEntityFactoryService;
 import Common.tools.FileLoader;
+import CommonEnemy.Enemy;
 
 import java.util.ArrayList;
 import java.util.Random;
+import com.badlogic.gdx.graphics.Color;
 
 public class EnemyFactory implements IEntityFactoryService {
 
@@ -33,10 +35,9 @@ public class EnemyFactory implements IEntityFactoryService {
         // radius should be texture width / 16
         Entity enemy = new Enemy(file, 6);
         enemy.add(new MovingPart(30));
-        enemy.add(new LifePart(100));
+        enemy.add(new LifePart(100, Color.RED));
         enemy.add(new AnimationPart());
-        enemy.add(new LifePart(100));
-        enemy.add(new StatsPart(5, 5));
+        enemy.add(new StatsPart(20, 5));
         FileLoader.loadFile(file, getClass());
 
         //400 is max, 280 is min
