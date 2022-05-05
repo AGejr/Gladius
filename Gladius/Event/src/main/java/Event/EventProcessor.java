@@ -9,9 +9,7 @@ import Common.services.IEventProcessingService;
 import Common.ui.Text;
 import Common.ui.UI;
 import CommonEnemy.Enemy;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import CommonPlayer.Player;
 
 public class EventProcessor implements IEventProcessingService {
 
@@ -60,6 +58,12 @@ public class EventProcessor implements IEventProcessingService {
         if (wave_is_completed(world)) {
             EventRegistry.addEvent(GAME_EVENT.WAVE_COMPLETED);
         }
+        for (Entity player: world.getEntities(Player.class)){
+            LifePart playerLifePart = player.getPart(LifePart.class);
+            if (playerLifePart.isDead()) {
+                EventRegistry.addEvent(GAME_EVENT.PLAYER_DIED);
+            }
+        }
     }
 
     private void processArenaEnteredEvent(GameData gameData, World world) {
@@ -89,6 +93,8 @@ public class EventProcessor implements IEventProcessingService {
     }
 
     private void processPlayerDiedEvent(GameData gameData, World world) {
-        // TODO: Implement this
+        Text text = new Text("GAME OVER",3,20);
+        text.alignScreenCenter(gameData);
+        UI.addText(text);
     }
 }
