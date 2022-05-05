@@ -4,12 +4,9 @@ import Common.data.Entity;
 import Common.data.GameData;
 
 public class StatsPart implements EntityPart {
-
-
-
     /***
-        @param attack Damage modifier for entity
-        @param defence Protects makes an attack deal less damage
+     @param attack Damage modifier for entity
+     @param defence Protects makes an attack deal less damage
      */
 
     private int attack;
@@ -51,7 +48,8 @@ public class StatsPart implements EntityPart {
         return balance;
     }
 
-    public int withdrawBalance(int amount) {
+    public void withdrawBalance(int amount) {
         balance -= amount;
     }
+
 }
