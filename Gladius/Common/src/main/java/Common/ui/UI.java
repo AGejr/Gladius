@@ -50,8 +50,8 @@ public class UI {
     /**
      * Draws all the texts in this.textList
      */
-    public static void draw(){
-        Stage stage = new Stage();
+    public static void draw(GameData gameData){
+        Stage stage = gameData.getStage();
         ArrayList<Text> removeText = new ArrayList<>();
         for (Text text: textList){
             stage.addActor(text.getLabel());
