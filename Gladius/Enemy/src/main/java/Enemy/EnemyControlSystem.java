@@ -28,7 +28,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
     //TODO enemy attack implementation
 
-    private int attackRange = 26;
+    private int attackRangeInt = 26;
 
     private AStarPathFinding aStarPathFinding = new AStarPathFinding();
     private IWeaponService weaponService;
@@ -150,12 +150,26 @@ public class EnemyControlSystem implements IEntityProcessingService {
                                 decideMovement(currentX,currentY,targetX,targetY,movingPart);
 
                             } else {
-                                //if distance is <96
-                                if(lengthToTarget > attackRange) {
+
+                                float attackBottom = attackRange.getY();
+                                float attackTop = attackBottom + attackRange.getBoundingRectangle().getHeight();
+
+                                float attackLeft = attackRange.getX();
+                                float attackRight = attackLeft + attackRange.getBoundingRectangle().getWidth();
+
+                                //TODO make these boolean values be correct
+                                boolean isInRange = player.getX() > attackRight || player.getX()+player.getTextureWidth() < attackLeft || player.getY() > attackTop || player.getY()+player.getTextureHeight() < attackBottom;
+                                boolean isInPercentageOfRange = player.getX() <= attackRight*0.9f || player.getX()+player.getTextureWidth() >= attackLeft*1.1 || player.getY() <= attackTop*0.9f || player.getY()+player.getTextureHeight() >= attackBottom*1.1;
+                                System.out.println(isInRange + " " + isInPercentageOfRange);
+
+                                //if distance is within 2 tiles <64
+                                if(lengthToTarget < 96) {
                                     decideMovement(currentX, currentY, playerFullX, player.getY(), movingPart);
                                 }
                                 // if inside attack range, either max range, 90 % of attack range
-                                else if(lengthToTarget <= attackRange && lengthToTarget >= attackRange*0.9f){
+
+                                else if(isInRange && isInPercentageOfRange){
+
                                     stopMovement(movingPart);
 
                                 } else {
@@ -171,17 +185,17 @@ public class EnemyControlSystem implements IEntityProcessingService {
                                     // if the enemy within 2 pixels on the same horizontal plane as the player (2 pixels up and 2 pixels down)
                                     if(Math.abs(player.getY()-currentY) <= 2){
                                         // decide movement with the Y parameter of both entities as the same (0)
-                                        decideMovement(currentX,0,playerFullX + (attackRange * xModifier), 0, movingPart);
+                                        decideMovement(currentX,0,playerFullX + (attackRangeInt * xModifier), 0, movingPart);
 
                                     }
                                     // else if the enemy within 2 pixels on the same vertical plane as the player (2 pixels left and 2 pixels right)
                                     else if (Math.abs(playerFullX-currentX) <= 2){
                                         // decide movement with the X parameter of both entities as the same (0)
-                                        decideMovement(0, currentY, 0, player.getY() + (attackRange * yModifier), movingPart);
+                                        decideMovement(0, currentY, 0, player.getY() + (attackRangeInt * yModifier), movingPart);
                                     }
                                     // else do movement as with the current values.
                                     else {
-                                        decideMovement(currentX, currentY, playerFullX + (attackRange * xModifier), player.getY() + (attackRange * yModifier), movingPart);
+                                        decideMovement(currentX, currentY, playerFullX + (attackRangeInt * xModifier), player.getY() + (attackRangeInt * yModifier), movingPart);
                                     }
                                 }
                             }
@@ -215,8 +229,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
 
         if (!(targetX == X)) {
-
-
             if (targetX < X) {
                 movingPart.setLeft(true);
                 movingPart.setRight(false);
@@ -224,11 +236,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
                 movingPart.setRight(true);
                 movingPart.setLeft(false);
             }
-
-
-
         } else {
-
             movingPart.setLeft(false);
             movingPart.setRight(false);
         }
