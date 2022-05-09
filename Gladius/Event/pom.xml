@@ -9,13 +9,13 @@
   </parent>
 
   <properties>
-    <bundle.symbolicName>Collision</bundle.symbolicName>
-    <bundle.namespace>Collision</bundle.namespace>
+    <bundle.symbolicName>Event</bundle.symbolicName>
+    <bundle.namespace>Event</bundle.namespace>
   </properties>
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.gladius.Gladius</groupId>
-  <artifactId>Collision</artifactId>
+  <artifactId>Event</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <name>${bundle.symbolicName}</name>
@@ -24,11 +24,17 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>org.gladius.Gladius</groupId>
       <artifactId>Common</artifactId>
       <version>1.0-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
+    
     <dependency>
       <groupId>org.gladius.build</groupId>
       <artifactId>LibGDXImports</artifactId>
@@ -36,16 +42,22 @@
     </dependency>
     <dependency>
       <groupId>org.gladius.Gladius</groupId>
-      <artifactId>CommonPlayer</artifactId>
+      <artifactId>CommonWeapon</artifactId>
       <version>1.0-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.gladius.Gladius</groupId>
-      <artifactId>Event</artifactId>
+      <artifactId>CommonPlayer</artifactId>
       <version>1.0-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
+      <dependency>
+          <groupId>org.gladius.Gladius</groupId>
+          <artifactId>CommonEnemy</artifactId>
+          <version>1.0-SNAPSHOT</version>
+          <scope>compile</scope>
+      </dependency>
   </dependencies>
 
   <build>

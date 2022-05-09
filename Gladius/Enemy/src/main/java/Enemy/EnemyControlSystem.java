@@ -55,8 +55,9 @@ public class EnemyControlSystem implements IEntityProcessingService {
                 // getting player position on the tile map
                 int playerY = (int) ((player.getY() / gameData.getMapHeight()) * 40);
                 int playerX = (int) (((player.getX() + player.getTextureWidth() / 2) / gameData.getMapWidth()) * 50);
+                LifePart playerLifepart = player.getPart(LifePart.class);
 
-                if (!lifePart.isDead()) {
+                if (!lifePart.isDead() && !playerLifepart.isDead()) {
                     // if player is in hub (<300) && player is inside the wall (39 is gridMapHeight)
                         if (player.getY() > 300 && world.getCsvMap().get(39 - playerY).get(playerX) != 1) {
 
@@ -183,6 +184,16 @@ public class EnemyControlSystem implements IEntityProcessingService {
                             stopMovement(movingPart);
                         }
                     }
+                else if (playerLifepart.isDead()) {
+                    stopMovement(movingPart);
+                    if (!lifePart.isDead()) {
+                        if (animationPart.isLeft()) {
+                            animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.IDLE_LEFT);
+                        } else {
+                            animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.IDLE_RIGHT);
+                        }
+                    }
+                }
             }
 
             movingPart.process(gameData, enemy);
