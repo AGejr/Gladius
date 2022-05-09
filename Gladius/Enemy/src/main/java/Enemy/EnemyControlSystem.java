@@ -149,8 +149,8 @@ public class EnemyControlSystem implements IEntityProcessingService {
                         // the X position of the middle of the players texture
                         float playerFullX = player.getX() + player.getTextureWidth() / 2f;
                         double lengthToTarget = Math.sqrt(Math.pow(Math.abs(currentX - playerFullX), 2) + Math.pow(Math.abs(currentY - player.getY()), 2));
-                        //if not within 64 pixels (2 tiles) of the goal target
-                        if (!(lengthToTarget <= 64)) {
+                        //if not within 96 pixels (3 tiles) of the goal target
+                        if (!(lengthToTarget <= 96)) {
 
                             decideMovement(currentX, currentY, targetX, targetY, movingPart);
 
