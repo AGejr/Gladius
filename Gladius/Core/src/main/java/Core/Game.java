@@ -112,7 +112,7 @@ public class Game implements ApplicationListener {
         // Background music
         FileLoader.loadFile("Sounds/theme.ogg", getClass());
         Music theme = Gdx.audio.newMusic(Gdx.files.internal("Sounds/theme.ogg"));
-        theme.setVolume(0.5f);
+        theme.setVolume(0.3f);
         theme.setLooping(true);
         theme.play();
 

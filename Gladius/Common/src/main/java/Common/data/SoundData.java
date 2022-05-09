@@ -24,7 +24,8 @@ public class SoundData {
         WAVE_CLEARED,
         ARENA_ENTERED,
         MINOTAUR_SOUND,
-        MINOTAUR_DEATH
+        MINOTAUR_DEATH,
+        ARENA_EXIT
     }
 
     public SoundData(){
@@ -33,13 +34,14 @@ public class SoundData {
         soundFileMap.put(SOUND.WALK, "walk.mp3");
         soundFileMap.put(SOUND.WALK_WATER, "water_walk.mp3");
         soundFileMap.put(SOUND.ATTACK, "attack.mp3");
-        soundFileMap.put(SOUND.DAMAGE, "walk.mp3");
+        soundFileMap.put(SOUND.DAMAGE, "damage.mp3");
         soundFileMap.put(SOUND.DEATH, "death.mp3");
-        soundFileMap.put(SOUND.EXPLOSION, "walk.mp3");
+        soundFileMap.put(SOUND.EXPLOSION, "explosion.mp3");
         soundFileMap.put(SOUND.BUY, "walk.mp3");
-        soundFileMap.put(SOUND.INTERACT, "walk.mp3");
-        soundFileMap.put(SOUND.WAVE_CLEARED, "walk.mp3");
+        soundFileMap.put(SOUND.INTERACT, "interact.mp3");
+        soundFileMap.put(SOUND.WAVE_CLEARED, "wave_cleared.mp3");
         soundFileMap.put(SOUND.ARENA_ENTERED, "walk.mp3");
+        soundFileMap.put(SOUND.ARENA_EXIT, "exit_arena.mp3");
 
         for(SOUND sound : soundFileMap.keySet()){
            soundFileMap.replace(sound,"Sounds/"+soundFileMap.get(sound));
@@ -63,6 +65,11 @@ public class SoundData {
 
     public Sound getSound(SOUND sound){
         return this.soundMap.get(sound);
+    }
+
+    public void playSound(SOUND key){
+        Sound sound = soundMap.get(key);
+        sound.play(1f);
     }
 
 }
