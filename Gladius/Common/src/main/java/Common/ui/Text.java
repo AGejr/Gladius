@@ -101,7 +101,7 @@ public class Text {
         if (duration < 0){
             return;
         }
-        // TODO: Ideally, 60.f should be gameData.frameRate and not a magic number
+        // This assumes that the game is running at 60 game cycles per second
         float timeLeft = duration - (gameTicks / 60.f);
         float opacity = 1.f;
         // Decrease opacity to apply fadeout effect when the text is in the last second of its duration
