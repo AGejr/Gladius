@@ -43,7 +43,7 @@ public class ShopControlSystem implements IEntityProcessingService {
                 shopElixirs = shop.getShopElixirs();
                 shopWeapons = shop.getShopWeapons();
 
-                //Show balance
+                //Show balance when in map
                 StatsPart statsPart = player.getPart(StatsPart.class);
                 UI.text(gameData, String.valueOf(statsPart.getBalance()), tileSize * 3, gameData.getMapHeight() / 2f - tileSize * 2);
 
@@ -52,6 +52,7 @@ public class ShopControlSystem implements IEntityProcessingService {
                     drawShopInterior(gameData, player, statsPart);
                     moveCursor(gameData, player);
                     processBuy(gameData, player, statsPart);
+                    //Show balance when in shop
                     UI.text(gameData, String.valueOf(statsPart.getBalance()), tileSize * 3, gameData.getMapHeight() / 2f - tileSize * 2);
                 } else {
                     drawShop(gameData);
