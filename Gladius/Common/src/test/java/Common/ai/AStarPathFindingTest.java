@@ -31,6 +31,7 @@ public class AStarPathFindingTest {
 
         List<Node> path = pathFinding.treeSearch(initialState, goalState, world.getCsvMap());
 
+        //Assert that all nodes is not a wall (wall value is 1)
         for (Node node : path) {
             assertNotEquals(node.getCsvVal(), 1);
         }
