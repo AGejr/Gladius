@@ -3,24 +3,33 @@ package Enemy;
 import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
-import Common.data.entityparts.*;
+import Common.data.entityparts.AnimationPart;
+import Common.data.entityparts.LifePart;
+import Common.data.entityparts.MovingPart;
+import Common.data.entityparts.StatsPart;
 import Common.services.IGamePluginService;
+import Common.services.IEntityFactoryService;
 import Common.tools.FileLoader;
 import CommonEnemy.Enemy;
 
+import java.util.ArrayList;
 import java.util.Random;
 import com.badlogic.gdx.graphics.Color;
 
-public class EnemyPlugin implements IGamePluginService {
-    private Entity enemy;
+public class EnemyFactory implements IEntityFactoryService {
+
+    ArrayList<Entity> enemies = new ArrayList<Entity>();;
 
     @Override
-    public void start(GameData gameData, World world) {
-        enemy = createEnemy(gameData);
-        world.addEntity(enemy);
+    public void spawn(GameData gameData, World world, Integer amount) {
+        for (int i = 0; i < amount; i++) {
+            Entity enemy = createMinotauer(gameData);
+            enemies.add(enemy);
+            world.addEntity(enemy);
+        }
     }
 
-    private Entity createEnemy(GameData gamedata) {
+    private Entity createMinotauer(GameData gamedata) {
         String file = "Minotaur.png";
 
         // radius should be texture width / 16
@@ -29,8 +38,6 @@ public class EnemyPlugin implements IGamePluginService {
         enemy.add(new LifePart(100, Color.RED));
         enemy.add(new AnimationPart());
         enemy.add(new StatsPart(20, 5));
-        enemy.add(new SoundPart(gamedata));
-
         FileLoader.loadFile(file, getClass());
 
         //400 is max, 280 is min
@@ -41,12 +48,10 @@ public class EnemyPlugin implements IGamePluginService {
     }
 
     @Override
-    public void stop(GameData gameData, World world) {
-        SoundPart soundPart = enemy.getPart(SoundPart.class);
-        if (soundPart != null){
-            soundPart.disposeSounds();
+    public void stop(World world) {
+        enemies.clear();
+        for (Entity enemy: world.getEntities(Enemy.class)){
+            world.removeEntity(enemy);
         }
-
-        world.removeEntity(this.enemy);
     }
 }

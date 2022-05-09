@@ -5,11 +5,16 @@ import Common.data.GameData;
 import Common.data.SoundData;
 import Common.data.World;
 import Common.data.entityparts.LifePart;
+import Common.data.entityparts.AnimationPart;
+import Common.services.*;
 import Common.services.IEntityProcessingService;
 import Common.services.IGamePluginService;
 import Common.services.IPostEntityProcessingService;
 import Common.tools.FileLoader;
+import Common.ui.Text;
+import Common.ui.UI;
 import CommonPlayer.Player;
+import Event.EventRegistry;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
@@ -22,6 +27,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -38,6 +44,7 @@ public class Game implements ApplicationListener {
 
     private static final List<IEntityProcessingService> entityProcessorList = new CopyOnWriteArrayList<>();
     private static List<IPostEntityProcessingService> postEntityProcessorList = new CopyOnWriteArrayList<>();
+    private static List<IEventProcessingService> eventProcessingServiceList = new CopyOnWriteArrayList<>();
 
     private static OrthographicCamera cam;
     private final GameData gameData = new GameData();
@@ -55,8 +62,12 @@ public class Game implements ApplicationListener {
     public void init() {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "Gladius";
-        cfg.width = 800;
-        cfg.height = 640;
+        int displayWidth = 800;
+        int displayHeight = 640;
+        cfg.width = displayWidth;
+        cfg.height = displayHeight;
+        gameData.setDisplayWidth(displayWidth);
+        gameData.setDisplayHeight(displayHeight);
         cfg.useGL30 = false;
         cfg.resizable = false;
 
@@ -74,9 +85,12 @@ public class Game implements ApplicationListener {
         cam.update();
         gameData.setCam(cam);
 
-        String[] mapFiles = {"Map/Map.tmx", "Map/Arena_Tileset.tsx", "Map/Arena_Tileset.png"};
-        FileLoader.loadFiles(mapFiles, getClass());
-        tiledMap = new TmxMapLoader().load(mapFiles[0]);
+        String[] files = {"Map/Map.tmx", "Map/Arena_Tileset.tsx", "Map/Arena_Tileset.png"};
+        FileLoader.loadFiles(files, getClass());
+
+        FileLoader.loadFile("mc.otf", getClass());
+
+        tiledMap = new TmxMapLoader().load(files[0]);
         world.setTiledMap(tiledMap); //Saves tiledMap to the world
         tiledMapRenderer = new OrthoCachedTiledMapRenderer(tiledMap);
         tiledMapRenderer.setBlending(true); //Makes tiles transparent
@@ -176,6 +190,8 @@ public class Game implements ApplicationListener {
                 lifePart.drawHealthBar(shapeRenderer, entity);
             }
         }
+        gameData.getStage().draw();
+        UI.draw();
         shapeRenderer.end();
 
         update();
@@ -192,6 +208,11 @@ public class Game implements ApplicationListener {
         // Post Update
         for (IPostEntityProcessingService postEntityProcessorService : postEntityProcessorList) {
             postEntityProcessorService.process(gameData, world);
+        }
+
+        // Handle events
+        for (IEventProcessingService eventProcessingService: eventProcessingServiceList) {
+            eventProcessingService.process(gameData, world);
         }
     }
 
@@ -228,11 +249,26 @@ public class Game implements ApplicationListener {
 
     public void addGamePluginService(IGamePluginService plugin) {
         plugin.start(gameData,world);
-
-
     }
 
     public void removeGamePluginService(IGamePluginService plugin) {
         plugin.stop(gameData, world);
+    }
+
+    public void addEventProcessingService(IEventProcessingService iEventProcessingService) {
+        EventRegistry.removeAllEvents();
+        this.eventProcessingServiceList.add(iEventProcessingService);
+    }
+
+    public void removeEventProcessingService(IEventProcessingService iEventProcessingService) {
+        this.eventProcessingServiceList.remove(iEventProcessingService);
+    }
+
+    public void addEntityFactoryService(IEntityFactoryService iEntityFactoryService) {
+        world.addEntityFactory(iEntityFactoryService);
+    }
+
+    public void removeEntityFactoryService(IEntityFactoryService iEntityFactoryService) {
+        world.removeEntityFactory(iEntityFactoryService);
     }
 }
