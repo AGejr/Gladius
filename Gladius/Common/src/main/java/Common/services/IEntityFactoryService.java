@@ -6,5 +6,5 @@ import Common.data.World;
 public interface IEntityFactoryService {
     void spawn(GameData gameData, World world, Integer amount);
 
-    void stop(GameData gameData, World world);
+    void stop(World world);
 }

@@ -48,8 +48,9 @@ public class EnemyFactory implements IEntityFactoryService {
     }
 
     @Override
-    public void stop(GameData gameData, World world) {
-        for (Entity enemy: enemies){
+    public void stop(World world) {
+        enemies.clear();
+        for (Entity enemy: world.getEntities(Enemy.class)){
             world.removeEntity(enemy);
         }
     }

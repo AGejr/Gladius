@@ -56,6 +56,7 @@ public class World {
     }
 
     public void removeEntityFactory(IEntityFactoryService iEntityFactoryService){
+        iEntityFactoryService.stop(this);
         entityFactoryList.remove(iEntityFactoryService);
     }
 
