@@ -81,6 +81,10 @@ public class EventProcessor implements IEventProcessingService {
         for (IEntityFactoryService entityFactoryService: world.getEntityFactoryList()){
             entityFactoryService.spawn(gameData, world, gameData.getWave());
         }
+        String string = "Wave " + Integer.toString(gameData.getWave()) + " started!";
+        Text text = new Text(string, 3, 20,2);
+        text.alignScreenCenter(gameData);
+        UI.addText(text);
     }
 
     private void processWaveCompletedEvent(GameData gameData, World world) {
