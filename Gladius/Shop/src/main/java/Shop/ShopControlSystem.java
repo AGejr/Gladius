@@ -33,12 +33,6 @@ public class ShopControlSystem implements IEntityProcessingService {
     private Map<WeaponImages, Weapon> swordMap = new HashMap<>();
     private List<ShopElixir> shopElixirs;
     private List<ShopWeapon> shopWeapons;
-    /*
-    Coordinates of sprites
-    x1        x2        x3        x4        x5   x6
-y2  Club                Diamond             Gold Stone
-y1  StrElixir StrElixir DefElixir DefElixir Exit
-    */
 
     @Override
     public void process(GameData gameData, World world) {
@@ -58,7 +52,6 @@ y1  StrElixir StrElixir DefElixir DefElixir Exit
                     drawShopInterior(gameData, player, statsPart);
                     moveCursor(gameData, player);
                     processBuy(gameData, player, statsPart);
-                    statsPart.depositBalance(500);
                     UI.text(gameData, String.valueOf(statsPart.getBalance()), tileSize * 3, gameData.getMapHeight() / 2f - tileSize * 2);
                 } else {
                     drawShop(gameData);
@@ -122,6 +115,9 @@ y1  StrElixir StrElixir DefElixir DefElixir Exit
         }
     }
 
+    /**
+     * Checks the players balance and adds the elixir if the player can afford. There are two elixirs if it is strength that will raise.
+     */
     private void buyElixir(StatsPart statsPart, ShopElixir shopElixir) {
         if (statsPart.getBalance() >= shopElixir.getPrice()) {
             statsPart.withdrawBalance(shopElixir.getPrice());

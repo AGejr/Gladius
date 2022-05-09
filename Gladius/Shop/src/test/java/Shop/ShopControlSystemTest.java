@@ -15,8 +15,8 @@ import static org.junit.Assert.*;
 public class ShopControlSystemTest {
 
     private Player player;
-    private int clubPrice = 100;
-    private Map<WeaponImages, Weapon> swordMap = new HashMap<>();
+    private final int clubPrice = 100;
+    private final Map<WeaponImages, Weapon> swordMap = new HashMap<>();
 
     @org.junit.Before
     public void setUp() throws Exception {
