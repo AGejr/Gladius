@@ -1,9 +1,11 @@
 package CommonEnemy;
 
 import Common.data.Entity;
+import Common.data.GameData;
 import Common.data.entityparts.AnimationPart;
 import CommonWeapon.IWeaponUserService;
 import CommonWeapon.WeaponImages;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Polygon;
@@ -39,6 +41,12 @@ public class Enemy extends Entity implements IWeaponUserService {
     public void initTexture(){
         super.initTexture();
         this.setRegion(0,0,96, 96);
+        initAnimation();
+    }
+
+    @Override
+    public void initTextureFormAssetManager(GameData gameData) {
+        super.initTextureFormAssetManager(gameData);
         initAnimation();
     }
 

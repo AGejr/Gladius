@@ -137,6 +137,12 @@ public class Entity extends Sprite implements Serializable {
         this.setRegion(0,0,this.textureWidth, this.textureHeight);
     }
 
+    public void initTextureFormAssetManager(GameData gameData) {
+        Texture texture = gameData.getAssetManager().getTexture(this.texturePath);
+        this.setTexture(texture);
+        this.setRegion(0,0,this.textureWidth, this.textureHeight);
+    }
+
     public Polygon getPolygonBoundaries() {
         return this.polygonBoundaries;
     }

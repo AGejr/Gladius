@@ -12,6 +12,7 @@ import Common.services.IPostEntityProcessingService;
 import Common.tools.FileLoader;
 import Common.ui.Text;
 import Common.ui.UI;
+import CommonEnemy.Enemy;
 import CommonPlayer.Player;
 import Event.EventRegistry;
 import com.badlogic.gdx.ApplicationListener;
@@ -105,6 +106,8 @@ public class Game implements ApplicationListener {
     @Override
     public void render() {
 
+        gameData.getAssetManager().update();
+
         //Gdx.gl.glClearColor(194/255f, 178/255f, 128/255f, 1); //Black = 0,0,0,1
 
         Gdx.gl.glClearColor(0,0,0,1);
@@ -120,8 +123,10 @@ public class Game implements ApplicationListener {
         batch.begin();
         for (Entity entity :  world.getEntities()){
             if(entity.getTexturePath() != null) {
-
-                if(entity.getTexture() == null){
+                if (entity.getClass() == Enemy.class){
+                    entity.initTextureFormAssetManager(gameData);
+                }
+                else if(entity.getTexture() == null){
                     entity.initTexture();
                 }
 
