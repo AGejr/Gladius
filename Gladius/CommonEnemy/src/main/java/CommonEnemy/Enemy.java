@@ -141,8 +141,8 @@ public class Enemy extends Entity implements IWeaponUserService {
             Array<TextureRegion> takeDamageTexturesRight = new Array<>();
             Array<TextureRegion> takeDamageTexturesLeft = new Array<>();
             for (int i = 0; i < 3; i++) {
-                takeDamageTexturesRight.add(new TextureRegion(this.getTexture(),64*i,9*96,64,64));
-                takeDamageTexturesLeft.add(new TextureRegion(this.getTexture(),64*i,18*96,64,64));
+                takeDamageTexturesRight.add(new TextureRegion(this.getTexture(),96*i,96*8,96,96));
+                takeDamageTexturesLeft.add(new TextureRegion(this.getTexture(),96*i,96*18,96,96));
             }
             Animation takeDamageAnimationRight = new Animation(0.08f,takeDamageTexturesRight);
             Animation takeDamageAnimationLeft = new Animation(0.08f,takeDamageTexturesLeft);

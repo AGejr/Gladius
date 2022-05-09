@@ -36,7 +36,7 @@ public class WeaponCollision implements IPostEntityProcessingService {
                                 }
 
                                 AnimationPart hitEntityAnimationPart = hitEntity.getPart(AnimationPart.class);
-                                if (hitEntityAnimationPart != null && hitEntity.getClass() != Enemy.class) {
+                                if (hitEntityAnimationPart != null) {
                                     hitEntityAnimationPart.setTakeDamage();
                                 }
                             }
