@@ -161,7 +161,7 @@ public class ShopControlSystem implements IEntityProcessingService {
         }
 
         for (ShopWeapon shopWeapon : shopWeapons) {
-            drawSword(gameData, player, batch, shopWeapon.getWeaponEnum(), shopWeapon.getDamage(), shopWeapon.getWeight(), shopWeapon.getRange(), shopWeapon.getX(), shopWeapon.getY());
+            drawSword(player, batch, shopWeapon.getWeaponEnum(), shopWeapon.getDamage(), shopWeapon.getWeight(), shopWeapon.getRange(), shopWeapon.getX(), shopWeapon.getY());
         }
 
         region.setRegion(tileSize * 8, tileSize * 10, tileSize * 2, tileSize);
@@ -191,8 +191,8 @@ public class ShopControlSystem implements IEntityProcessingService {
     /**
      * Initialize the sword to the map and draw the sword to the shop.
      */
-    private void drawSword(GameData gameData, Player player, SpriteBatch batch, WeaponImages weaponEnum, int damage, int weight, int range, float x, float y) {
-        Weapon sword = new Weapon("Sword", damage, weight, range, weaponEnum.path, 36, 146, 0.9f, 0.9f, 0, 20.0f, 9.0f, 20.0f,9.0f, 10.0f, player);
+    private void drawSword(Player player, SpriteBatch batch, WeaponImages weaponEnum, int damage, int weight, int range, float x, float y) {
+        Weapon sword = new Weapon("Sword", damage, weight, range, weaponEnum.path, 36, 146, 0.9f, 0.9f, 0, 20.0f, 9.0f, 20.0f,9.0f, 10.0f, player, 0.3f);
         sword.setWeaponTexture();
         sword.initTexture();
         batch.draw((Entity) sword, x, y, 0, 0, sword.getTextureWidth(), sword.getTextureHeight(), 1, 1, sword.getAngle());
