@@ -33,7 +33,6 @@ public class ShopControlSystem implements IEntityProcessingService {
     private Map<WeaponImages, Weapon> swordMap = new HashMap<>();
     private List<ShopElixir> shopElixirs;
     private List<ShopWeapon> shopWeapons;
-    private boolean init = false;
 
     @Override
     public void process(GameData gameData, World world) {

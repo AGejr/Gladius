@@ -242,7 +242,7 @@ public class Game implements ApplicationListener {
     }
 
     /**
-     * Draws the shop on top of the tilemap
+     * Draws the coins on top of the tilemap. This is placed here because it needs the main batch.
      */
     private void drawShop(GameData gameData, SpriteBatch batch) {
         int tileSize = 32;
