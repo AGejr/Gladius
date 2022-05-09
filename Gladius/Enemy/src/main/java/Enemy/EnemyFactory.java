@@ -3,10 +3,7 @@ package Enemy;
 import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
-import Common.data.entityparts.AnimationPart;
-import Common.data.entityparts.LifePart;
-import Common.data.entityparts.MovingPart;
-import Common.data.entityparts.StatsPart;
+import Common.data.entityparts.*;
 import Common.services.IGamePluginService;
 import Common.services.IEntityFactoryService;
 import Common.tools.FileLoader;
@@ -38,6 +35,7 @@ public class EnemyFactory implements IEntityFactoryService {
         enemy.add(new LifePart(100, Color.RED));
         enemy.add(new AnimationPart());
         enemy.add(new StatsPart(20, 5));
+        enemy.add(new SoundPart(gamedata));
         FileLoader.loadFile(file, getClass());
 
         //400 is max, 280 is min

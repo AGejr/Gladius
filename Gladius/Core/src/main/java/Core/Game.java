@@ -85,12 +85,12 @@ public class Game implements ApplicationListener {
         cam.update();
         gameData.setCam(cam);
 
-        String[] files = {"Map/Map.tmx", "Map/Arena_Tileset.tsx", "Map/Arena_Tileset.png"};
-        FileLoader.loadFiles(files, getClass());
+        String[] mapFiles = {"Map/Map.tmx", "Map/Arena_Tileset.tsx", "Map/Arena_Tileset.png"};
+        FileLoader.loadFiles(mapFiles, getClass());
 
         FileLoader.loadFile("mc.otf", getClass());
 
-        tiledMap = new TmxMapLoader().load(files[0]);
+        tiledMap = new TmxMapLoader().load(mapFiles[0]);
         world.setTiledMap(tiledMap); //Saves tiledMap to the world
         tiledMapRenderer = new OrthoCachedTiledMapRenderer(tiledMap);
         tiledMapRenderer.setBlending(true); //Makes tiles transparent
