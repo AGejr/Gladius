@@ -157,10 +157,20 @@ public class EnemyControlSystem implements IEntityProcessingService {
                                 float attackLeft = attackRange.getX();
                                 float attackRight = attackLeft + attackRange.getBoundingRectangle().getWidth();
 
-                                //TODO make these boolean values be correct
-                                boolean isInRange = player.getX() > attackRight || player.getX()+player.getTextureWidth() < attackLeft || player.getY() > attackTop || player.getY()+player.getTextureHeight() < attackBottom;
-                                boolean isInPercentageOfRange = player.getX() <= attackRight*0.9f || player.getX()+player.getTextureWidth() >= attackLeft*1.1 || player.getY() <= attackTop*0.9f || player.getY()+player.getTextureHeight() >= attackBottom*1.1;
-                                System.out.println(isInRange + " " + isInPercentageOfRange);
+                                // TODO make these boolean values be correct
+
+                                boolean isInRangeHor = attackRight > player.getX() || player.getX()+player.getTextureWidth() < attackLeft;
+                                boolean isInRangeVert = player.getY() > attackTop || player.getY()+player.getTextureHeight() < attackBottom;
+                                boolean isInRange = isInRangeHor && isInRangeVert;
+
+                                boolean isInPercentageOfRangeHor = player.getX() >= attackRight - (Math.abs(attackRight-attackLeft)*0.1f) || player.getX() + player.getTextureWidth() <= attackLeft + (Math.abs(attackRight-attackLeft)*0.1);
+                                boolean isInPercentageOfRangeVert = player.getY() <= attackTop - (Math.abs(attackTop-attackBottom)*0.1f) || player.getY() + player.getTextureHeight() >= attackBottom + (Math.abs(attackTop-attackBottom)*0.1f);
+                                boolean isInPercentageOfRange = isInPercentageOfRangeHor && isInPercentageOfRangeVert;
+
+                                System.out.println("Hor   Vert" );
+                                System.out.println(isInRangeHor + " " + isInRangeVert);
+                                System.out.println("%Hor  %Vert");
+                                System.out.println(isInPercentageOfRangeHor + " " + isInPercentageOfRangeVert);
 
                                 //if distance is within 2 tiles <64
                                 if(lengthToTarget < 96) {
@@ -226,7 +236,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
         Y = (int) Y;
         targetX = (int) targetX;
         targetY = (int) targetY;
-
+        /*
 
         if (!(targetX == X)) {
             if (targetX < X) {
@@ -249,7 +259,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
         }else {
             movingPart.setUp(false);
             movingPart.setDown(false);
-        }
+        } */
     }
 
     public void setWeaponService(IWeaponService weaponService) {
