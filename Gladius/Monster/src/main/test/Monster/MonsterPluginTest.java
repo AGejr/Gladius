@@ -21,7 +21,7 @@ public class MonsterPluginTest {
         world = new World();
     }
 
-    @org.junit.Test
+    @Test
     public void start() {
         int entitiesBeforeStart = world.getEntities().size();
         plugin.start(gameData, world);
