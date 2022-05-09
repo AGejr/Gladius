@@ -1,4 +1,4 @@
-package Common.events;
+package Event;
 
 import Common.data.Entity;
 

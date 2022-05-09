@@ -33,6 +33,7 @@
     <module>Enemy</module>
     <module>CommonPlayer</module>
     <module>CommonEnemy</module>
+    <module>Event</module>
   </modules>
 
   <build>
