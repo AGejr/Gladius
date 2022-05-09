@@ -80,6 +80,9 @@ public class World {
         this.csvMap = csvMap;
     }
 
+    /**
+     * Because the process method is called in the order of the entityList, we need to put it behind the list, so it gets called last to get it in front of other entities.
+     */
     public <E extends Entity> void putBehind(Class<E>... entityTypes) {
         List<Entity> entityList = getEntities(entityTypes);
         for (Entity entity : entityList) {
