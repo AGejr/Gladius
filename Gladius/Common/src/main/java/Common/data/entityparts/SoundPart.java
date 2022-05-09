@@ -19,6 +19,8 @@ public class SoundPart implements EntityPart {
     private boolean isMoving = false;
     private boolean hasChangedTiles = false;
 
+    private boolean isDead = false;
+
     private Map<SoundData.SOUND, String> localSoundFileMap = new HashMap<>();
     private Map<SoundData.SOUND, Sound> localSoundMap = new HashMap<>();
 
@@ -40,6 +42,7 @@ public class SoundPart implements EntityPart {
     }
 
     public void initSounds(){
+        
         this.soundData = gameData.getSoundData();
         for (SoundData.SOUND sound : localSoundFileMap.keySet()){
             String path = localSoundFileMap.get(sound);
@@ -61,7 +64,9 @@ public class SoundPart implements EntityPart {
         }
 
         MovingPart movingPart = entity.getPart(MovingPart.class);
+        LifePart lifePart = entity.getPart(LifePart.class);
         boolean hasMovingPart = movingPart != null;
+        boolean hasLifePart = lifePart != null;
 
 
         if(hasMovingPart) {
@@ -97,6 +102,15 @@ public class SoundPart implements EntityPart {
             if (!(movingPart.isUp() || movingPart.isDown() || movingPart.isLeft() || movingPart.isRight()) &&isMoving){
                 movementSound.stop();
                 isMoving = false;
+
+            }
+        }
+
+        if(hasLifePart){
+
+            if(lifePart.isDead() && !isDead){
+                this.playAudio(SoundData.SOUND.DEATH);
+                isDead = true;
 
             }
         }

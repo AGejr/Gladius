@@ -8,6 +8,7 @@ import Common.data.World;
 import Common.data.entityparts.AnimationPart;
 import Common.data.entityparts.LifePart;
 import Common.data.entityparts.MovingPart;
+import Common.data.entityparts.SoundPart;
 import Common.services.IEntityProcessingService;
 import CommonPlayer.Player;
 import CommonEnemy.Enemy;
@@ -50,6 +51,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
             AnimationPart animationPart = enemy.getPart(AnimationPart.class);
             LifePart lifePart = enemy.getPart(LifePart.class);
+            SoundPart soundPart = enemy.getPart(SoundPart.class);
 
             for (Entity player : world.getEntities(Player.class)) {
                 // getting player position on the tile map
@@ -188,6 +190,8 @@ public class EnemyControlSystem implements IEntityProcessingService {
             movingPart.process(gameData, enemy);
             animationPart.process(gameData, enemy);
             lifePart.process(gameData, enemy);
+            soundPart.process(gameData, enemy);
+
         }
         if (gameData.isDebugMode()) {
             sr.end();

@@ -23,7 +23,7 @@ public class PlayerControlSystem implements IEntityProcessingService {
             MovingPart movingPart = player.getPart(MovingPart.class);
             LifePart lifePart = player.getPart(LifePart.class);
             AnimationPart animationPart = player.getPart(AnimationPart.class);
-            SoundPart soundPart = entity.getPart(SoundPart.class);
+            SoundPart soundPart = player.getPart(SoundPart.class);
 
             movingPart.setLeft(gameData.getKeys().isDown(GameKeys.LEFT));
             movingPart.setRight(gameData.getKeys().isDown(GameKeys.RIGHT));
@@ -32,13 +32,13 @@ public class PlayerControlSystem implements IEntityProcessingService {
 
             if (gameData.getKeys().isPressed(GameKeys.SPACE) && weaponService != null && !lifePart.isDead()) {
                 soundPart.playAudio(SoundData.SOUND.ATTACK);
-                weaponService.attack(entity, gameData, world);
+                weaponService.attack(player, gameData, world);
             }
 
             movingPart.process(gameData, player);
             animationPart.process(gameData, player);
             lifePart.process(gameData, player);
-            soundPart.process(gameData,entity);
+            soundPart.process(gameData,player);
         }
     }
 
