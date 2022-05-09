@@ -42,6 +42,6 @@ public class MonsterPlugin implements IGamePluginService {
 
     @Override
     public void stop(GameData gameData, World world) {
-
+        world.removeEntity(this.monster);
     }
 }

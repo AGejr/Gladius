@@ -1,38 +1,37 @@
-package Weapon;
+package Monster;
 
 import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
-import CommonWeapon.Weapon;
 import Common.services.IGamePluginService;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 import static org.junit.Assert.assertNotEquals;
 
-public class WeaponPluginTest {
+public class MonsterPluginTest {
     IGamePluginService plugin;
     GameData gameData;
     World world;
-    Entity weapon;
-
 
     @Before
     public void setUp() throws Exception {
-        plugin = new WeaponPlugin();
+        plugin = new MonsterPlugin();
         gameData = new GameData();
         world = new World();
-        weapon = new Weapon();
-        world.addEntity(weapon);
     }
 
-    @After
-    public void tearDown() throws Exception {
-
+    @org.junit.Test
+    public void start() {
+        int entitiesBeforeStart = world.getEntities().size();
+        plugin.start(gameData, world);
+        int entitiesAfterStart = world.getEntities().size();
+        assertNotEquals(entitiesAfterStart, entitiesBeforeStart);
     }
 
     @Test
     public void stop() {
+        plugin.start(gameData, world);
         int entitiesBeforeStop = world.getEntities().size();
         plugin.stop(gameData, world);
         int entitiesAfterStop = world.getEntities().size();

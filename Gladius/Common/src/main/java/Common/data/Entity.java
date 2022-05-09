@@ -26,7 +26,7 @@ public class Entity extends Sprite implements Serializable {
     private float angle;
     private Polygon polygonBoundaries;
 
-    public Entity(String texturePath,float radius, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX) {
+    public Entity(String texturePath, float radius, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX) {
         super();
         this.parts = new ConcurrentHashMap<>();
         this.texturePath = texturePath;

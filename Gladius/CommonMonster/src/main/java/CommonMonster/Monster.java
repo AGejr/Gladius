@@ -15,12 +15,12 @@ public class Monster extends Entity implements IWeaponUserService {
 
     public Monster(String texturePath, int radius) {
         super(texturePath, radius, 64, 64, 0, 0.5f, 0.5f);
-        //TODO align weapon hitbox to the axe and swinging animation
-        this.equippedWeapon = new Weapon("Ass", 65, 110, 5, "", 9, 55, 0.9f, 0.9f, 0, 30.0f, 6.0f, 42.0f, 63.0f, 17.0f, this);
+        // The magic number 7 for x adjustment is the difference between texturewidth for monster and texturewidth for weapon divided by 2
+        this.equippedWeapon = new Weapon("jump", 65, 110, 8, "", 50, 50, 1.0f, 1.0f, 0, 0.0f, 0.0f, 7, 7, -10.0f, this);
         this.equippedWeapon.setRotationDuration(23);
         // this.getX(), this.getY(), this.equippedWeapon.getRange()
         this.attackRange = new Polygon(new float[]{super.getX(), super.getY(), super.getX(), super.getY() + super.getTextureHeight(), super.getX() + super.getTextureWidth(), super.getY() + super.getTextureHeight(), super.getX() + super.getTextureWidth(), super.getY()});
-        this.attackRange.setOrigin(super.getTextureWidth() / 2f, -15);
+        this.attackRange.setOrigin(super.getTextureWidth() / 2f, -43);
         this.attackRange.setScale(0.9f, 0.7f);
     }
 
@@ -122,7 +122,6 @@ public class Monster extends Entity implements IWeaponUserService {
                 // The attack animation expands on two rows on the spritesheet
                 int attack_row = i < 6 ? 9 : 10;
                 int adjustment = i >= 6 ? i - 6 : i;
-                System.out.println(attack_row);
                 TextureRegion rightAttackTexture = new TextureRegion(this.getTexture(), super.getTextureWidth() * adjustment, super.getTextureHeight() * attack_row, super.getTextureWidth(), super.getTextureHeight());
                 rightAttackTextures.add(rightAttackTexture);
 
