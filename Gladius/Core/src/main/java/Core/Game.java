@@ -200,6 +200,10 @@ public class Game implements ApplicationListener {
 
     @Override
     public void dispose() {
+        shapeRenderer.dispose();
+        batch.dispose();
+        tiledMapRenderer.dispose();
+        tiledMap.dispose();
 
     }
 
