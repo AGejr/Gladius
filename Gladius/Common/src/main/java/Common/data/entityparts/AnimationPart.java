@@ -82,15 +82,16 @@ public class AnimationPart implements EntityPart{
             processMovementAnimation(entity);
         }
 
-        if (!this.getCurrentAnimation().isAnimationFinished(animationTime)){
-            // Advance animation
-            animationTime += Gdx.graphics.getDeltaTime();
-        } else if (hasLifePart && !lifePart.isDead()) {
-            // Loop animation if the entity has a lifepart, and it is alive
-            animationTime = 0;
+        if(this.getCurrentAnimation() != null) {
+            if (!this.getCurrentAnimation().isAnimationFinished(animationTime)){
+                // Advance animation
+                animationTime += Gdx.graphics.getDeltaTime();
+            } else if (hasLifePart && !lifePart.isDead()) {
+                // Loop animation if the entity has a lifepart, and it is alive
+                animationTime = 0;
+            }
+            entity.setRegion(getCurrentKeyFrame());
         }
-
-        entity.setRegion(getCurrentKeyFrame());
     }
 
     /**

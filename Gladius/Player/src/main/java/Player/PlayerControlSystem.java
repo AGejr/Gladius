@@ -35,7 +35,6 @@ public class PlayerControlSystem implements IEntityProcessingService {
             }
 
             if (gameData.getKeys().isPressed(GameKeys.P)) {
-                System.out.println("DEBUG MODE: " + gameData.isDebugMode());
                 if(gameData.isDebugMode()) {
                     gameData.setDebugMode(false);
                 } else {
