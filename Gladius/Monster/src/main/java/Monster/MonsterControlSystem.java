@@ -82,38 +82,6 @@ public class MonsterControlSystem implements IEntityProcessingService {
                         attackRange.setPosition(monster.getX(), monster.getY());
                         attackRange.getBoundingRectangle();
 
-                        if (gameData.isDebugMode()) {
-                            //used to show path
-                            ShapeRenderer sr = new ShapeRenderer();
-
-                            //set projection to not follow camera
-                            sr.setProjectionMatrix(gameData.getCam().combined);
-                            sr.begin(ShapeRenderer.ShapeType.Line);
-                            sr.setColor(Color.GREEN);
-
-                            // for every node, draw its outline
-
-                            for (Node node : path) {
-                                int nodeX = node.getX() * 32;
-                                int nodeY = 32 + (node.getY()) * 32;
-
-                                sr.line(nodeX, nodeY, nodeX + 32, nodeY);
-                                sr.line(nodeX, nodeY, nodeX, nodeY - 32);
-
-                                sr.line(nodeX + 32, nodeY - 32, nodeX + 32, nodeY);
-                                sr.line(nodeX + 32, nodeY - 32, nodeX, nodeY - 32);
-                            }
-                            sr.end();
-
-                            Gdx.gl.glEnable(GL20.GL_BLEND);
-                            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-                            sr.begin(ShapeRenderer.ShapeType.Line);
-                            sr.setColor(Color.RED);
-                            sr.polygon(attackRange.getTransformedVertices());
-                            sr.end();
-                            Gdx.gl.glDisable(GL20.GL_BLEND);
-                        }
-
                         // Checking if player is inside of enemy's attack range
                         if (Intersector.overlapConvexPolygons(attackRange, player.getPolygonBoundaries())) {
                             LifePart playerLifePart = player.getPart(LifePart.class);
@@ -172,6 +140,9 @@ public class MonsterControlSystem implements IEntityProcessingService {
 
                                 }
                             }
+                            if (gameData.isDebugMode()) {
+                                drawDebugLines(gameData, path, attackRange);
+                            }
                         } else {
                             //if at goal node
                             stopMovement(movingPart);
@@ -180,6 +151,7 @@ public class MonsterControlSystem implements IEntityProcessingService {
                         //if player is not inside arena
                         stopMovement(movingPart);
                     }
+
                 }
             }
 
@@ -188,6 +160,38 @@ public class MonsterControlSystem implements IEntityProcessingService {
             lifePart.process(gameData, monster);
         }
 
+    }
+
+    private void drawDebugLines(GameData gameData, List<Node> path, Polygon attackRange) {
+        //used to show path
+        ShapeRenderer sr = new ShapeRenderer();
+
+        //set projection to not follow camera
+        sr.setProjectionMatrix(gameData.getCam().combined);
+        sr.begin(ShapeRenderer.ShapeType.Line);
+        sr.setColor(Color.GREEN);
+
+        // for every node, draw its outline
+
+        for (Node node : path) {
+            int nodeX = node.getX() * 32;
+            int nodeY = 32 + (node.getY()) * 32;
+
+            sr.line(nodeX, nodeY, nodeX + 32, nodeY);
+            sr.line(nodeX, nodeY, nodeX, nodeY - 32);
+
+            sr.line(nodeX + 32, nodeY - 32, nodeX + 32, nodeY);
+            sr.line(nodeX + 32, nodeY - 32, nodeX, nodeY - 32);
+        }
+        sr.end();
+
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        sr.begin(ShapeRenderer.ShapeType.Line);
+        sr.setColor(Color.RED);
+        sr.polygon(attackRange.getTransformedVertices());
+        sr.end();
+        Gdx.gl.glDisable(GL20.GL_BLEND);
     }
 
     private void stopMovement(MovingPart movingPart) {

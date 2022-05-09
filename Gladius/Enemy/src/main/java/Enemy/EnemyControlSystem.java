@@ -59,131 +59,112 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
                 if (!lifePart.isDead() && !playerLifepart.isDead()) {
                     // if player is in hub (<300) && player is inside the wall (39 is gridMapHeight)
-                        if (player.getY() > 300 && world.getCsvMap().get(39 - playerY).get(playerX) != 1) {
+                    if (player.getY() > 300 && world.getCsvMap().get(39 - playerY).get(playerX) != 1) {
 
-                            // listing the positions of enemy and the target (player) in Lists
-                            List<Integer> enemyPos = new ArrayList<>(Arrays.asList(enemyX, enemyY));
-                            List<Integer> targetPos = new ArrayList<>(Arrays.asList(playerX, playerY));
+                        // listing the positions of enemy and the target (player) in Lists
+                        List<Integer> enemyPos = new ArrayList<>(Arrays.asList(enemyX, enemyY));
+                        List<Integer> targetPos = new ArrayList<>(Arrays.asList(playerX, playerY));
 
-                            // Initialization of a new search for the given positions
-                            List<Node> path = aStarPathFinding.treeSearch(enemyPos, targetPos, world.getCsvMap());
+                        // Initialization of a new search for the given positions
+                        List<Node> path = aStarPathFinding.treeSearch(enemyPos, targetPos, world.getCsvMap());
 
-                            //Removes the goal node so it does not stand on the goal, but next to it
-                            if (path.size() > 1) {
-                                path.remove(0);
-                            }
+                        //Removes the goal node so it does not stand on the goal, but next to it
+                        if (path.size() > 1) {
+                            path.remove(0);
+                        }
 
-                            // choose the point to go to
-                            Node nextPoint;
-                            // if there are over 2 points in the path
-                            if (path.size() > 2) {
-                                //get the 3rd node from start (including start node).
-                                //Makes it possible to walk diagonal
-                                nextPoint = path.get(path.size() - 3);
-                            } else {
-                                // get goal node
-                                nextPoint = path.get(0);
-                            }
-                            // the y of the target tile is flipped to fit the position representation
-                            // the output from the search is given in tiles (0-40), so it's scaled to fit the position representation (0-1280)
-                            float targetY = (nextPoint.getY() * 32) + 16;
-                            float targetX = (nextPoint.getX() * 32) + 16;
-                            float currentX = (int) enemy.getX() + (enemy.getRadius() * 16) / 2;
-                            float currentY = (int) enemy.getY();
+                        // choose the point to go to
+                        Node nextPoint;
+                        // if there are over 2 points in the path
+                        if (path.size() > 2) {
+                            //get the 3rd node from start (including start node).
+                            //Makes it possible to walk diagonal
+                            nextPoint = path.get(path.size() - 3);
+                        } else {
+                            // get goal node
+                            nextPoint = path.get(0);
+                        }
+                        // the y of the target tile is flipped to fit the position representation
+                        // the output from the search is given in tiles (0-40), so it's scaled to fit the position representation (0-1280)
+                        float targetY = (nextPoint.getY() * 32) + 16;
+                        float targetX = (nextPoint.getX() * 32) + 16;
+                        float currentX = (int) enemy.getX() + (enemy.getRadius() * 16) / 2;
+                        float currentY = (int) enemy.getY();
 
-                            Polygon attackRange = ((Enemy) enemy).getAttackRange();
-                            attackRange.setPosition(enemy.getX(), enemy.getY());
-                            attackRange.getBoundingRectangle();
+                        Polygon attackRange = ((Enemy) enemy).getAttackRange();
+                        attackRange.setPosition(enemy.getX(), enemy.getY());
+                        attackRange.getBoundingRectangle();
 
-                            if (gameData.isDebugMode()) {
-                                sr.setColor(Color.GREEN);
-
-                                // for every node, draw its outline
-
-                                for (Node node : path) {
-                                    int nodeX = node.getX() * 32;
-                                    int nodeY = 32 + (node.getY()) * 32;
-
-                                    sr.line(nodeX, nodeY, nodeX + 32, nodeY);
-                                    sr.line(nodeX, nodeY, nodeX, nodeY - 32);
-
-                                    sr.line(nodeX + 32, nodeY - 32, nodeX + 32, nodeY);
-                                    sr.line(nodeX + 32, nodeY - 32, nodeX, nodeY - 32);
-                                }
-
-                                Gdx.gl.glEnable(GL20.GL_BLEND);
-                                Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-                                sr.setColor(Color.RED);
-                                sr.polygon(attackRange.getTransformedVertices());
-                            }
-
-                            // Checking if player is inside of enemy's attack range
-                            if (Intersector.overlapConvexPolygons(attackRange, player.getPolygonBoundaries())) {
-                                LifePart playerLifePart = player.getPart(LifePart.class);
-                                if (animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime()) && !playerLifePart.isDead()) {
-                                    if (enemy.getX() > player.getX()) {
-                                        animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.ATTACK_LEFT);
-                                    } else {
-                                        animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.ATTACK_RIGHT);
-                                    }
-                                    weaponService.attack(enemy, gameData, world);
-                                }
-                            } else {
-                                if (animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime())) {
-                                    if (animationPart.isLeft()) {
-                                        animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.IDLE_LEFT);
-                                    } else {
-                                        animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.IDLE_RIGHT);
-                                    }
-                                }
-                            }
-
-                            //if not at/near end goal
-                            if (!(path.size() <= 1)) {
-
-                                // if the targetX and EnemyX is not the same
-                                if (!((int) targetX == (int) currentX)) {
-
-
-                                    if (targetX < currentX) {
-                                        movingPart.setLeft(true);
-                                        movingPart.setRight(false);
-                                    } else {
-                                        movingPart.setRight(true);
-                                        movingPart.setLeft(false);
-                                    }
-
-                                    // needed if walking diagonal
-                                    if (targetY < currentY) {
-                                        movingPart.setUp(false);
-                                        movingPart.setDown(true);
-                                    } else {
-                                        movingPart.setDown(false);
-                                        movingPart.setUp(true);
-                                    }
-
+                        // Checking if player is inside of enemy's attack range
+                        if (Intersector.overlapConvexPolygons(attackRange, player.getPolygonBoundaries())) {
+                            LifePart playerLifePart = player.getPart(LifePart.class);
+                            if (animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime()) && !playerLifePart.isDead()) {
+                                if (enemy.getX() > player.getX()) {
+                                    animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.ATTACK_LEFT);
                                 } else {
-
-                                    movingPart.setLeft(false);
-                                    movingPart.setRight(false);
-                                    if (targetY < currentY) {
-                                        movingPart.setUp(false);
-                                        movingPart.setDown(true);
-                                    } else {
-                                        movingPart.setDown(false);
-                                        movingPart.setUp(true);
-
-                                    }
+                                    animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.ATTACK_RIGHT);
                                 }
-                            } else {
-                                //if at goal node
-                                stopMovement(movingPart);
+                                weaponService.attack(enemy, gameData, world);
                             }
                         } else {
-                            //if player is not inside arena
+                            if (animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime())) {
+                                if (animationPart.isLeft()) {
+                                    animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.IDLE_LEFT);
+                                } else {
+                                    animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.IDLE_RIGHT);
+                                }
+                            }
+                        }
+
+                        //if not at/near end goal
+                        if (!(path.size() <= 1)) {
+
+                            // if the targetX and EnemyX is not the same
+                            if (!((int) targetX == (int) currentX)) {
+
+
+                                if (targetX < currentX) {
+                                    movingPart.setLeft(true);
+                                    movingPart.setRight(false);
+                                } else {
+                                    movingPart.setRight(true);
+                                    movingPart.setLeft(false);
+                                }
+
+                                // needed if walking diagonal
+                                if (targetY < currentY) {
+                                    movingPart.setUp(false);
+                                    movingPart.setDown(true);
+                                } else {
+                                    movingPart.setDown(false);
+                                    movingPart.setUp(true);
+                                }
+
+                            } else {
+
+                                movingPart.setLeft(false);
+                                movingPart.setRight(false);
+                                if (targetY < currentY) {
+                                    movingPart.setUp(false);
+                                    movingPart.setDown(true);
+                                } else {
+                                    movingPart.setDown(false);
+                                    movingPart.setUp(true);
+
+                                }
+                            }
+                        } else {
+                            //if at goal node
                             stopMovement(movingPart);
                         }
+                        if (gameData.isDebugMode()) {
+                            drawDebugLines(sr, path, attackRange);
+                        }
+                    } else {
+                        //if player is not inside arena
+                        stopMovement(movingPart);
                     }
+                }
                 else if (playerLifepart.isDead()) {
                     stopMovement(movingPart);
                     if (!lifePart.isDead()) {
@@ -204,6 +185,28 @@ public class EnemyControlSystem implements IEntityProcessingService {
             sr.end();
             Gdx.gl.glDisable(GL20.GL_BLEND);
         }
+    }
+
+    private void drawDebugLines(ShapeRenderer sr, List<Node> path, Polygon attackRange) {
+        sr.setColor(Color.GREEN);
+
+        // for every node, draw its outline
+
+        for (Node node : path) {
+            int nodeX = node.getX() * 32;
+            int nodeY = 32 + (node.getY()) * 32;
+
+            sr.line(nodeX, nodeY, nodeX + 32, nodeY);
+            sr.line(nodeX, nodeY, nodeX, nodeY - 32);
+
+            sr.line(nodeX + 32, nodeY - 32, nodeX + 32, nodeY);
+            sr.line(nodeX + 32, nodeY - 32, nodeX, nodeY - 32);
+        }
+
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        sr.setColor(Color.RED);
+        sr.polygon(attackRange.getTransformedVertices());
     }
 
     private void stopMovement(MovingPart movingPart) {
