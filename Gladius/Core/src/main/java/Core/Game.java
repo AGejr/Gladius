@@ -16,9 +16,12 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
@@ -27,6 +30,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import java.io.File;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -130,7 +134,7 @@ public class Game implements ApplicationListener {
                 entity.updatePolygonBoundariesPosition();
             }
         }
-
+        drawShop(gameData, batch);
         batch.end();
 
         Gdx.gl.glEnable(GL20.GL_BLEND);
@@ -235,5 +239,22 @@ public class Game implements ApplicationListener {
 
     public void removeEntityFactoryService(IEntityFactoryService iEntityFactoryService) {
         world.removeEntityFactory(iEntityFactoryService);
+    }
+
+    /**
+     * Draws the shop on top of the tilemap
+     */
+    private void drawShop(GameData gameData, SpriteBatch batch) {
+        int tileSize = 32;
+        File textureFile = new File("ShopItems.png");
+        FileHandle fileHandle = new FileHandle(textureFile);
+        Texture texture = new Texture(fileHandle);
+        TextureRegion region = new TextureRegion(texture);
+
+        region.setRegion(tileSize * 4, tileSize * 8, tileSize * 2, tileSize * 2);
+        batch.draw(region, 0, gameData.getMapHeight() / 2f - tileSize * 3, tileSize * 4, tileSize * 4);
+
+        region.setRegion(tileSize * 4, tileSize * 8, tileSize * 2, tileSize * 2);
+        batch.draw(region, 0, gameData.getMapHeight() / 2f - tileSize * 3, tileSize * 4, tileSize * 4);
     }
 }

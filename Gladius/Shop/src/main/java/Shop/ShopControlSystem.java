@@ -66,7 +66,6 @@ public class ShopControlSystem implements IEntityProcessingService {
                 }
             }
         }
-        drawShop(gameData);
     }
 
 
@@ -201,23 +200,6 @@ public class ShopControlSystem implements IEntityProcessingService {
         swordMap.put(weaponEnum, sword);
     }
 
-    /**
-     * Draws the shop on top of the tilemap
-     */
-    private void drawShop(GameData gameData) {
-        SpriteBatch batch = new SpriteBatch();
-        File textureFile = new File("ShopItems.png");
-        FileHandle fileHandle = new FileHandle(textureFile);
-        Texture texture = new Texture(fileHandle);
-        TextureRegion region = new TextureRegion(texture);
-        batch.begin();
-        region.setRegion(tileSize * 4, tileSize * 8, tileSize * 2, tileSize * 2);
-        batch.draw(region, 0, gameData.getMapHeight() / 2f - tileSize * 3, tileSize * 4, tileSize * 4);
-
-        region.setRegion(tileSize * 4, tileSize * 8, tileSize * 2, tileSize * 2);
-        batch.draw(region, 0, gameData.getMapHeight() / 2f - tileSize * 3, tileSize * 4, tileSize * 4);
-        batch.end();
-    }
 
     /**
      * Moves the cursor around by x and y. Moves the cursor a fixed lot when pressing a key.
