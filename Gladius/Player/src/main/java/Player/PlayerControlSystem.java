@@ -18,11 +18,11 @@ public class PlayerControlSystem implements IEntityProcessingService {
     @Override
     public void process(GameData gameData, World world) {
 
-        for (Entity entity : world.getEntities(Player.class)){
+        for (Entity player: world.getEntities(Player.class)){
 
-            MovingPart movingPart = entity.getPart(MovingPart.class);
-            LifePart lifePart = entity.getPart(LifePart.class);
-            AnimationPart animationPart = entity.getPart(AnimationPart.class);
+            MovingPart movingPart = player.getPart(MovingPart.class);
+            LifePart lifePart = player.getPart(LifePart.class);
+            AnimationPart animationPart = player.getPart(AnimationPart.class);
             SoundPart soundPart = entity.getPart(SoundPart.class);
 
             movingPart.setLeft(gameData.getKeys().isDown(GameKeys.LEFT));
@@ -32,15 +32,12 @@ public class PlayerControlSystem implements IEntityProcessingService {
 
             if (gameData.getKeys().isPressed(GameKeys.SPACE) && weaponService != null && !lifePart.isDead()) {
                 soundPart.playAudio(SoundData.SOUND.ATTACK);
-
                 weaponService.attack(entity, gameData, world);
-
             }
 
-
-            movingPart.process(gameData, entity);
-            animationPart.process(gameData,entity);
-            lifePart.process(gameData,entity);
+            movingPart.process(gameData, player);
+            animationPart.process(gameData, player);
+            lifePart.process(gameData, player);
             soundPart.process(gameData,entity);
         }
     }

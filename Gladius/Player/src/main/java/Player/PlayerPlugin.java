@@ -7,6 +7,7 @@ import Common.data.entityparts.*;
 import Common.services.IGamePluginService;
 import Common.tools.FileLoader;
 import CommonPlayer.Player;
+import com.badlogic.gdx.graphics.Color;
 
 import java.io.File;
 
@@ -26,7 +27,7 @@ public class PlayerPlugin implements IGamePluginService {
         Entity player = new Player(file, 2);
         player.add(new MovingPart(100));
         player.add(new AnimationPart());
-        player.add(new LifePart(100));
+        player.add(new LifePart(300, Color.GREEN));
         player.add(new SoundPart(gamedata));
         player.add(new StatsPart(20, 5));
         FileLoader.loadFile(file, getClass());
