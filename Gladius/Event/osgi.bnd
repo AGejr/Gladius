@@ -1,0 +1,3 @@
+Bundle-SymbolicName: Event
+Bundle-ActivationPolicy: lazy
+Service-Component: META-INF/eventprocessing.xml
