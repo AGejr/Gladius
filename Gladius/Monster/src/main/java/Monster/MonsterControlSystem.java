@@ -39,6 +39,8 @@ public class MonsterControlSystem implements IEntityProcessingService {
             AnimationPart animationPart = monster.getPart(AnimationPart.class);
             LifePart lifePart = monster.getPart(LifePart.class);
 
+            System.out.println("Monster position: ");
+
             for (Entity player : world.getEntities(Player.class)) {
                 // getting player position on the tile map
                 int playerY = (int) ((player.getY() / gameData.getMapHeight()) * 40);
