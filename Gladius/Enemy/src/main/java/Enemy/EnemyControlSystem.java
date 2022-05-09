@@ -56,7 +56,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
                 if (!lifePart.isDead() && !playerLifepart.isDead()) {
                     // if player is in hub (<300) && player is inside the wall (39 is gridMapHeight)
-                        if (player.getY() > 300 && world.getCsvMap().get(39 - playerY).get(playerX) != 1) {
+                    if (player.getY() > 300 && world.getCsvMap().get(39 - playerY).get(playerX) != 1) {
 
                         // listing the positions of enemy and the target (player) in Lists
                         List<Integer> enemyPos = new ArrayList<>(Arrays.asList(enemyX, enemyY));
@@ -93,8 +93,8 @@ public class EnemyControlSystem implements IEntityProcessingService {
                         attackRange.setPosition(enemy.getX(), enemy.getY());
                         attackRange.getBoundingRectangle();
 
-                            if (gameData.isDebugMode()) {
-                                sr.setColor(Color.GREEN);
+                        if (gameData.isDebugMode()) {
+                            sr.setColor(Color.GREEN);
 
                             // for every node, draw its outline
 
@@ -105,15 +105,15 @@ public class EnemyControlSystem implements IEntityProcessingService {
                                 sr.line(nodeX, nodeY, nodeX + 32, nodeY);
                                 sr.line(nodeX, nodeY, nodeX, nodeY - 32);
 
-                                    sr.line(nodeX + 32, nodeY - 32, nodeX + 32, nodeY);
-                                    sr.line(nodeX + 32, nodeY - 32, nodeX, nodeY - 32);
-                                }
-
-                                Gdx.gl.glEnable(GL20.GL_BLEND);
-                                Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-                                sr.setColor(Color.RED);
-                                sr.polygon(attackRange.getTransformedVertices());
+                                sr.line(nodeX + 32, nodeY - 32, nodeX + 32, nodeY);
+                                sr.line(nodeX + 32, nodeY - 32, nodeX, nodeY - 32);
                             }
+
+                            Gdx.gl.glEnable(GL20.GL_BLEND);
+                            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+                            sr.setColor(Color.RED);
+                            sr.polygon(attackRange.getTransformedVertices());
+
                             sr.end();
 
                             Gdx.gl.glEnable(GL20.GL_BLEND);
@@ -146,23 +146,24 @@ public class EnemyControlSystem implements IEntityProcessingService {
                             }
                         }
 
-                        float playerFullX = player.getX() + player.getTextureWidth()/2f;
+                        // the X position of the middle of the players texture
+                        float playerFullX = player.getX() + player.getTextureWidth() / 2f;
                         double lengthToTarget = Math.sqrt(Math.pow(Math.abs(currentX - playerFullX), 2) + Math.pow(Math.abs(currentY - player.getY()), 2));
-                        //if not within 96 pixels (3 tiles) of the goal target
-                        if (!(lengthToTarget <= 96)) {
+                        //if not within 64 pixels (2 tiles) of the goal target
+                        if (!(lengthToTarget <= 64)) {
 
-                            decideMovement(currentX,currentY,targetX,targetY,movingPart);
+                            decideMovement(currentX, currentY, targetX, targetY, movingPart);
 
                         } else {
-                            // Value to set attackrange to determine movement
+                            // Value to set attackrangeint to determine movement
                             int attackRangeInt = enemy.getTextureWidth() / 3;
 
-                            //if distance is <96
-                            if(lengthToTarget > attackRangeInt) {
+                            //if length to target is still outside attack range
+                            if (lengthToTarget > attackRangeInt) {
                                 decideMovement(currentX, currentY, playerFullX, player.getY(), movingPart);
                             }
                             // if inside attack range, either max range, 90 % of attack range
-                            else if(lengthToTarget < attackRangeInt && lengthToTarget >= attackRangeInt *0.9f){
+                            else if (lengthToTarget < attackRangeInt && lengthToTarget >= attackRangeInt * 0.9f) {
                                 stopMovement(movingPart);
 
                             } else {
@@ -176,13 +177,13 @@ public class EnemyControlSystem implements IEntityProcessingService {
                                     */
 
                                 // if the enemy within 2 pixels on the same horizontal plane as the player (2 pixels up and 2 pixels down)
-                                if(Math.abs(player.getY()-currentY) <= 2){
+                                if (Math.abs(player.getY() - currentY) <= 2) {
                                     // decide movement with the Y parameter of both entities as the same (0)
-                                    decideMovement(currentX,0,playerFullX + (attackRangeInt * xModifier), 0, movingPart);
+                                    decideMovement(currentX, 0, playerFullX + (attackRangeInt * xModifier), 0, movingPart);
 
                                 }
                                 // else if the enemy within 2 pixels on the same vertical plane as the player (2 pixels left and 2 pixels right)
-                                else if (Math.abs(playerFullX-currentX) <= 2){
+                                else if (Math.abs(playerFullX - currentX) <= 2) {
                                     // decide movement with the X parameter of both entities as the same (0)
                                     decideMovement(0, currentY, 0, player.getY() + (attackRangeInt * yModifier), movingPart);
                                 }
@@ -196,7 +197,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
                         //if player is not inside arena
                         stopMovement(movingPart);
                     }
-                else if (playerLifepart.isDead()) {
+                } else if (playerLifepart.isDead()) {
                     stopMovement(movingPart);
                     if (!lifePart.isDead()) {
                         if (animationPart.isLeft()) {
@@ -218,6 +219,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
         }
     }
 
+
     private void stopMovement(MovingPart movingPart) {
         movingPart.setDown(false);
         movingPart.setUp(false);
@@ -225,13 +227,24 @@ public class EnemyControlSystem implements IEntityProcessingService {
         movingPart.setRight(false);
     }
 
-    private void decideMovement(float X, float Y, float targetX, float targetY, MovingPart movingPart){
+
+    /**
+     * Function with the purpose of deciding how to move,
+     * Given the entity current x,y going towards a target at given X,Y
+     *
+     * @param X X Value of the current entity
+     * @param Y Y Value of the current entity
+     * @param targetX X Value of the target
+     * @param targetY Y Value of the target
+     * @param movingPart Movingpart of the current entity
+     */
+
+    private void decideMovement(float X, float Y, float targetX, float targetY, MovingPart movingPart) {
         // if the targetX and EnemyX is not the same
         X = (int) X;
         Y = (int) Y;
         targetX = (int) targetX;
         targetY = (int) targetY;
-
 
         if (!(targetX == X)) {
 
@@ -245,7 +258,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
             }
 
 
-
         } else {
 
             movingPart.setLeft(false);
@@ -257,7 +269,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
         } else if (targetY > Y) {
             movingPart.setDown(false);
             movingPart.setUp(true);
-        }else {
+        } else {
             movingPart.setUp(false);
             movingPart.setDown(false);
         }
