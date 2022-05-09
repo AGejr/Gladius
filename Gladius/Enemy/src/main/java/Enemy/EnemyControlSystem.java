@@ -145,19 +145,15 @@ public class EnemyControlSystem implements IEntityProcessingService {
                                 }
                             }
                         }
-
                         // the X position of the middle of the players texture
                         float playerFullX = player.getX() + player.getTextureWidth() / 2f;
                         double lengthToTarget = Math.sqrt(Math.pow(Math.abs(currentX - playerFullX), 2) + Math.pow(Math.abs(currentY - player.getY()), 2));
                         //if not within 96 pixels (3 tiles) of the goal target
                         if (!(lengthToTarget <= 96)) {
-
                             decideMovement(currentX, currentY, targetX, targetY, movingPart);
-
                         } else {
                             // Value to set attackrangeint to determine movement
                             int attackRangeInt = enemy.getTextureWidth() / 3;
-
                             //if length to target is still outside attack range
                             if (lengthToTarget > attackRangeInt) {
                                 decideMovement(currentX, currentY, playerFullX, player.getY(), movingPart);
@@ -167,20 +163,19 @@ public class EnemyControlSystem implements IEntityProcessingService {
                                 stopMovement(movingPart);
 
                             } else {
-                                // decide whether to modify position positively or negatively
-                                int yModifier = player.getY() < currentY ? 1 : -1;
-                                int xModifier = playerFullX < currentX ? 1 : -1;
-                                    /*
+                                /*
                                        modifiers are used to figure out which direction the enemy is to its target
-                                       used to modify the attackRange variable
+                                       used to modify the attackRangeInt variable
+                                       decide whether to modify position positively or negatively
                                        Tells the enemy if it should walk left or right, up or down
                                     */
+                                int yModifier = player.getY() < currentY ? 1 : -1;
+                                int xModifier = playerFullX < currentX ? 1 : -1;
 
                                 // if the enemy within 2 pixels on the same horizontal plane as the player (2 pixels up and 2 pixels down)
                                 if (Math.abs(player.getY() - currentY) <= 2) {
                                     // decide movement with the Y parameter of both entities as the same (0)
                                     decideMovement(currentX, 0, playerFullX + (attackRangeInt * xModifier), 0, movingPart);
-
                                 }
                                 // else if the enemy within 2 pixels on the same vertical plane as the player (2 pixels left and 2 pixels right)
                                 else if (Math.abs(playerFullX - currentX) <= 2) {
@@ -238,7 +233,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
      * @param targetY Y Value of the target
      * @param movingPart Movingpart of the current entity
      */
-
     private void decideMovement(float X, float Y, float targetX, float targetY, MovingPart movingPart) {
         // if the targetX and EnemyX is not the same
         X = (int) X;
@@ -248,7 +242,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
         if (!(targetX == X)) {
 
-
             if (targetX < X) {
                 movingPart.setLeft(true);
                 movingPart.setRight(false);
@@ -256,10 +249,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
                 movingPart.setRight(true);
                 movingPart.setLeft(false);
             }
-
-
         } else {
-
             movingPart.setLeft(false);
             movingPart.setRight(false);
         }
