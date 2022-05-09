@@ -47,11 +47,6 @@ public class ShopControlSystem implements IEntityProcessingService {
                     if (player.getY() > shop.getY() - shop.getTextureHeight() / 2f && player.getX() < shop.getX() + shop.getTextureWidth() && player.getY() < shop.getY() + shop.getTextureHeight()) {
                         UI.textBox(gameData, "Hit enter to enter shop", gameData.getMapWidth() / 5f, gameData.getMapHeight() / 10f, 200, 55);
                     }
-                    if (gameData.getKeys().isPressed(GameKeys.ENTER)) {
-                        shopEntered = true;
-                        MovingPart movingPart = player.getPart(MovingPart.class);
-                        movingPart.setSpeed(0);
-                    }
                 }
             }
             //Show balance when in map
@@ -63,6 +58,12 @@ public class ShopControlSystem implements IEntityProcessingService {
                 processBuy(gameData, player, statsPart);
                 //Show balance when in shop
                 UI.text(gameData, String.valueOf(statsPart.getBalance()), tileSize * 3, gameData.getMapHeight() / 2f - tileSize * 2);
+            } else {
+                if (gameData.getKeys().isPressed(GameKeys.ENTER)) {
+                    shopEntered = true;
+                    MovingPart movingPart = player.getPart(MovingPart.class);
+                    movingPart.setSpeed(0);
+                }
             }
         }
         drawShop(gameData);
