@@ -33,6 +33,7 @@
     <module>Enemy</module>
     <module>CommonPlayer</module>
     <module>Obstacle</module>
+    <module>CommonEnemy</module>
   </modules>
 
   <build>
