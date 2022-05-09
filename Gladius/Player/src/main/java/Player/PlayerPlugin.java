@@ -7,6 +7,7 @@ import Common.data.entityparts.*;
 import Common.services.IGamePluginService;
 import Common.tools.FileLoader;
 import CommonPlayer.Player;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 
 import java.io.File;
@@ -39,6 +40,10 @@ public class PlayerPlugin implements IGamePluginService {
 
     @Override
     public void stop(GameData gameData, World world) {
+        SoundPart soundPart = player.getPart(SoundPart.class);
+        if (soundPart != null){
+            soundPart.disposeSounds();
+        }
         world.removeEntity(player);
     }
 }

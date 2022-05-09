@@ -38,7 +38,6 @@ public class SoundPart implements EntityPart {
         localSoundFileMap.put(SoundData.SOUND.INTERACT, "");
         localSoundFileMap.put(SoundData.SOUND.WAVE_CLEARED, "");
         localSoundFileMap.put(SoundData.SOUND.ARENA_ENTERED, "");
-
     }
 
     public void initSounds(){
@@ -136,6 +135,12 @@ public class SoundPart implements EntityPart {
     public void playAudio(SoundData.SOUND key){
             Sound sound = this.getSound(key);
             sound.play(1f);
+    }
+
+    public void disposeSounds(){
+        for(Sound sound : localSoundMap.values()){
+            sound.dispose();
+        }
     }
 
 }

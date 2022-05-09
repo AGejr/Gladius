@@ -83,6 +83,7 @@ public class Game implements ApplicationListener {
 
         world.setCsvMap(FileLoader.fetchData(mapFiles[0]));
 
+        // initialize soundData
         gameData.setSoundData(new SoundData());
 
         // Game sounds loader
@@ -95,7 +96,7 @@ public class Game implements ApplicationListener {
         gameData.getSoundData().initSound();
 
         // Background music
-        FileLoader.loadFile("Sounds/theme.ogg" ,getClass());
+        FileLoader.loadFile("Sounds/theme.ogg", getClass());
         Music theme = Gdx.audio.newMusic(Gdx.files.internal("Sounds/theme.ogg"));
         theme.setVolume(0.5f);
         theme.setLooping(true);

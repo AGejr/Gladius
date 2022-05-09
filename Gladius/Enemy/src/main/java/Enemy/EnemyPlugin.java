@@ -42,6 +42,11 @@ public class EnemyPlugin implements IGamePluginService {
 
     @Override
     public void stop(GameData gameData, World world) {
+        SoundPart soundPart = enemy.getPart(SoundPart.class);
+        if (soundPart != null){
+            soundPart.disposeSounds();
+        }
+
         world.removeEntity(this.enemy);
     }
 }

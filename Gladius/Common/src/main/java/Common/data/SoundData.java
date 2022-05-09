@@ -51,7 +51,6 @@ public class SoundData {
     public void initSound(){
         for (SOUND sound : this.soundFileMap.keySet()){
             String path = this.soundFileMap.get(sound);
-
             this.soundMap.put(sound, Gdx.audio.newSound(Gdx.files.internal(path)));
         }
     }
