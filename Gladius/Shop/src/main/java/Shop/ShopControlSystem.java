@@ -33,38 +33,39 @@ public class ShopControlSystem implements IEntityProcessingService {
     private Map<WeaponImages, Weapon> swordMap = new HashMap<>();
     private List<ShopElixir> shopElixirs;
     private List<ShopWeapon> shopWeapons;
+    private boolean init = false;
 
     @Override
     public void process(GameData gameData, World world) {
         for (Entity entity : world.getEntities(Player.class)) {
+            Player player = (Player) entity;
             for (Entity entity2 : world.getEntities(Shop.class)) {
-                Player player = (Player) entity;
                 Shop shop = (Shop) entity2;
                 shopElixirs = shop.getShopElixirs();
                 shopWeapons = shop.getShopWeapons();
-
-                //Show balance when in map
-                StatsPart statsPart = player.getPart(StatsPart.class);
-                UI.text(gameData, String.valueOf(statsPart.getBalance()), tileSize * 3, gameData.getMapHeight() / 2f - tileSize * 2);
-
-                if (shopEntered) {
-                    drawShopInterior(gameData, player, statsPart);
-                    moveCursor(gameData, player);
-                    processBuy(gameData, player, statsPart);
-                    //Show balance when in shop
-                    UI.text(gameData, String.valueOf(statsPart.getBalance()), tileSize * 3, gameData.getMapHeight() / 2f - tileSize * 2);
-                } else {
+                if (!shopEntered) {
+                    if (player.getY() > shop.getY() - shop.getTextureHeight() / 2f && player.getX() < shop.getX() + shop.getTextureWidth() && player.getY() < shop.getY() + shop.getTextureHeight()) {
+                        UI.textBox(gameData, "Hit enter to enter shop", gameData.getMapWidth() / 5f, gameData.getMapHeight() / 10f, 200, 55);
+                    }
                     if (gameData.getKeys().isPressed(GameKeys.ENTER)) {
                         shopEntered = true;
                         MovingPart movingPart = player.getPart(MovingPart.class);
                         movingPart.setSpeed(0);
                     }
-                    if (player.getY() > shop.getY() - shop.getTextureHeight() / 2f && player.getX() < shop.getX() + shop.getTextureWidth() && player.getY() < shop.getY() + shop.getTextureHeight()) {
-                        UI.textBox(gameData, "Hit enter to enter shop", gameData.getMapWidth() / 5f, gameData.getMapHeight() / 10f, 200, 55);
-                    }
                 }
             }
+            //Show balance when in map
+            StatsPart statsPart = player.getPart(StatsPart.class);
+            UI.text(gameData, String.valueOf(statsPart.getBalance()), tileSize * 3, gameData.getMapHeight() / 2f - tileSize * 2);
+            if (shopEntered) {
+                drawShopInterior(gameData, player, statsPart);
+                moveCursor(gameData, player);
+                processBuy(gameData, player, statsPart);
+                //Show balance when in shop
+                UI.text(gameData, String.valueOf(statsPart.getBalance()), tileSize * 3, gameData.getMapHeight() / 2f - tileSize * 2);
+            }
         }
+        drawShop(gameData);
     }
 
 
@@ -88,7 +89,7 @@ public class ShopControlSystem implements IEntityProcessingService {
                         player.equipWeapon(weapon);
                     } else {
                         buyWeapon(statsPart, shopWeapon.getWeaponEnum(), shopWeapon, player);
-                        shopWeapon.setOwned(true);
+
                     }
                 }
             }
@@ -124,6 +125,7 @@ public class ShopControlSystem implements IEntityProcessingService {
             Weapon weapon = swordMap.get(weaponEnum);
             player.addWeapon(weapon);
             player.equipWeapon(weapon);
+            shopWeapon.setOwned(true);
         }
     }
 
@@ -159,15 +161,13 @@ public class ShopControlSystem implements IEntityProcessingService {
             batch.draw(region, shopElixir.getX(), shopElixir.getY() + 30, tileSize * 4, tileSize * 4);
         }
 
-        region.setRegion(tileSize * 4, tileSize * 8, tileSize * 2, tileSize * 2);
-        batch.draw(region, 0, gameData.getMapHeight() / 2f - tileSize * 3, tileSize * 4, tileSize * 4);
+        for (ShopWeapon shopWeapon : shopWeapons) {
+            drawSword(gameData, player, batch, shopWeapon.getWeaponEnum(), shopWeapon.getDamage(), shopWeapon.getWeight(), shopWeapon.getRange(), shopWeapon.getX(), shopWeapon.getY());
+        }
 
         region.setRegion(tileSize * 8, tileSize * 10, tileSize * 2, tileSize);
         batch.draw(region, gameData.getMapWidth()/4f - tileSize * 5, gameData.getMapHeight() / 2f - tileSize * 5, tileSize * 10, tileSize * 5);
 
-        for (ShopWeapon shopWeapon : shopWeapons) {
-            drawSword(gameData, player, batch, shopWeapon.getWeaponEnum(), shopWeapon.getDamage(), shopWeapon.getWeight(), shopWeapon.getRange(), shopWeapon.getX(), shopWeapon.getY());
-        }
         batch.end();
 
         int offset = 20;
@@ -198,6 +198,24 @@ public class ShopControlSystem implements IEntityProcessingService {
         sword.initTexture();
         batch.draw((Entity) sword, x, y, 0, 0, sword.getTextureWidth(), sword.getTextureHeight(), 1, 1, sword.getAngle());
         swordMap.put(weaponEnum, sword);
+    }
+
+    /**
+     * Draws the shop on top of the tilemap
+     */
+    private void drawShop(GameData gameData) {
+        SpriteBatch batch = new SpriteBatch();
+        File textureFile = new File("ShopItems.png");
+        FileHandle fileHandle = new FileHandle(textureFile);
+        Texture texture = new Texture(fileHandle);
+        TextureRegion region = new TextureRegion(texture);
+        batch.begin();
+        region.setRegion(tileSize * 4, tileSize * 8, tileSize * 2, tileSize * 2);
+        batch.draw(region, 0, gameData.getMapHeight() / 2f - tileSize * 3, tileSize * 4, tileSize * 4);
+
+        region.setRegion(tileSize * 4, tileSize * 8, tileSize * 2, tileSize * 2);
+        batch.draw(region, 0, gameData.getMapHeight() / 2f - tileSize * 3, tileSize * 4, tileSize * 4);
+        batch.end();
     }
 
     /**

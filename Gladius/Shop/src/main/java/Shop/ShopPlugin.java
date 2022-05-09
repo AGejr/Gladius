@@ -25,7 +25,6 @@ public class ShopPlugin implements IGamePluginService {
     public void start(GameData gameData, World world) {
         shop = createShop();
         world.addEntity(shop);
-        drawShop(gameData);
     }
 
     private Entity createShop() {
@@ -39,9 +38,9 @@ public class ShopPlugin implements IGamePluginService {
 
         List<ShopWeapon> shopWeapons = new ArrayList<>();
         shopWeapons.add(new ShopWeapon("Stone Sword", 700, 290, WeaponImages.STARTSWORD, 0,25,8, 10));
-        shopWeapons.add(new ShopWeapon("Gold Sword", 500, 290, WeaponImages.GOLDSWORD, 100,40,10,12));
-        shopWeapons.add(new ShopWeapon("Diamond Sword", 300, 290, WeaponImages.DIAMONDSWORD, 200,50,14,14));
-        shopWeapons.add(new ShopWeapon("Club", 100, 290, WeaponImages.CLUB, 300,45,14,14));
+        shopWeapons.add(new ShopWeapon("Gold Sword", 500, 290, WeaponImages.GOLDSWORD, 100,40,10,10));
+        shopWeapons.add(new ShopWeapon("Diamond Sword", 300, 290, WeaponImages.DIAMONDSWORD, 200,50,14,10));
+        shopWeapons.add(new ShopWeapon("Club", 100, 290, WeaponImages.CLUB, 300,45,14,10));
 
         Entity shop = new Shop(files[0], shopElixirs, shopWeapons);
 
@@ -50,25 +49,9 @@ public class ShopPlugin implements IGamePluginService {
         return shop;
     }
 
-    /**
-     * Draws the shop on top of the tilemap
-     */
-    private void drawShop(GameData gameData) {
-        SpriteBatch batch = new SpriteBatch();
-        File textureFile = new File("ShopItems.png");
-        FileHandle fileHandle = new FileHandle(textureFile);
-        Texture texture = new Texture(fileHandle);
-        TextureRegion region = new TextureRegion(texture);
-        batch.begin();
-        region.setRegion(tileSize * 4, tileSize * 8, tileSize * 2, tileSize * 2);
-        batch.draw(region, 0, gameData.getMapHeight() / 2f - tileSize * 3, tileSize * 4, tileSize * 4);
-        batch.end();
-        batch.flush();
-    }
 
     @Override
     public void stop(GameData gameData, World world) {
         world.removeEntity(shop);
-
     }
 }

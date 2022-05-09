@@ -151,7 +151,7 @@ public class Game implements ApplicationListener {
         shapeRenderer.begin(ShapeType.Filled);
         for (Entity entity: world.getEntities()) {
             LifePart lifePart = entity.getPart(LifePart.class);
-            if (lifePart != null) {
+            if (lifePart != null && lifePart.getHealthColor() != null) {
                 lifePart.drawHealthBar(shapeRenderer, entity);
             }
         }
