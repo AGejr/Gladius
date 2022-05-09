@@ -1,5 +1,6 @@
 package Common.data;
 
+import Common.services.IEntityFactoryService;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class World {
 
@@ -14,6 +16,7 @@ public class World {
     private TiledMap tiledMap;
     private List<List<Integer>> csvMap;
     private boolean isMapLoaded = false;
+    private static List<IEntityFactoryService> entityFactoryList = new CopyOnWriteArrayList<>();
 
     public String addEntity(Entity entity) {
         entityMap.put(entity.getID(), entity);
@@ -27,7 +30,7 @@ public class World {
     public void removeEntity(Entity entity) {
         entityMap.remove(entity.getID());
     }
-    
+
     public Collection<Entity> getEntities() {
         return entityMap.values();
     }
@@ -47,6 +50,19 @@ public class World {
 
     public Entity getEntity(String ID) {
         return entityMap.get(ID);
+    }
+
+    public static void addEntityFactory(IEntityFactoryService iEntityFactoryService){
+        entityFactoryList.add(iEntityFactoryService);
+    }
+
+    public void removeEntityFactory(IEntityFactoryService iEntityFactoryService){
+        iEntityFactoryService.stop(this);
+        entityFactoryList.remove(iEntityFactoryService);
+    }
+
+    public static List<IEntityFactoryService> getEntityFactoryList() {
+        return entityFactoryList;
     }
 
     public TiledMap getTiledMap() {

@@ -8,20 +8,26 @@ import Common.data.entityparts.LifePart;
 import Common.data.entityparts.MovingPart;
 import Common.data.entityparts.StatsPart;
 import Common.services.IGamePluginService;
+import Common.services.IEntityFactoryService;
 import Common.tools.FileLoader;
 
+import java.util.ArrayList;
 import java.util.Random;
 
-public class EnemyPlugin implements IGamePluginService {
-    private Entity enemy;
+public class EnemyFactory implements IEntityFactoryService {
+
+    ArrayList<Entity> enemies = new ArrayList<Entity>();;
 
     @Override
-    public void start(GameData gameData, World world) {
-            enemy = createEnemy(gameData);
+    public void spawn(GameData gameData, World world, Integer amount) {
+        for (int i = 0; i < amount; i++) {
+            Entity enemy = createMinotauer(gameData);
+            enemies.add(enemy);
             world.addEntity(enemy);
+        }
     }
 
-    private Entity createEnemy(GameData gamedata) {
+    private Entity createMinotauer(GameData gamedata) {
         String file = "Minotaur.png";
 
         // radius should be texture width / 16
@@ -40,7 +46,10 @@ public class EnemyPlugin implements IGamePluginService {
     }
 
     @Override
-    public void stop(GameData gameData, World world) {
-        world.removeEntity(this.enemy);
+    public void stop(World world) {
+        enemies.clear();
+        for (Entity enemy: world.getEntities(Enemy.class)){
+            world.removeEntity(enemy);
+        }
     }
 }
