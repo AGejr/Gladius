@@ -3,6 +3,7 @@ package Core;
 import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
+import Common.data.entityparts.LifePart;
 import Common.services.IEntityProcessingService;
 import Common.services.IGamePluginService;
 import Common.services.IPostEntityProcessingService;
@@ -139,6 +140,16 @@ public class Game implements ApplicationListener {
         }
         shapeRenderer.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
+
+        // To begin a new batch takes a lot of memory. Because of that it needs to happen in Game and not in process in LifePart to prevent to many batches getting created
+        shapeRenderer.begin(ShapeType.Filled);
+        for (Entity entity: world.getEntities()) {
+            LifePart lifePart = entity.getPart(LifePart.class);
+            if (lifePart != null) {
+                lifePart.drawHealthBar(shapeRenderer, entity);
+            }
+        }
+        shapeRenderer.end();
 
         update();
         gameData.getKeys().update();
