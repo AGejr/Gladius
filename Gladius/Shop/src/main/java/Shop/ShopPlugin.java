@@ -8,7 +8,12 @@ import Common.tools.FileLoader;
 import CommonWeapon.WeaponImages;
 import Shop.ShopItems.ShopElixir;
 import Shop.ShopItems.ShopWeapon;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +25,7 @@ public class ShopPlugin implements IGamePluginService {
     public void start(GameData gameData, World world) {
         shop = createShop();
         world.addEntity(shop);
+        drawShop(gameData);
     }
 
     private Entity createShop() {
@@ -44,8 +50,25 @@ public class ShopPlugin implements IGamePluginService {
         return shop;
     }
 
+    /**
+     * Draws the shop on top of the tilemap
+     */
+    private void drawShop(GameData gameData) {
+        SpriteBatch batch = new SpriteBatch();
+        File textureFile = new File("ShopItems.png");
+        FileHandle fileHandle = new FileHandle(textureFile);
+        Texture texture = new Texture(fileHandle);
+        TextureRegion region = new TextureRegion(texture);
+        batch.begin();
+        region.setRegion(tileSize * 4, tileSize * 8, tileSize * 2, tileSize * 2);
+        batch.draw(region, 0, gameData.getMapHeight() / 2f - tileSize * 3, tileSize * 4, tileSize * 4);
+        batch.end();
+        batch.flush();
+    }
+
     @Override
     public void stop(GameData gameData, World world) {
         world.removeEntity(shop);
+
     }
 }

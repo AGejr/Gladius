@@ -6,6 +6,7 @@ import Common.data.entityparts.StatsPart;
 import CommonPlayer.Player;
 import CommonWeapon.Weapon;
 import CommonWeapon.WeaponImages;
+import Shop.ShopItems.ShopWeapon;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +23,7 @@ public class ShopControlSystemTest {
     public void setUp() throws Exception {
         player = new Player(null,2);
         player.add(new StatsPart(10,10,0));
-        Weapon sword = new Weapon("Sword", 10, 10, 10, WeaponImages.CLUB.path, 36, 146, 0.9f, 0.9f, 0, 20.0f, 9.0f, 20.0f, 10.0f, player, clubPrice);
+        Weapon sword = new Weapon("Sword", 10, 10, 10, WeaponImages.CLUB.path, 36, 146, 0.9f, 0.9f, 0, 20.0f, 9.0f, 20.0f,9.0f, 10.0f, player);
         swordMap.put(WeaponImages.CLUB,sword);
     }
 
@@ -33,24 +34,26 @@ public class ShopControlSystemTest {
     @org.junit.Test
     public void process() {
         StatsPart statsPart = player.getPart(StatsPart.class);
+        ShopWeapon shopWeapon = new ShopWeapon("Club", 100, 290,WeaponImages.CLUB, clubPrice,45,14,14);
+
 
         assertEquals(statsPart.getBalance(),0);
         statsPart.depositBalance(100);
         assertEquals(statsPart.getBalance(),100);
 
         int balance = statsPart.getBalance();
-        buyWeapon(statsPart,WeaponImages.CLUB, player);
+        buyWeapon(statsPart,WeaponImages.CLUB, shopWeapon, player);
 
         assertEquals(statsPart.getBalance(),balance-clubPrice);
 
-        buyWeapon(statsPart,WeaponImages.CLUB, player);
+        buyWeapon(statsPart,WeaponImages.CLUB, shopWeapon, player);
 
         assertEquals(statsPart.getBalance(),balance-clubPrice);
     }
 
-    private void buyWeapon(StatsPart statsPart, WeaponImages weaponEnum, Player player) {
-        if (statsPart.getBalance() >= swordMap.get(weaponEnum).getPrice()) {
-            statsPart.withdrawBalance(swordMap.get(weaponEnum).getPrice());
+    private void buyWeapon(StatsPart statsPart, WeaponImages weaponEnum, ShopWeapon shopWeapon, Player player) {
+        if (statsPart.getBalance() >= shopWeapon.getPrice()) {
+            statsPart.withdrawBalance(shopWeapon.getPrice());
             Weapon weapon = swordMap.get(weaponEnum);
             player.addWeapon(weapon);
             player.equipWeapon(weapon);

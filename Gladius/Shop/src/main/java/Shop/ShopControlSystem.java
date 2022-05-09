@@ -47,7 +47,6 @@ public class ShopControlSystem implements IEntityProcessingService {
                 StatsPart statsPart = player.getPart(StatsPart.class);
                 UI.text(gameData, String.valueOf(statsPart.getBalance()), tileSize * 3, gameData.getMapHeight() / 2f - tileSize * 2);
 
-
                 if (shopEntered) {
                     drawShopInterior(gameData, player, statsPart);
                     moveCursor(gameData, player);
@@ -55,7 +54,6 @@ public class ShopControlSystem implements IEntityProcessingService {
                     //Show balance when in shop
                     UI.text(gameData, String.valueOf(statsPart.getBalance()), tileSize * 3, gameData.getMapHeight() / 2f - tileSize * 2);
                 } else {
-                    drawShop(gameData);
                     if (gameData.getKeys().isPressed(GameKeys.ENTER)) {
                         shopEntered = true;
                         MovingPart movingPart = player.getPart(MovingPart.class);
@@ -69,20 +67,7 @@ public class ShopControlSystem implements IEntityProcessingService {
         }
     }
 
-    /**
-     * Draws the shop on top of the tilemap
-     */
-    private void drawShop(GameData gameData) {
-        SpriteBatch batch = new SpriteBatch();
-        File textureFile = new File("ShopItems.png");
-        FileHandle fileHandle = new FileHandle(textureFile);
-        Texture texture = new Texture(fileHandle);
-        TextureRegion region = new TextureRegion(texture);
-        batch.begin();
-        region.setRegion(tileSize * 4, tileSize * 8, tileSize * 2, tileSize * 2);
-        batch.draw(region, 0, gameData.getMapHeight() / 2f - tileSize * 3, tileSize * 4, tileSize * 4);
-        batch.end();
-    }
+
 
     /**
      * Validates where the cursor is and if the player has the balance to buy the upgrade.
@@ -102,7 +87,7 @@ public class ShopControlSystem implements IEntityProcessingService {
                         player.addWeapon(weapon);
                         player.equipWeapon(weapon);
                     } else {
-                        buyWeapon(statsPart, shopWeapon.getWeaponEnum(), player);
+                        buyWeapon(statsPart, shopWeapon.getWeaponEnum(), shopWeapon, player);
                         shopWeapon.setOwned(true);
                     }
                 }
@@ -133,9 +118,9 @@ public class ShopControlSystem implements IEntityProcessingService {
     /**
      * Checks the players balance and adds the weapon if the player can afford
      */
-    private void buyWeapon(StatsPart statsPart, WeaponImages weaponEnum, Player player) {
-        if (statsPart.getBalance() >= swordMap.get(weaponEnum).getPrice()) {
-            statsPart.withdrawBalance(swordMap.get(weaponEnum).getPrice());
+    private void buyWeapon(StatsPart statsPart, WeaponImages weaponEnum, ShopWeapon shopWeapon, Player player) {
+        if (statsPart.getBalance() >= shopWeapon.getPrice()) {
+            statsPart.withdrawBalance(shopWeapon.getPrice());
             Weapon weapon = swordMap.get(weaponEnum);
             player.addWeapon(weapon);
             player.equipWeapon(weapon);
@@ -181,7 +166,7 @@ public class ShopControlSystem implements IEntityProcessingService {
         batch.draw(region, gameData.getMapWidth()/4f - tileSize * 5, gameData.getMapHeight() / 2f - tileSize * 5, tileSize * 10, tileSize * 5);
 
         for (ShopWeapon shopWeapon : shopWeapons) {
-            drawSword(gameData, player, batch, shopWeapon.getWeaponEnum(), shopWeapon.getDamage(), shopWeapon.getWeight(), shopWeapon.getRange(), shopWeapon.getX(), shopWeapon.getY(), 0);
+            drawSword(gameData, player, batch, shopWeapon.getWeaponEnum(), shopWeapon.getDamage(), shopWeapon.getWeight(), shopWeapon.getRange(), shopWeapon.getX(), shopWeapon.getY());
         }
         batch.end();
 
@@ -207,8 +192,8 @@ public class ShopControlSystem implements IEntityProcessingService {
     /**
      * Initialize the sword to the map and draw the sword to the shop.
      */
-    private void drawSword(GameData gameData, Player player, SpriteBatch batch, WeaponImages weaponEnum, int damage, int weight, int range, float x, float y, int price) {
-        Weapon sword = new Weapon("Sword", damage, weight, range, weaponEnum.path, 36, 146, 0.9f, 0.9f, 0, 20.0f, 9.0f, 20.0f, 10.0f, player, price);
+    private void drawSword(GameData gameData, Player player, SpriteBatch batch, WeaponImages weaponEnum, int damage, int weight, int range, float x, float y) {
+        Weapon sword = new Weapon("Sword", damage, weight, range, weaponEnum.path, 36, 146, 0.9f, 0.9f, 0, 20.0f, 9.0f, 20.0f,9.0f, 10.0f, player);
         sword.setWeaponTexture();
         sword.initTexture();
         batch.draw((Entity) sword, x, y, 0, 0, sword.getTextureWidth(), sword.getTextureHeight(), 1, 1, sword.getAngle());
