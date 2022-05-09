@@ -9,13 +9,13 @@
   </parent>
 
   <properties>
-    <bundle.symbolicName>Event</bundle.symbolicName>
-    <bundle.namespace>Event</bundle.namespace>
+    <bundle.symbolicName>Monster</bundle.symbolicName>
+    <bundle.namespace>Monster</bundle.namespace>
   </properties>
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.gladius.Gladius</groupId>
-  <artifactId>Event</artifactId>
+  <artifactId>Monster</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <name>${bundle.symbolicName}</name>
@@ -34,11 +34,16 @@
       <version>1.0-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
-    
     <dependency>
       <groupId>org.gladius.build</groupId>
       <artifactId>LibGDXImports</artifactId>
       <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.gladius.Gladius</groupId>
+      <artifactId>CommonPlayer</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.gladius.Gladius</groupId>
@@ -48,31 +53,27 @@
     </dependency>
     <dependency>
       <groupId>org.gladius.Gladius</groupId>
-      <artifactId>CommonPlayer</artifactId>
+      <artifactId>CommonMonster</artifactId>
       <version>1.0-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
-      <dependency>
-          <groupId>org.gladius.Gladius</groupId>
-          <artifactId>CommonEnemy</artifactId>
-          <version>1.0-SNAPSHOT</version>
-          <scope>compile</scope>
-      </dependency>
-      <dependency>
-          <groupId>org.gladius.Gladius</groupId>
-          <artifactId>CommonMonster</artifactId>
-          <version>1.0-SNAPSHOT</version>
-          <scope>compile</scope>
-      </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>1.10.19</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.4.0</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <extensions>true</extensions>
-      </plugin>
-    </plugins>
-  </build>
 </project>
