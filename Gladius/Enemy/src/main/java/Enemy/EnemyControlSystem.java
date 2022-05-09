@@ -33,6 +33,14 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
+        ShapeRenderer sr = null;
+        if (gameData.isDebugMode()) {
+            //used to show path
+            sr = new ShapeRenderer();
+            //set projection to not follow camera
+            sr.setProjectionMatrix(gameData.getCam().combined);
+            sr.begin(ShapeRenderer.ShapeType.Line);
+        }
         for (Entity enemy : world.getEntities(Enemy.class)) {
             MovingPart movingPart = enemy.getPart(MovingPart.class);
 
@@ -88,12 +96,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
                             attackRange.getBoundingRectangle();
 
                             if (gameData.isDebugMode()) {
-                                //used to show path
-                                ShapeRenderer sr = new ShapeRenderer();
-
-                                //set projection to not follow camera
-                                sr.setProjectionMatrix(gameData.getCam().combined);
-                                sr.begin(ShapeRenderer.ShapeType.Line);
                                 sr.setColor(Color.GREEN);
 
                                 // for every node, draw its outline
@@ -108,15 +110,11 @@ public class EnemyControlSystem implements IEntityProcessingService {
                                     sr.line(nodeX + 32, nodeY - 32, nodeX + 32, nodeY);
                                     sr.line(nodeX + 32, nodeY - 32, nodeX, nodeY - 32);
                                 }
-                                sr.end();
 
                                 Gdx.gl.glEnable(GL20.GL_BLEND);
                                 Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-                                sr.begin(ShapeRenderer.ShapeType.Line);
                                 sr.setColor(Color.RED);
                                 sr.polygon(attackRange.getTransformedVertices());
-                                sr.end();
-                                Gdx.gl.glDisable(GL20.GL_BLEND);
                             }
 
                             // Checking if player is inside of enemy's attack range
@@ -202,7 +200,10 @@ public class EnemyControlSystem implements IEntityProcessingService {
             animationPart.process(gameData, enemy);
             lifePart.process(gameData, enemy);
         }
-
+        if (gameData.isDebugMode()) {
+            sr.end();
+            Gdx.gl.glDisable(GL20.GL_BLEND);
+        }
     }
 
     private void stopMovement(MovingPart movingPart) {
