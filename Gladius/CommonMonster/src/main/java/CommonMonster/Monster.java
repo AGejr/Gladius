@@ -14,7 +14,7 @@ public class Monster extends Entity implements IWeaponUserService {
     private Polygon attackRange;
 
     public Monster(String texturePath, int radius) {
-        super(texturePath, radius, 96, 96, 0, 0.5f, 0.5f);
+        super(texturePath, radius, 64, 64, 0, 0.5f, 0.5f);
         //TODO align weapon hitbox to the axe and swinging animation
         this.equippedWeapon = new Weapon("Ass", 65, 110, 5, "", 9, 55, 0.9f, 0.9f, 0, 30.0f, 6.0f, 42.0f, 63.0f, 17.0f, this);
         this.equippedWeapon.setRotationDuration(23);
@@ -54,12 +54,12 @@ public class Monster extends Entity implements IWeaponUserService {
             Array<TextureRegion> idleRightTextures = new Array<>();
             Array<TextureRegion> idleLeftTextures = new Array<>();
 
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 4; i++) {
                 // IDLE right
-                idleRightTextures.add(new TextureRegion(this.getTexture(), 96 * i, 0, 96, 96));
+                idleRightTextures.add(new TextureRegion(this.getTexture(), super.getTextureWidth() * i, 0, super.getTextureWidth(), super.getTextureHeight()));
 
                 // IDLE left
-                TextureRegion idleLeftTexture = new TextureRegion(this.getTexture(), 96 * i, 0, 96, 96);
+                TextureRegion idleLeftTexture = new TextureRegion(this.getTexture(), super.getTextureWidth() * i, 0, super.getTextureWidth(), super.getTextureHeight());
                 idleLeftTexture.flip(true, false);
                 idleLeftTextures.add(idleLeftTexture);
             }
@@ -77,12 +77,12 @@ public class Monster extends Entity implements IWeaponUserService {
             Array<TextureRegion> rightMoveTextures = new Array<>();
             Array<TextureRegion> leftMoveTextures = new Array<>();
 
-            for (int i = 0; i < 7; i++) {
+            for (int i = 0; i < 6; i++) {
                 // Running right
-                rightMoveTextures.add(new TextureRegion(this.getTexture(), 96 * i, 96, 96, 96));
+                rightMoveTextures.add(new TextureRegion(this.getTexture(), super.getTextureWidth() * i, super.getTextureHeight(), super.getTextureWidth(), super.getTextureHeight()));
 
                 // Running left
-                TextureRegion leftTexture = new TextureRegion(this.getTexture(), 96 * i, 96, 96, 96);
+                TextureRegion leftTexture = new TextureRegion(this.getTexture(), super.getTextureWidth() * i, super.getTextureHeight(), super.getTextureWidth(), super.getTextureHeight());
                 leftTexture.flip(true, false);
                 leftMoveTextures.add(leftTexture);
             }
@@ -99,12 +99,11 @@ public class Monster extends Entity implements IWeaponUserService {
             Array<TextureRegion> rightDeathTextures = new Array<>();
             Array<TextureRegion> leftDeathTextures = new Array<>();
 
-            for (int i = 0; i < 6; i++) {
-
-                TextureRegion rightDeathTexture = new TextureRegion(this.getTexture(), 96 * i, 96 * 9, 96, 96);
+            for (int i = 0; i < 11; i++) {
+                int death_row = 7;
+                TextureRegion rightDeathTexture = new TextureRegion(this.getTexture(), super.getTextureWidth() * i, super.getTextureHeight() * death_row, super.getTextureWidth(), super.getTextureHeight());
                 rightDeathTextures.add(rightDeathTexture);
-
-                TextureRegion leftDeathTexture = new TextureRegion(this.getTexture(), 96 * i, 96 * 9, 96, 96);
+                TextureRegion leftDeathTexture = new TextureRegion(this.getTexture(), super.getTextureWidth() * i, super.getTextureHeight() * death_row, super.getTextureWidth(), super.getTextureHeight());
                 leftDeathTexture.flip(true, false);
                 leftDeathTextures.add(leftDeathTexture);
             }
@@ -119,12 +118,15 @@ public class Monster extends Entity implements IWeaponUserService {
 
             Array<TextureRegion> rightAttackTextures = new Array<>();
             Array<TextureRegion> leftAttackTextures = new Array<>();
-            for (int i = 0; i < 8; i++) {
-
-                TextureRegion rightAttackTexture = new TextureRegion(this.getTexture(), 96 * i, 96 * 3, 96, 96);
+            for (int i = 0; i < 13; i++) {
+                // The attack animation expands on two rows on the spritesheet
+                int attack_row = i < 6 ? 9 : 10;
+                int adjustment = i >= 6 ? i - 6 : i;
+                System.out.println(attack_row);
+                TextureRegion rightAttackTexture = new TextureRegion(this.getTexture(), super.getTextureWidth() * adjustment, super.getTextureHeight() * attack_row, super.getTextureWidth(), super.getTextureHeight());
                 rightAttackTextures.add(rightAttackTexture);
 
-                TextureRegion leftAttackTexture = new TextureRegion(this.getTexture(), 96 * i, 96 * 3, 96, 96);
+                TextureRegion leftAttackTexture = new TextureRegion(this.getTexture(), super.getTextureWidth() * adjustment, super.getTextureHeight() * attack_row, super.getTextureWidth(), super.getTextureHeight());
                 leftAttackTexture.flip(true, false);
                 leftAttackTextures.add(leftAttackTexture);
             }

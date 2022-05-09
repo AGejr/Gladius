@@ -21,6 +21,7 @@ public class MonsterPlugin implements IGamePluginService {
     @Override
     public void start(GameData gameData, World world) {
         monster = createMonster(gameData);
+        world.addEntity(monster);
     }
 
     private Entity createMonster(GameData gameData) {
