@@ -75,6 +75,10 @@ public class EventProcessor implements IEventProcessingService {
         for(Entity enemy: world.getEntities(Enemy.class)){
             world.removeEntity(enemy);
         }
+        for (Entity player: world.getEntities(Player.class)){
+            LifePart lifePart = player.getPart(LifePart.class);
+            lifePart.resetHealth();
+        }
     }
 
     private void processWaveStartedEvent(GameData gameData, World world) {
@@ -89,10 +93,12 @@ public class EventProcessor implements IEventProcessingService {
 
     private void processWaveCompletedEvent(GameData gameData, World world) {
         gameData.setGateEnabled(true);
+
         String string = "Wave " + Integer.toString(gameData.getWave()) + " cleared!";
         Text text = new Text(string,3,20,3);
         text.alignScreenCenter(gameData);
         UI.addText(text);
+
         gameData.incrementWave();
     }
 
