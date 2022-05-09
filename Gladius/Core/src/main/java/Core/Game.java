@@ -53,9 +53,6 @@ public class Game implements ApplicationListener {
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
 
-    // DEBUG
-    private ShapeRenderer sr;
-
     public Game(){
         init();
     }
@@ -102,8 +99,6 @@ public class Game implements ApplicationListener {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
 
-        sr = new ShapeRenderer();
-
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
 
     }
@@ -128,8 +123,6 @@ public class Game implements ApplicationListener {
         shapeRenderer.setProjectionMatrix(cam.combined);
 
         batch.begin();
-        sr.setProjectionMatrix(cam.combined);
-        sr.begin(ShapeRenderer.ShapeType.Line);
         for (Entity entity :  world.getEntities()){
             if(entity.getTexturePath() != null) {
 
@@ -144,6 +137,8 @@ public class Game implements ApplicationListener {
                 }
                 // draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation)
                 batch.draw(entity, entity.getX(), entity.getY(), 0, 0, entity.getTextureWidth(), entity.getTextureHeight(), 1, 1, entity.getAngle());
+                entity.updatePolygonBoundariesPosition();
+            } else {
                 entity.updatePolygonBoundariesPosition();
             }
         }
@@ -193,8 +188,6 @@ public class Game implements ApplicationListener {
                 Polygon polygonBoundaries = new Polygon(new float[]{entity.getX() + ((float) entity.getTextureWidth()/2) - (float) entityStats.getExplosionRadius()/2, entity.getY() + ((float) entity.getTextureHeight()/2) - (float) entityStats.getExplosionRadius()/2, entity.getX() + ((float) entity.getTextureWidth()/2) - (float) entityStats.getExplosionRadius()/2, entity.getY() + ((float) entity.getTextureHeight()/2) - (float) entityStats.getExplosionRadius()/2 + entityStats.getExplosionRadius(), entity.getX() + ((float) entity.getTextureWidth()/2) - (float) entityStats.getExplosionRadius()/2 + entityStats.getExplosionRadius(), entity.getY() + ((float) entity.getTextureHeight()/2) - (float) entityStats.getExplosionRadius()/2 + entityStats.getExplosionRadius(), entity.getX() + ((float) entity.getTextureWidth()/2) - (float) entityStats.getExplosionRadius()/2 + entityStats.getExplosionRadius(), entity.getY() + ((float) entity.getTextureHeight()/2) - (float) entityStats.getExplosionRadius()/2});
                 shapeRenderer.polygon(polygonBoundaries.getTransformedVertices());
             }
-            shapeRenderer.end();
-            Gdx.gl.glDisable(GL20.GL_BLEND);
         }
         shapeRenderer.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
@@ -203,7 +196,7 @@ public class Game implements ApplicationListener {
         shapeRenderer.begin(ShapeType.Filled);
         for (Entity entity: world.getEntities()) {
             LifePart lifePart = entity.getPart(LifePart.class);
-            if (lifePart != null) {
+            if (lifePart != null && lifePart.getHealthColor() != null) {
                 lifePart.drawHealthBar(shapeRenderer, entity);
             }
         }

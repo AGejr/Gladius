@@ -2,9 +2,16 @@ package Common.data.entityparts;
 
 import Common.data.Entity;
 import Common.data.GameData;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class LifePart implements EntityPart {
-    private final int MAXLIFE;
+    private final int MAXLIFE; // Maximum life possible for the entity
+    /***
+     * @param life is the beginning life of the entity
+     * @param color is the color of the remaining life in the health bar
+     */
     private int life;
     private Color healthbarColor = null;
     private Color lostHealthColor = Color.LIGHT_GRAY;
@@ -15,6 +22,11 @@ public class LifePart implements EntityPart {
         this.life = life;
         this.MAXLIFE = life;
         this.lifePercent = ((float) life / (float) MAXLIFE) * 100;
+    }
+
+    public LifePart(int life, Color healthbarColor) {
+        this(life);
+        this.healthbarColor = healthbarColor;
     }
 
     public int getLife() {
@@ -66,7 +78,7 @@ public class LifePart implements EntityPart {
 
     }
 
-    public boolean isDead(){
+    public boolean isDead() {
         return this.life <= 0;
     }
 

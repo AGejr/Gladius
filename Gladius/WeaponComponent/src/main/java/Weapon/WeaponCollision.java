@@ -7,6 +7,8 @@ import Common.data.entityparts.AnimationPart;
 import Common.data.entityparts.LifePart;
 import Common.data.entityparts.StatsPart;
 import Common.services.IPostEntityProcessingService;
+import CommonEnemy.Enemy;
+import CommonPlayer.Player;
 import Event.EventRegistry;
 import Event.GAME_EVENT;
 import com.badlogic.gdx.math.Intersector;
@@ -34,10 +36,11 @@ public class WeaponCollision implements IPostEntityProcessingService {
                                 }
 
                                 AnimationPart hitEntityAnimationPart = hitEntity.getPart(AnimationPart.class);
-                                if (hitEntityAnimationPart != null) {
+                                if (hitEntityAnimationPart != null && hitEntity.getClass() != Enemy.class) {
                                     hitEntityAnimationPart.setTakeDamage();
                                 }
                             }
+                            ((Weapon) weapon).addEntityHit(hitEntity);
                         }
                     }
                 }

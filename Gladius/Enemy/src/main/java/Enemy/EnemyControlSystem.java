@@ -10,8 +10,15 @@ import Common.data.entityparts.LifePart;
 import Common.data.entityparts.MovingPart;
 import Common.services.IEntityProcessingService;
 import CommonPlayer.Player;
+import CommonEnemy.Enemy;
+import CommonWeapon.IWeaponService;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Polygon;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +29,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
     //TODO enemy attack implementation
 
     private AStarPathFinding aStarPathFinding = new AStarPathFinding();
+    private IWeaponService weaponService;
 
     @Override
     public void process(GameData gameData, World world) {
@@ -82,6 +90,10 @@ public class EnemyControlSystem implements IEntityProcessingService {
                             float targetX = (nextPoint.getX() * 32) + 16;
                             float currentX = (int) (enemy.getRegionWidth() / 2) + enemy.getX();
                             float currentY = (int) enemy.getY();
+
+                            Polygon attackRange = ((Enemy) enemy).getAttackRange();
+                            attackRange.setPosition(enemy.getX(), enemy.getY());
+                            attackRange.getBoundingRectangle();
 
                             if (gameData.isDebugMode()) {
                                 sr.setColor(Color.GREEN);
@@ -199,5 +211,13 @@ public class EnemyControlSystem implements IEntityProcessingService {
         movingPart.setUp(false);
         movingPart.setLeft(false);
         movingPart.setRight(false);
+    }
+
+    public void setWeaponService(IWeaponService weaponService) {
+        this.weaponService = weaponService;
+    }
+
+    public void removeWeaponService(IWeaponService weaponService) {
+        this.weaponService = null;
     }
 }

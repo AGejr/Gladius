@@ -71,7 +71,7 @@ public class Collision implements IPostEntityProcessingService {
                 }
 
                 if (entity instanceof Player && gameData.isGateEnabled()) {
-                    if (entity.getY() > 220 && entity.getY() < 240 && entity.getX() > 770 && entity.getX() < 810) {
+                    if (entity.getY() > 210 && entity.getY() < 240 && entity.getX() > 770 && entity.getX() < 810) {
                         EventRegistry.addEvent(GAME_EVENT.ARENA_ENTERED);
                         entity.setY(346);
                     } else if (entity.getY() > 350 && entity.getY() < 360 && entity.getX() > 770 && entity.getX() < 810) {

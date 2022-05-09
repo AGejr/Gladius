@@ -10,6 +10,7 @@ import Common.data.entityparts.StatsPart;
 import Common.services.IGamePluginService;
 import Common.tools.FileLoader;
 import CommonPlayer.Player;
+import com.badlogic.gdx.graphics.Color;
 
 public class PlayerPlugin implements IGamePluginService {
     private Entity player;
@@ -28,7 +29,7 @@ public class PlayerPlugin implements IGamePluginService {
         Entity player = new Player(file, 10, 32, 32, 0, 0.5f, 0.8f);
         player.add(new MovingPart(100));
         player.add(new AnimationPart());
-        player.add(new LifePart(100));
+        player.add(new LifePart(100, Color.GREEN));
         player.add(new StatsPart(20,0,0, 0, 5));
         FileLoader.loadFile(file, getClass());
 

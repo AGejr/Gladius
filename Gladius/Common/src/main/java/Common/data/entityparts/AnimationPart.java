@@ -29,6 +29,7 @@ public class AnimationPart implements EntityPart{
     private Boolean isLeft = true;
     private Boolean takeDamage = false;
     private Boolean attack = false;
+    private boolean isAttacking = false;
 
     @Override
     public void process(GameData gameData, Entity entity) {
@@ -53,9 +54,14 @@ public class AnimationPart implements EntityPart{
             }
         }
 
+        if (hasLifePart && !lifePart.isDead() && isInAttackAnimationState && !this.isAttacking) {
+            this.animationTime = 0;
+            this.isAttacking = true;
+        }
+
         // IDLE ANIMATION
-        if(isInTakeDamageAnimationState && this.getCurrentAnimation().isAnimationFinished(animationTime)) {
-            if(hasLifePart && !lifePart.isDead() && !hasMovingPart) {
+        if(isInTakeDamageAnimationState && this.getCurrentAnimation().isAnimationFinished(animationTime) || isInAttackAnimationState && this.getCurrentAnimation().isAnimationFinished(animationTime)) {
+            if(hasLifePart && !lifePart.isDead()) {
                 this.animationTime = 0;
                 if (this.isLeft) {
                     this.setCurrentState(ANIMATION_STATES.IDLE_LEFT);
@@ -65,8 +71,13 @@ public class AnimationPart implements EntityPart{
             }
         }
 
+        if (hasMovingPart && hasLifePart && !lifePart.isDead() && !isInAttackAnimationState && !isInTakeDamageAnimationState) {
+            this.isAttacking = false;
+            processMovementAnimation(entity);
+        }
+
         // TAKE DAMAGE ANIMATION
-        if(takeDamage && hasLifePart && !lifePart.isDead()) {
+        if(takeDamage && hasLifePart && !lifePart.isDead() && !isInAttackAnimationState) {
             // If the entity isn't dead but takes damage
             // reset animationTime so that it uses the first keyframe
             this.animationTime = 0;
@@ -78,16 +89,28 @@ public class AnimationPart implements EntityPart{
             takeDamage = false;
         }
 
-        if (hasMovingPart && hasLifePart && !lifePart.isDead()) {
-            processMovementAnimation(entity);
+        // ATTACK ANIMATION
+        if(attack && hasLifePart && !lifePart.isDead()) {
+            // If the entity isn't dead but takes damage
+            // reset animationTime so that it uses the first keyframe
+            this.animationTime = 0;
+            if (this.isLeft) {
+                this.setCurrentState(ANIMATION_STATES.ATTACK_LEFT);
+            } else {
+                this.setCurrentState(ANIMATION_STATES.ATTACK_RIGHT);
+            }
+            attack = false;
         }
 
         if(this.getCurrentAnimation() != null) {
-            if (!this.getCurrentAnimation().isAnimationFinished(animationTime)){
+            if(!this.getCurrentAnimation().isAnimationFinished(animationTime)){
                 // Advance animation
                 animationTime += Gdx.graphics.getDeltaTime();
             } else if (hasLifePart && !lifePart.isDead()) {
                 // Loop animation if the entity has a lifepart, and it is alive
+                animationTime = 0;
+            } else if (lifePart == null) {
+                // Loop animation if entity is not a living entity
                 animationTime = 0;
             }
             entity.setRegion(getCurrentKeyFrame());
@@ -194,4 +217,7 @@ public class AnimationPart implements EntityPart{
         attack = true;
     }
 
+    public float getAnimationTime() {
+        return this.animationTime;
+    }
 }

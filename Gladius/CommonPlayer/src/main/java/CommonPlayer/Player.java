@@ -20,7 +20,7 @@ public class Player extends Entity implements IWeaponUserService {
     public Player(String texturePath,float radius, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY) {
         super(texturePath, radius, textureWidth, textureHeight, angle, hitboxScaleX, hitboxScaleY);
         this.balance = 0;
-        Weapon sword = new Weapon("Sword", 25, 8, 10, "swordNew.png", 9, 36, 0.9f, 0.9f, 0, 20.0f, 9.0f, 20.0f, 10.0f, this);
+        Weapon sword = new Weapon("Sword", 25, 8, 10, WeaponImages.SWORD.path, 9, 36, 0.9f, 0.9f, 0, 20.0f, 9.0f, 20.0f, 9.0f, 10.0f, this);
         ownedWeapons.add(sword);
         equippedWeapon = ownedWeapons.get(0);
     }
@@ -28,7 +28,7 @@ public class Player extends Entity implements IWeaponUserService {
     public Player(String texturePath, int radius) {
         super(texturePath,radius, 32, 32);
         this.balance = 0;
-        Weapon sword = new Weapon("Sword", 25, 8, 10, WeaponImages.SWORD.path, 9, 36, 0.9f, 0.9f, 0, 20.0f, 9.0f, 20.0f, 10.0f, this);
+        Weapon sword = new Weapon("Sword", 25, 8, 10, WeaponImages.SWORD.path, 9, 36, 0.9f, 0.9f, 0, 20.0f, 9.0f, 20.0f, 9.0f, 10.0f, this);
         ownedWeapons.add(sword);
         equippedWeapon = ownedWeapons.get(0);
     }
@@ -149,19 +149,19 @@ public class Player extends Entity implements IWeaponUserService {
             Array<TextureRegion> leftTakeDamageTextures = new Array<>();
             for (int i = 0; i < 3; i++) {
                 // Take damage right
-                rightTakeDamageTextures.add(new TextureRegion(this.getTexture(),32*i,64,32,32));
+                rightTakeDamageTextures.add(new TextureRegion(this.getTexture(),32*i,96,32,32));
 
                 // Take damage left
-                TextureRegion leftTexture = new TextureRegion(this.getTexture(),32*i,64,32,32);
+                TextureRegion leftTexture = new TextureRegion(this.getTexture(),32*i,96,32,32);
                 leftTexture.flip(true,false);
-                leftAttackTextures.add(leftTexture);
+                leftTakeDamageTextures.add(leftTexture);
             }
             // TAKE DAMAGE right animation
-            //Animation rightTakeDamageAnimation = new Animation(0.10f,rightTakeDamageTextures);
-            //animationPart.addAnimation(AnimationPart.ANIMATION_STATES.TAKE_DAMAGE_RIGHT, rightTakeDamageAnimation);
+            Animation rightTakeDamageAnimation = new Animation(0.08f,rightTakeDamageTextures);
+            animationPart.addAnimation(AnimationPart.ANIMATION_STATES.TAKE_DAMAGE_RIGHT, rightTakeDamageAnimation);
             // TAKE DAMAGE left animation
-            //Animation leftTakeDamageAnimation = new Animation(0.10f,leftTakeDamageTextures);
-            //animationPart.addAnimation(AnimationPart.ANIMATION_STATES.TAKE_DAMAGE_LEFT, leftTakeDamageAnimation);
+            Animation leftTakeDamageAnimation = new Animation(0.08f,leftTakeDamageTextures);
+            animationPart.addAnimation(AnimationPart.ANIMATION_STATES.TAKE_DAMAGE_LEFT, leftTakeDamageAnimation);
 
         }
 
