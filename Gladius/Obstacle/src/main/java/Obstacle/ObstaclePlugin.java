@@ -58,8 +58,7 @@ public class ObstaclePlugin implements IGamePluginService {
         String file = "Barrel.png";
         Entity barrel = new Obstacle(file, 10, 0, -5, 64, 64, 0, 0.3f, 0.3f, 32, 32);
         barrel.add(new LifePart(100));
-        // BARREL HAS A SPIKE ATTACK FOR TEST PURPOSES
-        barrel.add(new StatsPart(0,10,0,0, 0));
+        barrel.add(new StatsPart(0,0,0,0, 0));
         FileLoader.loadFile(file, getClass());
 
         barrel.setX(0);
