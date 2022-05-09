@@ -5,7 +5,13 @@ import Common.data.GameData;
 import Common.data.World;
 import Common.data.entityparts.MovingPart;
 import Common.services.IPostEntityProcessingService;
-
+import CommonPlayer.Player;
+import Event.EventRegistry;
+import Event.GAME_EVENT;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Collision implements IPostEntityProcessingService {
@@ -56,10 +62,14 @@ public class Collision implements IPostEntityProcessingService {
                     movingPart.setSlow(1f);
                 }
 
-                if (entity.getY() > 220 && entity.getY() < 240 && entity.getX() > 770 && entity.getX() < 810) {
-                    entity.setY(420);
-                } else if (entity.getY() > 350 && entity.getY() < 360 && entity.getX() > 770 && entity.getX() < 810) {
-                    entity.setY(150);
+                if (entity instanceof Player && gameData.isGateEnabled()) {
+                    if (entity.getY() > 220 && entity.getY() < 240 && entity.getX() > 770 && entity.getX() < 810) {
+                        EventRegistry.addEvent(GAME_EVENT.ARENA_ENTERED);
+                        entity.setY(346);
+                    } else if (entity.getY() > 350 && entity.getY() < 360 && entity.getX() > 770 && entity.getX() < 810) {
+                        EventRegistry.addEvent(GAME_EVENT.ARENA_EXITED);
+                        entity.setY(200);
+                    }
                 }
             }
         }

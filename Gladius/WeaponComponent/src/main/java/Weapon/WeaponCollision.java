@@ -6,6 +6,8 @@ import Common.data.World;
 import Common.data.entityparts.LifePart;
 import Common.data.entityparts.StatsPart;
 import Common.services.IPostEntityProcessingService;
+import Event.EventRegistry;
+import Event.GAME_EVENT;
 import com.badlogic.gdx.math.Intersector;
 import CommonWeapon.Weapon;
 
@@ -23,13 +25,16 @@ public class WeaponCollision implements IPostEntityProcessingService {
                     if (Intersector.overlapConvexPolygons(weapon.getPolygonBoundaries(), hitEntity.getPolygonBoundaries()) && !hitEntityLifePart.isDead()) {
                         if (weapon instanceof Weapon && ((Weapon) weapon).getOwner().getClass() != hitEntity.getClass()) {
                             if (defenderStats.getDefence() < ((Weapon) weapon).getDamage() + attackerStats.getAttack()) {
+                                boolean wasAlive = !hitEntityLifePart.isDead();
                                 int totalDamage = ((Weapon) weapon).getDamage() + attackerStats.getAttack() - defenderStats.getDefence();
                                 hitEntityLifePart.subtractLife(totalDamage);
+                                if (wasAlive && hitEntityLifePart.isDead()){
+                                    EventRegistry.addEvent(GAME_EVENT.ENTITY_KILLED);
+                                }
                             }
                             ((Weapon) weapon).addEntityHit(hitEntity);
                         }
                     }
-
                 }
             }
         }

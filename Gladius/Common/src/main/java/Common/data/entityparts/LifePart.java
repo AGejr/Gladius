@@ -84,4 +84,8 @@ public class LifePart implements EntityPart {
     public void setHealthbarColor (Color healthbarColor) {
         this.healthbarColor  = healthbarColor;
     }
+
+    public void resetHealth(){
+        life = MAXLIFE;
+    }
 }

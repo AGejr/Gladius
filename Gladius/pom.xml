@@ -35,6 +35,7 @@
     <module>CommonEnemy</module>
     <module>Monster</module>
     <module>CommonMonster</module>
+    <module>Event</module>
   </modules>
 
   <build>
