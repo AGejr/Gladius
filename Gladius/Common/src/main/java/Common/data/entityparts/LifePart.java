@@ -74,7 +74,6 @@ public class LifePart implements EntityPart {
         shapeRenderer.rect(entity.getX() + entity.getTextureWidth() / 2 - 10, entity.getY() - 10, (this.getHealthbarWidth() * this.getLifePercent()), this.getHealthbarHeight());
         shapeRenderer.setColor(this.getLostHealthColor());
         shapeRenderer.rect(entity.getX() + entity.getTextureWidth() / 2 - 10 + this.getHealthbarWidth() * this.getLifePercent(), entity.getY() - 10,  this.getHealthbarWidth()  * (100 - this.getLifePercent()), this.getHealthbarHeight());
-
     }
 
     public boolean isDead() {

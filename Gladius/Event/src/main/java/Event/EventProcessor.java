@@ -10,6 +10,7 @@ import Common.services.IEventProcessingService;
 import Common.ui.Text;
 import Common.ui.UI;
 import CommonEnemy.Enemy;
+import CommonMonster.Monster;
 import CommonPlayer.Player;
 
 public class EventProcessor implements IEventProcessingService {
@@ -53,6 +54,12 @@ public class EventProcessor implements IEventProcessingService {
                 return false;
             }
         }
+        for (Entity entity: world.getEntities(Monster.class)){
+            LifePart lifePart = entity.getPart(LifePart.class);
+            if (!lifePart.isDead()){
+                return false;
+            }
+        }
         return true;
     }
 
@@ -85,6 +92,9 @@ public class EventProcessor implements IEventProcessingService {
     private void processArenaExitedEvent(GameData gameData, World world) {
         for(Entity enemy: world.getEntities(Enemy.class)){
             world.removeEntity(enemy);
+        }
+        for(Entity monster: world.getEntities(Monster.class)){
+            world.removeEntity(monster);
         }
         for (Entity player: world.getEntities(Player.class)){
             LifePart lifePart = player.getPart(LifePart.class);

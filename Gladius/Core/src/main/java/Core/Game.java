@@ -160,7 +160,7 @@ public class Game implements ApplicationListener {
             }
         }
         gameData.getStage().draw();
-        UI.draw();
+        UI.draw(gameData);
         shapeRenderer.end();
 
         update();
