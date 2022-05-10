@@ -53,6 +53,15 @@ public class Player extends Entity implements IWeaponUserService {
         return ownedWeapons;
     }
 
+    public boolean hasOwnedWeapon(WeaponImages weaponImages) {
+        for (Weapon weapon : ownedWeapons) {
+            if (weapon.getTexturePath() != null && weapon.getTexturePath().equals(weaponImages.path)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void initAnimation(){
         if(this.getPart(AnimationPart.class) != null){
             AnimationPart animationPart = this.getPart(AnimationPart.class);

@@ -82,7 +82,7 @@ public class ShopControlSystem implements IEntityProcessingService {
             }
             for (ShopWeapon shopWeapon : shopWeapons) {
                 if (cursorX == shopWeapon.getX() && cursorY == shopWeapon.getY()) {
-                    if (shopWeapon.isOwned()) {
+                    if (player.hasOwnedWeapon(shopWeapon.getWeaponEnum())) {
                         Weapon weapon = swordMap.get(shopWeapon.getWeaponEnum());
                         player.addWeapon(weapon);
                         player.equipWeapon(weapon);
@@ -179,7 +179,7 @@ public class ShopControlSystem implements IEntityProcessingService {
             UI.text(gameData,shopWeapon.getDescription(), shopWeapon.getX(), shopWeapon.getY());
             UI.text(gameData,"Damage "+shopWeapon.getDamage(), shopWeapon.getX(), shopWeapon.getY() - offset * 2);
             UI.text(gameData,"Range "+shopWeapon.getRange(), shopWeapon.getX(), shopWeapon.getY() - offset * 3);
-            if (shopWeapon.isOwned()) {
+            if (player.hasOwnedWeapon(shopWeapon.getWeaponEnum())) {
                 UI.text(gameData, "Owned", shopWeapon.getX(), shopWeapon.getY() - offset);
             } else {
                 UI.text(gameData, "$"+shopWeapon.getPrice(), shopWeapon.getX(), shopWeapon.getY() - offset);
