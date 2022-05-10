@@ -31,7 +31,7 @@ public class MonsterPlugin implements IGamePluginService {
         monster.add(new MovingPart(30));
         monster.add(new LifePart(100, Color.TEAL));
         monster.add(new AnimationPart());
-        monster.add(new StatsPart(20, 5));
+        monster.add(new StatsPart(20, 5, 0));
         FileLoader.loadFile(file, getClass());
 
         //400 is max, 280 is min
