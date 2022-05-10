@@ -179,7 +179,7 @@ public class ShopControlSystem implements IEntityProcessingService {
             UI.text(gameData,shopWeapon.getDescription(), shopWeapon.getX(), shopWeapon.getY());
             UI.text(gameData,"Damage "+shopWeapon.getDamage(), shopWeapon.getX(), shopWeapon.getY() - offset * 2);
             UI.text(gameData,"Range "+shopWeapon.getRange(), shopWeapon.getX(), shopWeapon.getY() - offset * 3);
-            if (player.hasOwnedWeapon(shopWeapon.getWeaponEnum())) {
+            if (player.hasOwnedWeapon(shopWeapon.getWeaponEnum()) || shopWeapon.getPrice() == 0) {
                 UI.text(gameData, "Owned", shopWeapon.getX(), shopWeapon.getY() - offset);
             } else {
                 UI.text(gameData, "$"+shopWeapon.getPrice(), shopWeapon.getX(), shopWeapon.getY() - offset);
