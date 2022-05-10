@@ -23,7 +23,7 @@ public class Entity extends Sprite implements Serializable {
     private Map<Class, EntityPart> parts;
     private float angle;
     private Polygon polygonBoundaries;
-    private float scaling = 1f;
+    private float scaling = 1.0f;
 
     public Entity(String texturePath, float radius, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float scaling) {
         super();
