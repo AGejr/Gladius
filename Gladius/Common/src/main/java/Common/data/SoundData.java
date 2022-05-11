@@ -52,10 +52,8 @@ public class SoundData {
         // todo refactor
         soundFileMap.put(SOUND.MINOTAUR_SOUND, "minotaur_death.mp3");
         soundFileMap.put(SOUND.MINOTAUR_ATTACK, "minotaur_attack.mp3");
-        soundFileMap.put(SOUND.GOBLIN_ATTACK, "goblin_death.mp3");
-        soundFileMap.put(SOUND.GOBLIN_SOUND, "goblin_attack.mp3");
-
-
+        soundFileMap.put(SOUND.GOBLIN_SOUND, "goblin_death.mp3");
+        soundFileMap.put(SOUND.GOBLIN_ATTACK, "goblin_attack.mp3");
 
         for(SOUND sound : soundFileMap.keySet()){
            soundFileMap.replace(sound,"Sounds/"+soundFileMap.get(sound));
@@ -65,10 +63,6 @@ public class SoundData {
     }
 
     public void initSound(){
-
-        for(String soundFile : soundFileMap.values()){
-            FileLoader.loadFile(soundFile,getClass());
-        }
 
         for (SOUND sound : this.soundFileMap.keySet()){
             String path = this.soundFileMap.get(sound);

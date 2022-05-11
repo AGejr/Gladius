@@ -99,6 +99,10 @@ public class Game implements ApplicationListener {
         // initialize soundData
         gameData.setSoundData(new SoundData());
 
+        for(String soundFile : gameData.getSoundData().getSoundFileMap().values()){
+            FileLoader.loadFile(soundFile,getClass());
+        }
+
         // Game sounds loader
         gameData.getSoundData().initSound();
 
