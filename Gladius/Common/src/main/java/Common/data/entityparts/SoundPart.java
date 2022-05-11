@@ -108,9 +108,8 @@ public class SoundPart implements EntityPart {
         if(hasLifePart){
 
             if(lifePart.isDead() && !isDead){
-                this.playAudio(SoundData.SOUND.DEATH);
+                this.playAudio(SoundData.SOUND.DEATH,1.5f);
                 isDead = true;
-
             }
         }
 
@@ -133,8 +132,12 @@ public class SoundPart implements EntityPart {
     }
 
     public void playAudio(SoundData.SOUND key){
-            Sound sound = this.getSound(key);
-            sound.play(1f);
+        playAudio(key, 1f);
+    }
+
+    public void playAudio(SoundData.SOUND key, float volume){
+        Sound sound = localSoundMap.get(key);
+        sound.play(volume);
     }
 
     public void disposeSounds(){

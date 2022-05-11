@@ -1,18 +1,17 @@
 package Monster;
 
 import Common.data.GameData;
+import Common.data.SoundData;
 import Common.data.World;
 import Common.data.Entity;
-import Common.data.entityparts.AnimationPart;
-import Common.data.entityparts.LifePart;
-import Common.data.entityparts.MovingPart;
-import Common.data.entityparts.StatsPart;
+import Common.data.entityparts.*;
 import Common.services.IGamePluginService;
 import Common.tools.FileLoader;
 import com.badlogic.gdx.graphics.Color;
 import CommonMonster.Monster;
 
 
+import javax.sound.midi.Soundbank;
 import java.util.Random;
 
 public class MonsterPlugin implements IGamePluginService {
@@ -32,6 +31,12 @@ public class MonsterPlugin implements IGamePluginService {
         monster.add(new LifePart(100, Color.TEAL));
         monster.add(new AnimationPart());
         monster.add(new StatsPart(20, 5, 0));
+
+        SoundPart soundPart = new SoundPart(gameData);
+
+        soundPart.putAudio(SoundData.SOUND.ATTACK, "Sounds/goblin_sound.mp3");
+        soundPart.putAudio(SoundData.SOUND.DEATH, "Sounds/goblin_death.mp3");
+        monster.add(soundPart);
         FileLoader.loadFile(file, getClass());
 
         //400 is max, 280 is min

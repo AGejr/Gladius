@@ -4,6 +4,7 @@ import Common.ai.AStarPathFinding;
 import Common.ai.Node;
 import Common.data.Entity;
 import Common.data.GameData;
+import Common.data.SoundData;
 import Common.data.World;
 import Common.data.entityparts.AnimationPart;
 import Common.data.entityparts.LifePart;
@@ -137,6 +138,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
                                     animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.ATTACK_RIGHT);
                                 }
                                 weaponService.attack(enemy, gameData, world);
+                                soundPart.playAudio(SoundData.SOUND.ATTACK);
                             }
                         } else {
                             if (animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime())) {

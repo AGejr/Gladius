@@ -4,10 +4,12 @@ import Common.ai.AStarPathFinding;
 import Common.ai.Node;
 import Common.data.Entity;
 import Common.data.GameData;
+import Common.data.SoundData;
 import Common.data.World;
 import Common.data.entityparts.AnimationPart;
 import Common.data.entityparts.LifePart;
 import Common.data.entityparts.MovingPart;
+import Common.data.entityparts.SoundPart;
 import Common.services.IEntityProcessingService;
 import CommonPlayer.Player;
 import CommonWeapon.IWeaponService;
@@ -38,6 +40,7 @@ public class MonsterControlSystem implements IEntityProcessingService {
 
             AnimationPart animationPart = monster.getPart(AnimationPart.class);
             LifePart lifePart = monster.getPart(LifePart.class);
+            SoundPart soundPart = monster.getPart(SoundPart.class);
 
             for (Entity player : world.getEntities(Player.class)) {
                 // getting player position on the tile map
@@ -91,7 +94,9 @@ public class MonsterControlSystem implements IEntityProcessingService {
                                 } else {
                                     animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.ATTACK_RIGHT);
                                 }
+                                soundPart.playAudio(SoundData.SOUND.ATTACK);
                                 weaponService.attack(monster, gameData, world);
+
                             }
                         } else {
                             if (animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime())) {
@@ -158,6 +163,7 @@ public class MonsterControlSystem implements IEntityProcessingService {
             movingPart.process(gameData, monster);
             animationPart.process(gameData, monster);
             lifePart.process(gameData, monster);
+            soundPart.process(gameData, monster);
         }
 
     }

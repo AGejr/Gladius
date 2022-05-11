@@ -2,6 +2,7 @@ package Enemy;
 
 import Common.data.Entity;
 import Common.data.GameData;
+import Common.data.SoundData;
 import Common.data.World;
 import Common.data.entityparts.*;
 import Common.services.IGamePluginService;
@@ -35,8 +36,16 @@ public class EnemyFactory implements IEntityFactoryService {
         enemy.add(new LifePart(100, Color.RED));
         enemy.add(new AnimationPart());
         enemy.add(new StatsPart(5, 5, 0));
-        enemy.add(new SoundPart(gamedata));
+
+        SoundPart soundPart = new SoundPart(gamedata);
+        soundPart.putAudio(SoundData.SOUND.DEATH, "Sounds/minotaur_death.mp3");
+        soundPart.putAudio(SoundData.SOUND.ATTACK, "Sounds/minotaur_sound.mp3");
+        enemy.add(soundPart);
+
+
+
         FileLoader.loadFile(file, getClass());
+
 
         //400 is max, 280 is min
         enemy.setX(new Random().nextInt((580 - 385) + 1) + 385);
