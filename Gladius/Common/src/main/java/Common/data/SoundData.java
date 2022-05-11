@@ -37,7 +37,7 @@ public class SoundData {
         soundFileMap.put(SOUND.EXPLOSION, "Explosion.mp3");
         soundFileMap.put(SOUND.BUY, "buy.mp3");
         soundFileMap.put(SOUND.INTERACT, "interact.mp3");
-        soundFileMap.put(SOUND.WAVE_CLEARED, "Wave_Cleared.mp3");
+        soundFileMap.put(SOUND.WAVE_CLEARED, "wave_cleared.mp3");
         soundFileMap.put(SOUND.ARENA_ENTERED, "arena_entered.mp3");
         soundFileMap.put(SOUND.ARENA_EXIT, "exit_arena.mp3");
 
