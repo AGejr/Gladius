@@ -100,12 +100,6 @@ public class Game implements ApplicationListener {
         gameData.setSoundData(new SoundData());
 
         // Game sounds loader
-        Collection<String> soundFileMap = gameData.getSoundData().getSoundFileMap().values();
-
-        for(String soundFile : soundFileMap){
-            FileLoader.loadFile(soundFile,getClass());
-        }
-
         gameData.getSoundData().initSound();
 
         // Background music

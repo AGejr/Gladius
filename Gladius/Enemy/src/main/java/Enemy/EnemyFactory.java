@@ -39,7 +39,7 @@ public class EnemyFactory implements IEntityFactoryService {
 
         SoundPart soundPart = new SoundPart(gamedata);
         soundPart.putAudio(SoundData.SOUND.DEATH, "Sounds/minotaur_death.mp3");
-        soundPart.putAudio(SoundData.SOUND.ATTACK, "Sounds/minotaur_sound.mp3");
+        soundPart.putAudio(SoundData.SOUND.ATTACK, "Sounds/minotaur_attack.mp3");
         enemy.add(soundPart);
 
 

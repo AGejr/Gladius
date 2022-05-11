@@ -34,7 +34,7 @@ public class MonsterPlugin implements IGamePluginService {
 
         SoundPart soundPart = new SoundPart(gameData);
 
-        soundPart.putAudio(SoundData.SOUND.ATTACK, "Sounds/goblin_sound.mp3");
+        soundPart.putAudio(SoundData.SOUND.ATTACK, "Sounds/goblin_attack.mp3");
         soundPart.putAudio(SoundData.SOUND.DEATH, "Sounds/goblin_death.mp3");
         monster.add(soundPart);
         FileLoader.loadFile(file, getClass());

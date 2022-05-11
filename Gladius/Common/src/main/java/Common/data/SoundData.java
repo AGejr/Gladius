@@ -1,9 +1,11 @@
 package Common.data;
 
+import Common.tools.FileLoader;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,9 +50,9 @@ public class SoundData {
         soundFileMap.put(SOUND.ARENA_EXIT, "exit_arena.mp3");
 
         // todo refactor
-        soundFileMap.put(SOUND.MINOTAUR_SOUND, "minotaur_sound.mp3");
+        soundFileMap.put(SOUND.MINOTAUR_SOUND, "minotaur_death.mp3");
         soundFileMap.put(SOUND.MINOTAUR_ATTACK, "minotaur_sound.mp3");
-        soundFileMap.put(SOUND.GOBLIN_SOUND, "goblin_sound.mp3");
+        soundFileMap.put(SOUND.GOBLIN_SOUND, "goblin_death.mp3");
         soundFileMap.put(SOUND.GOBLIN_ATTACK, "goblin_sound.mp3");
 
 
@@ -63,6 +65,11 @@ public class SoundData {
     }
 
     public void initSound(){
+
+        for(String soundFile : soundFileMap.values()){
+            FileLoader.loadFile(soundFile,getClass());
+        }
+
         for (SOUND sound : this.soundFileMap.keySet()){
             String path = this.soundFileMap.get(sound);
             this.soundMap.put(sound, Gdx.audio.newSound(Gdx.files.internal(path)));
