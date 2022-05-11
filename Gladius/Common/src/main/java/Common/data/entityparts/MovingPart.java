@@ -13,6 +13,7 @@ public class MovingPart implements EntityPart {
     private boolean colTop, colBot, colLeft,colRight;
     private final float diagonalCorrectionVal = (float) (1 / sqrt(2));
     private float slower = (float) 1;
+    private boolean isSlow = false;
 
     public MovingPart(float speed) {
         this.speed = speed;
