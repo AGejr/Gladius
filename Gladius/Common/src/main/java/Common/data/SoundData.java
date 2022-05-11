@@ -52,8 +52,8 @@ public class SoundData {
         // todo refactor
         soundFileMap.put(SOUND.MINOTAUR_SOUND, "minotaur_death.mp3");
         soundFileMap.put(SOUND.MINOTAUR_ATTACK, "minotaur_attack.mp3");
-        soundFileMap.put(SOUND.GOBLIN_SOUND, "goblin_death.mp3");
-        soundFileMap.put(SOUND.GOBLIN_ATTACK, "goblin_attack.mp3");
+        soundFileMap.put(SOUND.GOBLIN_ATTACK, "goblin_death.mp3");
+        soundFileMap.put(SOUND.GOBLIN_SOUND, "goblin_attack.mp3");
 
 
 
