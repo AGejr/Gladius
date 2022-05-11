@@ -1,9 +1,6 @@
 package Shop;
 
-import Common.data.Entity;
-import Common.data.GameData;
-import Common.data.GameKeys;
-import Common.data.World;
+import Common.data.*;
 import Common.data.entityparts.MovingPart;
 import Common.data.entityparts.StatsPart;
 import Common.services.IEntityProcessingService;
@@ -38,14 +35,17 @@ public class ShopControlSystem implements IEntityProcessingService {
     public void process(GameData gameData, World world) {
         for (Entity entity : world.getEntities(Player.class)) {
             Player player = (Player) entity;
+            boolean isInRange = false;
             for (Entity entity2 : world.getEntities(Shop.class)) {
                 Shop shop = (Shop) entity2;
                 shopElixirs = shop.getShopElixirs();
                 shopWeapons = shop.getShopWeapons();
+                isInRange = player.getY() > shop.getY() - shop.getTextureHeight() / 2f && player.getX() < shop.getX() + shop.getTextureWidth() && player.getY() < shop.getY() + shop.getTextureHeight();
                 if (!shopEntered) {
-                    if (player.getY() > shop.getY() - shop.getTextureHeight() / 2f && player.getX() < shop.getX() + shop.getTextureWidth() && player.getY() < shop.getY() + shop.getTextureHeight()) {
+                    if (isInRange) {
                         UI.textBox(gameData, "Hit enter to enter shop", gameData.getMapWidth() / 5f, gameData.getMapHeight() / 10f, 200, 55);
                     }
+
                 }
             }
             //Show balance when in map
@@ -57,11 +57,12 @@ public class ShopControlSystem implements IEntityProcessingService {
                 processBuy(gameData, player, statsPart);
                 //Show balance when in shop
                 UI.text(gameData, String.valueOf(statsPart.getBalance()), tileSize * 3, gameData.getMapHeight() / 2f - tileSize * 2);
-            } else {
+            } else if (isInRange){
                 if (gameData.getKeys().isPressed(GameKeys.ENTER)) {
                     shopEntered = true;
                     MovingPart movingPart = player.getPart(MovingPart.class);
                     movingPart.setSpeed(0);
+                    gameData.getSoundData().playSound(SoundData.SOUND.INTERACT);
                 }
             }
         }
@@ -78,6 +79,7 @@ public class ShopControlSystem implements IEntityProcessingService {
             for (ShopElixir shopElixir: shopElixirs) {
                 if (cursorX == shopElixir.getX() && cursorY == shopElixir.getY()) {
                     buyElixir(statsPart, shopElixir);
+                    gameData.getSoundData().playSound(SoundData.SOUND.BUY);
                 }
             }
             for (ShopWeapon shopWeapon : shopWeapons) {
@@ -86,8 +88,10 @@ public class ShopControlSystem implements IEntityProcessingService {
                         Weapon weapon = swordMap.get(shopWeapon.getWeaponEnum());
                         player.addWeapon(weapon);
                         player.equipWeapon(weapon);
+                        gameData.getSoundData().playSound(SoundData.SOUND.BUY);
                     } else {
                         buyWeapon(statsPart, shopWeapon.getWeaponEnum(), shopWeapon, player);
+                        gameData.getSoundData().playSound(SoundData.SOUND.BUY);
 
                     }
                 }
