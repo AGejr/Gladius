@@ -25,6 +25,7 @@ public class SoundData {
         ARENA_ENTERED,
         ARENA_EXIT,
 
+        //todo
         GOBLIN_ATTACK,
         GOBLIN_SOUND,
         MINOTAUR_SOUND,
@@ -46,7 +47,7 @@ public class SoundData {
         soundFileMap.put(SOUND.ARENA_ENTERED, "arena_entered.mp3");
         soundFileMap.put(SOUND.ARENA_EXIT, "exit_arena.mp3");
 
-
+        // todo refactor
         soundFileMap.put(SOUND.MINOTAUR_SOUND, "minotaur_sound.mp3");
         soundFileMap.put(SOUND.MINOTAUR_ATTACK, "minotaur_death.mp3");
         soundFileMap.put(SOUND.GOBLIN_SOUND, "goblin_sound.mp3");
