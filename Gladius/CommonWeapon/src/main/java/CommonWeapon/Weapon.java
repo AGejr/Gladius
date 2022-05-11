@@ -20,8 +20,8 @@ public class Weapon extends Entity {
     // rotationDuration is used for the number of frames it should rotate. The game runs with 30 frames, so it will swing for half a second if rotationDuration is 15.
     private int rotationDuration = 15;
 
-    public Weapon(String name, int damage, float weight, float range, String texturePath, int textureWidth, int textureHeight, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float angle, float angleAdjustment, float positionAdjustRightX, float positionAdjustLeftX, float positionAdjustY, Entity owner) {
-        super(null, range, textureWidth, textureHeight, angle, hitboxScaleX, hitboxScaleY, hitboxOriginX);
+    public Weapon(String name, int damage, float weight, float range, String texturePath, int textureWidth, int textureHeight, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float angle, float angleAdjustment, float positionAdjustRightX, float positionAdjustLeftX, float positionAdjustY, Entity owner, float scaling) {
+        super(null, range, textureWidth, textureHeight, angle, hitboxScaleX, hitboxScaleY, hitboxOriginX, scaling);
         this.name = name;
         this.damage = damage;
         this.weight = weight;
@@ -33,17 +33,22 @@ public class Weapon extends Entity {
         this.positionAdjustLeftX = positionAdjustLeftX;
         this.positionAdjustY = positionAdjustY;
     }
+
+    public Weapon(String name, int damage, float weight, float range, String texturePath, int textureWidth, int textureHeight, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float angle, float angleAdjustment, float positionAdjustRightX, float positionAdjustLeftX, float positionAdjustY, Entity owner) {
+        this(name,  damage, weight, range, texturePath, textureWidth, textureHeight, hitboxScaleX, hitboxScaleY, hitboxOriginX, angle, angleAdjustment, positionAdjustRightX, positionAdjustLeftX, positionAdjustY, owner, 1);
+    }
+
     public Weapon(String name, int damage, float weight, float range, String texturePath, int textureWidth, int textureHeight, float hitboxScaleX,  float hitboxScaleY, float hitboxOriginX, float angle, float angleAdjustment, Entity owner) {
-        this(name, damage, weight, range, texturePath, textureWidth, textureHeight, hitboxScaleX, hitboxScaleY, hitboxOriginX, angle, angleAdjustment, 0, 0, 0, owner);
+        this(name, damage, weight, range, texturePath, textureWidth, textureHeight, hitboxScaleX, hitboxScaleY, hitboxOriginX, angle, angleAdjustment, 0, 0,0, owner);
     }
     public Weapon(String name, int damage, float weight, float range, String texturePath, int textureWidth, int textureHeight, float hitboxScaleX,  float hitboxScaleY, float hitboxOriginX, Entity owner) {
-        this(name, damage, weight, range, texturePath, textureWidth, textureHeight, hitboxScaleX, hitboxScaleY, hitboxOriginX, 0, 0,  0, 0, 0, owner);
+        this(name, damage, weight, range, texturePath, textureWidth, textureHeight, hitboxScaleX, hitboxScaleY, hitboxOriginX, 0, 0, 0, 0,0, owner);
     }
     public Weapon(String name, int damage, float weight, float range, String texturePath, int textureWidth, int textureHeight, Entity owner) {
-        this(name, damage, weight, range, texturePath, textureWidth, textureHeight, 0, 0, 0, 0, 0, 0, 0, 0, owner);
+        this(name, damage, weight, range, texturePath, textureWidth, textureHeight, 0, 0, 0, 0, 0, 0, 0,0, owner);
     }
-    public Weapon(String name, int damage, float weight, float range, Entity owner) {
-        this(name, damage, weight, range, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, owner);
+    public Weapon(String name, int damage, float weight, float range, Entity owner, int price) {
+        this(name, damage, weight, range, null, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, owner);
     }
 
     public Weapon() {

@@ -33,7 +33,6 @@ public class WeaponPluginTest {
 
     @Test
     public void stop() {
-        plugin.start(gameData, world);
         int entitiesBeforeStop = world.getEntities().size();
         plugin.stop(gameData, world);
         int entitiesAfterStop = world.getEntities().size();

@@ -4,7 +4,6 @@ import Common.data.Entity;
 import Common.data.GameData;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class LifePart implements EntityPart {
     private final int MAXLIFE; // Maximum life possible for the entity
@@ -75,7 +74,6 @@ public class LifePart implements EntityPart {
         shapeRenderer.rect(entity.getX() + entity.getTextureWidth() / 2 - 10, entity.getY() - 10, (this.getHealthbarWidth() * this.getLifePercent()), this.getHealthbarHeight());
         shapeRenderer.setColor(this.getLostHealthColor());
         shapeRenderer.rect(entity.getX() + entity.getTextureWidth() / 2 - 10 + this.getHealthbarWidth() * this.getLifePercent(), entity.getY() - 10,  this.getHealthbarWidth()  * (100 - this.getLifePercent()), this.getHealthbarHeight());
-
     }
 
     public boolean isDead() {

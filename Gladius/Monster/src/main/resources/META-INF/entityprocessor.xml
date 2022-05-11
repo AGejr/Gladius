@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="Monster">
+    <implementation class="Monster.MonsterControlSystem"/>
+    <service>
+        <provide interface="Common.services.IEntityProcessingService"/>
+    </service>
+
+    <reference bind="setWeaponService" cardinality="0..1"
+               interface="CommonWeapon.IWeaponService"
+               name="WeaponSPI" policy="dynamic" unbind="removeWeaponService"/>
+
+</scr:component>

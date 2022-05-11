@@ -8,8 +8,8 @@ import static java.lang.Math.*;
 
 public class MovingPart implements EntityPart {
 
-    private float speed, slowedSpeed;
-    private boolean left, right, up, down, isSlow;
+    private float speed;
+    private boolean left, right, up, down;
     private boolean colTop, colBot, colLeft,colRight;
     private final float diagonalCorrectionVal = (float) (1 / sqrt(2));
     private float slower = (float) 1;
