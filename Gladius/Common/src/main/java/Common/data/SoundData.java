@@ -48,12 +48,11 @@ public class SoundData {
            soundFileMap.replace(sound,"Sounds/"+soundFileMap.get(sound));
         }
 
-
     }
 
     private void playTheme(){
         Music theme = Gdx.audio.newMusic(Gdx.files.internal("Sounds/theme.ogg"));
-        theme.setVolume(1f);
+        theme.setVolume(.3f);
         theme.setLooping(true);
         theme.play();
     }
