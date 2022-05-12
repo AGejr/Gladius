@@ -137,7 +137,9 @@ public class EnemyControlSystem implements IEntityProcessingService {
                                 } else {
                                     animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.ATTACK_RIGHT);
                                 }
+                                if (weaponService != null) {
                                 weaponService.attack(enemy, gameData, world);
+                                }
                                 soundPart.playAudio(SoundData.SOUND.ATTACK);
                             }
                         } else {
@@ -216,6 +218,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
         }
         if (gameData.isDebugMode()) {
             sr.end();
+            sr.dispose();
             Gdx.gl.glDisable(GL20.GL_BLEND);
         }
     }
