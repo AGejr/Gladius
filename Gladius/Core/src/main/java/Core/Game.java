@@ -102,6 +102,8 @@ public class Game implements ApplicationListener {
         world.setCsvMap(FileLoader.fetchData(mapFiles[0]));
         world.setIsMapLoaded(true);
 
+        gameData.getAssetManager().loadAssets();
+
         // initialize soundData
         gameData.setSoundData(new SoundData());
 

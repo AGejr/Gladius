@@ -8,16 +8,13 @@ import java.util.ArrayList;
 public class DynamicAssetManager {
 
     public final AssetManager assetManager = new AssetManager();
-    private ArrayList<String> files = new ArrayList<>();
 
     public DynamicAssetManager() {
     }
 
     public void loadAssets(){
-        files.add("Minotaur.png");
-        files.add("GladiatorSpriteSheet.png");
-
-        FileLoader.loadFiles(files, getClass());
+        FileLoader.loadFile("Minotaur.png", getClass());
+        FileLoader.loadFile("GladiatorSpriteSheet.png", getClass());
 
         loadImages();
     }
