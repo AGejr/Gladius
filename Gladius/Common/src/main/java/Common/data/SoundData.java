@@ -4,7 +4,9 @@ import Common.tools.FileLoader;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -49,12 +51,6 @@ public class SoundData {
         soundFileMap.put(SOUND.ARENA_ENTERED, "arena_entered.mp3");
         soundFileMap.put(SOUND.ARENA_EXIT, "exit_arena.mp3");
 
-        // todo refactor
-        soundFileMap.put(SOUND.MINOTAUR_SOUND, "minotaur_death.mp3");
-        soundFileMap.put(SOUND.MINOTAUR_ATTACK, "minotaur_attack.mp3");
-        soundFileMap.put(SOUND.GOBLIN_SOUND, "goblin_death.mp3");
-        soundFileMap.put(SOUND.GOBLIN_ATTACK, "goblin_attack.mp3");
-
         for(SOUND sound : soundFileMap.keySet()){
            soundFileMap.replace(sound,"Sounds/"+soundFileMap.get(sound));
         }
@@ -62,12 +58,25 @@ public class SoundData {
 
     }
 
+    private void playTheme(){
+        Music theme = Gdx.audio.newMusic(Gdx.files.internal("Sounds/theme.ogg"));
+        theme.setVolume(1f);
+        theme.setLooping(true);
+        theme.play();
+    }
+
     public void initSound(){
+
+        ArrayList<String> soundPathList = new ArrayList<>(soundFileMap.values());
+        soundPathList.add("Sounds/theme.ogg");
+
+        FileLoader.loadFiles(soundPathList.toArray(new String[0]), getClass());
 
         for (SOUND sound : this.soundFileMap.keySet()){
             String path = this.soundFileMap.get(sound);
             this.soundMap.put(sound, Gdx.audio.newSound(Gdx.files.internal(path)));
         }
+        playTheme();
     }
 
     public Map<SOUND, String> getSoundFileMap() {

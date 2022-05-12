@@ -25,6 +25,9 @@ public class MonsterPlugin implements IGamePluginService {
 
     private Entity createMonster(GameData gameData) {
         String file = "Goblin_king.png";
+        String goblin_death = "Sounds/goblin_death.mp3";
+        String goblin_attack = "Sounds/goblin_attack.mp3";
+        String[] files = {file,goblin_attack,goblin_death};
 
         Entity monster = new Monster(file, 5);
         monster.add(new MovingPart(30));
@@ -34,10 +37,11 @@ public class MonsterPlugin implements IGamePluginService {
 
         SoundPart soundPart = new SoundPart(gameData);
 
-        soundPart.putAudio(SoundData.SOUND.ATTACK, "Sounds/goblin_attack.mp3");
-        soundPart.putAudio(SoundData.SOUND.DEATH, "Sounds/goblin_death.mp3");
+        soundPart.putAudio(SoundData.SOUND.ATTACK, goblin_attack);
+        soundPart.putAudio(SoundData.SOUND.DEATH, goblin_death);
+
         monster.add(soundPart);
-        FileLoader.loadFile(file, getClass());
+        FileLoader.loadFiles(files, getClass());
 
         //400 is max, 280 is min
         monster.setX(new Random().nextInt((580 - 385) + 1) + 385);

@@ -99,20 +99,8 @@ public class Game implements ApplicationListener {
         // initialize soundData
         gameData.setSoundData(new SoundData());
 
-        for(String soundFile : gameData.getSoundData().getSoundFileMap().values()){
-            FileLoader.loadFile(soundFile,getClass());
-        }
-
         // Game sounds loader
         gameData.getSoundData().initSound();
-
-        // Background music
-        FileLoader.loadFile("Sounds/theme.ogg", getClass());
-        Music theme = Gdx.audio.newMusic(Gdx.files.internal("Sounds/theme.ogg"));
-        theme.setVolume(0.3f);
-        theme.setLooping(true);
-        theme.play();
-
 
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();

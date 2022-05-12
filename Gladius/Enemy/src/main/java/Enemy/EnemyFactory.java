@@ -28,24 +28,24 @@ public class EnemyFactory implements IEntityFactoryService {
     }
 
     private Entity createMinotauer(GameData gamedata) {
-        String file = "Minotaur.png";
+        String texture = "Minotaur.png";
+        String minotaur_death = "Sounds/minotaur_death.mp3";
+        String mintoaur_attack = "Sounds/minotaur_attack.mp3";
+        String[] files = {texture, minotaur_death, mintoaur_attack};
 
         // radius should be texture width / 16
-        Entity enemy = new Enemy(file, 6);
+        Entity enemy = new Enemy(texture, 6);
         enemy.add(new MovingPart(30));
         enemy.add(new LifePart(100, Color.RED));
         enemy.add(new AnimationPart());
         enemy.add(new StatsPart(5, 5, 0));
 
         SoundPart soundPart = new SoundPart(gamedata);
-        soundPart.putAudio(SoundData.SOUND.DEATH, "Sounds/minotaur_death.mp3");
-        soundPart.putAudio(SoundData.SOUND.ATTACK, "Sounds/minotaur_attack.mp3");
+        soundPart.putAudio(SoundData.SOUND.DEATH, minotaur_death);
+        soundPart.putAudio(SoundData.SOUND.ATTACK, mintoaur_attack);
         enemy.add(soundPart);
 
-
-
-        FileLoader.loadFile(file, getClass());
-
+        FileLoader.loadFiles(files, getClass());
 
         //400 is max, 280 is min
         enemy.setX(new Random().nextInt((580 - 385) + 1) + 385);

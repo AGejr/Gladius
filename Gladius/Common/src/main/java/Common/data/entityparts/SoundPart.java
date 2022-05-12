@@ -3,6 +3,7 @@ package Common.data.entityparts;
 import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.SoundData;
+import Common.tools.FileLoader;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 
@@ -45,6 +46,8 @@ public class SoundPart implements EntityPart {
         this.soundData = gameData.getSoundData();
         for (SoundData.SOUND sound : localSoundFileMap.keySet()){
             String path = localSoundFileMap.get(sound);
+
+            // Check to see if an audio is local to the entity. if not the value is ""
             if(path.equals("")){
                 path = soundData.getSoundFileMap().get(sound);
             }
@@ -108,7 +111,7 @@ public class SoundPart implements EntityPart {
         if(hasLifePart){
 
             if(lifePart.isDead() && !isDead){
-                this.playAudio(SoundData.SOUND.DEATH,1.5f);
+                this.playAudio(SoundData.SOUND.DEATH);
                 isDead = true;
             }
         }
