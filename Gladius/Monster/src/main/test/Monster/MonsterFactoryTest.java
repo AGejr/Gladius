@@ -1,39 +1,38 @@
 package Monster;
 
-import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
-import Common.services.IGamePluginService;
+import Common.services.IEntityFactoryService;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotEquals;
 
-public class MonsterPluginTest {
-    IGamePluginService plugin;
+public class MonsterFactoryTest {
+    IEntityFactoryService factoryService;
     GameData gameData;
     World world;
 
     @Before
     public void setUp() throws Exception {
-        plugin = new MonsterPlugin();
+        factoryService = new MonsterFactory();
         gameData = new GameData();
         world = new World();
     }
 
     @Test
-    public void start() {
+    public void spawn() {
         int entitiesBeforeStart = world.getEntities().size();
-        plugin.start(gameData, world);
+        factoryService.spawn(gameData, world, 1);
         int entitiesAfterStart = world.getEntities().size();
         assertNotEquals(entitiesAfterStart, entitiesBeforeStart);
     }
 
     @Test
     public void stop() {
-        plugin.start(gameData, world);
+        factoryService.spawn(gameData, world, 1);
         int entitiesBeforeStop = world.getEntities().size();
-        plugin.stop(gameData, world);
+        factoryService.stop(world);
         int entitiesAfterStop = world.getEntities().size();
         assertNotEquals(entitiesAfterStop, entitiesBeforeStop);
     }

@@ -2,6 +2,7 @@ package Core;
 
 import Common.data.Entity;
 import Common.data.GameData;
+import Common.data.SoundData;
 import Common.data.World;
 import Common.data.entityparts.LifePart;
 import Common.services.*;
@@ -14,6 +15,7 @@ import CommonPlayer.Player;
 import Event.EventRegistry;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.files.FileHandle;
@@ -31,7 +33,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Game implements ApplicationListener {
@@ -47,6 +52,7 @@ public class Game implements ApplicationListener {
     private OrthoCachedTiledMapRenderer tiledMapRenderer;
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
+    private Music theme;
     private File shopFile;
 
     private FileHandle shopFileHandle;
@@ -83,17 +89,23 @@ public class Game implements ApplicationListener {
         cam.update();
         gameData.setCam(cam);
 
-        String[] files = {"Map/Map.tmx", "Map/Arena_Tileset.tsx", "Map/Arena_Tileset.png"};
-        FileLoader.loadFiles(files, getClass());
+        String[] mapFiles = {"Map/Map.tmx", "Map/Arena_Tileset.tsx", "Map/Arena_Tileset.png"};
+        FileLoader.loadFiles(mapFiles, getClass());
 
         FileLoader.loadFile("mc.otf", getClass());
 
-        tiledMap = new TmxMapLoader().load(files[0]);
+        tiledMap = new TmxMapLoader().load(mapFiles[0]);
         world.setTiledMap(tiledMap); //Saves tiledMap to the world
         tiledMapRenderer = new OrthoCachedTiledMapRenderer(tiledMap);
         tiledMapRenderer.setBlending(true); //Makes tiles transparent
 
-        world.setCsvMap(FileLoader.fetchData(files[0]));
+        world.setCsvMap(FileLoader.fetchData(mapFiles[0]));
+
+        // initialize soundData
+        gameData.setSoundData(new SoundData());
+
+        // Game sounds loader
+        gameData.getSoundData().initSound();
 
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
