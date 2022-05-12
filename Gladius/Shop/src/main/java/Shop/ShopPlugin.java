@@ -28,7 +28,10 @@ public class ShopPlugin implements IGamePluginService {
     }
 
     private Entity createShop() {
-        String[] files = {"Shop.png", "ShopItems.png"};
+        ArrayList<String> files = new ArrayList<>();
+        files.add("Shop.png");
+        files.add("ShopItems.png");
+
         FileLoader.loadFiles(files, this.getClass());
         List<ShopElixir> shopElixirs = new ArrayList<>();
         shopElixirs.add(new ShopElixir("Strength Elixir",100,130,200, tileSize * 2, tileSize * 10, 5));
@@ -42,7 +45,7 @@ public class ShopPlugin implements IGamePluginService {
         shopWeapons.add(new ShopWeapon("Diamond Sword", 300, 290, WeaponImages.DIAMONDSWORD, 200,50,14,10));
         shopWeapons.add(new ShopWeapon("Club", 100, 290, WeaponImages.CLUB, 300,45,14,10));
 
-        Entity shop = new Shop(files[0], shopElixirs, shopWeapons);
+        Entity shop = new Shop(files.get(0), shopElixirs, shopWeapons);
 
         shop.setX(608);
         shop.setY(192);

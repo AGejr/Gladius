@@ -20,7 +20,7 @@ public class FileLoader {
      * @param files List with file paths to resources
      * @param importClass The class of where the method is called
      */
-    public static void loadFiles(String[] files, Class<?> importClass) {
+    public static void loadFiles(ArrayList<String> files, Class<?> importClass) {
         for (String file : files) {
             try (InputStream inputStream = importClass.getClassLoader().getResourceAsStream(file)) {
                 File newFile = new File(file);
