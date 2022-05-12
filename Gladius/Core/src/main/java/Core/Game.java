@@ -32,7 +32,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -80,22 +79,17 @@ public class Game implements ApplicationListener {
         cam.update();
         gameData.setCam(cam);
 
-        ArrayList<String> files = new ArrayList<>();
-        files.add("Map/Map.tmx");
-        files.add("Map/Arena_Tileset.tsx");
-        files.add("Map/Arena_Tileset.png");
+        String[] files = {"Map/Map.tmx", "Map/Arena_Tileset.tsx", "Map/Arena_Tileset.png"};
         FileLoader.loadFiles(files, getClass());
 
         FileLoader.loadFile("mc.otf", getClass());
 
-        tiledMap = new TmxMapLoader().load(files.get(0));
+        tiledMap = new TmxMapLoader().load(files[0]);
         world.setTiledMap(tiledMap); //Saves tiledMap to the world
         tiledMapRenderer = new OrthoCachedTiledMapRenderer(tiledMap);
         tiledMapRenderer.setBlending(true); //Makes tiles transparent
 
-        world.setCsvMap(FileLoader.fetchData(files.get(0)));
-
-        gameData.getAssetManager().loadAssets();
+        world.setCsvMap(FileLoader.fetchData(files[0]));
 
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
@@ -129,7 +123,10 @@ public class Game implements ApplicationListener {
         batch.begin();
         for (Entity entity :  world.getEntities()) {
             if(entity.getTexturePath() != null) {
-                if(entity.getTexture() == null){
+                if (entity.getClass() == Enemy.class){
+                    entity.initTextureFormAssetManager(gameData);
+                }
+                else if(entity.getTexture() == null){
                     entity.initTexture();
                 }
 
