@@ -99,7 +99,7 @@ public class Game implements ApplicationListener {
         tiledMapRenderer = new OrthoCachedTiledMapRenderer(tiledMap);
         tiledMapRenderer.setBlending(true); //Makes tiles transparent
 
-        world.setCsvMap(FileLoader.fetchData(files[0]));
+        world.setCsvMap(FileLoader.fetchData(mapFiles[0]));
         world.setIsMapLoaded(true);
 
         // initialize soundData
