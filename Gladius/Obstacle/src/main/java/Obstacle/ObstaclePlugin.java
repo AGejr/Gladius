@@ -70,8 +70,6 @@ public class ObstaclePlugin implements IEntityFactoryService {
 
     private Entity createBarrel(GameData gamedata, World world) {
         String file = "Barrel.png";
-        //                           String texturePath, float radius, int radiusOffsetX, int radiusOffsetY, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float hitboxOriginY
-        //                           file,                      10,             0,                  -5,                 64,             64,              0,              0.3f,              0.3f,               32,                 32
         Entity barrel = new Obstacle(file, 10, 64, 64, 0, 0.3f, 0.3f, 32, 32, 1, 0, -5);
         barrel.add(new LifePart(100));
         barrel.add(new StatsPart(0,0,0,0,0,0));

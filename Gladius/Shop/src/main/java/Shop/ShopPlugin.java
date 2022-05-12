@@ -31,10 +31,10 @@ public class ShopPlugin implements IGamePluginService {
         String[] files = {"Shop.png", "ShopItems.png"};
         FileLoader.loadFiles(files, this.getClass());
         List<ShopElixir> shopElixirs = new ArrayList<>();
-        shopElixirs.add(new ShopElixir("Strength Elixir",100,130,200, tileSize * 2, tileSize * 10, 4));
-        shopElixirs.add(new ShopElixir("Strength Elixir",200,130,100, tileSize * 4, tileSize * 10, 2));
-        shopElixirs.add(new ShopElixir("Defence Elixir",300,130,200, tileSize * 3, tileSize * 10,4));
-        shopElixirs.add(new ShopElixir("Defence Elixir",400,130,100, tileSize * 5, tileSize * 10,2));
+        shopElixirs.add(new ShopElixir("Strength Elixir",100,130,200, tileSize * 2, tileSize * 10, 2));
+        shopElixirs.add(new ShopElixir("Strength Elixir",200,130,100, tileSize * 4, tileSize * 10, 1));
+        shopElixirs.add(new ShopElixir("Defence Elixir",300,130,200, tileSize * 3, tileSize * 10,2));
+        shopElixirs.add(new ShopElixir("Defence Elixir",400,130,100, tileSize * 5, tileSize * 10,1));
 
         List<ShopWeapon> shopWeapons = new ArrayList<>();
         shopWeapons.add(new ShopWeapon("Stone Sword", 700, 290, WeaponImages.STARTSWORD, 0,15,8, 10));
