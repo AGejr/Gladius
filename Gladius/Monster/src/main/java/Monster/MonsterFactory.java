@@ -34,7 +34,7 @@ public class MonsterFactory implements IEntityFactoryService {
         monster.add(new AnimationPart());
         monster.add(new StatsPart(20, 5, 0));
 
-        SoundPart soundPart = new SoundPart(gameData);
+        SoundPart soundPart = new SoundPart();
 
         soundPart.putAudio(SoundData.SOUND.ATTACK, goblin_attack);
         soundPart.putAudio(SoundData.SOUND.DEATH, goblin_death);

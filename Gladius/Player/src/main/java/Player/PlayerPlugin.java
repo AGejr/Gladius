@@ -7,10 +7,7 @@ import Common.data.entityparts.*;
 import Common.services.IGamePluginService;
 import Common.tools.FileLoader;
 import CommonPlayer.Player;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
-
-import java.io.File;
 
 public class PlayerPlugin implements IGamePluginService {
     private Entity player;
@@ -30,8 +27,14 @@ public class PlayerPlugin implements IGamePluginService {
         player.add(new AnimationPart());
         player.add(new StatsPart(20, 5, 0));
         player.add(new LifePart(300, Color.GREEN));
-        player.add(new SoundPart(gamedata));
+
+        SoundPart soundPart = new SoundPart();
+        soundPart.setPlayMovementSound(true);
+        player.add(soundPart);
+        
         FileLoader.loadFile(file, getClass());
+
+
 
         player.setX(800);
         player.setY(140);
