@@ -20,6 +20,8 @@ public class GameData {
     private boolean gateEnabled = true;
     private int wave = 1;
     private Camera cam;
+    private SoundData soundData;
+
     private boolean debugMode = false;
     private Stage stage;
 
@@ -112,5 +114,13 @@ public class GameData {
             stage = new Stage();
         }
         return stage;
+    }
+
+    public SoundData getSoundData() {
+        return soundData;
+    }
+
+    public void setSoundData(SoundData soundData) {
+        this.soundData = soundData;
     }
 }

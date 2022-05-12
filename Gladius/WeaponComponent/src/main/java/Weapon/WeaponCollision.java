@@ -2,6 +2,7 @@ package Weapon;
 
 import Common.data.Entity;
 import Common.data.GameData;
+import Common.data.SoundData;
 import Common.data.World;
 import Common.data.entityparts.AnimationPart;
 import Common.data.entityparts.LifePart;
@@ -31,6 +32,9 @@ public class WeaponCollision implements IPostEntityProcessingService {
                                 boolean wasAlive = !hitEntityLifePart.isDead();
                                 int totalDamage = ((Weapon) weapon).getDamage() + attackerStats.getAttack() - defenderStats.getDefence();
                                 hitEntityLifePart.subtractLife(totalDamage);
+
+                                gameData.getSoundData().playSound(SoundData.SOUND.DAMAGE);
+
                                 if (wasAlive && hitEntityLifePart.isDead()){
                                     EventRegistry.addEvent(GAME_EVENT.ENTITY_KILLED);
                                 }

@@ -2,11 +2,9 @@ package Enemy;
 
 import Common.data.Entity;
 import Common.data.GameData;
+import Common.data.SoundData;
 import Common.data.World;
-import Common.data.entityparts.AnimationPart;
-import Common.data.entityparts.LifePart;
-import Common.data.entityparts.MovingPart;
-import Common.data.entityparts.StatsPart;
+import Common.data.entityparts.*;
 import Common.services.IGamePluginService;
 import Common.services.IEntityFactoryService;
 import Common.tools.FileLoader;
@@ -30,15 +28,24 @@ public class EnemyFactory implements IEntityFactoryService {
     }
 
     private Entity createMinotauer(GameData gamedata) {
-        String file = "Minotaur.png";
+        String texture = "Minotaur.png";
+        String minotaur_death = "Sounds/minotaur_death.mp3";
+        String mintoaur_attack = "Sounds/minotaur_attack.mp3";
+        String[] files = {texture, minotaur_death, mintoaur_attack};
 
         // radius should be texture width / 16
-        Entity enemy = new Enemy(file, 20);
+        Entity enemy = new Enemy(texture, 20);
         enemy.add(new MovingPart(30));
         enemy.add(new LifePart(100, Color.RED));
         enemy.add(new AnimationPart());
         enemy.add(new StatsPart(5,0,0, 0, 5, 0));
-        FileLoader.loadFile(file, getClass());
+
+        SoundPart soundPart = new SoundPart(gamedata);
+        soundPart.putAudio(SoundData.SOUND.DEATH, minotaur_death);
+        soundPart.putAudio(SoundData.SOUND.ATTACK, mintoaur_attack);
+        enemy.add(soundPart);
+
+        FileLoader.loadFiles(files, getClass());
 
         //400 is max, 280 is min
         enemy.setX(new Random().nextInt((580 - 385) + 1) + 385);

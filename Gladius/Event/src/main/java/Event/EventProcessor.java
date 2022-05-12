@@ -2,6 +2,7 @@ package Event;
 
 import Common.data.Entity;
 import Common.data.GameData;
+import Common.data.SoundData;
 import Common.data.World;
 import Common.data.entityparts.LifePart;
 import Common.data.entityparts.StatsPart;
@@ -89,6 +90,7 @@ public class EventProcessor implements IEventProcessingService {
     private void processArenaEnteredEvent(GameData gameData, World world) {
         gameData.setGateEnabled(false);
         waveAlreadyCleared = false;
+        gameData.getSoundData().playSound(SoundData.SOUND.ARENA_ENTERED);
         EventRegistry.addEvent(GAME_EVENT.WAVE_STARTED);
     }
 
@@ -103,6 +105,7 @@ public class EventProcessor implements IEventProcessingService {
             LifePart lifePart = player.getPart(LifePart.class);
             lifePart.resetHealth();
         }
+        gameData.getSoundData().playSound(SoundData.SOUND.ARENA_EXIT);
     }
 
     private void processWaveStartedEvent(GameData gameData, World world) {
@@ -122,6 +125,8 @@ public class EventProcessor implements IEventProcessingService {
         Text text = new Text(string,3,20,3);
         text.alignScreenCenter(gameData);
         UI.addText(text);
+
+        gameData.getSoundData().playSound(SoundData.SOUND.WAVE_CLEARED);
 
         gameData.incrementWave();
     }
