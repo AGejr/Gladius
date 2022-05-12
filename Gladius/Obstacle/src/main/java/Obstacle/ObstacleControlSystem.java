@@ -2,6 +2,7 @@ package Obstacle;
 
 import Common.data.Entity;
 import Common.data.GameData;
+import Common.data.SoundData;
 import Common.data.World;
 import Common.data.entityparts.AnimationPart;
 import Common.data.entityparts.LifePart;
@@ -28,6 +29,8 @@ public class ObstacleControlSystem implements IEntityProcessingService {
                 if(explosiveBarrelStatsPart.getExplosiveAttack() != 0) {
                     Polygon polygonBoundaries = new Polygon(new float[]{entity.getX() + ((float) entity.getTextureWidth()/2) - (float) explosiveBarrelStatsPart.getExplosionRadius()/2, entity.getY() + ((float) entity.getTextureHeight()/2) - (float) explosiveBarrelStatsPart.getExplosionRadius()/2, entity.getX() + ((float) entity.getTextureWidth()/2) - (float) explosiveBarrelStatsPart.getExplosionRadius()/2, entity.getY() + ((float) entity.getTextureHeight()/2) - (float) explosiveBarrelStatsPart.getExplosionRadius()/2 + explosiveBarrelStatsPart.getExplosionRadius(), entity.getX() + ((float) entity.getTextureWidth()/2) - (float) explosiveBarrelStatsPart.getExplosionRadius()/2 + explosiveBarrelStatsPart.getExplosionRadius(), entity.getY() + ((float) entity.getTextureHeight()/2) - (float) explosiveBarrelStatsPart.getExplosionRadius()/2 + explosiveBarrelStatsPart.getExplosionRadius(), entity.getX() + ((float) entity.getTextureWidth()/2) - (float) explosiveBarrelStatsPart.getExplosionRadius()/2 + explosiveBarrelStatsPart.getExplosionRadius(), entity.getY() + ((float) entity.getTextureHeight()/2) - (float) explosiveBarrelStatsPart.getExplosionRadius()/2});
                     if(explosiveBarrelLifePart.isDead() && animationPart.isDoneAnimating()) {
+                        gameData.getSoundData().playSound(SoundData.SOUND.EXPLOSION);
+
                         // Wait to add damage until the explosion animation is done
                         for (Entity hitEntity: world.getEntities()) {
                             if(entity.getID().equals(hitEntity.getID())) {

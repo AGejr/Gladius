@@ -113,7 +113,7 @@ public class Monster extends Entity implements IWeaponUserService {
             // ATTACK animation
             Array<TextureRegion> rightAttackTextures = new Array<>();
             Array<TextureRegion> leftAttackTextures = new Array<>();
-            for (int i = 0; i < 13; i++) {
+            for (int i = 0; i < 10; i++) {
                 // The attack animation expands on two rows on the spritesheet
                 int attack_row = i < 6 ? 9 : 10;
                 int adjustment = i >= 6 ? i - 6 : i;
