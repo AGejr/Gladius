@@ -3,13 +3,11 @@ package Common.data.entityparts;
 import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.SoundData;
-import Common.tools.FileLoader;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class SoundPart implements EntityPart {
 
@@ -23,13 +21,15 @@ public class SoundPart implements EntityPart {
 
     private boolean isDead = false;
 
+    private boolean playMovementSound = false;
+
     private Map<SoundData.SOUND, String> localSoundFileMap = new HashMap<>();
     private Map<SoundData.SOUND, Sound> localSoundMap = new HashMap<>();
 
     private Sound movementSound = null;
     private SoundData.SOUND prevSound = null;
 
-    public SoundPart(GameData gameData){
+    public SoundPart(){
         localSoundFileMap.put(SoundData.SOUND.WALK, "");
         localSoundFileMap.put(SoundData.SOUND.WALK_WATER, "");
         localSoundFileMap.put(SoundData.SOUND.ATTACK, "");
@@ -72,7 +72,7 @@ public class SoundPart implements EntityPart {
         boolean hasLifePart = lifePart != null;
 
 
-        if(hasMovingPart) {
+        if(hasMovingPart && playMovementSound) {
             //if player is moving
             if ((movingPart.isUp() ^ movingPart.isDown() || movingPart.isLeft() ^ movingPart.isRight())) {
 
@@ -152,4 +152,7 @@ public class SoundPart implements EntityPart {
         }
     }
 
+    public void setPlayMovementSound(boolean playMovementSound) {
+        this.playMovementSound = playMovementSound;
+    }
 }

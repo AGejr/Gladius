@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.Color;
 import CommonMonster.Monster;
 
 
-import javax.sound.midi.Soundbank;
 import java.util.Random;
 
 public class MonsterPlugin implements IGamePluginService {
@@ -35,7 +34,7 @@ public class MonsterPlugin implements IGamePluginService {
         monster.add(new AnimationPart());
         monster.add(new StatsPart(20, 5, 0));
 
-        SoundPart soundPart = new SoundPart(gameData);
+        SoundPart soundPart = new SoundPart();
 
         soundPart.putAudio(SoundData.SOUND.ATTACK, goblin_attack);
         soundPart.putAudio(SoundData.SOUND.DEATH, goblin_death);

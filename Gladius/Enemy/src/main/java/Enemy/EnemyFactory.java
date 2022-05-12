@@ -5,7 +5,6 @@ import Common.data.GameData;
 import Common.data.SoundData;
 import Common.data.World;
 import Common.data.entityparts.*;
-import Common.services.IGamePluginService;
 import Common.services.IEntityFactoryService;
 import Common.tools.FileLoader;
 import CommonEnemy.Enemy;
@@ -40,7 +39,7 @@ public class EnemyFactory implements IEntityFactoryService {
         enemy.add(new AnimationPart());
         enemy.add(new StatsPart(5, 5, 0));
 
-        SoundPart soundPart = new SoundPart(gamedata);
+        SoundPart soundPart = new SoundPart();
         soundPart.putAudio(SoundData.SOUND.DEATH, minotaur_death);
         soundPart.putAudio(SoundData.SOUND.ATTACK, mintoaur_attack);
         enemy.add(soundPart);
