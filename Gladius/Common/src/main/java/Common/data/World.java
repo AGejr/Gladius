@@ -92,4 +92,15 @@ public class World {
     public void setTileInMap(int Y, int X, int value) {
         getCsvMap().get(Y).set(X, value);
     }
+
+    /**
+     * Because the process method is called in the order of the entityList, we need to put it behind the list, so it gets called last to get it in front of other entities.
+     */
+    public <E extends Entity> void putBehind(Class<E>... entityTypes) {
+        List<Entity> entityList = getEntities(entityTypes);
+        for (Entity entity : entityList) {
+            entityMap.remove(entity.getID());
+            entityMap.put(entity.getID(), entity);
+        }
+    }
 }

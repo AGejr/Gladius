@@ -1,7 +1,10 @@
 package CommonWeapon;
 
 public enum WeaponImages {
-    SWORD("swordNew.png");
+    STARTSWORD("Sword1.png"),
+    GOLDSWORD("Sword2.png"),
+    DIAMONDSWORD("Sword3.png"),
+    CLUB("Sword4.png");
 
     public String path;
 

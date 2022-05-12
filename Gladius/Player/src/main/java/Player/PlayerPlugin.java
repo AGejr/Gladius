@@ -29,8 +29,8 @@ public class PlayerPlugin implements IGamePluginService {
         Entity player = new Player(file, 10, 32, 32, 0, 0.5f, 0.8f);
         player.add(new MovingPart(100));
         player.add(new AnimationPart());
-        player.add(new LifePart(100, Color.GREEN));
-        player.add(new StatsPart(20,0,0, 0, 5));
+        player.add(new LifePart(300, Color.GREEN));
+        player.add(new StatsPart(20,0,0, 0, 5, 0));
         FileLoader.loadFile(file, getClass());
 
         player.setX(800);

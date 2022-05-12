@@ -2,13 +2,11 @@ package Common.data;
 
 
 import Common.data.entityparts.EntityPart;
-import Common.tools.FileLoader;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Polygon;
 
-import java.awt.*;
 import java.io.File;
 import java.io.Serializable;
 import java.util.Map;
@@ -27,8 +25,9 @@ public class Entity extends Sprite implements Serializable {
     private Map<Class, EntityPart> parts;
     private float angle;
     private Polygon polygonBoundaries;
+    private float scaling = 1.0f;
 
-    public Entity(String texturePath,float radius, int radiusOffsetX, int radiusOffsetY, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float hitboxOriginY) {
+    public Entity(String texturePath, float radius, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float scaling, int radiusOffsetX, int radiusOffsetY) {
         super();
         this.parts = new ConcurrentHashMap<>();
         this.texturePath = texturePath;
@@ -47,38 +46,12 @@ public class Entity extends Sprite implements Serializable {
         this.polygonBoundaries.setScale(hitboxScaleX, hitboxScaleY);
     }
 
-    public Entity(String texturePath,float radius, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float hitboxOriginY) {
-        super();
-        this.parts = new ConcurrentHashMap<>();
-        this.texturePath = texturePath;
-        this.radius = radius;
-        this.textureWidth = textureWidth;
-        this.textureHeight = textureHeight;
-        this.angle = angle;
-        /*The polygon is the hitbox for the entity, this is used to register hits with the weapon. It is drawn rom the center of the entity's x-axis
-         * The scale is used to make the hitbox fit the texture of the entity better, because of transparent areas in the texture.
-         * The hitboxOriginX, defines the center of the x-axis where the box is made from.
-         * The hitbox aligns with the bottom of the texture.*/
-        this.polygonBoundaries = new Polygon(new float[]{super.getX(), super.getY(), super.getX(), super.getY() + textureHeight, super.getX() + textureWidth, super.getY() + textureHeight, super.getX() + textureWidth, super.getY()});
-        this.polygonBoundaries.setOrigin(hitboxOriginX, hitboxOriginY);
-        this.polygonBoundaries.setScale(hitboxScaleX, hitboxScaleY);
+    public Entity(String texturePath, float radius, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float scaling) {
+        this(texturePath, radius, radiusOffsetX, radiusOffsetY, textureWidth, textureHeight, angle, hitboxScaleX, hitboxScaleY, hitboxOriginX, scaling, 0, 0)
     }
 
-    public Entity(String texturePath,float radius, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX) {
-        super();
-        this.parts = new ConcurrentHashMap<>();
-        this.texturePath = texturePath;
-        this.radius = radius;
-        this.textureWidth = textureWidth;
-        this.textureHeight = textureHeight;
-        this.angle = angle;
-        /*The polygon is the hitbox for the entity, this is used to register hits with the weapon. It is drawn rom the center of the entity's x-axis
-        * The scale is used to make the hitbox fit the texture of the entity better, because of transparent areas in the texture.
-        * The hitboxOriginX, defines the center of the x-axis where the box is made from.
-        * The hitbox aligns with the bottom of the texture.*/
-        this.polygonBoundaries = new Polygon(new float[]{super.getX(), super.getY(), super.getX(), super.getY() + textureHeight, super.getX() + textureWidth, super.getY() + textureHeight, super.getX() + textureWidth, super.getY()});
-        this.polygonBoundaries.setOrigin(hitboxOriginX, 0);
-        this.polygonBoundaries.setScale(hitboxScaleX, hitboxScaleY);
+    public Entity(String texturePath, float radius, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX) {
+        this(texturePath, radius, textureWidth, textureHeight, angle, hitboxScaleX, hitboxScaleY,hitboxOriginX, 1.0f);
     }
 
     public Entity(String texturePath,float radius, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY) {
@@ -189,5 +162,13 @@ public class Entity extends Sprite implements Serializable {
 
     public int getRadiusOffsetY() {
         return radiusOffsetY;
+    }
+
+    public void setScaling(float scaling) {
+        this.scaling = scaling;
+    }
+
+    public float getScaling() {
+        return scaling;
     }
 }

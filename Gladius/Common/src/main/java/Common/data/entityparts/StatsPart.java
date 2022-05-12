@@ -4,10 +4,9 @@ import Common.data.Entity;
 import Common.data.GameData;
 
 public class StatsPart implements EntityPart {
-
-    /***
-        @param attack Damage modifier for entity
-        @param defence Protects makes an attack deal less damage
+    /**
+     * @param attack Damage modifier for entity
+     * @param defence Protects makes an attack deal less damage
      */
 
     private int attack;
@@ -15,13 +14,19 @@ public class StatsPart implements EntityPart {
     private int explosiveAttack;
     private int explosionRadius;
     private int defence;
+    private int balance;
 
-    public StatsPart(int attack, int spikeAttack, int explosiveAttack, int explosionRadius, int defence) {
+    public StatsPart(int attack, int spikeAttack, int explosiveAttack, int explosionRadius, int defence, int balance) {
         this.attack = attack;
         this.spikeAttack = spikeAttack;
         this.explosiveAttack = explosiveAttack;
         this.explosionRadius = explosionRadius;
         this.defence = defence;
+        this.balance = balance;
+    }
+
+    public StatsPart(int attack, int defence, int balance) {
+        this(attack, 0, 0, 0, defence, balance)
     }
 
     @Override
@@ -52,4 +57,29 @@ public class StatsPart implements EntityPart {
     public int getSpikeAttack() {
         return spikeAttack;
     }
+
+    public void setAttack(int attack) {
+        this.attack = attack;
+    }
+
+    public void setDefence(int defence) {
+        this.defence = defence;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public void withdrawBalance(int amount) {
+        balance -= amount;
+    }
+
+    public void depositBalance(int amount) {
+        balance += amount;
+    }
+
 }
