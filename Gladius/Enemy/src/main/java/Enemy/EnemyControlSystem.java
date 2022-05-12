@@ -134,7 +134,9 @@ public class EnemyControlSystem implements IEntityProcessingService {
                                 } else {
                                     animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.ATTACK_RIGHT);
                                 }
-                                weaponService.attack(enemy, gameData, world);
+                                if (weaponService != null) {
+                                    weaponService.attack(enemy, gameData, world);
+                                }
                             }
                         } else {
                             if (animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime())) {
@@ -210,6 +212,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
         }
         if (gameData.isDebugMode()) {
             sr.end();
+            sr.dispose();
             Gdx.gl.glDisable(GL20.GL_BLEND);
         }
     }
