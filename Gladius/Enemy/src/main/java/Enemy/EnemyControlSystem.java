@@ -139,8 +139,8 @@ public class EnemyControlSystem implements IEntityProcessingService {
                                 }
                                 if (weaponService != null) {
                                 weaponService.attack(enemy, gameData, world);
-                                soundPart.playAudio(SoundData.SOUND.ATTACK);
                                 }
+                                soundPart.playAudio(SoundData.SOUND.ATTACK);
                             }
                         } else {
                             if (animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime())) {
