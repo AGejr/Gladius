@@ -94,9 +94,10 @@ public class MonsterControlSystem implements IEntityProcessingService {
                                 } else {
                                     animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.ATTACK_RIGHT);
                                 }
-                                soundPart.playAudio(SoundData.SOUND.ATTACK);
+                                if (weaponService != null) {
                                 weaponService.attack(monster, gameData, world);
-
+                                }
+                                soundPart.playAudio(SoundData.SOUND.ATTACK);
                             }
                         } else {
                             if (animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime())) {
