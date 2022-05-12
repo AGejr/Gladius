@@ -98,6 +98,7 @@ public class EventProcessor implements IEventProcessingService {
         for(Entity monster: world.getEntities(Monster.class)){
             world.removeEntity(monster);
         }
+
         for (Entity player: world.getEntities(Player.class)){
             LifePart lifePart = player.getPart(LifePart.class);
             lifePart.resetHealth();

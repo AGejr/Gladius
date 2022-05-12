@@ -5,22 +5,26 @@ import Common.data.SoundData;
 import Common.data.World;
 import Common.data.Entity;
 import Common.data.entityparts.*;
-import Common.services.IGamePluginService;
+import Common.services.IEntityFactoryService;
 import Common.tools.FileLoader;
 import com.badlogic.gdx.graphics.Color;
 import CommonMonster.Monster;
 
 
-import javax.sound.midi.Soundbank;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-public class MonsterPlugin implements IGamePluginService {
-    private Entity monster;
+public class MonsterFactory implements IEntityFactoryService {
+    private List<Entity> monsters = new ArrayList<>();
 
     @Override
-    public void start(GameData gameData, World world) {
-        monster = createMonster(gameData);
-        world.addEntity(monster);
+    public void spawn(GameData gameData, World world, Integer amount) {
+        for (int i = 0; i < amount; i++) {
+            Entity monster = createMonster(gameData);
+            monsters.add(monster);
+            world.addEntity(monster);
+        }
     }
 
     private Entity createMonster(GameData gameData) {
@@ -50,7 +54,9 @@ public class MonsterPlugin implements IGamePluginService {
     }
 
     @Override
-    public void stop(GameData gameData, World world) {
-        world.removeEntity(this.monster);
+    public void stop(World world) {
+        for (Entity monster: monsters) {
+            world.removeEntity(monster);
+        }
     }
 }
