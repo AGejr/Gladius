@@ -26,7 +26,7 @@ public class StatsPart implements EntityPart {
     }
 
     public StatsPart(int attack, int defence, int balance) {
-        this(attack, 0, 0, 0, defence, balance)
+        this(attack, 0, 0, 0, defence, balance);
     }
 
     @Override

@@ -18,15 +18,14 @@ public class Player extends Entity implements IWeaponUserService {
 
     public Player(String texturePath,float radius, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY) {
         super(texturePath, radius, textureWidth, textureHeight, angle, hitboxScaleX, hitboxScaleY);
-        this.balance = 0;
-        Weapon sword = new Weapon("Sword", 25, 8, 10, WeaponImages.SWORD.path, 9, 36, 0.9f, 0.9f, 0, 20.0f, 9.0f, 20.0f, 9.0f, 10.0f, this);
+        Weapon sword = new Weapon("Sword", 15, 8, 0, WeaponImages.STARTSWORD.path, 36, 146, 0.9f, 0.9f, 0, 20.0f, 9.0f, 20.0f,9.0f, 10.0f, this, 0.3f);
         ownedWeapons.add(sword);
         equippedWeapon = ownedWeapons.get(0);
     }
 
     public Player(String texturePath, int radius) {
         super(texturePath,radius, 32, 32);
-        Weapon sword = new Weapon("Sword", 25, 8, 10, WeaponImages.STARTSWORD.path, 36, 146, 0.9f, 0.9f, 0, 20.0f, 9.0f, 20.0f,9.0f, 10.0f, this, 0.3f);
+        Weapon sword = new Weapon("Sword", 15, 8, 0, WeaponImages.STARTSWORD.path, 36, 146, 0.9f, 0.9f, 0, 20.0f, 9.0f, 20.0f,9.0f, 10.0f, this, 0.3f);
         ownedWeapons.add(sword);
         equippedWeapon = ownedWeapons.get(0);
     }

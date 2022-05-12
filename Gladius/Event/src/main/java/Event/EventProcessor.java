@@ -14,6 +14,7 @@ import CommonMonster.Monster;
 import CommonPlayer.Player;
 
 public class EventProcessor implements IEventProcessingService {
+    private boolean waveAlreadyCleared = false;
 
     @Override
     public void process(GameData gameData, World world) {
@@ -64,8 +65,9 @@ public class EventProcessor implements IEventProcessingService {
     }
 
     private void process_entity_killed(GameData gameData, World world) {
-        if (wave_is_completed(world)) {
+        if (wave_is_completed(world) && !waveAlreadyCleared) {
             EventRegistry.addEvent(GAME_EVENT.WAVE_COMPLETED);
+            waveAlreadyCleared = true;
         }
         for (Entity player: world.getEntities(Player.class)){
             LifePart playerLifePart = player.getPart(LifePart.class);
@@ -75,17 +77,18 @@ public class EventProcessor implements IEventProcessingService {
             StatsPart statsPart = player.getPart(StatsPart.class);
             int life = playerLifePart.getLife();
             if (life > 90) {
-                statsPart.depositBalance(75);
+                statsPart.depositBalance(15);
             } else if (life > 60) {
-                statsPart.depositBalance(50);
+                statsPart.depositBalance(10);
             } else {
-                statsPart.depositBalance(25);
+                statsPart.depositBalance(5);
             }
         }
     }
 
     private void processArenaEnteredEvent(GameData gameData, World world) {
         gameData.setGateEnabled(false);
+        waveAlreadyCleared = false;
         EventRegistry.addEvent(GAME_EVENT.WAVE_STARTED);
     }
 

@@ -10,16 +10,8 @@ public class Obstacle extends Entity {
 
     private boolean isMapLoaded = false;
 
-    public Obstacle(String texturePath, int radius) {
-        super(texturePath, radius, 64, 64);
-    }
-
-    public Obstacle(String texturePath,float radius, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float hitboxOriginY) {
-        super(texturePath, radius, textureWidth, textureHeight, angle, hitboxScaleX, hitboxScaleY, hitboxOriginX, hitboxOriginY);
-    }
-
-    public Obstacle(String texturePath,float radius, int radiusOffsetX, int radiusOffsetY, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float hitboxOriginY) {
-        super(texturePath, radius, radiusOffsetX, radiusOffsetY, textureWidth, textureHeight, angle, hitboxScaleX, hitboxScaleY, hitboxOriginX, hitboxOriginY);
+    public Obstacle(String texturePath, float radius, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float hitboxOriginY, float scaling, int radiusOffsetX, int radiusOffsetY) {
+        super(texturePath, radius, textureWidth, textureHeight, angle, hitboxScaleX, hitboxScaleY, hitboxOriginX, hitboxOriginY, scaling, radiusOffsetX, radiusOffsetY);
     }
 
     @Override

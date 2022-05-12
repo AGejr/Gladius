@@ -21,6 +21,7 @@ public class PlayerPlugin implements IGamePluginService {
         world.addEntity(player);
     }
 
+
     private Entity createPlayer(GameData gamedata) {
         String file = "GladiatorSpriteSheet_Take_Damage.png";
 

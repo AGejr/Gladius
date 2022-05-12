@@ -27,7 +27,7 @@ public class Entity extends Sprite implements Serializable {
     private Polygon polygonBoundaries;
     private float scaling = 1.0f;
 
-    public Entity(String texturePath, float radius, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float scaling, int radiusOffsetX, int radiusOffsetY) {
+    public Entity(String texturePath, float radius, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float hitboxOriginY, float scaling, int radiusOffsetX, int radiusOffsetY) {
         super();
         this.parts = new ConcurrentHashMap<>();
         this.texturePath = texturePath;
@@ -41,13 +41,16 @@ public class Entity extends Sprite implements Serializable {
          * The scale is used to make the hitbox fit the texture of the entity better, because of transparent areas in the texture.
          * The hitboxOriginX, defines the center of the x-axis where the box is made from.
          * The hitbox aligns with the bottom of the texture.*/
-        this.polygonBoundaries = new Polygon(new float[]{super.getX(), super.getY(), super.getX(), super.getY() + textureHeight, super.getX() + textureWidth, super.getY() + textureHeight, super.getX() + textureWidth, super.getY()});
+        this.polygonBoundaries = new Polygon(new float[]{super.getX(), super.getY(), super.getX(), super.getY() + textureHeight * scaling, super.getX() + textureWidth * scaling, super.getY() + textureHeight * scaling, super.getX() + textureWidth * scaling, super.getY()});
         this.polygonBoundaries.setOrigin(hitboxOriginX, hitboxOriginY);
         this.polygonBoundaries.setScale(hitboxScaleX, hitboxScaleY);
+        this.setScaling(scaling);
     }
 
+    //            String texturePath, float radius, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float scaling, int radiusOffsetX, int radiusOffsetY
+
     public Entity(String texturePath, float radius, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float scaling) {
-        this(texturePath, radius, radiusOffsetX, radiusOffsetY, textureWidth, textureHeight, angle, hitboxScaleX, hitboxScaleY, hitboxOriginX, scaling, 0, 0)
+        this(texturePath, radius, textureWidth, textureHeight, angle, hitboxScaleX, hitboxScaleY, hitboxOriginX, 0, scaling, 0, 0);
     }
 
     public Entity(String texturePath, float radius, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX) {
