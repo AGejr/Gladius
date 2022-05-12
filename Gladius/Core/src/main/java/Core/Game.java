@@ -142,10 +142,7 @@ public class Game implements ApplicationListener {
         batch.begin();
         for (Entity entity :  world.getEntities()) {
             if(entity.getTexturePath() != null) {
-                if (entity.getClass() == Enemy.class){
-                    entity.initTextureFormAssetManager(gameData);
-                }
-                else if(entity.getTexture() == null){
+                if(entity.getTexture() == null){
                     entity.initTexture();
                 }
 

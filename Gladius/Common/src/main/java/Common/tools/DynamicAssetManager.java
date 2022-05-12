@@ -14,13 +14,14 @@ public class DynamicAssetManager {
 
     public void loadAssets(){
         FileLoader.loadFile("Minotaur.png", getClass());
-        FileLoader.loadFile("GladiatorSpriteSheet.png", getClass());
+        FileLoader.loadFile("Goblin_king.png", getClass());
 
         loadImages();
     }
 
     private void loadImages(){
         assetManager.load("Minotaur.png", Texture.class);
+        assetManager.load("Goblin_king.png", Texture.class);
     }
 
     public Texture getTexture(String filename){
