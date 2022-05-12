@@ -5,25 +5,24 @@ import Common.data.SoundData;
 import Common.data.World;
 import Common.data.Entity;
 import Common.data.entityparts.*;
-import Common.services.IGamePluginService;
+import Common.services.IEntityFactoryService;
 import Common.tools.FileLoader;
 import com.badlogic.gdx.graphics.Color;
 import CommonMonster.Monster;
 
 
-import javax.sound.midi.Soundbank;
 import java.util.Random;
 
-public class MonsterPlugin implements IGamePluginService {
+public class MonsterFactory implements IEntityFactoryService {
     private Entity monster;
 
     @Override
-    public void start(GameData gameData, World world) {
-        monster = createMonster(gameData);
+    public void spawn(GameData gameData, World world, Integer amount) {
+        monster = createMonster(gameData, amount);
         world.addEntity(monster);
     }
 
-    private Entity createMonster(GameData gameData) {
+    private Entity createMonster(GameData gameData, int hpScaling) {
         String file = "Goblin_king.png";
         String goblin_death = "Sounds/goblin_death.mp3";
         String goblin_attack = "Sounds/goblin_attack.mp3";
@@ -31,7 +30,7 @@ public class MonsterPlugin implements IGamePluginService {
 
         Entity monster = new Monster(file, 5);
         monster.add(new MovingPart(30));
-        monster.add(new LifePart(100, Color.TEAL));
+        monster.add(new LifePart(100 + (hpScaling * 50), Color.TEAL));
         monster.add(new AnimationPart());
         monster.add(new StatsPart(20, 5, 0));
 
@@ -50,7 +49,7 @@ public class MonsterPlugin implements IGamePluginService {
     }
 
     @Override
-    public void stop(GameData gameData, World world) {
-        world.removeEntity(this.monster);
+    public void stop(World world) {
+        world.removeEntity(monster);
     }
 }
