@@ -66,7 +66,7 @@ public class ObstaclePlugin implements IEntityFactoryService {
         String file = "Barrel.png";
         Entity barrel = new Obstacle(file, 10, 64, 64, 0, 0.3f, 0.3f, 32, 32, 1, 0, -5);
         barrel.add(new LifePart(100));
-        barrel.add(new StatsPart(0,0,0,0,0,0));
+        barrel.add(new StatsPart(0,0,0,0,0));
         FileLoader.loadFile(file, getClass());
 
         int randX = rand.nextInt(48 - 2) + 2; // random x spawn point from 2 to width of the map - 2 in tiles
@@ -91,7 +91,7 @@ public class ObstaclePlugin implements IEntityFactoryService {
         String file = "ExplosiveBarrel.png";
         Entity explosiveBarrel = new Obstacle(file, 10, 64,64,0,0.3f,0.3f,32, 32,1,0,-5);
         explosiveBarrel.add(new LifePart(50));
-        explosiveBarrel.add(new StatsPart(0,0,50,50,0,0));
+        explosiveBarrel.add(new StatsPart(0,50,50,0,0));
         FileLoader.loadFile(file, getClass());
 
         int randX = rand.nextInt(48 - 2) + 2; // random x spawn point from 2 to width of the map - 2 in tiles
@@ -116,7 +116,7 @@ public class ObstaclePlugin implements IEntityFactoryService {
         String file = "Chest.png";
         Entity chest = new Obstacle(file, 10, 64,64,0,0.3f,0.3f,32, 32,1,0,-2);
         chest.add(new LifePart(100));
-        chest.add(new StatsPart(0,0,0,0,0,0));
+        chest.add(new StatsPart(0,0,0,0,0));
         FileLoader.loadFile(file, getClass());
 
         int randX = rand.nextInt(48 - 2) + 2; // random x spawn point from 2 to width of the map - 2 in tiles
@@ -141,7 +141,7 @@ public class ObstaclePlugin implements IEntityFactoryService {
         String file = "Crate.png";
         Entity crate = new Obstacle(file, 10, 64,64,0,0.3f,0.3f,32, 32,1,0,-4);
         crate.add(new LifePart(100));
-        crate.add(new StatsPart(0,0,0,0,0,0));
+        crate.add(new StatsPart(0,0,0,0,0));
         FileLoader.loadFile(file, getClass());
 
         int randX = rand.nextInt(48 - 2) + 2; // random x spawn point from 2 to width of the map - 2 in tiles
@@ -166,7 +166,7 @@ public class ObstaclePlugin implements IEntityFactoryService {
         String file = "Jar.png";
         Entity jar = new Obstacle(file, 10, 64,64,0,0.3f,0.3f,32, 32,1,0,-2);
         jar.add(new LifePart(100));
-        jar.add(new StatsPart(0,0,0,0,0,0));
+        jar.add(new StatsPart(0,0,0,0,0));
         FileLoader.loadFile(file, getClass());
 
         int randX = rand.nextInt(48 - 2) + 2; // random x spawn point from 2 to width of the map - 2 in tiles

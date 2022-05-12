@@ -28,7 +28,7 @@ public class PlayerPlugin implements IGamePluginService {
         player.add(new MovingPart(100));
         player.add(new AnimationPart());
         player.add(new LifePart(300, Color.GREEN));
-        player.add(new StatsPart(20,0,0, 0, 5, 0));
+        player.add(new StatsPart(20,0, 0, 5, 0));
         SoundPart soundPart = new SoundPart();
         soundPart.setPlayMovementSound(true);
         player.add(soundPart);

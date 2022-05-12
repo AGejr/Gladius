@@ -39,6 +39,8 @@ public class WeaponCollision implements IPostEntityProcessingService {
                                     EventRegistry.addEvent(GAME_EVENT.ENTITY_KILLED);
                                 }
 
+                                // Check if the hit entity has an animation part
+                                    // Set the hit entity's animation part to "take damage" animation
                                 AnimationPart hitEntityAnimationPart = hitEntity.getPart(AnimationPart.class);
                                 if (hitEntityAnimationPart != null) {
                                     hitEntityAnimationPart.setTakeDamage();

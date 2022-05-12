@@ -157,45 +157,27 @@ public class Game implements ApplicationListener {
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shapeRenderer.begin(ShapeType.Line);
-        for (Entity entity :  world.getEntities()) {
-            if (gameData.isDebugMode()) {
+        if (gameData.isDebugMode()) {
+            for (Entity entity :  world.getEntities()) {
                 shapeRenderer.setColor(Color.BLUE);
-            } else {
-                shapeRenderer.setColor(Color.CLEAR);
-            }
-            shapeRenderer.polygon(entity.getPolygonBoundaries().getTransformedVertices());
-            // Full texture size
-            /*if (gameData.isDebugMode()) {
-                shapeRenderer.setColor(Color.GREEN);
-            } else {
-                shapeRenderer.setColor(Color.CLEAR);
-            }
-            shapeRenderer.rect(entity.getX(), entity.getY(), entity.getTextureWidth(), entity.getTextureHeight());*/
-            // Collision size
-            if (gameData.isDebugMode()) {
+                shapeRenderer.polygon(entity.getPolygonBoundaries().getTransformedVertices());
+                // Collision size
                 shapeRenderer.setColor(Color.RED);
-            } else {
-                shapeRenderer.setColor(Color.CLEAR);
-            }
-            if(entity.getPart(MovingPart.class) != null) {
-                // because enemy and player is in the bottom of the image
-                shapeRenderer.rect(entity.getX() + entity.getRadiusOffsetX() + (float) (entity.getTextureWidth()/2) - (entity.getRadius()/2), entity.getY() + entity.getRadiusOffsetY(), entity.getRadius(), entity.getRadius());
-            }
-            else {
-                // obstacles are in the center of the image
-                shapeRenderer.rect(entity.getX() + entity.getRadiusOffsetX() + (float) (entity.getTextureWidth()/2) - (entity.getRadius()/2), entity.getY() + entity.getRadiusOffsetY() + ((float) entity.getTextureHeight()/2) - (entity.getRadius()/2), entity.getRadius(), entity.getRadius());
-            }
-            // Explosion range
-            if (gameData.isDebugMode()) {
-                shapeRenderer.setColor(Color.GREEN
-                );
-            } else {
-                shapeRenderer.setColor(Color.CLEAR);
-            }
-            if(entity.getPart(StatsPart.class) != null) {
-                StatsPart entityStats = entity.getPart(StatsPart.class);
-                Polygon polygonBoundaries = new Polygon(new float[]{entity.getX() + ((float) entity.getTextureWidth()/2) - (float) entityStats.getExplosionRadius()/2, entity.getY() + ((float) entity.getTextureHeight()/2) - (float) entityStats.getExplosionRadius()/2, entity.getX() + ((float) entity.getTextureWidth()/2) - (float) entityStats.getExplosionRadius()/2, entity.getY() + ((float) entity.getTextureHeight()/2) - (float) entityStats.getExplosionRadius()/2 + entityStats.getExplosionRadius(), entity.getX() + ((float) entity.getTextureWidth()/2) - (float) entityStats.getExplosionRadius()/2 + entityStats.getExplosionRadius(), entity.getY() + ((float) entity.getTextureHeight()/2) - (float) entityStats.getExplosionRadius()/2 + entityStats.getExplosionRadius(), entity.getX() + ((float) entity.getTextureWidth()/2) - (float) entityStats.getExplosionRadius()/2 + entityStats.getExplosionRadius(), entity.getY() + ((float) entity.getTextureHeight()/2) - (float) entityStats.getExplosionRadius()/2});
-                shapeRenderer.polygon(polygonBoundaries.getTransformedVertices());
+                if(entity.getPart(MovingPart.class) != null) {
+                    // because enemy and player is in the bottom of the image
+                    shapeRenderer.rect(entity.getX() + entity.getRadiusOffsetX() + (float) (entity.getTextureWidth()/2) - (entity.getRadius()/2), entity.getY() + entity.getRadiusOffsetY(), entity.getRadius(), entity.getRadius());
+                }
+                else {
+                    // obstacles are in the center of the image
+                    shapeRenderer.rect(entity.getX() + entity.getRadiusOffsetX() + (float) (entity.getTextureWidth()/2) - (entity.getRadius()/2), entity.getY() + entity.getRadiusOffsetY() + ((float) entity.getTextureHeight()/2) - (entity.getRadius()/2), entity.getRadius(), entity.getRadius());
+                }
+                // Explosion range
+                shapeRenderer.setColor(Color.GREEN);
+                if(entity.getPart(StatsPart.class) != null) {
+                    StatsPart entityStats = entity.getPart(StatsPart.class);
+                    Polygon polygonBoundaries = new Polygon(new float[]{entity.getX() + ((float) entity.getTextureWidth()/2) - (float) entityStats.getExplosionRadius()/2, entity.getY() + ((float) entity.getTextureHeight()/2) - (float) entityStats.getExplosionRadius()/2, entity.getX() + ((float) entity.getTextureWidth()/2) - (float) entityStats.getExplosionRadius()/2, entity.getY() + ((float) entity.getTextureHeight()/2) - (float) entityStats.getExplosionRadius()/2 + entityStats.getExplosionRadius(), entity.getX() + ((float) entity.getTextureWidth()/2) - (float) entityStats.getExplosionRadius()/2 + entityStats.getExplosionRadius(), entity.getY() + ((float) entity.getTextureHeight()/2) - (float) entityStats.getExplosionRadius()/2 + entityStats.getExplosionRadius(), entity.getX() + ((float) entity.getTextureWidth()/2) - (float) entityStats.getExplosionRadius()/2 + entityStats.getExplosionRadius(), entity.getY() + ((float) entity.getTextureHeight()/2) - (float) entityStats.getExplosionRadius()/2});
+                    shapeRenderer.polygon(polygonBoundaries.getTransformedVertices());
+                }
             }
         }
         shapeRenderer.end();

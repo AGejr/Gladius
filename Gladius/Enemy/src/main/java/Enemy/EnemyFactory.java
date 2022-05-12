@@ -37,7 +37,7 @@ public class EnemyFactory implements IEntityFactoryService {
         enemy.add(new MovingPart(30));
         enemy.add(new LifePart(100, Color.RED));
         enemy.add(new AnimationPart());
-        enemy.add(new StatsPart(5,0,0, 0, 5, 0));
+        enemy.add(new StatsPart(5,0, 0, 5, 0));
 
         SoundPart soundPart = new SoundPart();
         soundPart.putAudio(SoundData.SOUND.DEATH, minotaur_death);

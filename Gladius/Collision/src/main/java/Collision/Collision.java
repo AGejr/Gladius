@@ -92,7 +92,6 @@ public class Collision implements IPostEntityProcessingService {
                         float collidingEntityRight = (collidingEntity.getX() + collidingEntity.getRadiusOffsetX() + ((float) collidingEntity.getTextureWidth()/2) + collidingEntity.getRadius()/2);
                         float collidingEntityTop = (collidingEntity.getY() + collidingEntity.getRadiusOffsetY() + ((float) collidingEntity.getTextureHeight()/2) + collidingEntity.getRadius()/2);
                         float collidingEntityBottom = (collidingEntity.getY() + collidingEntity.getRadiusOffsetY() + ((float) collidingEntity.getTextureHeight()/2) - collidingEntity.getRadius()/2);
-                        StatsPart collidingEntityStats = collidingEntity.getPart(StatsPart.class);
                         // check left collision
                         if(!entity.getClass().equals(collidingEntity.getClass()) &&
                                 entityLeft - collidingEntityRight <= 2 &&
@@ -100,14 +99,6 @@ public class Collision implements IPostEntityProcessingService {
                                 entityBottom <= collidingEntityTop &&
                                 entityTop >= collidingEntityBottom) {
                             movingPart.setColLeft(true);
-                            if(collidingEntityStats != null && collidingEntity.getPart(MovingPart.class) == null) {
-                                LifePart defendingEntity = entity.getPart(LifePart.class);
-                                StatsPart defenderStats = entity.getPart(StatsPart.class);
-                                if(collidingEntityStats.getSpikeAttack() != 0) {
-                                    int totalDamage = collidingEntityStats.getAttack() - defenderStats.getDefence();
-                                    defendingEntity.subtractLife(totalDamage);
-                                }
-                            }
                         }
                         // check right collision
                         if(!entity.getClass().equals(collidingEntity.getClass()) &&
@@ -116,14 +107,6 @@ public class Collision implements IPostEntityProcessingService {
                                 entityBottom <= collidingEntityTop &&
                                 entityTop >= collidingEntityBottom){
                             movingPart.setColRight(true);
-                            if(collidingEntityStats != null && collidingEntity.getPart(MovingPart.class) == null) {
-                                LifePart defendingEntity = entity.getPart(LifePart.class);
-                                StatsPart defenderStats = entity.getPart(StatsPart.class);
-                                if(collidingEntityStats.getSpikeAttack() != 0) {
-                                    int totalDamage = collidingEntityStats.getAttack() - defenderStats.getDefence();
-                                    defendingEntity.subtractLife(totalDamage);
-                                }
-                            }
                         }
                         // check top collision
                         if(!entity.getClass().equals(collidingEntity.getClass()) &&
@@ -132,14 +115,6 @@ public class Collision implements IPostEntityProcessingService {
                                 entityBottom - collidingEntityTop <= 2 &&
                                 entityTop >= collidingEntityBottom){
                             movingPart.setColBot(true);
-                            if(collidingEntityStats != null && collidingEntity.getPart(MovingPart.class) == null) {
-                                LifePart defendingEntity = entity.getPart(LifePart.class);
-                                StatsPart defenderStats = entity.getPart(StatsPart.class);
-                                if(collidingEntityStats.getSpikeAttack() != 0) {
-                                    int totalDamage = collidingEntityStats.getAttack() - defenderStats.getDefence();
-                                    defendingEntity.subtractLife(totalDamage);
-                                }
-                            }
                         }
                         // check bottom collision
                         if(!entity.getClass().equals(collidingEntity.getClass()) &&
@@ -148,14 +123,6 @@ public class Collision implements IPostEntityProcessingService {
                                 collidingEntityBottom - entityTop <= 2 &&
                                 entityBottom <= collidingEntityTop){
                             movingPart.setColTop(true);
-                            if(collidingEntityStats != null && collidingEntity.getPart(MovingPart.class) == null) {
-                                LifePart defendingEntity = entity.getPart(LifePart.class);
-                                StatsPart defenderStats = entity.getPart(StatsPart.class);
-                                if(collidingEntityStats.getSpikeAttack() != 0) {
-                                    int totalDamage = collidingEntityStats.getAttack() - defenderStats.getDefence();
-                                    defendingEntity.subtractLife(totalDamage);
-                                }
-                            }
                         }
                     }
                 }
