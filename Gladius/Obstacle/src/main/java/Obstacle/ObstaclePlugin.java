@@ -7,9 +7,8 @@ import Common.data.entityparts.AnimationPart;
 import Common.data.entityparts.LifePart;
 import Common.data.entityparts.StatsPart;
 import Common.services.IEntityFactoryService;
-import Common.services.IGamePluginService;
 import Common.tools.FileLoader;
-import com.badlogic.gdx.graphics.Color;
+import CommonObstacles.Obstacle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +22,7 @@ public class ObstaclePlugin implements IEntityFactoryService {
 
     @Override
     public void spawn(GameData gameData, World world, Integer amount) {
-        if(obstacles != null && obstacles.size() > 0) {
-            stop(world);
-            // Empty list of obstacles
-            obstacles = new ArrayList<>();
-        }
-
+        obstacles = new ArrayList<>();
         rand = new Random();
 
         // First time move obstacles into grid

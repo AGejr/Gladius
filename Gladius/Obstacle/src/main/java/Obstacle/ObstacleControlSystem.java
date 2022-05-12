@@ -7,11 +7,9 @@ import Common.data.entityparts.AnimationPart;
 import Common.data.entityparts.LifePart;
 import Common.data.entityparts.StatsPart;
 import Common.services.IEntityProcessingService;
+import CommonObstacles.Obstacle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
-
-import java.util.List;
-import java.util.Random;
 
 public class ObstacleControlSystem implements IEntityProcessingService {
 

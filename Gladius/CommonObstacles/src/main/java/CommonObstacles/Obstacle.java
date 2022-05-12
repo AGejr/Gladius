@@ -1,4 +1,4 @@
-package Obstacle;
+package CommonObstacles;
 
 import Common.data.Entity;
 import Common.data.entityparts.AnimationPart;

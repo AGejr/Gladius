@@ -12,6 +12,7 @@ import Common.ui.Text;
 import Common.ui.UI;
 import CommonEnemy.Enemy;
 import CommonMonster.Monster;
+import CommonObstacles.Obstacle;
 import CommonPlayer.Player;
 
 public class EventProcessor implements IEventProcessingService {
@@ -101,7 +102,9 @@ public class EventProcessor implements IEventProcessingService {
         for(Entity monster: world.getEntities(Monster.class)){
             world.removeEntity(monster);
         }
-
+        for(Entity obstacles: world.getEntities(Obstacle.class)){
+            world.removeEntity(obstacles);
+        }
         for (Entity player: world.getEntities(Player.class)){
             LifePart lifePart = player.getPart(LifePart.class);
             lifePart.resetHealth();

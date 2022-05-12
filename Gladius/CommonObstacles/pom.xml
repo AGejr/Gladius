@@ -9,13 +9,13 @@
   </parent>
 
   <properties>
-    <bundle.symbolicName>Obstacle</bundle.symbolicName>
-    <bundle.namespace>Obstacle</bundle.namespace>
+    <bundle.symbolicName>CommonObstacles</bundle.symbolicName>
+    <bundle.namespace>CommonObstacles</bundle.namespace>
   </properties>
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.gladius.Gladius</groupId>
-  <artifactId>Obstacle</artifactId>
+  <artifactId>CommonObstacles</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <name>${bundle.symbolicName}</name>
@@ -29,19 +29,13 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.gladius.Gladius</groupId>
-      <artifactId>Common</artifactId>
-      <version>1.0-SNAPSHOT</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
       <groupId>org.gladius.build</groupId>
       <artifactId>LibGDXImports</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.gladius.Gladius</groupId>
-      <artifactId>CommonObstacles</artifactId>
+      <artifactId>Common</artifactId>
       <version>1.0-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>

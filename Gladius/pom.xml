@@ -38,6 +38,7 @@
     <module>Monster</module>
     <module>CommonMonster</module>
     <module>Event</module>
+    <module>CommonObstacles</module>
   </modules>
 
   <build>
