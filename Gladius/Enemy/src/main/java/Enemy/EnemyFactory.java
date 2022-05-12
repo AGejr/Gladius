@@ -33,11 +33,11 @@ public class EnemyFactory implements IEntityFactoryService {
         String[] files = {texture, minotaur_death, mintoaur_attack};
 
         // radius should be texture width / 16
-        Entity enemy = new Enemy(texture, 6);
+        Entity enemy = new Enemy(texture, 20);
         enemy.add(new MovingPart(30));
         enemy.add(new LifePart(100, Color.RED));
         enemy.add(new AnimationPart());
-        enemy.add(new StatsPart(5, 5, 0));
+        enemy.add(new StatsPart(5,0, 0, 5, 0));
 
         SoundPart soundPart = new SoundPart();
         soundPart.putAudio(SoundData.SOUND.DEATH, minotaur_death);

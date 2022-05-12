@@ -12,4 +12,3 @@ public enum WeaponImages {
         this.path = path;
     }
 }
-

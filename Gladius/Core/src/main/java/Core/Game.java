@@ -4,6 +4,8 @@ import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.SoundData;
 import Common.data.World;
+import Common.data.entityparts.MovingPart;
+import Common.data.entityparts.StatsPart;
 import Common.data.entityparts.LifePart;
 import Common.services.*;
 import Common.services.IEntityProcessingService;
@@ -18,6 +20,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -27,6 +30,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -95,6 +99,7 @@ public class Game implements ApplicationListener {
         tiledMapRenderer.setBlending(true); //Makes tiles transparent
 
         world.setCsvMap(FileLoader.fetchData(mapFiles[0]));
+        world.setIsMapLoaded(true);
 
         // initialize soundData
         gameData.setSoundData(new SoundData());
@@ -152,13 +157,28 @@ public class Game implements ApplicationListener {
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shapeRenderer.begin(ShapeType.Line);
-        for (Entity entity :  world.getEntities()) {
-            if (gameData.isDebugMode()) {
+        if (gameData.isDebugMode()) {
+            for (Entity entity :  world.getEntities()) {
                 shapeRenderer.setColor(Color.BLUE);
-            } else {
-                shapeRenderer.setColor(Color.CLEAR);
+                shapeRenderer.polygon(entity.getPolygonBoundaries().getTransformedVertices());
+                // Collision size
+                shapeRenderer.setColor(Color.RED);
+                if(entity.getPart(MovingPart.class) != null) {
+                    // because enemy and player is in the bottom of the image
+                    shapeRenderer.rect(entity.getX() + entity.getRadiusOffsetX() + (float) (entity.getTextureWidth()/2) - (entity.getRadius()/2), entity.getY() + entity.getRadiusOffsetY(), entity.getRadius(), entity.getRadius());
+                }
+                else {
+                    // obstacles are in the center of the image
+                    shapeRenderer.rect(entity.getX() + entity.getRadiusOffsetX() + (float) (entity.getTextureWidth()/2) - (entity.getRadius()/2), entity.getY() + entity.getRadiusOffsetY() + ((float) entity.getTextureHeight()/2) - (entity.getRadius()/2), entity.getRadius(), entity.getRadius());
+                }
+                // Explosion range
+                shapeRenderer.setColor(Color.GREEN);
+                if(entity.getPart(StatsPart.class) != null) {
+                    StatsPart entityStats = entity.getPart(StatsPart.class);
+                    Polygon polygonBoundaries = new Polygon(new float[]{entity.getX() + ((float) entity.getTextureWidth()/2) - (float) entityStats.getExplosionRadius()/2, entity.getY() + ((float) entity.getTextureHeight()/2) - (float) entityStats.getExplosionRadius()/2, entity.getX() + ((float) entity.getTextureWidth()/2) - (float) entityStats.getExplosionRadius()/2, entity.getY() + ((float) entity.getTextureHeight()/2) - (float) entityStats.getExplosionRadius()/2 + entityStats.getExplosionRadius(), entity.getX() + ((float) entity.getTextureWidth()/2) - (float) entityStats.getExplosionRadius()/2 + entityStats.getExplosionRadius(), entity.getY() + ((float) entity.getTextureHeight()/2) - (float) entityStats.getExplosionRadius()/2 + entityStats.getExplosionRadius(), entity.getX() + ((float) entity.getTextureWidth()/2) - (float) entityStats.getExplosionRadius()/2 + entityStats.getExplosionRadius(), entity.getY() + ((float) entity.getTextureHeight()/2) - (float) entityStats.getExplosionRadius()/2});
+                    shapeRenderer.polygon(polygonBoundaries.getTransformedVertices());
+                }
             }
-            shapeRenderer.polygon(entity.getPolygonBoundaries().getTransformedVertices());
         }
         shapeRenderer.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);

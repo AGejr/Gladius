@@ -50,7 +50,6 @@ public class Monster extends Entity implements IWeaponUserService {
             AnimationPart animationPart = this.getPart(AnimationPart.class);
 
             // IDLE animation
-
             Array<TextureRegion> idleRightTextures = new Array<>();
             Array<TextureRegion> idleLeftTextures = new Array<>();
 
@@ -63,7 +62,6 @@ public class Monster extends Entity implements IWeaponUserService {
                 idleLeftTexture.flip(true, false);
                 idleLeftTextures.add(idleLeftTexture);
             }
-
             // IDLE right animation
             Animation idleRightAnimation = new Animation(0.16f, idleRightTextures);
             animationPart.addAnimation(AnimationPart.ANIMATION_STATES.IDLE_RIGHT, idleRightAnimation);
@@ -73,7 +71,6 @@ public class Monster extends Entity implements IWeaponUserService {
             animationPart.addAnimation(AnimationPart.ANIMATION_STATES.IDLE_LEFT, leftIdleAnimation);
 
             // Running animation
-
             Array<TextureRegion> rightMoveTextures = new Array<>();
             Array<TextureRegion> leftMoveTextures = new Array<>();
 
@@ -86,7 +83,6 @@ public class Monster extends Entity implements IWeaponUserService {
                 leftTexture.flip(true, false);
                 leftMoveTextures.add(leftTexture);
             }
-
             // RUNNING right animation
             Animation rightMoveAnimation = new Animation(0.175f, rightMoveTextures);
             animationPart.addAnimation(AnimationPart.ANIMATION_STATES.RUNNING_RIGHT, rightMoveAnimation);
@@ -115,10 +111,9 @@ public class Monster extends Entity implements IWeaponUserService {
             animationPart.addAnimation(AnimationPart.ANIMATION_STATES.DEATH_LEFT, leftDeathAnimation);
 
             // ATTACK animation
-
             Array<TextureRegion> rightAttackTextures = new Array<>();
             Array<TextureRegion> leftAttackTextures = new Array<>();
-            for (int i = 0; i < 13; i++) {
+            for (int i = 0; i < 10; i++) {
                 // The attack animation expands on two rows on the spritesheet
                 int attack_row = i < 6 ? 9 : 10;
                 int adjustment = i >= 6 ? i - 6 : i;
@@ -137,6 +132,23 @@ public class Monster extends Entity implements IWeaponUserService {
             Animation leftAttackAnimation = new Animation(0.12f, leftAttackTextures);
             animationPart.addAnimation(AnimationPart.ANIMATION_STATES.ATTACK_LEFT, leftAttackAnimation);
 
+            // TAKE DAMAGE animation
+            Array<TextureRegion> rightTakeDamageTextures = new Array<>();
+            Array<TextureRegion> leftTakeDamageTextures = new Array<>();
+            for (int i = 0; i < 3; i++) {
+                int death_row = 6;
+                TextureRegion rightTakeDamageTexture = new TextureRegion(this.getTexture(), super.getTextureWidth() * i, super.getTextureHeight() * death_row, super.getTextureWidth(), super.getTextureHeight());
+                rightTakeDamageTextures.add(rightTakeDamageTexture);
+                TextureRegion leftTakeDamageTexture = new TextureRegion(this.getTexture(), super.getTextureWidth() * i, super.getTextureHeight() * death_row, super.getTextureWidth(), super.getTextureHeight());
+                leftTakeDamageTexture.flip(true, false);
+                leftTakeDamageTextures.add(leftTakeDamageTexture);
+            }
+            // TAKE DAMAGE right animation
+            Animation rightTakeDamageAnimation = new Animation(0.08f,rightTakeDamageTextures);
+            animationPart.addAnimation(AnimationPart.ANIMATION_STATES.TAKE_DAMAGE_RIGHT, rightTakeDamageAnimation);
+            // TAKE DAMAGE left animation
+            Animation leftTakeDamageAnimation = new Animation(0.08f,leftTakeDamageTextures);
+            animationPart.addAnimation(AnimationPart.ANIMATION_STATES.TAKE_DAMAGE_LEFT, leftTakeDamageAnimation);
         }
     }
 }

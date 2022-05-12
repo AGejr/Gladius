@@ -124,7 +124,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
                             sr.begin(ShapeRenderer.ShapeType.Line);
                             sr.setColor(Color.RED);
                             sr.polygon(attackRange.getTransformedVertices());
-                            sr.end();
                             Gdx.gl.glDisable(GL20.GL_BLEND);
                         }
 
