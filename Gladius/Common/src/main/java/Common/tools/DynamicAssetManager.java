@@ -1,29 +1,28 @@
 package Common.tools;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.BitmapFontLoader;
-import com.badlogic.gdx.assets.loaders.PixmapLoader;
-import com.badlogic.gdx.assets.loaders.SoundLoader;
-import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
+
+import java.util.ArrayList;
 
 public class DynamicAssetManager {
 
-    public final AssetManager assetManager;
-
-    private TextureLoader textureLoader;
-    private SoundLoader soundLoader;
-    private PixmapLoader pixmapLoader;
-    private FreeTypeFontGeneratorLoader freeTypeFontGeneratorLoader;
+    public final AssetManager assetManager = new AssetManager();
+    private ArrayList<String> files = new ArrayList<>();
 
     public DynamicAssetManager() {
-        assetManager = new AssetManager();
+    }
+
+    public void loadAssets(){
+        files.add("Minotaur.png");
+        files.add("GladiatorSpriteSheet.png");
+
+        FileLoader.loadFiles(files, getClass());
+
         loadImages();
     }
 
     private void loadImages(){
-        FileLoader.loadFile("Minotaur.png", getClass());
         assetManager.load("Minotaur.png", Texture.class);
     }
 
