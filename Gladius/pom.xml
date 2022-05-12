@@ -32,11 +32,13 @@
     <module>Collision</module>
     <module>Enemy</module>
     <module>CommonPlayer</module>
+    <module>Obstacle</module>
     <module>Shop</module>
     <module>CommonEnemy</module>
     <module>Monster</module>
     <module>CommonMonster</module>
     <module>Event</module>
+    <module>CommonObstacles</module>
   </modules>
 
   <build>

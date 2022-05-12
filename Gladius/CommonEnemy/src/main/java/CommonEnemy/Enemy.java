@@ -145,6 +145,17 @@ public class Enemy extends Entity implements IWeaponUserService {
             Animation leftAttackAnimation = new Animation(0.12f,leftAttackTextures);
             animationPart.addAnimation(AnimationPart.ANIMATION_STATES.ATTACK_LEFT, leftAttackAnimation);
 
+            // TAKE DAMAGE animation
+            Array<TextureRegion> takeDamageTexturesRight = new Array<>();
+            Array<TextureRegion> takeDamageTexturesLeft = new Array<>();
+            for (int i = 0; i < 3; i++) {
+                takeDamageTexturesRight.add(new TextureRegion(this.getTexture(),96*i,96*8,96,96));
+                takeDamageTexturesLeft.add(new TextureRegion(this.getTexture(),96*i,96*18,96,96));
+            }
+            Animation takeDamageAnimationRight = new Animation(0.08f,takeDamageTexturesRight);
+            Animation takeDamageAnimationLeft = new Animation(0.08f,takeDamageTexturesLeft);
+            animationPart.addAnimation(AnimationPart.ANIMATION_STATES.TAKE_DAMAGE_RIGHT, takeDamageAnimationRight);
+            animationPart.addAnimation(AnimationPart.ANIMATION_STATES.TAKE_DAMAGE_LEFT, takeDamageAnimationLeft);
         }
 
     }

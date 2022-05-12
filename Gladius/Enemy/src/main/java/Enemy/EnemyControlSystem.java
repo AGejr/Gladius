@@ -4,10 +4,12 @@ import Common.ai.AStarPathFinding;
 import Common.ai.Node;
 import Common.data.Entity;
 import Common.data.GameData;
+import Common.data.SoundData;
 import Common.data.World;
 import Common.data.entityparts.AnimationPart;
 import Common.data.entityparts.LifePart;
 import Common.data.entityparts.MovingPart;
+import Common.data.entityparts.SoundPart;
 import Common.services.IEntityProcessingService;
 import CommonPlayer.Player;
 import CommonEnemy.Enemy;
@@ -47,6 +49,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
             AnimationPart animationPart = enemy.getPart(AnimationPart.class);
             LifePart lifePart = enemy.getPart(LifePart.class);
+            SoundPart soundPart = enemy.getPart(SoundPart.class);
 
             for (Entity player : world.getEntities(Player.class)) {
                 // getting player position on the tile map
@@ -121,7 +124,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
                             sr.begin(ShapeRenderer.ShapeType.Line);
                             sr.setColor(Color.RED);
                             sr.polygon(attackRange.getTransformedVertices());
-                            sr.end();
                             Gdx.gl.glDisable(GL20.GL_BLEND);
                         }
 
@@ -134,7 +136,10 @@ public class EnemyControlSystem implements IEntityProcessingService {
                                 } else {
                                     animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.ATTACK_RIGHT);
                                 }
+                                if (weaponService != null) {
                                 weaponService.attack(enemy, gameData, world);
+                                }
+                                soundPart.playAudio(SoundData.SOUND.ATTACK);
                             }
                         } else {
                             if (animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime())) {
@@ -207,9 +212,12 @@ public class EnemyControlSystem implements IEntityProcessingService {
             movingPart.process(gameData, enemy);
             animationPart.process(gameData, enemy);
             lifePart.process(gameData, enemy);
+            soundPart.process(gameData, enemy);
+
         }
         if (gameData.isDebugMode()) {
             sr.end();
+            sr.dispose();
             Gdx.gl.glDisable(GL20.GL_BLEND);
         }
     }

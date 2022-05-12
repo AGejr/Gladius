@@ -17,6 +17,8 @@ public class Entity extends Sprite implements Serializable {
     private final UUID ID = UUID.randomUUID();
 
     private float radius;
+    private int radiusOffsetX = 0;
+    private int radiusOffsetY = 0;
     private String texturePath;
     private int textureWidth;
     private int textureHeight;
@@ -25,11 +27,13 @@ public class Entity extends Sprite implements Serializable {
     private Polygon polygonBoundaries;
     private float scaling = 1.0f;
 
-    public Entity(String texturePath, float radius, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float scaling) {
+    public Entity(String texturePath, float radius, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float hitboxOriginY, float scaling, int radiusOffsetX, int radiusOffsetY) {
         super();
         this.parts = new ConcurrentHashMap<>();
         this.texturePath = texturePath;
         this.radius = radius;
+        this.radiusOffsetX = radiusOffsetX;
+        this.radiusOffsetY = radiusOffsetY;
         this.textureWidth = textureWidth;
         this.textureHeight = textureHeight;
         this.angle = angle;
@@ -38,9 +42,15 @@ public class Entity extends Sprite implements Serializable {
          * The hitboxOriginX, defines the center of the x-axis where the box is made from.
          * The hitbox aligns with the bottom of the texture.*/
         this.polygonBoundaries = new Polygon(new float[]{super.getX(), super.getY(), super.getX(), super.getY() + textureHeight * scaling, super.getX() + textureWidth * scaling, super.getY() + textureHeight * scaling, super.getX() + textureWidth * scaling, super.getY()});
-        this.polygonBoundaries.setOrigin(hitboxOriginX, 0);
+        this.polygonBoundaries.setOrigin(hitboxOriginX, hitboxOriginY);
         this.polygonBoundaries.setScale(hitboxScaleX, hitboxScaleY);
         this.setScaling(scaling);
+    }
+
+    //            String texturePath, float radius, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float scaling, int radiusOffsetX, int radiusOffsetY
+
+    public Entity(String texturePath, float radius, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float scaling) {
+        this(texturePath, radius, textureWidth, textureHeight, angle, hitboxScaleX, hitboxScaleY, hitboxOriginX, 0, scaling, 0, 0);
     }
 
     public Entity(String texturePath, float radius, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX) {
@@ -152,6 +162,14 @@ public class Entity extends Sprite implements Serializable {
 
     public void updatePolygonBoundariesPosition() {
         this.getPolygonBoundaries().setPosition(this.getX(), this.getY());
+    }
+
+    public int getRadiusOffsetX() {
+        return radiusOffsetX;
+    }
+
+    public int getRadiusOffsetY() {
+        return radiusOffsetY;
     }
 
     public void setScaling(float scaling) {

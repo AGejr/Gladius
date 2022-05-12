@@ -18,13 +18,17 @@ public class AnimationPart implements EntityPart{
         ATTACK_RIGHT,
         ATTACK_LEFT,
         DEATH_RIGHT,
-        DEATH_LEFT
+        DEATH_LEFT,
+        TAKE_DAMAGE_LEFT,
+        TAKE_DAMAGE_RIGHT
     }
 
     private ANIMATION_STATES currentState = ANIMATION_STATES.IDLE_RIGHT;
     private HashMap<ANIMATION_STATES, Animation> animations = new HashMap<>();
     private float animationTime = 0;
     private Boolean isLeft = true;
+    private Boolean takeDamage = false;
+    private Boolean attack = false;
     private boolean isAttacking = false;
 
     @Override
@@ -34,9 +38,10 @@ public class AnimationPart implements EntityPart{
         boolean hasLifePart = lifePart != null;
         boolean hasMovingPart = movingPart != null;
         boolean isInDeathAnimationState = this.getCurrentState() == ANIMATION_STATES.DEATH_LEFT || this.getCurrentState() == ANIMATION_STATES.DEATH_RIGHT;
+        boolean isInTakeDamageAnimationState = this.getCurrentState() == ANIMATION_STATES.TAKE_DAMAGE_LEFT || this.getCurrentState() == ANIMATION_STATES.TAKE_DAMAGE_RIGHT;
         boolean isInAttackAnimationState = this.getCurrentState() == ANIMATION_STATES.ATTACK_LEFT || this.getCurrentState() == ANIMATION_STATES.ATTACK_RIGHT;
 
-
+        // DEATH ANIMATION
         if (hasLifePart && lifePart.isDead() && !isInDeathAnimationState) {
             // If the entity has just died
             // Reset animationtime so that it uses the first keyframe
@@ -54,23 +59,62 @@ public class AnimationPart implements EntityPart{
             this.isAttacking = true;
         }
 
-        if(!this.getCurrentAnimation().isAnimationFinished(animationTime)){
-            // Advance animation
-            animationTime += Gdx.graphics.getDeltaTime();
-        } else if (lifePart == null) {
-            // Loop animation if entity is not a living entity
-            animationTime = 0;
-        } else if (!lifePart.isDead()) {
-            // Loop animation if the entity has a lifepart, and it is alive
-            animationTime = 0;
+        // IDLE ANIMATION
+        if(isInTakeDamageAnimationState && this.getCurrentAnimation().isAnimationFinished(animationTime) || isInAttackAnimationState && this.getCurrentAnimation().isAnimationFinished(animationTime)) {
+            if(hasLifePart && !lifePart.isDead()) {
+                this.animationTime = 0;
+                if (this.isLeft) {
+                    this.setCurrentState(ANIMATION_STATES.IDLE_LEFT);
+                } else {
+                    this.setCurrentState(ANIMATION_STATES.IDLE_RIGHT);
+                }
+            }
         }
 
-        if (hasMovingPart && hasLifePart && !lifePart.isDead() && !isInAttackAnimationState) {
+        if (hasMovingPart && hasLifePart && !lifePart.isDead() && !isInAttackAnimationState && !isInTakeDamageAnimationState) {
             this.isAttacking = false;
             processMovementAnimation(entity);
         }
 
-        entity.setRegion(getCurrentKeyFrame());
+        // TAKE DAMAGE ANIMATION
+        if(takeDamage && hasLifePart && !lifePart.isDead() && !isInAttackAnimationState) {
+            // If the entity isn't dead but takes damage
+            // reset animationTime so that it uses the first keyframe
+            this.animationTime = 0;
+            if (this.isLeft) {
+                this.setCurrentState(ANIMATION_STATES.TAKE_DAMAGE_LEFT);
+            } else {
+                this.setCurrentState(ANIMATION_STATES.TAKE_DAMAGE_RIGHT);
+            }
+            takeDamage = false;
+        }
+
+        // ATTACK ANIMATION
+        if(attack && hasLifePart && !lifePart.isDead()) {
+            // If the entity isn't dead but takes damage
+            // reset animationTime so that it uses the first keyframe
+            this.animationTime = 0;
+            if (this.isLeft) {
+                this.setCurrentState(ANIMATION_STATES.ATTACK_LEFT);
+            } else {
+                this.setCurrentState(ANIMATION_STATES.ATTACK_RIGHT);
+            }
+            attack = false;
+        }
+
+        if(this.getCurrentAnimation() != null) {
+            if(!this.getCurrentAnimation().isAnimationFinished(animationTime)){
+                // Advance animation
+                animationTime += Gdx.graphics.getDeltaTime();
+            } else if (hasLifePart && !lifePart.isDead()) {
+                // Loop animation if the entity has a lifepart, and it is alive
+                animationTime = 0;
+            } else if (lifePart == null) {
+                // Loop animation if entity is not a living entity
+                animationTime = 0;
+            }
+            entity.setRegion(getCurrentKeyFrame());
+        }
     }
 
     /**
@@ -153,12 +197,24 @@ public class AnimationPart implements EntityPart{
         return getCurrentAnimation().getKeyFrame(animationTime,false);
     }
 
+    public boolean isDoneAnimating() {
+        return this.getCurrentAnimation().isAnimationFinished(animationTime);
+    }
+
     public boolean isLeft() {
         return isLeft;
     }
 
     public void setLeft(boolean left) {
         isLeft = left;
+    }
+
+    public void setTakeDamage() {
+        takeDamage = true;
+    }
+
+    public void setAttack() {
+        attack = true;
     }
 
     public float getAnimationTime() {
