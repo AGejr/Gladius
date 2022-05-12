@@ -4,6 +4,7 @@ import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
 import Common.data.entityparts.LifePart;
+import Common.data.entityparts.StatsPart;
 import Common.services.IEntityFactoryService;
 import Common.services.IEventProcessingService;
 import Common.ui.Text;
@@ -32,6 +33,7 @@ public class EventProcessor implements IEventProcessingService {
                     break;
                 case ENTITY_KILLED:
                     process_entity_killed(gameData, world);
+
                     break;
                 case PLAYER_DIED:
                     processPlayerDiedEvent(gameData, world);
@@ -69,6 +71,15 @@ public class EventProcessor implements IEventProcessingService {
             LifePart playerLifePart = player.getPart(LifePart.class);
             if (playerLifePart.isDead()) {
                 EventRegistry.addEvent(GAME_EVENT.PLAYER_DIED);
+            }
+            StatsPart statsPart = player.getPart(StatsPart.class);
+            int life = playerLifePart.getLife();
+            if (life > 90) {
+                statsPart.depositBalance(75);
+            } else if (life > 60) {
+                statsPart.depositBalance(50);
+            } else {
+                statsPart.depositBalance(25);
             }
         }
     }

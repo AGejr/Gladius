@@ -3,11 +3,8 @@ package Weapon;
 import Common.data.GameData;
 import Common.data.World;
 import Common.services.IGamePluginService;
-import CommonWeapon.IWeaponUserService;
 import CommonWeapon.Weapon;
 import Common.data.Entity;
-import CommonWeapon.WeaponImages;
-import CommonPlayer.Player;
 
 public class WeaponPlugin implements IGamePluginService {
 

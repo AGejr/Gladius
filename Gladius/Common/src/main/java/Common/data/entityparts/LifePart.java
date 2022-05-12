@@ -4,7 +4,6 @@ import Common.data.Entity;
 import Common.data.GameData;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class LifePart implements EntityPart {
     private final int MAXLIFE; // Maximum life possible for the entity
