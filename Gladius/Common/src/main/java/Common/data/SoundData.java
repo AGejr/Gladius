@@ -28,17 +28,10 @@ public class SoundData {
         WAVE_CLEARED,
         ARENA_ENTERED,
         ARENA_EXIT,
-
-        //todo
-        GOBLIN_ATTACK,
-        GOBLIN_SOUND,
-        MINOTAUR_SOUND,
-        MINOTAUR_ATTACK
     }
 
     public SoundData(){
 
-        //TODO record sounds
         soundFileMap.put(SOUND.WALK, "walk.mp3");
         soundFileMap.put(SOUND.WALK_WATER, "walk_water.mp3");
         soundFileMap.put(SOUND.ATTACK, "attack.mp3");
