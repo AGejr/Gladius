@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class FileLoader {
-    private static int[] noCollide = new int[]{70, 71, 72, 78, 79, 86, 87, 88, 103, 104, 107, 123, 127, 159, 155, 108, 37, 98, 99, 159, 160, 161, 162, 163, 164, 165, 177, 178, 179};
+    private static int[] noCollide = new int[]{70, 71, 72, 78, 79, 86, 87, 88, 103, 104, 107, 123, 127, 159, 155, 108, 37, 98, 99, 159, 160, 161, 162, 163, 164, 177, 178, 179};
     private static int[] water = new int[]{70, 71, 78, 79, 86, 87, 88, 103, 123, 127, 159, 155, 108, 107};
 
     /**

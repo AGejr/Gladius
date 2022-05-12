@@ -43,7 +43,7 @@ public class EnemyFactory implements IEntityFactoryService {
         enemy.add(new MovingPart(30));
         enemy.add(new LifePart(100, Color.RED));
         enemy.add(new AnimationPart());
-        enemy.add(new StatsPart(20, 5));
+        enemy.add(new StatsPart(5, 5, 0));
         FileLoader.loadFile(file, getClass());
 
         //400 is max, 280 is min

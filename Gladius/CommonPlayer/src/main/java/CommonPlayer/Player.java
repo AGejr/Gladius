@@ -13,14 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player extends Entity implements IWeaponUserService {
-    int balance;
     private List<Weapon> ownedWeapons = new ArrayList<>();
     private Weapon equippedWeapon;
 
     public Player(String texturePath, int radius) {
         super(texturePath,radius, 32, 32);
-        this.balance = 0;
-        Weapon sword = new Weapon("Sword", 25, 8, 10, WeaponImages.SWORD.path, 9, 36, 0.9f, 0.9f, 0, 20.0f, 9.0f, 20.0f, 9.0f, 10.0f, this);
+        Weapon sword = new Weapon("Sword", 25, 8, 10, WeaponImages.STARTSWORD.path, 36, 146, 0.9f, 0.9f, 0, 20.0f, 9.0f, 20.0f,9.0f, 10.0f, this, 0.3f);
         ownedWeapons.add(sword);
         equippedWeapon = ownedWeapons.get(0);
     }
@@ -51,7 +49,20 @@ public class Player extends Entity implements IWeaponUserService {
         ownedWeapons.remove(weapon);
     }
 
-   private void initAnimation(){
+    public List<Weapon> getOwnedWeapons() {
+        return ownedWeapons;
+    }
+
+    public boolean hasOwnedWeapon(WeaponImages weaponImages) {
+        for (Weapon weapon : ownedWeapons) {
+            if (weapon.getTexturePath() != null && weapon.getTexturePath().equals(weaponImages.path)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void initAnimation(){
         if(this.getPart(AnimationPart.class) != null){
             AnimationPart animationPart = this.getPart(AnimationPart.class);
 
