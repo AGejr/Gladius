@@ -32,7 +32,6 @@ public class UI {
         shapeRenderer.setColor(Color.DARK_GRAY);
         shapeRenderer.rect(x - 20, y - 10, width-10, height-10);
         shapeRenderer.end();
-        shapeRenderer.dispose();
     }
 
     private static void text(GameData gameData, String text, float x, float y) {
@@ -44,7 +43,6 @@ public class UI {
         stage.addActor(label);
         stage.act();
         stage.draw();
-        stage.dispose();
     }
 
     /**
@@ -65,7 +63,6 @@ public class UI {
         }
         stage.act();
         stage.draw();
-        stage.dispose();
     }
 
     /**
