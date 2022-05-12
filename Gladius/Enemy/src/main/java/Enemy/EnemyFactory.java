@@ -22,11 +22,17 @@ public class EnemyFactory implements IEntityFactoryService {
 
     @Override
     public void spawn(GameData gameData, World world, Integer amount) {
-        for (int i = 0; i < amount; i++) {
-            Entity enemy = createMinotauer(gameData);
-            enemies.add(enemy);
-            world.addEntity(enemy);
-        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < amount; i++) {
+                    Entity enemy = createMinotauer(gameData);
+                    enemies.add(enemy);
+                    world.addEntity(enemy);
+                    enemy.initTextureFormAssetManager(gameData);
+                }
+            }
+        }).start();
     }
 
     private Entity createMinotauer(GameData gamedata) {
