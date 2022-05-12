@@ -9,6 +9,7 @@ import com.badlogic.gdx.audio.Sound;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class SoundPart implements EntityPart {
 
@@ -109,7 +110,6 @@ public class SoundPart implements EntityPart {
         }
 
         if(hasLifePart){
-
             if(lifePart.isDead() && !isDead){
                 this.playAudio(SoundData.SOUND.DEATH);
                 isDead = true;
@@ -144,8 +144,11 @@ public class SoundPart implements EntityPart {
     }
 
     public void disposeSounds(){
-        for(Sound sound : localSoundMap.values()){
-            sound.dispose();
+        for(SoundData.SOUND key : localSoundFileMap.keySet()){
+            if(!localSoundFileMap.get(key).equals("")){
+                localSoundMap.get(key).dispose();
+            }
+
         }
     }
 
