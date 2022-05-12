@@ -58,8 +58,10 @@ public class Collision implements IPostEntityProcessingService {
 
                 if (csv.get(y).get(x) == WATER) {
                     movingPart.setSlow(0.7f);
+                    movingPart.setIsSlow(true);
                 } else {
                     movingPart.setSlow(1f);
+                    movingPart.setIsSlow(false);
                 }
 
                 if (entity instanceof Player && gameData.isGateEnabled()) {
