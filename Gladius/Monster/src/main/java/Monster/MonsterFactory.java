@@ -11,23 +11,18 @@ import com.badlogic.gdx.graphics.Color;
 import CommonMonster.Monster;
 
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class MonsterFactory implements IEntityFactoryService {
-    private List<Entity> monsters = new ArrayList<>();
+    private Entity monster;
 
     @Override
     public void spawn(GameData gameData, World world, Integer amount) {
-        for (int i = 0; i < amount; i++) {
-            Entity monster = createMonster(gameData);
-            monsters.add(monster);
-            world.addEntity(monster);
-        }
+        monster = createMonster(gameData, amount);
+        world.addEntity(monster);
     }
 
-    private Entity createMonster(GameData gameData) {
+    private Entity createMonster(GameData gameData, int hpScaling) {
         String file = "Goblin_king.png";
         String goblin_death = "Sounds/goblin_death.mp3";
         String goblin_attack = "Sounds/goblin_attack.mp3";
@@ -35,7 +30,7 @@ public class MonsterFactory implements IEntityFactoryService {
 
         Entity monster = new Monster(file, 5);
         monster.add(new MovingPart(30));
-        monster.add(new LifePart(100, Color.TEAL));
+        monster.add(new LifePart(100 + (hpScaling * 50), Color.TEAL));
         monster.add(new AnimationPart());
         monster.add(new StatsPart(20, 5, 0));
 
@@ -55,8 +50,6 @@ public class MonsterFactory implements IEntityFactoryService {
 
     @Override
     public void stop(World world) {
-        for (Entity monster: monsters) {
-            world.removeEntity(monster);
-        }
+        world.removeEntity(monster);
     }
 }
