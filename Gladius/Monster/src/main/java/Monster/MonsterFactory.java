@@ -37,11 +37,11 @@ public class MonsterFactory implements IEntityFactoryService {
         String goblin_attack = "Sounds/goblin_attack.mp3";
         String[] files = {goblin_attack,goblin_death};
 
-        // in the modifiers, 2 and 4 are magic numbers. Every 2nd wave, the attack modifier will be upped by 1
-        int attackModifier = (waveNumber/2)*(waveNumber/4);
-        int defenceModifier = (waveNumber/4)*(waveNumber/8);
-        int hpScaling = (30*((waveNumber/2)+1))*waveNumber;
-        int speed = new Random().nextInt((70-30)+1) + 30;
+        // in the modifiers, 3 and 5 are magic numbers. Every 2nd wave, the attack modifier will be upped by 1
+        int attackModifier = (waveNumber/3) * (waveNumber/6);
+        int defenceModifier = (waveNumber/5) * (waveNumber/10);
+        int hpScaling = (20*((waveNumber/3)+1))*waveNumber;
+        int speed = new Random().nextInt((75-30)+1) + 30;
 
         Entity monster = new Monster(file, 5,30f/speed);
         monster.add(new MovingPart(speed));

@@ -21,7 +21,7 @@ public class EnemyFactory implements IEntityFactoryService {
             @Override
             public void run() {
                 int spawnModifier = waveNumber/3;
-                for (int i = 0; i < waveNumber + spawnModifier;; i++) {
+                for (int i = 0; i < waveNumber + spawnModifier; i++) {
                     Entity enemy = createMinotaur(world, waveNumber);
                     world.addEntity(enemy);
                     enemy.initTextureFormAssetManager(gameData);
@@ -37,8 +37,8 @@ public class EnemyFactory implements IEntityFactoryService {
         String[] files = {texture, minotaur_death, mintoaur_attack};
 
         // 2 and 5 are magic numbers
-        int attackModifier = (waveNumber/2)*(waveNumber/5);
-        int defenceModifier = (waveNumber/5)*(waveNumber/10);
+        int attackModifier = (waveNumber/3)*(waveNumber/6);
+        int defenceModifier = (waveNumber/6)*(waveNumber/12);
         int healthModifier = (10*((waveNumber/5)+1))*waveNumber;
         int speed = new Random().nextInt((95-30)+1) + 30;
         // radius should be texture width / 16
