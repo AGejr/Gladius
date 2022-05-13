@@ -58,6 +58,8 @@ public class MonsterFactory implements IEntityFactoryService {
 
     @Override
     public void stop(World world) {
-        world.removeEntity(monster);
+        for (Entity monster: world.getEntities(Monster.class)){
+            world.removeEntity(monster);
+        }
     }
 }
