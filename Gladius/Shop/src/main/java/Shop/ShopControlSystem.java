@@ -78,8 +78,17 @@ public class ShopControlSystem implements IEntityProcessingService {
         if (gameData.getKeys().isPressed(GameKeys.ENTER)) {
             for (ShopElixir shopElixir: shopElixirs) {
                 if (cursorX == shopElixir.getX() && cursorY == shopElixir.getY()) {
-                    buyElixir(statsPart, shopElixir);
-                    gameData.getSoundData().playSound(SoundData.SOUND.BUY);
+                    // Checks the players balance and adds the elixir if the player can afford. There are two elixirs if it is strength that will raise.
+                    if (statsPart.getBalance() >= shopElixir.getPrice()) {
+                        statsPart.withdrawBalance(shopElixir.getPrice());
+                        if (shopElixir.getDescription().equals("Strength Elixir")) {
+                            statsPart.setAttack(statsPart.getAttack() + shopElixir.getStatIncrease());
+                        } else {
+                            statsPart.setDefence(statsPart.getDefence() + shopElixir.getStatIncrease());
+                        }
+                        gameData.getSoundData().playSound(SoundData.SOUND.BUY);
+                    }
+
                 }
             }
             for (ShopWeapon shopWeapon : shopWeapons) {
@@ -88,11 +97,17 @@ public class ShopControlSystem implements IEntityProcessingService {
                         Weapon weapon = swordMap.get(shopWeapon.getWeaponEnum());
                         player.addWeapon(weapon);
                         player.equipWeapon(weapon);
-                        gameData.getSoundData().playSound(SoundData.SOUND.BUY);
+                        gameData.getSoundData().playSound(SoundData.SOUND.INTERACT);
                     } else {
-                        buyWeapon(statsPart, shopWeapon.getWeaponEnum(), shopWeapon, player);
-                        gameData.getSoundData().playSound(SoundData.SOUND.BUY);
-
+                        // Checks the players balance and adds the weapon if the player can afford
+                        if (statsPart.getBalance() >= shopWeapon.getPrice()) {
+                            statsPart.withdrawBalance(shopWeapon.getPrice());
+                            Weapon weapon = swordMap.get(shopWeapon.getWeaponEnum());
+                            player.addWeapon(weapon);
+                            player.equipWeapon(weapon);
+                            shopWeapon.setOwned(true);
+                            gameData.getSoundData().playSound(SoundData.SOUND.BUY);
+                        }
                     }
                 }
             }
@@ -102,33 +117,6 @@ public class ShopControlSystem implements IEntityProcessingService {
                 MovingPart movingPart = player.getPart(MovingPart.class);
                 movingPart.setSpeed(100);
             }
-        }
-    }
-
-    /**
-     * Checks the players balance and adds the elixir if the player can afford. There are two elixirs if it is strength that will raise.
-     */
-    private void buyElixir(StatsPart statsPart, ShopElixir shopElixir) {
-        if (statsPart.getBalance() >= shopElixir.getPrice()) {
-            statsPart.withdrawBalance(shopElixir.getPrice());
-            if (shopElixir.getDescription().equals("Strength Elixir")) {
-                statsPart.setAttack(statsPart.getAttack() + shopElixir.getStatIncrease());
-            } else {
-                statsPart.setDefence(statsPart.getDefence() + shopElixir.getStatIncrease());
-            }
-        }
-    }
-
-    /**
-     * Checks the players balance and adds the weapon if the player can afford
-     */
-    private void buyWeapon(StatsPart statsPart, WeaponImages weaponEnum, ShopWeapon shopWeapon, Player player) {
-        if (statsPart.getBalance() >= shopWeapon.getPrice()) {
-            statsPart.withdrawBalance(shopWeapon.getPrice());
-            Weapon weapon = swordMap.get(weaponEnum);
-            player.addWeapon(weapon);
-            player.equipWeapon(weapon);
-            shopWeapon.setOwned(true);
         }
     }
 
