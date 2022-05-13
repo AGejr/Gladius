@@ -11,28 +11,40 @@ import com.badlogic.gdx.graphics.Color;
 import CommonMonster.Monster;
 
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class MonsterFactory implements IEntityFactoryService {
-    private Entity monster;
+
+    ArrayList<Entity> monsters = new ArrayList<Entity>();;
 
     @Override
-    public void spawn(GameData gameData, World world, Integer amount) {
-        monster = createMonster(world, amount);
-        world.addEntity(monster);
+    public void spawn(GameData gameData, World world, Integer waveNumber) {
+        int spawnAmount = (waveNumber/4)+1;
+        for(int i = 0; i < spawnAmount; i++ ) {
+            Entity monster = createMonster(world, waveNumber);
+            monsters.add(monster);
+            world.addEntity(monster);
+        }
     }
 
-    private Entity createMonster(World world, int hpScaling) {
+    private Entity createMonster(World world, int waveNumber) {
         String file = "Goblin_king.png";
         String goblin_death = "Sounds/goblin_death.mp3";
         String goblin_attack = "Sounds/goblin_attack.mp3";
         String[] files = {file,goblin_attack,goblin_death};
 
-        Entity monster = new Monster(file, 5);
-        monster.add(new MovingPart(30));
-        monster.add(new LifePart(100 + (hpScaling * 50), Color.TEAL));
+        // in the modifiers, 2 and 4 are magic numbers. Every 2nd wave, the attack modifier will be upped by 1
+        int attackModifier = (waveNumber/2)*(waveNumber/4);
+        int defenceModifier = (waveNumber/4)*(waveNumber/8);
+        int hpScaling = (30*((waveNumber/2)+1))*waveNumber;
+        int speed = new Random().nextInt((70-30)+1) + 30;
+
+        Entity monster = new Monster(file, 5,30f/speed);
+        monster.add(new MovingPart(speed));
+        monster.add(new LifePart(100 + (hpScaling * 30), Color.TEAL));
         monster.add(new AnimationPart());
-        monster.add(new StatsPart(20, 5, 0));
+        monster.add(new StatsPart(20+attackModifier, 5+defenceModifier, 0));
 
         SoundPart soundPart = new SoundPart();
 
@@ -54,6 +66,10 @@ public class MonsterFactory implements IEntityFactoryService {
 
     @Override
     public void stop(World world) {
-        world.removeEntity(monster);
+        monsters.clear();
+        for (Entity monster: world.getEntities(Monster.class)){
+            world.removeEntity(monster);
+        }
+
     }
 }

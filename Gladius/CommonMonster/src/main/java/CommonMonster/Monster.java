@@ -12,8 +12,9 @@ import com.badlogic.gdx.utils.Array;
 public class Monster extends Entity implements IWeaponUserService {
     private Weapon equippedWeapon;
     private Polygon attackRange;
+    private float movementScale = 1f;
 
-    public Monster(String texturePath, int radius) {
+    public Monster(String texturePath, int radius, float movementScale) {
         super(texturePath, radius, 64, 64, 0, 0.5f, 0.5f);
         // The magic number 7 for x adjustment is the difference between texturewidth for monster and texturewidth for weapon divided by 2
         this.equippedWeapon = new Weapon("jump", 65, 110, 8, "", 50, 50, 1.0f, 1.0f, 0, 0.0f, 0.0f, 7, 7, -10.0f, this);
@@ -22,6 +23,8 @@ public class Monster extends Entity implements IWeaponUserService {
         this.attackRange = new Polygon(new float[]{super.getX(), super.getY(), super.getX(), super.getY() + super.getTextureHeight(), super.getX() + super.getTextureWidth(), super.getY() + super.getTextureHeight(), super.getX() + super.getTextureWidth(), super.getY()});
         this.attackRange.setOrigin(super.getTextureWidth() / 2f, -43);
         this.attackRange.setScale(0.9f, 0.7f);
+
+        this.movementScale = movementScale;
     }
 
     @Override
@@ -84,11 +87,11 @@ public class Monster extends Entity implements IWeaponUserService {
                 leftMoveTextures.add(leftTexture);
             }
             // RUNNING right animation
-            Animation rightMoveAnimation = new Animation(0.175f, rightMoveTextures);
+            Animation rightMoveAnimation = new Animation(0.175f*movementScale, rightMoveTextures);
             animationPart.addAnimation(AnimationPart.ANIMATION_STATES.RUNNING_RIGHT, rightMoveAnimation);
 
             // RUNNING left animation
-            Animation leftMoveAnimation = new Animation(0.175f, leftMoveTextures);
+            Animation leftMoveAnimation = new Animation(0.175f*movementScale, leftMoveTextures);
             animationPart.addAnimation(AnimationPart.ANIMATION_STATES.RUNNING_LEFT, leftMoveAnimation);
 
             // DEATH animation

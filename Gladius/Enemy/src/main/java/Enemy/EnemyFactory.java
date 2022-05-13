@@ -18,26 +18,33 @@ public class EnemyFactory implements IEntityFactoryService {
     ArrayList<Entity> enemies = new ArrayList<Entity>();;
 
     @Override
-    public void spawn(GameData gameData, World world, Integer amount) {
-        for (int i = 0; i < amount; i++) {
-            Entity enemy = createMinotaur(world);
+    public void spawn(GameData gameData, World world, Integer waveNumber) {
+        int spawnModifier = waveNumber/3;
+
+        for (int i = 0; i < waveNumber + spawnModifier; i++) {
+            Entity enemy = createMinotaur(world, waveNumber);
             enemies.add(enemy);
             world.addEntity(enemy);
         }
     }
 
-    private Entity createMinotaur(World world) {
+    private Entity createMinotaur(World world, int waveNumber) {
         String texture = "Minotaur.png";
         String minotaur_death = "Sounds/minotaur_death.mp3";
         String mintoaur_attack = "Sounds/minotaur_attack.mp3";
         String[] files = {texture, minotaur_death, mintoaur_attack};
 
+        // 2 and 5 are magic numbers
+        int attackModifier = (waveNumber/2)*(waveNumber/5);
+        int defenceModifier = (waveNumber/5)*(waveNumber/10);
+        int healthModifier = (10*((waveNumber/5)+1))*waveNumber;
+        int speed = new Random().nextInt((95-30)+1) + 30;
         // radius should be texture width / 16
-        Entity enemy = new Enemy(texture, 20);
-        enemy.add(new MovingPart(30));
-        enemy.add(new LifePart(100, Color.RED));
+        Entity enemy = new Enemy(texture, 20,30f/speed);
+        enemy.add(new MovingPart(speed));
+        enemy.add(new LifePart(100 + healthModifier, Color.RED));
         enemy.add(new AnimationPart());
-        enemy.add(new StatsPart(5,0, 0, 5, 0));
+        enemy.add(new StatsPart(5+attackModifier,0, 0, 5+defenceModifier, 0));
 
         SoundPart soundPart = new SoundPart();
         soundPart.putAudio(SoundData.SOUND.DEATH, minotaur_death);
