@@ -15,8 +15,6 @@ import com.badlogic.gdx.graphics.Color;
 
 public class EnemyFactory implements IEntityFactoryService {
 
-    ArrayList<Entity> enemies = new ArrayList<Entity>();;
-
     @Override
     public void spawn(GameData gameData, World world, Integer amount) {
         new Thread(new Runnable() {
@@ -24,7 +22,6 @@ public class EnemyFactory implements IEntityFactoryService {
             public void run() {
                 for (int i = 0; i < amount; i++) {
                     Entity enemy = createMinotauer(gameData);
-                    enemies.add(enemy);
                     world.addEntity(enemy);
                     enemy.initTextureFormAssetManager(gameData);
                 }
@@ -61,7 +58,6 @@ public class EnemyFactory implements IEntityFactoryService {
 
     @Override
     public void stop(World world) {
-        enemies.clear();
         for (Entity enemy: world.getEntities(Enemy.class)){
             world.removeEntity(enemy);
         }
