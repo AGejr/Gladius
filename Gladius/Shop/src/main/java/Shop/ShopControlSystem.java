@@ -109,7 +109,7 @@ public class ShopControlSystem implements IEntityProcessingService {
                         } else {
                             statsPart.setDefence(statsPart.getDefence() + shopElixir.getStatIncrease());
                         }
-                        Text text = new Text("Owned", 1, 10, -1);
+                        Text text = new Text("Rebuy", 1, 10, -1);
                         text.setPosition(shopElixir.getX(), shopElixir.getY() - 20);
                         UI.removeText(elixirTextMap.get(shopElixir).get(1));
                         UI.addText(text);
@@ -130,7 +130,7 @@ public class ShopControlSystem implements IEntityProcessingService {
                         // Checks the players balance and adds the weapon if the player can afford
                         if (statsPart.getBalance() >= shopWeapon.getPrice()) {
                             statsPart.withdrawBalance(shopWeapon.getPrice());
-                            Weapon weapon = swordMap.get(weaponEnum);
+                            Weapon weapon = swordMap.get(shopWeapon.getWeaponEnum());
                             player.addWeapon(weapon);
                             player.equipWeapon(weapon);
                             shopWeapon.setOwned(true);

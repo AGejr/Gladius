@@ -16,7 +16,7 @@ public class SoundData {
     public final Map<SOUND, String> soundFileMap = new HashMap<>();
     public final Map<SOUND, Sound> soundMap = new HashMap<>();
 
-    private float volumeModifier = 1f;
+    private float volumeModifier = 0.3f;
 
     public enum SOUND{
         WALK,

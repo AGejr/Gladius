@@ -68,6 +68,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
                         // Initialization of a new search for the given positions
                         List<Node> path = aStarPathFinding.treeSearch(enemyPos, targetPos, world.getCsvMap());
 
+                        if(path != null){
                         //Removes the goal node so it does not stand on the goal, but next to it
                         if (path.size() > 1) {
                             path.remove(0);
@@ -195,8 +196,11 @@ public class EnemyControlSystem implements IEntityProcessingService {
                             }
                         }
                     } else {
-                        //if player is not inside arena
-                        stopMovement(movingPart);
+                            //if player is not inside arena
+                            stopMovement(movingPart);
+                        } }
+                    else{
+                        decideMovement(enemyX,enemyY, playerX,playerY, movingPart);
                     }
                 } else if (playerLifepart.isDead()) {
                     stopMovement(movingPart);

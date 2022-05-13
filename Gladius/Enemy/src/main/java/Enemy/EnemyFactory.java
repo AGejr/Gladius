@@ -39,7 +39,7 @@ public class EnemyFactory implements IEntityFactoryService {
         // 2 and 5 are magic numbers
         int attackModifier = (waveNumber/3)*(waveNumber/6);
         int defenceModifier = (waveNumber/6)*(waveNumber/12);
-        int healthModifier = (10*((waveNumber/5)+1))*waveNumber;
+        int healthModifier = (5*((waveNumber/5)+1))*waveNumber;
         int speed = new Random().nextInt((95-30)+1) + 30;
         // radius should be texture width / 16
         Entity enemy = new Enemy(texture, 20,30f/speed);
@@ -57,7 +57,7 @@ public class EnemyFactory implements IEntityFactoryService {
 
         do{
             //1350 is max x value of arena, 220 is min
-            enemy.setX(new Random().nextInt((1350 - 220) + 1) + 220);
+            enemy.setX(new Random().nextInt((1100 - 220) + 1) + 220);
             //1000 is max y value of arena, 350 is min
             enemy.setY(new Random().nextInt((1000 - 350) + 1) + 350);
         } while(world.getCsvMap().get((int) enemy.getY()/32).get((int) enemy.getX()/32) == 1);

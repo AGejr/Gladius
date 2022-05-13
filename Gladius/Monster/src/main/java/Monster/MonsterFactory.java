@@ -37,10 +37,10 @@ public class MonsterFactory implements IEntityFactoryService {
         String goblin_attack = "Sounds/goblin_attack.mp3";
         String[] files = {goblin_attack,goblin_death};
 
-        // in the modifiers, 3 and 5 are magic numbers. Every 2nd wave, the attack modifier will be upped by 1
-        int attackModifier = (waveNumber/3) * (waveNumber/6);
+        // in the modifiers, 4 and 5 are magic numbers. Every 2nd wave, the attack modifier will be upped by 1
+        int attackModifier = (waveNumber/4) * (waveNumber/6);
         int defenceModifier = (waveNumber/5) * (waveNumber/10);
-        int hpScaling = (20*((waveNumber/3)+1))*waveNumber;
+        int hpScaling = (20*((waveNumber/4)+1))*waveNumber;
         int speed = new Random().nextInt((75-30)+1) + 30;
 
         Entity monster = new Monster(file, 5,30f/speed);
@@ -59,7 +59,7 @@ public class MonsterFactory implements IEntityFactoryService {
 
         do{
             //1350 is max x value of arena, 220 is min
-            monster.setX(new Random().nextInt((1350 - 220) + 1) + 220);
+            monster.setX(new Random().nextInt((1100  - 220) + 1) + 220);
             //1000 is max y value of arena, 350 is min
             monster.setY(new Random().nextInt((1000 - 350) + 1) + 350);
         } while(world.getCsvMap().get((int) monster.getY()/32).get((int) monster.getX()/32) == 1);
