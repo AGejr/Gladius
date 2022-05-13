@@ -18,11 +18,11 @@ public class MonsterFactory implements IEntityFactoryService {
 
     @Override
     public void spawn(GameData gameData, World world, Integer amount) {
-        monster = createMonster(gameData, amount);
+        monster = createMonster(world, amount);
         world.addEntity(monster);
     }
 
-    private Entity createMonster(GameData gameData, int hpScaling) {
+    private Entity createMonster(World world, int hpScaling) {
         String file = "Goblin_king.png";
         String goblin_death = "Sounds/goblin_death.mp3";
         String goblin_attack = "Sounds/goblin_attack.mp3";
@@ -42,9 +42,13 @@ public class MonsterFactory implements IEntityFactoryService {
         monster.add(soundPart);
         FileLoader.loadFiles(files, getClass());
 
-        //400 is max, 280 is min
-        monster.setX(new Random().nextInt((580 - 385) + 1) + 385);
-        monster.setY(new Random().nextInt((1000 - 350) + 1) + 350);
+        do{
+            //1350 is max x value of arena, 220 is min
+            monster.setX(new Random().nextInt((1350 - 220) + 1) + 220);
+            //1000 is max y value of arena, 350 is min
+            monster.setY(new Random().nextInt((1000 - 350) + 1) + 350);
+        } while(world.getCsvMap().get((int) monster.getY()/32).get((int) monster.getX()/32) == 1);
+
         return monster;
     }
 

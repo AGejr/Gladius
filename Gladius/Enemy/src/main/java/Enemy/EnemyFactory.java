@@ -20,13 +20,13 @@ public class EnemyFactory implements IEntityFactoryService {
     @Override
     public void spawn(GameData gameData, World world, Integer amount) {
         for (int i = 0; i < amount; i++) {
-            Entity enemy = createMinotauer(gameData);
+            Entity enemy = createMinotaur(world);
             enemies.add(enemy);
             world.addEntity(enemy);
         }
     }
 
-    private Entity createMinotauer(GameData gamedata) {
+    private Entity createMinotaur(World world) {
         String texture = "Minotaur.png";
         String minotaur_death = "Sounds/minotaur_death.mp3";
         String mintoaur_attack = "Sounds/minotaur_attack.mp3";
@@ -46,11 +46,15 @@ public class EnemyFactory implements IEntityFactoryService {
 
         FileLoader.loadFiles(files, getClass());
 
-        //400 is max, 280 is min
-        enemy.setX(new Random().nextInt((580 - 385) + 1) + 385);
-        enemy.setY(new Random().nextInt((1000 - 350) + 1) + 350);
+        do{
+            //1350 is max x value of arena, 220 is min
+            enemy.setX(new Random().nextInt((1350 - 220) + 1) + 220);
+            //1000 is max y value of arena, 350 is min
+            enemy.setY(new Random().nextInt((1000 - 350) + 1) + 350);
+        } while(world.getCsvMap().get((int) enemy.getY()/32).get((int) enemy.getX()/32) == 1);
 
         return enemy;
+
     }
 
     @Override
