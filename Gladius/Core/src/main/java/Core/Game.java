@@ -58,6 +58,11 @@ public class Game implements ApplicationListener {
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
     private Music theme;
+    private File shopFile;
+
+    private FileHandle shopFileHandle;
+    private Texture shopTexture;
+    private TextureRegion shopRegion;
 
     public Game(){
         init();
@@ -114,6 +119,11 @@ public class Game implements ApplicationListener {
         shapeRenderer = new ShapeRenderer();
 
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
+
+        shopFile = new File("ShopItems.png");
+        shopFileHandle = new FileHandle(shopFile);
+        shopTexture = new Texture(shopFileHandle);
+        shopRegion = new TextureRegion(shopTexture);
 
     }
 
@@ -198,11 +208,12 @@ public class Game implements ApplicationListener {
                 lifePart.drawHealthBar(shapeRenderer, entity);
             }
         }
-        gameData.getStage().draw();
-        UI.draw(gameData);
+
         shapeRenderer.end();
+        gameData.getStage().draw();
 
         update();
+        UI.draw(gameData);
         gameData.getKeys().update();
     }
 
@@ -236,6 +247,11 @@ public class Game implements ApplicationListener {
 
     @Override
     public void dispose() {
+        shapeRenderer.dispose();
+        batch.dispose();
+        tiledMapRenderer.dispose();
+        tiledMap.dispose();
+        gameData.getStage().dispose();
 
     }
 
@@ -285,15 +301,11 @@ public class Game implements ApplicationListener {
      */
     private void drawShop(GameData gameData, SpriteBatch batch) {
         int tileSize = 32;
-        File textureFile = new File("ShopItems.png");
-        FileHandle fileHandle = new FileHandle(textureFile);
-        Texture texture = new Texture(fileHandle);
-        TextureRegion region = new TextureRegion(texture);
 
-        region.setRegion(tileSize * 4, tileSize * 8, tileSize * 2, tileSize * 2);
-        batch.draw(region, 0, gameData.getMapHeight() / 2f - tileSize * 3, tileSize * 4, tileSize * 4);
+        shopRegion.setRegion(tileSize * 4, tileSize * 8, tileSize * 2, tileSize * 2);
+        batch.draw(shopRegion, 0, gameData.getMapHeight() / 2f - tileSize * 3, tileSize * 4, tileSize * 4);
 
-        region.setRegion(tileSize * 4, tileSize * 8, tileSize * 2, tileSize * 2);
-        batch.draw(region, 0, gameData.getMapHeight() / 2f - tileSize * 3, tileSize * 4, tileSize * 4);
+        shopRegion.setRegion(tileSize * 4, tileSize * 8, tileSize * 2, tileSize * 2);
+        batch.draw(shopRegion, 0, gameData.getMapHeight() / 2f - tileSize * 3, tileSize * 4, tileSize * 4);
     }
 }
