@@ -1,6 +1,7 @@
 package CommonMonster;
 
 import Common.data.Entity;
+import Common.data.GameData;
 import Common.data.entityparts.AnimationPart;
 import CommonWeapon.IWeaponUserService;
 import CommonWeapon.Weapon;
@@ -41,6 +42,12 @@ public class Monster extends Entity implements IWeaponUserService {
     public void initTexture(){
         super.initTexture();
         this.setRegion(0,0,96, 96);
+        initAnimation();
+    }
+
+    @Override
+    public void initTextureFormAssetManager(GameData gameData) {
+        super.initTextureFormAssetManager(gameData);
         initAnimation();
     }
 

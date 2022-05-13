@@ -11,28 +11,31 @@ import com.badlogic.gdx.graphics.Color;
 import CommonMonster.Monster;
 
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class MonsterFactory implements IEntityFactoryService {
-
-    ArrayList<Entity> monsters = new ArrayList<Entity>();;
+    private Entity monster;
 
     @Override
     public void spawn(GameData gameData, World world, Integer waveNumber) {
-        int spawnAmount = (waveNumber/4)+1;
-        for(int i = 0; i < spawnAmount; i++ ) {
-            Entity monster = createMonster(world, waveNumber);
-            monsters.add(monster);
-            world.addEntity(monster);
-        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int spawnAmount = (waveNumber/4)+1;
+                for(int i = 0; i < spawnAmount; i++ ) {
+                    Entity monster = createMonster(world, waveNumber);
+                    world.addEntity(monster);
+                    monster.initTextureFormAssetManager(gameData);
+                }
+            }
+        }).start();
     }
 
     private Entity createMonster(World world, int waveNumber) {
         String file = "Goblin_king.png";
         String goblin_death = "Sounds/goblin_death.mp3";
         String goblin_attack = "Sounds/goblin_attack.mp3";
-        String[] files = {file,goblin_attack,goblin_death};
+        String[] files = {goblin_attack,goblin_death};
 
         // in the modifiers, 2 and 4 are magic numbers. Every 2nd wave, the attack modifier will be upped by 1
         int attackModifier = (waveNumber/2)*(waveNumber/4);
@@ -66,10 +69,8 @@ public class MonsterFactory implements IEntityFactoryService {
 
     @Override
     public void stop(World world) {
-        monsters.clear();
         for (Entity monster: world.getEntities(Monster.class)){
             world.removeEntity(monster);
         }
-
     }
 }

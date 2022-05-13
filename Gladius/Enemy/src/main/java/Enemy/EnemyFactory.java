@@ -15,17 +15,19 @@ import com.badlogic.gdx.graphics.Color;
 
 public class EnemyFactory implements IEntityFactoryService {
 
-    ArrayList<Entity> enemies = new ArrayList<Entity>();;
-
     @Override
     public void spawn(GameData gameData, World world, Integer waveNumber) {
-        int spawnModifier = waveNumber/3;
-
-        for (int i = 0; i < waveNumber + spawnModifier; i++) {
-            Entity enemy = createMinotaur(world, waveNumber);
-            enemies.add(enemy);
-            world.addEntity(enemy);
-        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int spawnModifier = waveNumber/3;
+                for (int i = 0; i < waveNumber + spawnModifier;; i++) {
+                    Entity enemy = createMinotaur(world, waveNumber);
+                    world.addEntity(enemy);
+                    enemy.initTextureFormAssetManager(gameData);
+                }
+            }
+        }).start();
     }
 
     private Entity createMinotaur(World world, int waveNumber) {
@@ -61,12 +63,10 @@ public class EnemyFactory implements IEntityFactoryService {
         } while(world.getCsvMap().get((int) enemy.getY()/32).get((int) enemy.getX()/32) == 1);
 
         return enemy;
-
     }
 
     @Override
     public void stop(World world) {
-        enemies.clear();
         for (Entity enemy: world.getEntities(Enemy.class)){
             world.removeEntity(enemy);
         }
