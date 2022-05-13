@@ -22,7 +22,7 @@ public class Text {
      * The scale of the font on screen
      * (Fonts with better resolution can be scaled more)
      */
-    private int scale;
+    private float scale;
     private FreeTypeFontGenerator fontGenerator;
     private FreeTypeFontGenerator.FreeTypeFontParameter fontGeneratorParameters;
     private Label label;
@@ -45,7 +45,7 @@ public class Text {
      * @param fontSize
      * The size at which the text should be rendered
      */
-    public Text(String text, int scale, int fontSize) {
+    public Text(String text, float scale, int fontSize) {
         this.text = text;
         this.scale = scale;
         this.fontSize = fontSize;
@@ -63,7 +63,7 @@ public class Text {
      * @param duration
      * The text is removed after duration (seconds)
      */
-    public Text(String text,int scale, int fontSize, int duration) {
+    public Text(String text, float scale, int fontSize, int duration) {
         this.text = text;
         this.scale = scale;
         this.fontSize = fontSize;
@@ -90,7 +90,7 @@ public class Text {
         fontGenerator.dispose();
         Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, textColor);
         label = new Label(text, labelStyle);
-        label.setFontScale(scale);
+        label.setFontScale(this.scale);
     }
 
     public void alignScreenCenter(GameData gameData){
