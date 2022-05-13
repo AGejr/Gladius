@@ -12,9 +12,11 @@ import Common.ui.Text;
 import Common.ui.UI;
 import CommonEnemy.Enemy;
 import CommonMonster.Monster;
+import CommonObstacles.Obstacle;
 import CommonPlayer.Player;
 
 public class EventProcessor implements IEventProcessingService {
+    private boolean waveAlreadyCleared = false;
 
     @Override
     public void process(GameData gameData, World world) {
@@ -65,8 +67,9 @@ public class EventProcessor implements IEventProcessingService {
     }
 
     private void process_entity_killed(GameData gameData, World world) {
-        if (wave_is_completed(world)) {
+        if (wave_is_completed(world) && !waveAlreadyCleared) {
             EventRegistry.addEvent(GAME_EVENT.WAVE_COMPLETED);
+            waveAlreadyCleared = true;
         }
         for (Entity player: world.getEntities(Player.class)){
             LifePart playerLifePart = player.getPart(LifePart.class);
@@ -76,17 +79,18 @@ public class EventProcessor implements IEventProcessingService {
             StatsPart statsPart = player.getPart(StatsPart.class);
             int life = playerLifePart.getLife();
             if (life > 90) {
-                statsPart.depositBalance(75);
+                statsPart.depositBalance(15);
             } else if (life > 60) {
-                statsPart.depositBalance(50);
+                statsPart.depositBalance(10);
             } else {
-                statsPart.depositBalance(25);
+                statsPart.depositBalance(5);
             }
         }
     }
 
     private void processArenaEnteredEvent(GameData gameData, World world) {
         gameData.setGateEnabled(false);
+        waveAlreadyCleared = false;
         gameData.getSoundData().playSound(SoundData.SOUND.ARENA_ENTERED);
         EventRegistry.addEvent(GAME_EVENT.WAVE_STARTED);
     }
@@ -98,7 +102,9 @@ public class EventProcessor implements IEventProcessingService {
         for(Entity monster: world.getEntities(Monster.class)){
             world.removeEntity(monster);
         }
-
+        for(Entity obstacles: world.getEntities(Obstacle.class)){
+            world.removeEntity(obstacles);
+        }
         for (Entity player: world.getEntities(Player.class)){
             LifePart lifePart = player.getPart(LifePart.class);
             lifePart.resetHealth();

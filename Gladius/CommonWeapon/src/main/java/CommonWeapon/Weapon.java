@@ -20,8 +20,8 @@ public class Weapon extends Entity {
     // rotationDuration is used for the number of frames it should rotate. The game runs with 30 frames, so it will swing for half a second if rotationDuration is 15.
     private int rotationDuration = 15;
 
-    public Weapon(String name, int damage, float weight, float range, String texturePath, int textureWidth, int textureHeight, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float angle, float angleAdjustment, float positionAdjustRightX, float positionAdjustLeftX, float positionAdjustY, Entity owner, float scaling) {
-        super(null, range, textureWidth, textureHeight, angle, hitboxScaleX, hitboxScaleY, hitboxOriginX, scaling);
+    public Weapon(String name, int damage, float weight, float radius, String texturePath, int textureWidth, int textureHeight, float hitboxScaleX, float hitboxScaleY, float hitboxOriginX, float angle, float angleAdjustment, float positionAdjustRightX, float positionAdjustLeftX, float positionAdjustY, Entity owner, float scaling) {
+        super(null, radius, textureWidth, textureHeight, angle, hitboxScaleX, hitboxScaleY, hitboxOriginX, scaling);
         this.name = name;
         this.damage = damage;
         this.weight = weight;

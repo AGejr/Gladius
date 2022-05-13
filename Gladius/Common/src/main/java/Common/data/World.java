@@ -15,6 +15,7 @@ public class World {
     private final Map<String, Entity> entityMap = new ConcurrentHashMap<>();
     private TiledMap tiledMap;
     private List<List<Integer>> csvMap;
+    private boolean isMapLoaded = false;
     private static List<IEntityFactoryService> entityFactoryList = new CopyOnWriteArrayList<>();
 
     public String addEntity(Entity entity) {
@@ -29,7 +30,7 @@ public class World {
     public void removeEntity(Entity entity) {
         entityMap.remove(entity.getID());
     }
-    
+
     public Collection<Entity> getEntities() {
         return entityMap.values();
     }
@@ -78,6 +79,18 @@ public class World {
 
     public void setCsvMap(List<List<Integer>> csvMap) {
         this.csvMap = csvMap;
+    }
+
+    public void setIsMapLoaded(boolean isLoaded) {
+        isMapLoaded = isLoaded;
+    }
+
+    public boolean isMapLoaded() {
+        return isMapLoaded;
+    }
+
+    public void setTileInMap(int Y, int X, int value) {
+        getCsvMap().get(Y).set(X, value);
     }
 
     /**

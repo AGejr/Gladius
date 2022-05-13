@@ -67,12 +67,10 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponSer
                 world.removeEntity(weapon);
             }
         }
-
     }
 
     @Override
     public void attack(Entity attacker, GameData gameData, World world) {
-
         /*This method starts the attack animation of the weapon. It adds the weapon to the world, and adds its texture back and sets the rotation to start at the correct angle*/
         float xPos = attacker.getX();
         float yPos = attacker.getY();

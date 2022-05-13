@@ -26,18 +26,7 @@ public class UI {
     public static ArrayList<Text> textList = new ArrayList<>();
 
     public static void textBox(GameData gameData, String text, float x, float y, int width, int height) {
-//        rectangle(x, y, width, height);
         text(gameData, text, x, y);
-    }
-
-    private static void rectangle(float x, float y, int width, int height) {
-        ShapeRenderer shapeRenderer = new ShapeRenderer();
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.BLACK);
-        shapeRenderer.rect(x - 25, y - 15, width, height);
-        shapeRenderer.setColor(Color.DARK_GRAY);
-        shapeRenderer.rect(x - 20, y - 10, width - 10, height - 10);
-        shapeRenderer.end();
     }
 
     public static void text(GameData gameData, String text, float x, float y) {

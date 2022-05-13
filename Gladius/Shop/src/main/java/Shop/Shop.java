@@ -14,10 +14,10 @@ import java.util.Map;
 public class Shop extends Entity {
     private List<ShopElixir> shopElixirs;
     private List<ShopWeapon> shopWeapons;
-    private Map<WeaponImages,List<Text>> weaponTextMap;
-    private Map<String, List<Text>> elixirTextMap;
+    private Map<ShopWeapon,List<Text>> weaponTextMap;
+    private Map<ShopElixir, List<Text>> elixirTextMap;
 
-    public Shop(String texturePath, List<ShopElixir> shopElixirs, List<ShopWeapon> shopWeapons, Map<WeaponImages, List<Text>> weaponTextMap, Map<String, List<Text>> elixirTextMap) {
+    public Shop(String texturePath, List<ShopElixir> shopElixirs, List<ShopWeapon> shopWeapons, Map<ShopWeapon, List<Text>> weaponTextMap, Map<ShopElixir, List<Text>> elixirTextMap) {
         super(texturePath, 0, 96, 62);
         this.shopElixirs = shopElixirs;
         this.shopWeapons = shopWeapons;
@@ -33,10 +33,10 @@ public class Shop extends Entity {
         return shopWeapons;
     }
 
-    public Map<WeaponImages, List<Text>> getWeaponTextMap() {
+    public Map<ShopWeapon, List<Text>> getWeaponTextMap() {
         return weaponTextMap;
     }
-    public Map<String, List<Text>> getElixirTextMap() {
+    public Map<ShopElixir, List<Text>> getElixirTextMap() {
         return elixirTextMap;
     }
 

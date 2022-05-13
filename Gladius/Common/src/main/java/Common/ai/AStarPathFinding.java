@@ -83,7 +83,7 @@ public class AStarPathFinding {
             //set the CSV val of the node. Minus is used to flip the map
             node.setCsvVal(csv.get(gridMapWidth - node.getY()).get(node.getX()));
             // if node is a collideable object
-            if (node.getCsvVal() != 0 && node.getCsvVal() != 2) {
+            if (node.getCsvVal() == 1) {
                 removeSuccessors.add(node);
                 continue;
             }
@@ -126,6 +126,8 @@ public class AStarPathFinding {
     private float heuristic(Node currentNode) {
         if (csv.get(gridMapWidth - currentNode.getY()).get(currentNode.getX()) == 2) {
            return (float) (Math.pow(Math.abs(currentNode.getX() - goalState.get(0)), 2) + Math.pow(Math.abs(currentNode.getY() - goalState.get(1)), 2))*1.7f;
+        } else if (csv.get(gridMapWidth - currentNode.getY()).get(currentNode.getX()) == 3) {
+            return (float) ((Math.pow(Math.abs(currentNode.getX() - goalState.get(0)), 2) + Math.pow(Math.abs(currentNode.getY() - goalState.get(1)), 2))+10)*1.7f;
         } else {
             return (float) (Math.pow(Math.abs(currentNode.getX() - goalState.get(0)), 2) + Math.pow(Math.abs(currentNode.getY() - goalState.get(1)), 2));
         }

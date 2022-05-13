@@ -18,20 +18,21 @@ public class PlayerPlugin implements IGamePluginService {
         world.addEntity(player);
     }
 
+
     private Entity createPlayer(GameData gamedata) {
-        String file = "GladiatorSpriteSheet.png";
+        String file = "GladiatorSpriteSheet_Take_Damage.png";
 
         // radius should be texture width / 16
-        Entity player = new Player(file, 2);
+        //Entity player = new Player(file, 16);
+        Entity player = new Player(file, 10, 32, 32, 0, 0.5f, 0.8f);
         player.add(new MovingPart(100));
         player.add(new AnimationPart());
-        player.add(new StatsPart(20, 5, 0));
         player.add(new LifePart(300, Color.GREEN));
-
+        player.add(new StatsPart(20,0, 0, 5, 0));
         SoundPart soundPart = new SoundPart();
         soundPart.setPlayMovementSound(true);
         player.add(soundPart);
-        
+
         FileLoader.loadFile(file, getClass());
 
 

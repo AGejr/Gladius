@@ -32,8 +32,8 @@ public class ShopControlSystem implements IEntityProcessingService {
     private Map<WeaponImages, Weapon> swordMap = new HashMap<>();
     private List<ShopElixir> shopElixirs;
     private List<ShopWeapon> shopWeapons;
-    private Map<WeaponImages,List<Text>> weaponTextMap;
-    private Map<String,List<Text>> elixirTextMap;
+    private Map<ShopWeapon,List<Text>> weaponTextMap;
+    private Map<ShopElixir,List<Text>> elixirTextMap;
     private List<Text> ownedTexts = new ArrayList<>();
     private boolean weaponTextAdded = false;
     private boolean elixirTextAdded = false;
@@ -52,12 +52,12 @@ public class ShopControlSystem implements IEntityProcessingService {
                 elixirTextMap = shop.getElixirTextMap();
                 if(!textGenerated) {
                     for(ShopElixir elixir : shopElixirs) {
-                        for (Text text : elixirTextMap.get(elixir.getDescription())) {
+                        for (Text text : elixirTextMap.get(elixir)) {
                             text.generateText();
                         }
                     }
                     for(ShopWeapon weapon : shopWeapons) {
-                        for (Text text : weaponTextMap.get(weapon.getWeaponEnum())) {
+                        for (Text text : weaponTextMap.get(weapon)) {
                             text.generateText();
                         }
                     }
@@ -126,12 +126,12 @@ public class ShopControlSystem implements IEntityProcessingService {
                 MovingPart movingPart = player.getPart(MovingPart.class);
                 movingPart.setSpeed(100);
                 for (ShopWeapon weapon : shopWeapons) {
-                    for (Text text : weaponTextMap.get(weapon.getWeaponEnum())) {
+                    for (Text text : weaponTextMap.get(weapon)) {
                         UI.removeText(text);
                     }
                 }
                 for (ShopElixir elixir : shopElixirs) {
-                    for (Text text : elixirTextMap.get(elixir.getDescription())) {
+                    for (Text text : elixirTextMap.get(elixir)) {
                         UI.removeText(text);
                     }
                 }
@@ -151,14 +151,14 @@ public class ShopControlSystem implements IEntityProcessingService {
     private void buyElixir(StatsPart statsPart, ShopElixir shopElixir) {
         if (statsPart.getBalance() >= shopElixir.getPrice()) {
             statsPart.withdrawBalance(shopElixir.getPrice());
-            if (shopElixir.getDescription().equals("Strength Elixir") || shopElixir.getDescription().equals("Better Strength Elixir")) {
+            if (shopElixir.getDescription().equals("Strength Elixir")) {
                 statsPart.setAttack(statsPart.getAttack() + shopElixir.getStatIncrease());
             } else {
                 statsPart.setDefence(statsPart.getDefence() + shopElixir.getStatIncrease());
             }
             Text text = new Text("Owned", 1, 10, -1);
             text.setPosition(shopElixir.getX(), shopElixir.getY() - 20);
-            UI.removeText(elixirTextMap.get(shopElixir.getDescription()).get(1));
+            UI.removeText(elixirTextMap.get(shopElixir).get(1));
             UI.addText(text);
             ownedTexts.add(text);
         }
@@ -177,7 +177,7 @@ public class ShopControlSystem implements IEntityProcessingService {
             shopWeapon.setOwned(true);
             Text text = new Text("Owned", 1, 10, -1);
             text.setPosition(shopWeapon.getX(), shopWeapon.getY() - 20);
-            UI.removeText(weaponTextMap.get(shopWeapon.getWeaponEnum()).get(1));
+            UI.removeText(weaponTextMap.get(shopWeapon).get(1));
             UI.addText(text);
             ownedTexts.add(text);
         }
@@ -198,7 +198,6 @@ public class ShopControlSystem implements IEntityProcessingService {
         UI.box(gameData, shapeRenderer, 0, gameData.getMapHeight() / 8f, gameData.getMapWidth() / 2, 5, new Color(66 / 255f, 40 / 255f, 14 / 255f, 1));
 
         UI.box(gameData, shapeRenderer, cursorX, cursorY, 40, 5, new Color(66 / 255f, 40 / 255f, 14 / 255f, 1));
-//        UI.text(gameData, String.valueOf(statsPart.getBalance()), tileSize * 3, gameData.getMapHeight() / 2f - tileSize * 2);
         shapeRenderer.end();
         shapeRenderer.dispose();
 
@@ -229,7 +228,7 @@ public class ShopControlSystem implements IEntityProcessingService {
         int offset = 20;
         if(!elixirTextAdded) {
             for (ShopElixir elixir : shopElixirs) {
-                List<Text> textList = elixirTextMap.get(elixir.getDescription());
+                List<Text> textList = elixirTextMap.get(elixir);
                 for (int i = 0; i < textList.size(); i++) {
                     Text text = textList.get(i);
                     text.setPosition(elixir.getX(), elixir.getY() - offset * i);
@@ -241,7 +240,7 @@ public class ShopControlSystem implements IEntityProcessingService {
         }
         if (!weaponTextAdded) {
             for (ShopWeapon shopWeapon : shopWeapons) {
-                List<Text> textList = weaponTextMap.get(shopWeapon.getWeaponEnum());
+                List<Text> textList = weaponTextMap.get(shopWeapon);
                 for (int i = 0; i < textList.size(); i++) {
                     Text text = textList.get(i);
                     if (((shopWeapon.isOwned() || player.hasOwnedWeapon(shopWeapon.getWeaponEnum()) || shopWeapon.getPrice() == 0) && i == 1)) {
@@ -284,6 +283,7 @@ public class ShopControlSystem implements IEntityProcessingService {
             } else if (cursorX < x5 && cursorY == y1){
                 cursorX += x1;
             }
+
         } else if (gameData.getKeys().isPressed(GameKeys.LEFT)) {
             if (cursorX > x1 && cursorY == y2) {
                 cursorX -= x2;

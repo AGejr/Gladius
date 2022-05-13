@@ -33,6 +33,15 @@ public class PlayerControlSystem implements IEntityProcessingService {
             if (gameData.getKeys().isPressed(GameKeys.SPACE) && weaponService != null && !lifePart.isDead()) {
                 soundPart.playAudio(SoundData.SOUND.ATTACK);
                 weaponService.attack(player, gameData, world);
+                animationPart.setAttack();
+            }
+
+            if (gameData.getKeys().isPressed(GameKeys.P)) {
+                if(gameData.isDebugMode()) {
+                    gameData.setDebugMode(false);
+                } else {
+                    gameData.setDebugMode(true);
+                }
             }
 
             movingPart.process(gameData, player);
