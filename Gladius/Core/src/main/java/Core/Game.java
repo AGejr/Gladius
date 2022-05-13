@@ -13,6 +13,7 @@ import Common.services.IGamePluginService;
 import Common.services.IPostEntityProcessingService;
 import Common.tools.FileLoader;
 import Common.ui.UI;
+import CommonEnemy.Enemy;
 import CommonPlayer.Player;
 import Event.EventRegistry;
 import com.badlogic.gdx.ApplicationListener;
@@ -101,6 +102,8 @@ public class Game implements ApplicationListener {
         world.setCsvMap(FileLoader.fetchData(mapFiles[0]));
         world.setIsMapLoaded(true);
 
+        gameData.getAssetManager().loadAssets();
+
         // initialize soundData
         gameData.setSoundData(new SoundData());
 
@@ -121,6 +124,11 @@ public class Game implements ApplicationListener {
 
     @Override
     public void render() {
+
+        gameData.getAssetManager().update();
+
+        //Gdx.gl.glClearColor(194/255f, 178/255f, 128/255f, 1); //Black = 0,0,0,1
+
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -134,7 +142,6 @@ public class Game implements ApplicationListener {
         batch.begin();
         for (Entity entity :  world.getEntities()) {
             if(entity.getTexturePath() != null) {
-
                 if(entity.getTexture() == null){
                     entity.initTexture();
                 }

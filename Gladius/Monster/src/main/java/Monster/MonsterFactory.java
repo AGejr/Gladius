@@ -18,15 +18,23 @@ public class MonsterFactory implements IEntityFactoryService {
 
     @Override
     public void spawn(GameData gameData, World world, Integer amount) {
-        monster = createMonster(gameData, amount);
-        world.addEntity(monster);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < amount; i++) {
+                    monster = createMonster(gameData, amount);
+                    world.addEntity(monster);
+                    monster.initTextureFormAssetManager(gameData);
+                }
+            }
+        }).start();
     }
 
     private Entity createMonster(GameData gameData, int hpScaling) {
         String file = "Goblin_king.png";
         String goblin_death = "Sounds/goblin_death.mp3";
         String goblin_attack = "Sounds/goblin_attack.mp3";
-        String[] files = {file,goblin_attack,goblin_death};
+        String[] files = {goblin_attack,goblin_death};
 
         Entity monster = new Monster(file, 5);
         monster.add(new MovingPart(30));
@@ -50,6 +58,8 @@ public class MonsterFactory implements IEntityFactoryService {
 
     @Override
     public void stop(World world) {
-        world.removeEntity(monster);
+        for (Entity monster: world.getEntities(Monster.class)){
+            world.removeEntity(monster);
+        }
     }
 }

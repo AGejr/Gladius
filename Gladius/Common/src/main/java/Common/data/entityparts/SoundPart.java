@@ -42,7 +42,7 @@ public class SoundPart implements EntityPart {
         localSoundFileMap.put(SoundData.SOUND.ARENA_ENTERED, "");
     }
 
-    public void initSounds(){
+    public void initSounds(GameData gameData){
         
         this.soundData = gameData.getSoundData();
         for (SoundData.SOUND sound : localSoundFileMap.keySet()){
@@ -53,7 +53,7 @@ public class SoundPart implements EntityPart {
                 path = soundData.getSoundFileMap().get(sound);
             }
 
-            this.localSoundMap.put(sound, Gdx.audio.newSound(Gdx.files.internal(path)));
+            this.localSoundMap.put(sound, gameData.getAssetManager().getSound(path));
         }
     }
 
@@ -63,7 +63,7 @@ public class SoundPart implements EntityPart {
         if(!isInit) {
             isInit = true;
             this.gameData = gameData;
-            initSounds();
+            initSounds(gameData);
         }
 
         MovingPart movingPart = entity.getPart(MovingPart.class);

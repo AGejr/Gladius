@@ -1,6 +1,7 @@
 package Common.data;
 
-
+import Common.tools.DynamicAssetManager;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
@@ -23,6 +24,7 @@ public class GameData {
     private SoundData soundData;
 
     private boolean debugMode = false;
+    private DynamicAssetManager dynamicAssetManager = new DynamicAssetManager();
     private Stage stage;
 
     public int getWave() {
@@ -107,6 +109,10 @@ public class GameData {
 
     public void setDebugMode(boolean debugMode) {
         this.debugMode = debugMode;
+    }
+
+    public DynamicAssetManager getAssetManager() {
+        return dynamicAssetManager;
     }
 
     public Stage getStage() {

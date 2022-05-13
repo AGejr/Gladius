@@ -22,44 +22,49 @@ public class ObstaclePlugin implements IEntityFactoryService {
 
     @Override
     public void spawn(GameData gameData, World world, Integer amount) {
-        obstacles = new ArrayList<>();
-        rand = new Random();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                obstacles = new ArrayList<>();
+                rand = new Random();
 
-        // First time move obstacles into grid
-        if(csv == null) {
-            csv = world.getCsvMap();
-        }
+                // First time move obstacles into grid
+                if(csv == null) {
+                    csv = world.getCsvMap();
+                }
 
-        // Random spawn
-        // spawn barrel
-        int randomNumber = rand.nextInt(5) + 1;
-        for(int i = 0; i < randomNumber; i++) {
-            obstacles.add(createBarrel(gameData, world));
-        }
-        // spawn explosion barrel
-        randomNumber = rand.nextInt(5) + 1;
-        for(int i = 0; i < randomNumber; i++) {
-            obstacles.add(createExplosiveBarrel(gameData, world));
-        }
-        // spawn chest
-        randomNumber = rand.nextInt(5) + 1;
-        for(int i = 0; i < randomNumber; i++) {
-            obstacles.add(createChest(gameData, world));
-        }
-        // spawn crate
-        randomNumber = rand.nextInt(5) + 1;
-        for(int i = 0; i < randomNumber; i++) {
-            obstacles.add(createCrate(gameData, world));
-        }
-        // spawn jar
-        randomNumber = rand.nextInt(5) + 1;
-        for(int i = 0; i < randomNumber; i++) {
-            obstacles.add(createJar(gameData, world));
-        }
+                // Random spawn
+                // spawn barrel
+                int randomNumber = rand.nextInt(5) + 1;
+                for(int i = 0; i < randomNumber; i++) {
+                    obstacles.add(createBarrel(gameData, world));
+                }
+                // spawn explosion barrel
+                randomNumber = rand.nextInt(5) + 1;
+                for(int i = 0; i < randomNumber; i++) {
+                    obstacles.add(createExplosiveBarrel(gameData, world));
+                }
+                // spawn chest
+                randomNumber = rand.nextInt(5) + 1;
+                for(int i = 0; i < randomNumber; i++) {
+                    obstacles.add(createChest(gameData, world));
+                }
+                // spawn crate
+                randomNumber = rand.nextInt(5) + 1;
+                for(int i = 0; i < randomNumber; i++) {
+                    obstacles.add(createCrate(gameData, world));
+                }
+                // spawn jar
+                randomNumber = rand.nextInt(5) + 1;
+                for(int i = 0; i < randomNumber; i++) {
+                    obstacles.add(createJar(gameData, world));
+                }
 
-        for(Entity entity : obstacles) {
-            world.addEntity(entity);
-        }
+                for(Entity entity : obstacles) {
+                    world.addEntity(entity);
+                }
+            }
+        }).start();
     }
 
     private Entity createBarrel(GameData gamedata, World world) {
