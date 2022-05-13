@@ -16,6 +16,8 @@ public class SoundData {
     public final Map<SOUND, String> soundFileMap = new HashMap<>();
     public final Map<SOUND, Sound> soundMap = new HashMap<>();
 
+    private float volumeModifier = 1f;
+
     public enum SOUND{
         WALK,
         WALK_WATER,
@@ -52,7 +54,7 @@ public class SoundData {
 
     private void playTheme(){
         Music theme = Gdx.audio.newMusic(Gdx.files.internal("Sounds/theme.ogg"));
-        theme.setVolume(.3f);
+        theme.setVolume(.3f * volumeModifier);
         theme.setLooping(true);
         theme.play();
     }
@@ -87,7 +89,15 @@ public class SoundData {
 
     public void playSound(SOUND key, float volume){
         Sound sound = soundMap.get(key);
-        sound.play(volume);
+        sound.play(volume * volumeModifier);
+    }
+
+    public float getVolumeModifier() {
+        return volumeModifier;
+    }
+
+    public void setVolumeModifier(float volumeModifier) {
+        this.volumeModifier = volumeModifier;
     }
 
 }

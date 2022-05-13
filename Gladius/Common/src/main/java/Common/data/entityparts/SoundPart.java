@@ -97,7 +97,7 @@ public class SoundPart implements EntityPart {
                 }
                 // if the flag for not moving or changed tiles, is true, start the loop
                 if( !isMoving || hasChangedTiles) {
-                    movementSound.loop(1.0f);
+                    movementSound.loop(soundData.getVolumeModifier());
                     isMoving = true;
                     hasChangedTiles = false;
                 }
@@ -140,7 +140,7 @@ public class SoundPart implements EntityPart {
 
     public void playAudio(SoundData.SOUND key, float volume){
         Sound sound = localSoundMap.get(key);
-        sound.play(volume);
+        sound.play(volume * soundData.getVolumeModifier());
     }
 
     public void disposeSounds(){
