@@ -42,7 +42,7 @@ public class MonsterFactory implements IEntityFactoryService {
 
         Entity monster = new Monster(file, 5,30f/speed);
         monster.add(new MovingPart(speed));
-        monster.add(new LifePart(100 + (hpScaling * 30), Color.TEAL));
+        monster.add(new LifePart(100 + hpScaling, Color.TEAL));
         monster.add(new AnimationPart());
         monster.add(new StatsPart(20+attackModifier, 5+defenceModifier, 0));
 
