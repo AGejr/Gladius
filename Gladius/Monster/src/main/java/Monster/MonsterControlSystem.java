@@ -90,14 +90,16 @@ public class MonsterControlSystem implements IEntityProcessingService {
                             LifePart playerLifePart = player.getPart(LifePart.class);
                             if (animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime()) && !playerLifePart.isDead()) {
                                 if (monster.getX() > player.getX()) {
+                                    soundPart.playAudio(SoundData.SOUND.ATTACK);
                                     animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.ATTACK_LEFT);
                                 } else {
+                                    soundPart.playAudio(SoundData.SOUND.ATTACK);
                                     animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.ATTACK_RIGHT);
                                 }
                                 if (weaponService != null && animationPart.isDoneAnimating()) {
                                 weaponService.attack(monster, gameData, world);
                                 }
-                                soundPart.playAudio(SoundData.SOUND.ATTACK);
+
                             }
                         } else {
                             if (animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime())) {

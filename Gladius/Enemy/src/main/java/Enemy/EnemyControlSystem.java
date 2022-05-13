@@ -132,14 +132,15 @@ public class EnemyControlSystem implements IEntityProcessingService {
                             LifePart playerLifePart = player.getPart(LifePart.class);
                             if (animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime()) && !playerLifePart.isDead()) {
                                 if (enemy.getX() > player.getX()) {
+                                    soundPart.playAudio(SoundData.SOUND.ATTACK);
                                     animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.ATTACK_LEFT);
                                 } else {
+                                    soundPart.playAudio(SoundData.SOUND.ATTACK);
                                     animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.ATTACK_RIGHT);
                                 }
                                 if (weaponService != null) {
                                 weaponService.attack(enemy, gameData, world);
                                 }
-                                soundPart.playAudio(SoundData.SOUND.ATTACK);
                             }
                         } else {
                             if (animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime())) {
