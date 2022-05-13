@@ -15,8 +15,9 @@ import CommonWeapon.Weapon;
 public class Enemy extends Entity implements IWeaponUserService {
     private Weapon equippedWeapon;
     private Polygon attackRange;
+    private float movementScale = 1f;
 
-    public Enemy(String texturePath, int radius) {
+    public Enemy(String texturePath, int radius, float movementScale) {
         super(texturePath, radius, 96, 96, 0, 0.5f, 0.5f);
         //TODO align weapon hitbox to the axe and swinging animation
         this.equippedWeapon = new Weapon("Axe", 25, 8, 35, "", 9, 55, 0.9f, 0.9f, 0, 30.0f, 6.0f, 42.0f, 63.0f, 17.0f, this);
@@ -25,6 +26,8 @@ public class Enemy extends Entity implements IWeaponUserService {
         this.attackRange = new Polygon(new float[]{super.getX(), super.getY(), super.getX(), super.getY() + super.getTextureHeight(), super.getX() + super.getTextureWidth(), super.getY() + super.getTextureHeight(), super.getX() + super.getTextureWidth(), super.getY()});
         this.attackRange.setOrigin(super.getTextureWidth() / 2f, -15);
         this.attackRange.setScale(0.9f, 0.7f);
+
+        this.movementScale = movementScale;
     }
 
     @Override
@@ -97,11 +100,11 @@ public class Enemy extends Entity implements IWeaponUserService {
             }
 
             // RUNNING right animation
-            Animation rightMoveAnimation = new Animation(0.175f,rightMoveTextures);
+            Animation rightMoveAnimation = new Animation(0.175f*movementScale,rightMoveTextures);
             animationPart.addAnimation(AnimationPart.ANIMATION_STATES.RUNNING_RIGHT, rightMoveAnimation);
 
             // RUNNING left animation
-            Animation leftMoveAnimation = new Animation(0.175f,leftMoveTextures);
+            Animation leftMoveAnimation = new Animation(0.175f*movementScale,leftMoveTextures);
             animationPart.addAnimation(AnimationPart.ANIMATION_STATES.RUNNING_LEFT, leftMoveAnimation);
 
             // DEATH animation

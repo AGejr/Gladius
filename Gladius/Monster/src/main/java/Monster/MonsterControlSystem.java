@@ -51,12 +51,45 @@ public class MonsterControlSystem implements IEntityProcessingService {
                     // if player is in hub (<300) && player is inside the wall (39 is gridMapHeight)
                     if (player.getY() > 300 && world.getCsvMap().get(39 - playerY).get(playerX) != 1) {
 
+                        Polygon attackRange = ((Monster) monster).getAttackRange();
+                        attackRange.setPosition(monster.getX(), monster.getY());
+                        attackRange.getBoundingRectangle();
+
+                        // Checking if player is inside of enemy's attack range
+                        if (Intersector.overlapConvexPolygons(attackRange, player.getPolygonBoundaries())) {
+                            LifePart playerLifePart = player.getPart(LifePart.class);
+                            if (animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime()) && !playerLifePart.isDead()) {
+                                if (monster.getX() > player.getX()) {
+                                    soundPart.playAudio(SoundData.SOUND.ATTACK);
+                                    animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.ATTACK_LEFT);
+                                } else {
+                                    soundPart.playAudio(SoundData.SOUND.ATTACK);
+                                    animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.ATTACK_RIGHT);
+                                }
+                                if (weaponService != null && animationPart.isDoneAnimating()) {
+                                    weaponService.attack(monster, gameData, world);
+                                }
+
+                            }
+                        } else {
+                            if (animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime())) {
+                                if (animationPart.isLeft()) {
+                                    animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.IDLE_LEFT);
+                                } else {
+                                    animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.IDLE_RIGHT);
+                                }
+                            }
+                        }
+
+
                         // listing the positions of enemy and the target (player) in Lists
                         List<Integer> enemyPos = new ArrayList<>(Arrays.asList(enemyX, enemyY));
                         List<Integer> targetPos = new ArrayList<>(Arrays.asList(playerX, playerY));
 
                         // Initialization of a new search for the given positions
                         List<Node> path = aStarPathFinding.treeSearch(enemyPos, targetPos, world.getCsvMap());
+
+                        if(path != null){
 
                         //Removes the goal node so it does not stand on the goal, but next to it
                         if (path.size() > 1) {
@@ -80,34 +113,6 @@ public class MonsterControlSystem implements IEntityProcessingService {
                         float targetX = (nextPoint.getX() * 32) + 16;
                         float currentX = (int) monster.getX() + (monster.getRadius() * 16) / 2;
                         float currentY = (int) monster.getY();
-
-                        Polygon attackRange = ((Monster) monster).getAttackRange();
-                        attackRange.setPosition(monster.getX(), monster.getY());
-                        attackRange.getBoundingRectangle();
-
-                        // Checking if player is inside of enemy's attack range
-                        if (Intersector.overlapConvexPolygons(attackRange, player.getPolygonBoundaries())) {
-                            LifePart playerLifePart = player.getPart(LifePart.class);
-                            if (animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime()) && !playerLifePart.isDead()) {
-                                if (monster.getX() > player.getX()) {
-                                    animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.ATTACK_LEFT);
-                                } else {
-                                    animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.ATTACK_RIGHT);
-                                }
-                                if (weaponService != null && animationPart.isDoneAnimating()) {
-                                weaponService.attack(monster, gameData, world);
-                                }
-                                soundPart.playAudio(SoundData.SOUND.ATTACK);
-                            }
-                        } else {
-                            if (animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime())) {
-                                if (animationPart.isLeft()) {
-                                    animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.IDLE_LEFT);
-                                } else {
-                                    animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.IDLE_RIGHT);
-                                }
-                            }
-                        }
 
                         //if not at/near end goal
                         // the X position of the middle of the players texture
@@ -154,8 +159,10 @@ public class MonsterControlSystem implements IEntityProcessingService {
                             }
                         }
                     } else {
-                        //if player is not inside arena
-                        stopMovement(movingPart);
+                            //if player is not inside arena
+                            stopMovement(movingPart);
+                        }
+                        decideMovement(enemyX, enemyY, playerX,playerY, movingPart);
                     }
                 } else if (playerLifepart.isDead()) {
                     stopMovement(movingPart);

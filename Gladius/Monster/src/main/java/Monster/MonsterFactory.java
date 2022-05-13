@@ -17,12 +17,13 @@ public class MonsterFactory implements IEntityFactoryService {
     private Entity monster;
 
     @Override
-    public void spawn(GameData gameData, World world, Integer amount) {
+    public void spawn(GameData gameData, World world, Integer waveNumber) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i < amount; i++) {
-                    monster = createMonster(gameData, amount);
+                int spawnAmount = (waveNumber/4)+1;
+                for(int i = 0; i < spawnAmount; i++ ) {
+                    Entity monster = createMonster(world, waveNumber);
                     world.addEntity(monster);
                     monster.initTextureFormAssetManager(gameData);
                 }
@@ -30,17 +31,23 @@ public class MonsterFactory implements IEntityFactoryService {
         }).start();
     }
 
-    private Entity createMonster(GameData gameData, int hpScaling) {
+    private Entity createMonster(World world, int waveNumber) {
         String file = "Goblin_king.png";
         String goblin_death = "Sounds/goblin_death.mp3";
         String goblin_attack = "Sounds/goblin_attack.mp3";
         String[] files = {goblin_attack,goblin_death};
 
-        Entity monster = new Monster(file, 5);
-        monster.add(new MovingPart(30));
-        monster.add(new LifePart(100 + (hpScaling * 50), Color.TEAL));
+        // in the modifiers, 4 and 5 are magic numbers. Every 2nd wave, the attack modifier will be upped by 1
+        int attackModifier = (waveNumber/4) * (waveNumber/6);
+        int defenceModifier = (waveNumber/5) * (waveNumber/10);
+        int hpScaling = (20*((waveNumber/4)+1))*waveNumber;
+        int speed = new Random().nextInt((75-30)+1) + 30;
+
+        Entity monster = new Monster(file, 5,30f/speed);
+        monster.add(new MovingPart(speed));
+        monster.add(new LifePart(100 + hpScaling, Color.TEAL));
         monster.add(new AnimationPart());
-        monster.add(new StatsPart(20, 5, 0));
+        monster.add(new StatsPart(20+attackModifier, 5+defenceModifier, 0));
 
         SoundPart soundPart = new SoundPart();
 
@@ -50,9 +57,13 @@ public class MonsterFactory implements IEntityFactoryService {
         monster.add(soundPart);
         FileLoader.loadFiles(files, getClass());
 
-        //400 is max, 280 is min
-        monster.setX(new Random().nextInt((580 - 385) + 1) + 385);
-        monster.setY(new Random().nextInt((1000 - 350) + 1) + 350);
+        do{
+            //1350 is max x value of arena, 220 is min
+            monster.setX(new Random().nextInt((1100  - 220) + 1) + 220);
+            //1000 is max y value of arena, 350 is min
+            monster.setY(new Random().nextInt((1000 - 350) + 1) + 350);
+        } while(world.getCsvMap().get((int) monster.getY()/32).get((int) monster.getX()/32) == 1);
+
         return monster;
     }
 
