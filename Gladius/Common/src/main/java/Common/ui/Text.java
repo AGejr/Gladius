@@ -71,7 +71,17 @@ public class Text {
         generateText();
     }
 
-    private void generateText(){
+    public Text(String text, float scale, int fontSize, int duration, boolean generateText) {
+        this.text = text;
+        this.scale = scale;
+        this.fontSize = fontSize;
+        this.duration = duration;
+        if(generateText) {
+            generateText();
+        }
+    }
+
+    public void generateText(){
         FileHandle fontFileHandle = Gdx.files.internal(this.fontFilename);
         fontGenerator = new FreeTypeFontGenerator(fontFileHandle);
         fontGeneratorParameters = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -128,5 +138,12 @@ public class Text {
 
     public boolean isVisible() {
         return isVisible;
+    }
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
+    }
+    public String getText() {
+        return text;
     }
 }

@@ -181,11 +181,12 @@ public class Game implements ApplicationListener {
                 lifePart.drawHealthBar(shapeRenderer, entity);
             }
         }
-        gameData.getStage().draw();
-        UI.draw(gameData);
+
         shapeRenderer.end();
+        gameData.getStage().draw();
 
         update();
+        UI.draw(gameData);
         gameData.getKeys().update();
     }
 

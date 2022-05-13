@@ -26,7 +26,7 @@ public class UI {
     public static ArrayList<Text> textList = new ArrayList<>();
 
     public static void textBox(GameData gameData, String text, float x, float y, int width, int height) {
-        rectangle(x, y, width, height);
+//        rectangle(x, y, width, height);
         text(gameData, text, x, y);
     }
 
@@ -43,7 +43,8 @@ public class UI {
     public static void text(GameData gameData, String text, float x, float y) {
         Stage stage = gameData.getStage();
         stage.clear();
-        Label.LabelStyle labelStyle = new Label.LabelStyle(new BitmapFont(), new Color(Color.WHITE));
+        BitmapFont dsa = new BitmapFont();
+        Label.LabelStyle labelStyle = new Label.LabelStyle(dsa, new Color(Color.WHITE));
         Label label = new Label(text, labelStyle);
         label.setPosition(x, y);
         stage.addActor(label);
@@ -84,6 +85,10 @@ public class UI {
      */
     public static void addText(Text text) {
         textList.add(text);
+    }
+
+    public static void removeText(Text text) {
+        textList.remove(text);
     }
 }
 
