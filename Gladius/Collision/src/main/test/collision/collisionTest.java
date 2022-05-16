@@ -8,6 +8,7 @@ import Common.data.entityparts.MovingPart;
 import Common.tools.FileLoader;
 
 import CommonPlayer.Player;
+import com.badlogic.gdx.Gdx;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,8 +42,8 @@ public class collisionTest {
 
        testEntity = new Player("",2);
        testEntity.add(new MovingPart(1));
-       testEntity.setY(220f);
-       testEntity.setX(780f);
+       testEntity.setY(225f);
+       testEntity.setX(785f);
 
        Collection<Entity> entityList = new ArrayList<>();
        entityList.add(testEntity);
@@ -70,7 +71,17 @@ public class collisionTest {
       collision.process(mockGameData,mockedWorld);
 
       assertTrue(part.isSlow());
-
   }
+
+ @Test
+ public void isAtGate(){
+
+     assertEquals(testEntity.getY(),225f,1f);
+
+     collision.process(mockGameData,mockedWorld);
+
+     assertNotEquals(testEntity.getY(),225f,1f);
+     
+ }
 
 }
