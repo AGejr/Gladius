@@ -4,7 +4,7 @@ import Common.data.GameData;
 import Common.data.World;
 import Common.services.IEntityProcessingService;
 import CommonEnemy.Enemy;
-import org.junit.Test;
+import org.junit.*;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -17,7 +17,7 @@ public class EnemyControlSystemTest {
     Enemy enemy;
     private static final List<IEntityProcessingService> entityProcessorList = new CopyOnWriteArrayList<>();
 
-    @org.junit.Before
+    @Before
     public void setUp() throws Exception {
         world = new World();
         gameData = new GameData();
@@ -25,7 +25,7 @@ public class EnemyControlSystemTest {
         world.addEntity(enemy);
     }
 
-    @org.junit.After
+    @After
     public void tearDown() throws Exception {
     }
 
