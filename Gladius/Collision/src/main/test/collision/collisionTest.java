@@ -74,14 +74,14 @@ public class collisionTest {
   }
 
  @Test
- public void isAtGate(){
+ public void isGateTest(){
 
      assertEquals(testEntity.getY(),225f,1f);
 
      collision.process(mockGameData,mockedWorld);
 
      assertNotEquals(testEntity.getY(),225f,1f);
-     
+
  }
 
 }
