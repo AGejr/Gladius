@@ -26,6 +26,8 @@ public class PlayerTest {
         playerMovingPart = new MovingPart(100);
         player.add(playerMovingPart);
 
+        gameData.setDelta(0.1f);
+
         world.addEntity(player);
     }
 
@@ -39,7 +41,6 @@ public class PlayerTest {
         // RIGHT
         float oldPlayerLocation = player.getX();
         playerMovingPart.setRight(true);
-        gameData.setDelta(0.1f);
         playerMovingPart.process(gameData, player);
         float newPlayerLocation = player.getX();
         assertTrue(newPlayerLocation > oldPlayerLocation);
@@ -50,7 +51,6 @@ public class PlayerTest {
         // LEFT
         oldPlayerLocation = player.getX();
         playerMovingPart.setLeft(true);
-        gameData.setDelta(0.1f);
         playerMovingPart.process(gameData, player);
         newPlayerLocation = player.getX();
         assertTrue(newPlayerLocation < oldPlayerLocation);
@@ -61,7 +61,6 @@ public class PlayerTest {
         // UP
         oldPlayerLocation = player.getY();
         playerMovingPart.setUp(true);
-        gameData.setDelta(0.1f);
         playerMovingPart.process(gameData, player);
         newPlayerLocation = player.getY();
         assertTrue(newPlayerLocation > oldPlayerLocation);
@@ -72,7 +71,6 @@ public class PlayerTest {
         // DOWN
         oldPlayerLocation = player.getY();
         playerMovingPart.setDown(true);
-        gameData.setDelta(0.1f);
         playerMovingPart.process(gameData, player);
         newPlayerLocation = player.getY();
         assertTrue(newPlayerLocation < oldPlayerLocation);
