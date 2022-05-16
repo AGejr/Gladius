@@ -20,7 +20,6 @@ public class EnemyControlSystemTest {
     World world;
     GameData gameData;
     Enemy enemy;
-    private static final List<IEntityProcessingService> entityProcessorList = new CopyOnWriteArrayList<>();
 
     @Before
     public void setUp() throws Exception {
