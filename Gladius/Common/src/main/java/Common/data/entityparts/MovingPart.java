@@ -98,28 +98,28 @@ public class MovingPart implements EntityPart {
 
         if (left && !colLeft) {
             // if moving left and either up or down, correct x speed according to pythagoras a^2+b^2=c^2
-            dx -= Gdx.graphics.getDeltaTime() * speed * slower;
+            dx -= gameData.getDelta() * speed * slower;
             if(up ^ down){
                 dx *= diagonalCorrectionVal;
             }
         }
 
         if (right && !colRight) {
-            dx += Gdx.graphics.getDeltaTime() * speed * slower;
+            dx += gameData.getDelta() * speed * slower;
             if(up ^ down){
                 dx *= diagonalCorrectionVal;
             }
         }
 
         if (up && !colTop) {
-            dy += Gdx.graphics.getDeltaTime() * speed * slower;
+            dy += gameData.getDelta() * speed * slower;
             if(left ^ right){
                 dy *= diagonalCorrectionVal;
             }
         }
 
         if (down && !colBot){
-            dy -= Gdx.graphics.getDeltaTime() * speed * slower;
+            dy -= gameData.getDelta() * speed * slower;
             if(left ^ right){
                 dy *= diagonalCorrectionVal;
             }

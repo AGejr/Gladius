@@ -105,7 +105,7 @@ public class AnimationPart implements EntityPart{
         if(this.getCurrentAnimation() != null) {
             if(!this.getCurrentAnimation().isAnimationFinished(animationTime)){
                 // Advance animation
-                animationTime += Gdx.graphics.getDeltaTime();
+                animationTime += gameData.getDelta();
             } else if (hasLifePart && !lifePart.isDead()) {
                 // Loop animation if the entity has a lifepart, and it is alive
                 animationTime = 0;
