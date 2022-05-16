@@ -164,4 +164,8 @@ public class Weapon extends Entity {
     public void setRotationDegrees(float rotationDegrees) {
         this.rotationDegrees = rotationDegrees;
     }
+
+    public List<Entity> getHitEntityList() {
+        return this.hitEntityList;
+    }
 }
