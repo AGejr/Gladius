@@ -24,7 +24,9 @@ public class EnemyFactory implements IEntityFactoryService {
                 for (int i = 0; i < waveNumber + spawnModifier; i++) {
                     Entity enemy = createMinotaur(world, waveNumber);
                     world.addEntity(enemy);
-                    enemy.initTextureFormAssetManager(gameData);
+                    if (enemy.getTexture() != null) {
+                        enemy.initTextureFormAssetManager(gameData);
+                    }
                 }
             }
         }).start();
