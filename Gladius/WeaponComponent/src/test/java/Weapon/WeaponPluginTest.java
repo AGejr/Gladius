@@ -5,10 +5,9 @@ import Common.data.GameData;
 import Common.data.World;
 import CommonWeapon.Weapon;
 import Common.services.IGamePluginService;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import static org.junit.Assert.assertNotEquals;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class WeaponPluginTest {
     IGamePluginService plugin;
@@ -17,7 +16,7 @@ public class WeaponPluginTest {
     Entity weapon;
 
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         plugin = new WeaponPlugin();
         gameData = new GameData();
@@ -27,7 +26,7 @@ public class WeaponPluginTest {
     }
 
     @Test
-    public void stop() {
+    public void stopTest() {
         int entitiesBeforeStop = world.getEntities().size();
         plugin.stop(gameData, world);
         int entitiesAfterStop = world.getEntities().size();
