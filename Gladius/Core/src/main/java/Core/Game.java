@@ -13,7 +13,6 @@ import Common.services.IGamePluginService;
 import Common.services.IPostEntityProcessingService;
 import Common.tools.FileLoader;
 import Common.ui.UI;
-import CommonEnemy.Enemy;
 import CommonPlayer.Player;
 import Event.EventRegistry;
 import com.badlogic.gdx.ApplicationListener;
@@ -33,15 +32,11 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.io.File;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Game implements ApplicationListener {
@@ -252,7 +247,6 @@ public class Game implements ApplicationListener {
         tiledMapRenderer.dispose();
         tiledMap.dispose();
         gameData.getStage().dispose();
-
     }
 
     public void addEntityProcessingService(IEntityProcessingService eps) {

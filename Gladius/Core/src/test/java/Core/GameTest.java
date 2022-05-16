@@ -3,42 +3,31 @@ package Core;
 import Common.data.Entity;
 import Common.data.GameData;
 import Common.data.World;
-import Common.services.IGamePluginService;
-import CommonPlayer.Player;
-import CommonWeapon.Weapon;
+import Common.data.entityparts.*;
+import Common.services.IEntityProcessingService;
+import CommonEnemy.Enemy;
+import com.badlogic.gdx.graphics.Color;
 import org.junit.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 
 public class GameTest {
     GameData gameData;
     World world;
-    List<IGamePluginService> plugins = new ArrayList<>();
-
+    private static final List<IEntityProcessingService> entityProcessorList = new CopyOnWriteArrayList<>();
 
     @Before
     public void setUp() throws Exception {
-        gameData = new GameData();
-        world = new World();
-        Entity player = new Player("",3);
-        world.addEntity(player);
-        Entity weapon = new Weapon();
-        world.addEntity(weapon);
+        gameData = mock(GameData.class);
+        world = mock(World.class);
     }
 
     @After
     public void tearDown() throws Exception {
-    }
-
-    /**
-     * Test the start of every bundle
-     */
-    @Test
-    public void start() {
-        
     }
 
     @Test
@@ -51,5 +40,26 @@ public class GameTest {
      */
     @Test
     public void stop() {
+    }
+
+    @Test
+    public void create() {
+        
+    }
+
+    @Test
+    public void testRender() {
+    }
+
+    /**
+     * Test the update of bundles
+     */
+    @Test
+    public void update() {
+
+    }
+
+    @Test
+    public void dispose() {
     }
 }
