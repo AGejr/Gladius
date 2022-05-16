@@ -17,7 +17,9 @@ public class WeaponPlugin implements IGamePluginService {
     public void stop(GameData gameData, World world) {
         for (Entity weapon : world.getEntities(Weapon.class)) {
             if (weapon instanceof  Weapon) {
-                weapon.getTexture().dispose();
+                if (weapon.getTexture() != null) {
+                    weapon.getTexture().dispose();
+                }
                 world.removeEntity(weapon);
             }
         }
