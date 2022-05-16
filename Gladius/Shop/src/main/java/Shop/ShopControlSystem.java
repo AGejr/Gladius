@@ -1,12 +1,10 @@
 package Shop;
 
-import Common.data.Entity;
-import Common.data.GameData;
-import Common.data.GameKeys;
-import Common.data.World;
+import Common.data.*;
 import Common.data.entityparts.MovingPart;
 import Common.data.entityparts.StatsPart;
 import Common.services.IEntityProcessingService;
+import Common.ui.Text;
 import Common.ui.UI;
 import CommonPlayer.Player;
 import CommonWeapon.Weapon;
@@ -21,6 +19,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,19 +32,44 @@ public class ShopControlSystem implements IEntityProcessingService {
     private Map<WeaponImages, Weapon> swordMap = new HashMap<>();
     private List<ShopElixir> shopElixirs;
     private List<ShopWeapon> shopWeapons;
+    private Map<ShopWeapon,List<Text>> weaponTextMap;
+    private Map<ShopElixir,List<Text>> elixirTextMap;
+    private List<Text> ownedTexts = new ArrayList<>();
+    private boolean weaponTextAdded = false;
+    private boolean elixirTextAdded = false;
+    private boolean textGenerated = false;
 
     @Override
     public void process(GameData gameData, World world) {
         for (Entity entity : world.getEntities(Player.class)) {
             Player player = (Player) entity;
+            boolean isInRange = false;
             for (Entity entity2 : world.getEntities(Shop.class)) {
                 Shop shop = (Shop) entity2;
                 shopElixirs = shop.getShopElixirs();
                 shopWeapons = shop.getShopWeapons();
+                weaponTextMap = shop.getWeaponTextMap();
+                elixirTextMap = shop.getElixirTextMap();
+                if(!textGenerated) {
+                    for(ShopElixir elixir : shopElixirs) {
+                        for (Text text : elixirTextMap.get(elixir)) {
+                            text.generateText();
+                        }
+                    }
+                    for(ShopWeapon weapon : shopWeapons) {
+                        for (Text text : weaponTextMap.get(weapon)) {
+                            text.generateText();
+                        }
+                    }
+
+                    textGenerated = true;
+                }
+                isInRange = player.getY() > shop.getY() - shop.getTextureHeight() / 2f && player.getX() < shop.getX() + shop.getTextureWidth() && player.getY() < shop.getY() + shop.getTextureHeight();
                 if (!shopEntered) {
-                    if (player.getY() > shop.getY() - shop.getTextureHeight() / 2f && player.getX() < shop.getX() + shop.getTextureWidth() && player.getY() < shop.getY() + shop.getTextureHeight()) {
+                    if (isInRange) {
                         UI.textBox(gameData, "Hit enter to enter shop", gameData.getMapWidth() / 5f, gameData.getMapHeight() / 10f, 200, 55);
                     }
+
                 }
             }
             //Show balance when in map
@@ -57,11 +81,12 @@ public class ShopControlSystem implements IEntityProcessingService {
                 processBuy(gameData, player, statsPart);
                 //Show balance when in shop
                 UI.text(gameData, String.valueOf(statsPart.getBalance()), tileSize * 3, gameData.getMapHeight() / 2f - tileSize * 2);
-            } else {
+            } else if (isInRange){
                 if (gameData.getKeys().isPressed(GameKeys.ENTER)) {
                     shopEntered = true;
                     MovingPart movingPart = player.getPart(MovingPart.class);
                     movingPart.setSpeed(0);
+                    gameData.getSoundData().playSound(SoundData.SOUND.INTERACT);
                 }
             }
         }
@@ -77,7 +102,21 @@ public class ShopControlSystem implements IEntityProcessingService {
         if (gameData.getKeys().isPressed(GameKeys.ENTER)) {
             for (ShopElixir shopElixir: shopElixirs) {
                 if (cursorX == shopElixir.getX() && cursorY == shopElixir.getY()) {
-                    buyElixir(statsPart, shopElixir);
+                    if (statsPart.getBalance() >= shopElixir.getPrice()) {
+                        statsPart.withdrawBalance(shopElixir.getPrice());
+                        if (shopElixir.getDescription().equals("Strength Elixir")) {
+                            statsPart.setAttack(statsPart.getAttack() + shopElixir.getStatIncrease());
+                        } else {
+                            statsPart.setDefence(statsPart.getDefence() + shopElixir.getStatIncrease());
+                        }
+                        Text text = new Text("Rebuy", 1, 10, -1);
+                        text.setPosition(shopElixir.getX(), shopElixir.getY() - 20);
+                        UI.removeText(elixirTextMap.get(shopElixir).get(1));
+                        UI.addText(text);
+                        ownedTexts.add(text);
+
+                        gameData.getSoundData().playSound(SoundData.SOUND.BUY);
+                    }
                 }
             }
             for (ShopWeapon shopWeapon : shopWeapons) {
@@ -86,9 +125,23 @@ public class ShopControlSystem implements IEntityProcessingService {
                         Weapon weapon = swordMap.get(shopWeapon.getWeaponEnum());
                         player.addWeapon(weapon);
                         player.equipWeapon(weapon);
+                        gameData.getSoundData().playSound(SoundData.SOUND.INTERACT);
                     } else {
-                        buyWeapon(statsPart, shopWeapon.getWeaponEnum(), shopWeapon, player);
+                        // Checks the players balance and adds the weapon if the player can afford
+                        if (statsPart.getBalance() >= shopWeapon.getPrice()) {
+                            statsPart.withdrawBalance(shopWeapon.getPrice());
+                            Weapon weapon = swordMap.get(shopWeapon.getWeaponEnum());
+                            player.addWeapon(weapon);
+                            player.equipWeapon(weapon);
+                            shopWeapon.setOwned(true);
+                            Text text = new Text("Owned", 1, 10, -1);
+                            text.setPosition(shopWeapon.getX(), shopWeapon.getY() - 20);
+                            UI.removeText(weaponTextMap.get(shopWeapon).get(1));
+                            UI.addText(text);
+                            ownedTexts.add(text);
 
+                            gameData.getSoundData().playSound(SoundData.SOUND.BUY);
+                        }
                     }
                 }
             }
@@ -97,34 +150,23 @@ public class ShopControlSystem implements IEntityProcessingService {
                 shopEntered = false;
                 MovingPart movingPart = player.getPart(MovingPart.class);
                 movingPart.setSpeed(100);
+                for (ShopWeapon weapon : shopWeapons) {
+                    for (Text text : weaponTextMap.get(weapon)) {
+                        UI.removeText(text);
+                    }
+                }
+                for (ShopElixir elixir : shopElixirs) {
+                    for (Text text : elixirTextMap.get(elixir)) {
+                        UI.removeText(text);
+                    }
+                }
+                weaponTextAdded = false;
+                elixirTextAdded = false;
+                for (Text text : ownedTexts) {
+                    UI.removeText(text);
+                }
+                ownedTexts.clear();
             }
-        }
-    }
-
-    /**
-     * Checks the players balance and adds the elixir if the player can afford. There are two elixirs if it is strength that will raise.
-     */
-    private void buyElixir(StatsPart statsPart, ShopElixir shopElixir) {
-        if (statsPart.getBalance() >= shopElixir.getPrice()) {
-            statsPart.withdrawBalance(shopElixir.getPrice());
-            if (shopElixir.getDescription().equals("Strength Elixir")) {
-                statsPart.setAttack(statsPart.getAttack() + shopElixir.getStatIncrease());
-            } else {
-                statsPart.setDefence(statsPart.getDefence() + shopElixir.getStatIncrease());
-            }
-        }
-    }
-
-    /**
-     * Checks the players balance and adds the weapon if the player can afford
-     */
-    private void buyWeapon(StatsPart statsPart, WeaponImages weaponEnum, ShopWeapon shopWeapon, Player player) {
-        if (statsPart.getBalance() >= shopWeapon.getPrice()) {
-            statsPart.withdrawBalance(shopWeapon.getPrice());
-            Weapon weapon = swordMap.get(weaponEnum);
-            player.addWeapon(weapon);
-            player.equipWeapon(weapon);
-            shopWeapon.setOwned(true);
         }
     }
 
@@ -143,8 +185,8 @@ public class ShopControlSystem implements IEntityProcessingService {
         UI.box(gameData, shapeRenderer, 0, gameData.getMapHeight() / 8f, gameData.getMapWidth() / 2, 5, new Color(66 / 255f, 40 / 255f, 14 / 255f, 1));
 
         UI.box(gameData, shapeRenderer, cursorX, cursorY, 40, 5, new Color(66 / 255f, 40 / 255f, 14 / 255f, 1));
-        UI.text(gameData, String.valueOf(statsPart.getBalance()), tileSize * 3, gameData.getMapHeight() / 2f - tileSize * 2);
         shapeRenderer.end();
+        shapeRenderer.dispose();
 
         //initializing the image
         SpriteBatch batch = new SpriteBatch();
@@ -154,7 +196,7 @@ public class ShopControlSystem implements IEntityProcessingService {
         TextureRegion region = new TextureRegion(texture);
         batch.begin();
 
-        // Tile size is multiplied with its place in the spriteMap
+//         Tile size is multiplied with its place in the spriteMap
         for (ShopElixir shopElixir : shopElixirs) {
             region.setRegion(shopElixir.getSpriteMapX(), shopElixir.getSpriteMapY(), tileSize, tileSize);
             batch.draw(region, shopElixir.getX(), shopElixir.getY() + 30, tileSize * 4, tileSize * 4);
@@ -168,22 +210,38 @@ public class ShopControlSystem implements IEntityProcessingService {
         batch.draw(region, gameData.getMapWidth()/4f - tileSize * 5, gameData.getMapHeight() / 2f - tileSize * 5, tileSize * 10, tileSize * 5);
 
         batch.end();
+        batch.dispose();
 
         int offset = 20;
-        for (ShopElixir shopElixir : shopElixirs) {
-            UI.text(gameData, shopElixir.getDescription(), shopElixir.getX(), shopElixir.getY());
-            UI.text(gameData, "$"+shopElixir.getPrice(), shopElixir.getX(), shopElixir.getY() - offset);
-            UI.text(gameData, "Points "+shopElixir.getStatIncrease(), shopElixir.getX(), shopElixir.getY() - offset*2);
-        }
-        for (ShopWeapon shopWeapon : shopWeapons) {
-            UI.text(gameData,shopWeapon.getDescription(), shopWeapon.getX(), shopWeapon.getY());
-            UI.text(gameData,"Damage "+shopWeapon.getDamage(), shopWeapon.getX(), shopWeapon.getY() - offset * 2);
-            UI.text(gameData,"Range "+shopWeapon.getRange(), shopWeapon.getX(), shopWeapon.getY() - offset * 3);
-            if (player.hasOwnedWeapon(shopWeapon.getWeaponEnum()) || shopWeapon.getPrice() == 0) {
-                UI.text(gameData, "Owned", shopWeapon.getX(), shopWeapon.getY() - offset);
-            } else {
-                UI.text(gameData, "$"+shopWeapon.getPrice(), shopWeapon.getX(), shopWeapon.getY() - offset);
+        if(!elixirTextAdded) {
+            for (ShopElixir elixir : shopElixirs) {
+                List<Text> textList = elixirTextMap.get(elixir);
+                for (int i = 0; i < textList.size(); i++) {
+                    Text text = textList.get(i);
+                    text.setPosition(elixir.getX(), elixir.getY() - offset * i);
+
+                    UI.addText(text);
+                }
             }
+            elixirTextAdded = true;
+        }
+        if (!weaponTextAdded) {
+            for (ShopWeapon shopWeapon : shopWeapons) {
+                List<Text> textList = weaponTextMap.get(shopWeapon);
+                for (int i = 0; i < textList.size(); i++) {
+                    Text text = textList.get(i);
+                    if (((shopWeapon.isOwned() || player.hasOwnedWeapon(shopWeapon.getWeaponEnum()) || shopWeapon.getPrice() == 0) && i == 1)) {
+                        Text test = new Text("Owned", 1, 10, -1);
+                        test.setPosition(shopWeapon.getX(), shopWeapon.getY() - offset * i);
+                        UI.addText(test);
+                        ownedTexts.add(test);
+                        continue;
+                    }
+                    text.setPosition(shopWeapon.getX(), shopWeapon.getY() - offset * i);
+                    UI.addText(text);
+                }
+            }
+            weaponTextAdded = true;
         }
         UI.text(gameData,"Exit", 500, 130);
     }
@@ -212,6 +270,7 @@ public class ShopControlSystem implements IEntityProcessingService {
             } else if (cursorX < x5 && cursorY == y1){
                 cursorX += x1;
             }
+
         } else if (gameData.getKeys().isPressed(GameKeys.LEFT)) {
             if (cursorX > x1 && cursorY == y2) {
                 cursorX -= x2;

@@ -4,10 +4,12 @@ import Common.ai.AStarPathFinding;
 import Common.ai.Node;
 import Common.data.Entity;
 import Common.data.GameData;
+import Common.data.SoundData;
 import Common.data.World;
 import Common.data.entityparts.AnimationPart;
 import Common.data.entityparts.LifePart;
 import Common.data.entityparts.MovingPart;
+import Common.data.entityparts.SoundPart;
 import Common.services.IEntityProcessingService;
 import CommonPlayer.Player;
 import CommonEnemy.Enemy;
@@ -47,6 +49,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
             AnimationPart animationPart = enemy.getPart(AnimationPart.class);
             LifePart lifePart = enemy.getPart(LifePart.class);
+            SoundPart soundPart = enemy.getPart(SoundPart.class);
 
             for (Entity player : world.getEntities(Player.class)) {
                 // getting player position on the tile map
@@ -65,6 +68,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
                         // Initialization of a new search for the given positions
                         List<Node> path = aStarPathFinding.treeSearch(enemyPos, targetPos, world.getCsvMap());
 
+                        if(path != null){
                         //Removes the goal node so it does not stand on the goal, but next to it
                         if (path.size() > 1) {
                             path.remove(0);
@@ -121,7 +125,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
                             sr.begin(ShapeRenderer.ShapeType.Line);
                             sr.setColor(Color.RED);
                             sr.polygon(attackRange.getTransformedVertices());
-                            sr.end();
                             Gdx.gl.glDisable(GL20.GL_BLEND);
                         }
 
@@ -130,11 +133,15 @@ public class EnemyControlSystem implements IEntityProcessingService {
                             LifePart playerLifePart = player.getPart(LifePart.class);
                             if (animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime()) && !playerLifePart.isDead()) {
                                 if (enemy.getX() > player.getX()) {
+                                    soundPart.playAudio(SoundData.SOUND.ATTACK);
                                     animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.ATTACK_LEFT);
                                 } else {
+                                    soundPart.playAudio(SoundData.SOUND.ATTACK);
                                     animationPart.setCurrentState(AnimationPart.ANIMATION_STATES.ATTACK_RIGHT);
                                 }
+                                if (weaponService != null) {
                                 weaponService.attack(enemy, gameData, world);
+                                }
                             }
                         } else {
                             if (animationPart.getCurrentAnimation().isAnimationFinished(animationPart.getAnimationTime())) {
@@ -189,8 +196,11 @@ public class EnemyControlSystem implements IEntityProcessingService {
                             }
                         }
                     } else {
-                        //if player is not inside arena
-                        stopMovement(movingPart);
+                            //if player is not inside arena
+                            stopMovement(movingPart);
+                        } }
+                    else{
+                        decideMovement(enemyX,enemyY, playerX,playerY, movingPart);
                     }
                 } else if (playerLifepart.isDead()) {
                     stopMovement(movingPart);
@@ -207,9 +217,12 @@ public class EnemyControlSystem implements IEntityProcessingService {
             movingPart.process(gameData, enemy);
             animationPart.process(gameData, enemy);
             lifePart.process(gameData, enemy);
+            soundPart.process(gameData, enemy);
+
         }
         if (gameData.isDebugMode()) {
             sr.end();
+            sr.dispose();
             Gdx.gl.glDisable(GL20.GL_BLEND);
         }
     }

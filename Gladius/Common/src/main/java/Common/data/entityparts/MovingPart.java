@@ -13,6 +13,7 @@ public class MovingPart implements EntityPart {
     private boolean colTop, colBot, colLeft,colRight;
     private final float diagonalCorrectionVal = (float) (1 / sqrt(2));
     private float slower = (float) 1;
+    private boolean isSlow = false;
 
     public MovingPart(float speed) {
         this.speed = speed;
@@ -20,6 +21,14 @@ public class MovingPart implements EntityPart {
 
     public void setSlow(float slower) {
         this.slower = slower;
+    }
+
+    public void setIsSlow(boolean isSlow){
+        this.isSlow = isSlow;
+    }
+
+    public boolean isSlow(){
+        return isSlow;
     }
 
     public float getSpeed() {
@@ -78,6 +87,7 @@ public class MovingPart implements EntityPart {
 
     @Override
     public void process(GameData gameData, Entity entity) {
+
         LifePart lifePart = entity.getPart(LifePart.class);
         if (lifePart != null && lifePart.isDead()) {
             return;

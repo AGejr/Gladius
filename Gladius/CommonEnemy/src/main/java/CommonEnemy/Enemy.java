@@ -1,9 +1,11 @@
 package CommonEnemy;
 
 import Common.data.Entity;
+import Common.data.GameData;
 import Common.data.entityparts.AnimationPart;
 import CommonWeapon.IWeaponUserService;
 import CommonWeapon.WeaponImages;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Polygon;
@@ -13,8 +15,9 @@ import CommonWeapon.Weapon;
 public class Enemy extends Entity implements IWeaponUserService {
     private Weapon equippedWeapon;
     private Polygon attackRange;
+    private float movementScale = 1f;
 
-    public Enemy(String texturePath, int radius) {
+    public Enemy(String texturePath, int radius, float movementScale) {
         super(texturePath, radius, 96, 96, 0, 0.5f, 0.5f);
         //TODO align weapon hitbox to the axe and swinging animation
         this.equippedWeapon = new Weapon("Axe", 25, 8, 35, "", 9, 55, 0.9f, 0.9f, 0, 30.0f, 6.0f, 42.0f, 63.0f, 17.0f, this);
@@ -23,6 +26,8 @@ public class Enemy extends Entity implements IWeaponUserService {
         this.attackRange = new Polygon(new float[]{super.getX(), super.getY(), super.getX(), super.getY() + super.getTextureHeight(), super.getX() + super.getTextureWidth(), super.getY() + super.getTextureHeight(), super.getX() + super.getTextureWidth(), super.getY()});
         this.attackRange.setOrigin(super.getTextureWidth() / 2f, -15);
         this.attackRange.setScale(0.9f, 0.7f);
+
+        this.movementScale = movementScale;
     }
 
     @Override
@@ -39,6 +44,12 @@ public class Enemy extends Entity implements IWeaponUserService {
     public void initTexture(){
         super.initTexture();
         this.setRegion(0,0,96, 96);
+        initAnimation();
+    }
+
+    @Override
+    public void initTextureFormAssetManager(GameData gameData) {
+        super.initTextureFormAssetManager(gameData);
         initAnimation();
     }
 
@@ -89,11 +100,11 @@ public class Enemy extends Entity implements IWeaponUserService {
             }
 
             // RUNNING right animation
-            Animation rightMoveAnimation = new Animation(0.175f,rightMoveTextures);
+            Animation rightMoveAnimation = new Animation(0.175f*movementScale,rightMoveTextures);
             animationPart.addAnimation(AnimationPart.ANIMATION_STATES.RUNNING_RIGHT, rightMoveAnimation);
 
             // RUNNING left animation
-            Animation leftMoveAnimation = new Animation(0.175f,leftMoveTextures);
+            Animation leftMoveAnimation = new Animation(0.175f*movementScale,leftMoveTextures);
             animationPart.addAnimation(AnimationPart.ANIMATION_STATES.RUNNING_LEFT, leftMoveAnimation);
 
             // DEATH animation
@@ -137,6 +148,17 @@ public class Enemy extends Entity implements IWeaponUserService {
             Animation leftAttackAnimation = new Animation(0.12f,leftAttackTextures);
             animationPart.addAnimation(AnimationPart.ANIMATION_STATES.ATTACK_LEFT, leftAttackAnimation);
 
+            // TAKE DAMAGE animation
+            Array<TextureRegion> takeDamageTexturesRight = new Array<>();
+            Array<TextureRegion> takeDamageTexturesLeft = new Array<>();
+            for (int i = 0; i < 3; i++) {
+                takeDamageTexturesRight.add(new TextureRegion(this.getTexture(),96*i,96*8,96,96));
+                takeDamageTexturesLeft.add(new TextureRegion(this.getTexture(),96*i,96*18,96,96));
+            }
+            Animation takeDamageAnimationRight = new Animation(0.08f,takeDamageTexturesRight);
+            Animation takeDamageAnimationLeft = new Animation(0.08f,takeDamageTexturesLeft);
+            animationPart.addAnimation(AnimationPart.ANIMATION_STATES.TAKE_DAMAGE_RIGHT, takeDamageAnimationRight);
+            animationPart.addAnimation(AnimationPart.ANIMATION_STATES.TAKE_DAMAGE_LEFT, takeDamageAnimationLeft);
         }
 
     }

@@ -16,9 +16,16 @@ public class Player extends Entity implements IWeaponUserService {
     private List<Weapon> ownedWeapons = new ArrayList<>();
     private Weapon equippedWeapon;
 
+    public Player(String texturePath,float radius, int textureWidth, int textureHeight, float angle, float hitboxScaleX, float hitboxScaleY) {
+        super(texturePath, radius, textureWidth, textureHeight, angle, hitboxScaleX, hitboxScaleY);
+        Weapon sword = new Weapon("Sword", 15, 8, 0, WeaponImages.STARTSWORD.path, 36, 146, 0.9f, 0.9f, 0, 20.0f, 9.0f, 20.0f,9.0f, 10.0f, this, 0.3f);
+        ownedWeapons.add(sword);
+        equippedWeapon = ownedWeapons.get(0);
+    }
+
     public Player(String texturePath, int radius) {
         super(texturePath,radius, 32, 32);
-        Weapon sword = new Weapon("Sword", 25, 8, 10, WeaponImages.STARTSWORD.path, 36, 146, 0.9f, 0.9f, 0, 20.0f, 9.0f, 20.0f,9.0f, 10.0f, this, 0.3f);
+        Weapon sword = new Weapon("Sword", 15, 8, 0, WeaponImages.STARTSWORD.path, 36, 146, 0.9f, 0.9f, 0, 20.0f, 9.0f, 20.0f,9.0f, 10.0f, this, 0.3f);
         ownedWeapons.add(sword);
         equippedWeapon = ownedWeapons.get(0);
     }
@@ -90,10 +97,8 @@ public class Player extends Entity implements IWeaponUserService {
             animationPart.addAnimation(AnimationPart.ANIMATION_STATES.IDLE_LEFT, leftIdleAnimation);
 
             // Running animation
-
             Array<TextureRegion> rightMoveTextures = new Array<>();
             Array<TextureRegion> leftMoveTextures = new Array<>();
-
             for (int i = 0; i < 5; i++) {
                 // Running right
                 rightMoveTextures.add(new TextureRegion(this.getTexture(),32*i,32,32,32));
@@ -103,11 +108,9 @@ public class Player extends Entity implements IWeaponUserService {
                 leftTexture.flip(true,false);
                 leftMoveTextures.add(leftTexture);
             }
-
             // RUNNING right animation
             Animation rightMoveAnimation = new Animation(0.10f,rightMoveTextures);
             animationPart.addAnimation(AnimationPart.ANIMATION_STATES.RUNNING_RIGHT, rightMoveAnimation);
-
             // RUNNING left animation
             Animation leftMoveAnimation = new Animation(0.10f,leftMoveTextures);
             animationPart.addAnimation(AnimationPart.ANIMATION_STATES.RUNNING_LEFT, leftMoveAnimation);
@@ -133,25 +136,42 @@ public class Player extends Entity implements IWeaponUserService {
             animationPart.addAnimation(AnimationPart.ANIMATION_STATES.DEATH_LEFT, leftDeathAnimation);
 
             // ATTACK animation
-
             Array<TextureRegion> rightAttackTextures = new Array<>();
             Array<TextureRegion> leftAttackTextures = new Array<>();
-            for (int i = 0; i < 7; i++) {
+            for (int i = 0; i < 5; i++) {
+                // Attacking right
+                rightAttackTextures.add(new TextureRegion(this.getTexture(),32*i,64,32,32));
 
-                TextureRegion rightAttackTexture = new TextureRegion(this.getTexture(),32*i,64,32,32);
-                rightAttackTextures.add(rightAttackTexture);
-
-                TextureRegion leftAttackTexture = new TextureRegion(this.getTexture(),32*i,64,32,32);
-                leftAttackTexture.flip(true,false);
-                leftAttackTextures.add(leftAttackTexture);
+                // Attacking left
+                TextureRegion leftTexture = new TextureRegion(this.getTexture(),32*i,64,32,32);
+                leftTexture.flip(true,false);
+                leftAttackTextures.add(leftTexture);
             }
-            // ATTACK ANIMATION right
-            Animation attackAnimation = new Animation(0.10f,rightAttackTextures);
-            animationPart.addAnimation(AnimationPart.ANIMATION_STATES.ATTACK_RIGHT, attackAnimation);
-
-            // ATTACK ANIMATION left
+            // ATTACK right animation
+            Animation rightAttackAnimation = new Animation(0.10f,rightAttackTextures);
+            animationPart.addAnimation(AnimationPart.ANIMATION_STATES.ATTACK_RIGHT, rightAttackAnimation);
+            // ATTACK left animation
             Animation leftAttackAnimation = new Animation(0.10f,leftAttackTextures);
             animationPart.addAnimation(AnimationPart.ANIMATION_STATES.ATTACK_LEFT, leftAttackAnimation);
+
+            // TAKE DAMAGE animation
+            Array<TextureRegion> rightTakeDamageTextures = new Array<>();
+            Array<TextureRegion> leftTakeDamageTextures = new Array<>();
+            for (int i = 0; i < 3; i++) {
+                // Take damage right
+                rightTakeDamageTextures.add(new TextureRegion(this.getTexture(),32*i,96,32,32));
+
+                // Take damage left
+                TextureRegion leftTexture = new TextureRegion(this.getTexture(),32*i,96,32,32);
+                leftTexture.flip(true,false);
+                leftTakeDamageTextures.add(leftTexture);
+            }
+            // TAKE DAMAGE right animation
+            Animation rightTakeDamageAnimation = new Animation(0.08f,rightTakeDamageTextures);
+            animationPart.addAnimation(AnimationPart.ANIMATION_STATES.TAKE_DAMAGE_RIGHT, rightTakeDamageAnimation);
+            // TAKE DAMAGE left animation
+            Animation leftTakeDamageAnimation = new Animation(0.08f,leftTakeDamageTextures);
+            animationPart.addAnimation(AnimationPart.ANIMATION_STATES.TAKE_DAMAGE_LEFT, leftTakeDamageAnimation);
 
         }
 
