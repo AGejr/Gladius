@@ -26,11 +26,6 @@ public class WeaponPluginTest {
         world.addEntity(weapon);
     }
 
-    @After
-    public void tearDown() throws Exception {
-
-    }
-
     @Test
     public void stop() {
         int entitiesBeforeStop = world.getEntities().size();
