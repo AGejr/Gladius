@@ -3,14 +3,10 @@ package Enemy;
 import Common.data.GameData;
 import Common.data.SoundData;
 import Common.data.World;
-import Common.services.IEntityProcessingService;
 import Common.tools.FileLoader;
 import CommonEnemy.Enemy;
-import com.badlogic.gdx.graphics.Texture;
 import org.junit.*;
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -29,9 +25,6 @@ public class EnemyControlSystemTest {
         gameData = mock(GameData.class);
         enemy = new Enemy("",0,0);
         world.addEntity(enemy);
-
-        SoundData soundData = mock(SoundData.class);
-        when(gameData.getSoundData()).thenReturn(soundData);
     }
 
     @After
