@@ -7,6 +7,7 @@ import Common.data.World;
 import Common.data.entityparts.MovingPart;
 import Common.tools.FileLoader;
 
+import CommonPlayer.Player;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,8 +17,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -26,7 +26,7 @@ public class collisionTest {
     private World mockedWorld;
     private Collision collision;
     private MovingPart mockMovingpart;
-    Entity testEntity;
+    private Player testEntity;
 
    @Before
    public void init() {
@@ -39,21 +39,19 @@ public class collisionTest {
        collision = new Collision();
        mockedWorld = mock(World.class);
 
-       mockMovingpart = mock(MovingPart.class);
-
-       testEntity = new Entity("",2,32,32,0,1,1,1,1,1,16,16);
-       testEntity.add(mockMovingpart);
+       testEntity = new Player("",2);
+       testEntity.add(new MovingPart(1));
        testEntity.setY(220f);
        testEntity.setX(780f);
 
-       Collection<Entity> entityList = new ArrayList<Entity>();
+       Collection<Entity> entityList = new ArrayList<>();
        entityList.add(testEntity);
 
        List<List<Integer>> csv = new ArrayList<>();
        for (int i = 1; i <= 40; i++) {
            List<Integer> integers = new ArrayList<>();
            for (int j = 1; j <= 50; j++) {
-                   integers.add(1);
+                   integers.add(2);
            }
            csv.add(integers);
        }
@@ -63,15 +61,16 @@ public class collisionTest {
    }
 
   @Test
-  public void gateEnteredTest(){
+  public void isSlowedTest(){
 
-       assertEquals(testEntity.getY(),220f,1f);
-       assertEquals(testEntity.getX(), 780f, 1f);
+      MovingPart part = testEntity.getPart(MovingPart.class);
 
-       collision.process(mockGameData,mockedWorld);
+      assertFalse(part.isSlow());
 
-      assertNotEquals(testEntity.getY(),220f,1f);
-      assertNotEquals(testEntity.getX(), 780f, 1f);
+      collision.process(mockGameData,mockedWorld);
+
+      assertTrue(part.isSlow());
+
   }
 
 }
