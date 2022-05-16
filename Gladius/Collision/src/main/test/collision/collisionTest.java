@@ -26,7 +26,6 @@ public class collisionTest {
     private GameData mockGameData;
     private World mockedWorld;
     private Collision collision;
-    private MovingPart mockMovingpart;
     private Player testEntity;
 
    @Before
