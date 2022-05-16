@@ -2,6 +2,7 @@ package Common.ai;
 
 import Common.data.World;
 import Common.tools.FileLoader;
+import org.junit.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,18 +14,18 @@ public class AStarPathFindingTest {
     private AStarPathFinding pathFinding = new AStarPathFinding();
     private World world;
 
-    @org.junit.Before
+    @Before
     public void setUp() throws Exception {
         world = new World();
         FileLoader.loadFile("Map.tmx", this.getClass());
         world.setCsvMap(FileLoader.fetchData("Map.tmx"));
     }
 
-    @org.junit.After
+    @After
     public void tearDown() throws Exception {
     }
 
-    @org.junit.Test
+    @Test
     public void treeSearch() {
         List<Integer> initialState = new ArrayList<>(Arrays.asList(10, 29));
         List<Integer> goalState = new ArrayList<>(Arrays.asList(9, 15));

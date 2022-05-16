@@ -13,7 +13,6 @@ import Common.services.IGamePluginService;
 import Common.services.IPostEntityProcessingService;
 import Common.tools.FileLoader;
 import Common.ui.UI;
-import CommonEnemy.Enemy;
 import CommonPlayer.Player;
 import Event.EventRegistry;
 import com.badlogic.gdx.ApplicationListener;
@@ -33,35 +32,27 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.io.File;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Game implements ApplicationListener {
 
     private static final List<IEntityProcessingService> entityProcessorList = new CopyOnWriteArrayList<>();
-    private static List<IPostEntityProcessingService> postEntityProcessorList = new CopyOnWriteArrayList<>();
-    private static List<IEventProcessingService> eventProcessingServiceList = new CopyOnWriteArrayList<>();
+    private static final List<IPostEntityProcessingService> postEntityProcessorList = new CopyOnWriteArrayList<>();
+    private static final List<IEventProcessingService> eventProcessingServiceList = new CopyOnWriteArrayList<>();
 
     private static OrthographicCamera cam;
     private final GameData gameData = new GameData();
-    private static World world = new World();
+    private static final World world = new World();
     private TiledMap tiledMap;
     private OrthoCachedTiledMapRenderer tiledMapRenderer;
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
     private Music theme;
-    private File shopFile;
-
-    private FileHandle shopFileHandle;
-    private Texture shopTexture;
     private TextureRegion shopRegion;
 
     public Game(){
@@ -120,9 +111,9 @@ public class Game implements ApplicationListener {
 
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
 
-        shopFile = new File("ShopItems.png");
-        shopFileHandle = new FileHandle(shopFile);
-        shopTexture = new Texture(shopFileHandle);
+        File shopFile = new File("ShopItems.png");
+        FileHandle shopFileHandle = new FileHandle(shopFile);
+        Texture shopTexture = new Texture(shopFileHandle);
         shopRegion = new TextureRegion(shopTexture);
 
     }
@@ -253,7 +244,6 @@ public class Game implements ApplicationListener {
         tiledMapRenderer.dispose();
         tiledMap.dispose();
         gameData.getStage().dispose();
-
     }
 
     public void addEntityProcessingService(IEntityProcessingService eps) {
