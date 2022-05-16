@@ -12,7 +12,9 @@ import org.junit.Test;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -43,22 +45,21 @@ public class collisionTest {
        testEntity.add(mockMovingpart);
        testEntity.setY(220f);
        testEntity.setX(780f);
-       /*
-       when(mockEntity.getY()).thenReturn(220f);
-       when(mockEntity.getX()).thenReturn(780f);
-       when(mockEntity.getRadiusOffsetX()).thenReturn(16);
-       when(mockEntity.getRadiusOffsetY()).thenReturn(16);
-       when(mockEntity.getTextureWidth()).thenReturn(32);
-       when(mockEntity.getRadius()).thenReturn(2f);
-       when(mockEntity.getPart(MovingPart.class)).thenReturn(mockMovingpart); */
 
        Collection<Entity> entityList = new ArrayList<Entity>();
        entityList.add(testEntity);
 
-       FileLoader.loadFile("Map/Map.tmx", getClass());
+       List<List<Integer>> csv = new ArrayList<>();
+       for (int i = 1; i <= 40; i++) {
+           List<Integer> integers = new ArrayList<>();
+           for (int j = 1; j <= 50; j++) {
+                   integers.add(1);
+           }
+           csv.add(integers);
+       }
 
        when(mockedWorld.getEntities()).thenReturn(entityList);
-       when(mockedWorld.getCsvMap()).thenReturn(FileLoader.fetchData("Map/Map.tmx"));
+       when(mockedWorld.getCsvMap()).thenReturn(csv);
    }
 
   @Test
@@ -66,7 +67,9 @@ public class collisionTest {
 
        assertEquals(testEntity.getY(),220f,1f);
        assertEquals(testEntity.getX(), 780f, 1f);
+
        collision.process(mockGameData,mockedWorld);
+
       assertNotEquals(testEntity.getY(),220f,1f);
       assertNotEquals(testEntity.getX(), 780f, 1f);
   }
