@@ -17,7 +17,7 @@ public class PlayerTest {
     private MovingPart playerMovingPart;
 
     @Before
-    public void init() {
+    public void setup() {
         gameData = new GameData();
         World world = new World();
 
@@ -42,14 +42,10 @@ public class PlayerTest {
         gameData.setDelta(0.1f);
         playerMovingPart.process(gameData, player);
         float newPlayerLocation = player.getX();
-        System.out.println(oldPlayerLocation + ", " + newPlayerLocation);
         assertTrue(newPlayerLocation > oldPlayerLocation);
 
         // Stop movement
-        playerMovingPart.setLeft(false);
         playerMovingPart.setRight(false);
-        playerMovingPart.setUp(false);
-        playerMovingPart.setDown(false);
 
         // LEFT
         oldPlayerLocation = player.getX();
@@ -57,14 +53,10 @@ public class PlayerTest {
         gameData.setDelta(0.1f);
         playerMovingPart.process(gameData, player);
         newPlayerLocation = player.getX();
-        System.out.println(oldPlayerLocation + ", " + newPlayerLocation);
         assertTrue(newPlayerLocation < oldPlayerLocation);
 
         // Stop movement
         playerMovingPart.setLeft(false);
-        playerMovingPart.setRight(false);
-        playerMovingPart.setUp(false);
-        playerMovingPart.setDown(false);
 
         // UP
         oldPlayerLocation = player.getY();
@@ -72,14 +64,10 @@ public class PlayerTest {
         gameData.setDelta(0.1f);
         playerMovingPart.process(gameData, player);
         newPlayerLocation = player.getY();
-        System.out.println(oldPlayerLocation + ", " + newPlayerLocation);
         assertTrue(newPlayerLocation > oldPlayerLocation);
 
         // Stop movement
-        playerMovingPart.setLeft(false);
-        playerMovingPart.setRight(false);
         playerMovingPart.setUp(false);
-        playerMovingPart.setDown(false);
 
         // DOWN
         oldPlayerLocation = player.getY();
@@ -87,7 +75,6 @@ public class PlayerTest {
         gameData.setDelta(0.1f);
         playerMovingPart.process(gameData, player);
         newPlayerLocation = player.getY();
-        System.out.println(oldPlayerLocation + ", " + newPlayerLocation);
         assertTrue(newPlayerLocation < oldPlayerLocation);
     }
 }
