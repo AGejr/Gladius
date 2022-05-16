@@ -1,7 +1,6 @@
 package Enemy;
 
 import Common.data.GameData;
-import Common.data.SoundData;
 import Common.data.World;
 import Common.tools.FileLoader;
 import CommonEnemy.Enemy;
@@ -10,7 +9,6 @@ import org.junit.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class EnemyControlSystemTest {
     World world;
