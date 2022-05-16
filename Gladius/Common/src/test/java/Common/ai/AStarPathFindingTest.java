@@ -7,25 +7,27 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.*;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AStarPathFindingTest {
     private AStarPathFinding pathFinding = new AStarPathFinding();
     private World world;
 
-    @org.junit.Before
+    @BeforeEach
     public void setUp() throws Exception {
         world = new World();
         FileLoader.loadFile("Map.tmx", this.getClass());
         world.setCsvMap(FileLoader.fetchData("Map.tmx"));
     }
 
-    @org.junit.After
+    @AfterEach
     public void tearDown() throws Exception {
     }
 
-    @org.junit.Test
-    public void treeSearch() {
+    @Test
+    public void treeSearchTest() {
         List<Integer> initialState = new ArrayList<>(Arrays.asList(10, 29));
         List<Integer> goalState = new ArrayList<>(Arrays.asList(9, 15));
 
