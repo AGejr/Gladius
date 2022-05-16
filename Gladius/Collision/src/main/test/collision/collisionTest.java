@@ -30,7 +30,7 @@ public class collisionTest {
     private Player testEntity;
 
    @Before
-   public void init() {
+   public void setUp() {
        mockGameData = mock(GameData.class);
 
        when(mockGameData.isGateEnabled()).thenReturn(true);
