@@ -23,6 +23,6 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn clean install -f ./Gladius/pom.xml
+      run: mvn clean install -DskipTests -f ./Gladius/pom.xml -d
     - name: Test with Maven
       run: mvn test -f ./Gladius/pom.xml
