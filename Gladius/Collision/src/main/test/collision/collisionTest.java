@@ -9,9 +9,8 @@ import Common.tools.FileLoader;
 
 import CommonPlayer.Player;
 import com.badlogic.gdx.Gdx;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.Before;
+import org.junit.Test;
 
 
 import java.util.ArrayList;
@@ -19,6 +18,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -28,7 +28,7 @@ public class collisionTest {
     private Collision collision;
     private Player testEntity;
 
-   @BeforeEach
+   @Before
    public void setUp() {
        mockGameData = mock(GameData.class);
 
