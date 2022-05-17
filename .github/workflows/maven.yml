@@ -25,5 +25,4 @@ jobs:
     - name: Build with Maven
       run: mvn clean install -DskipTests -f ./Gladius/pom.xml
     - name: Test with Maven
-      working-directory: ./Gladius
-      run: mvn surefire:test
+      run: mvn test -f ./Gladius/pom.xml

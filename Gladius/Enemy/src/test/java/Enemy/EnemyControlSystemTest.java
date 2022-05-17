@@ -4,10 +4,10 @@ import Common.data.GameData;
 import Common.data.World;
 import Common.tools.FileLoader;
 import CommonEnemy.Enemy;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.*;
+
+
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
 public class EnemyControlSystemTest {
@@ -15,7 +15,7 @@ public class EnemyControlSystemTest {
     GameData gameData;
     Enemy enemy;
 
-    @BeforeEach
+    @Before
     public void setUp() throws Exception {
         world = new World();
         FileLoader.loadFile("Map.tmx", this.getClass());
@@ -25,12 +25,12 @@ public class EnemyControlSystemTest {
         world.addEntity(enemy);
     }
 
-    @AfterEach
+    @After
     public void tearDown() throws Exception {
     }
 
     @Test
-    public void startTest() throws Exception {
+    public void start() throws Exception {
         EnemyFactory enemyFactory = new EnemyFactory();
 
         //When wavenumber is 10, there will spawn 14 enemies
@@ -46,7 +46,7 @@ public class EnemyControlSystemTest {
     }
 
     @Test
-    public void stopTest() throws Exception {
+    public void stop() throws Exception {
         EnemyFactory enemyFactory = new EnemyFactory();
 
         int entitiesBeforeStop = world.getEntities().size();
