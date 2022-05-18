@@ -5,10 +5,9 @@ import Common.data.GameData;
 import Common.data.World;
 import Common.data.entityparts.*;
 import CommonPlayer.Player;
-import org.junit.Before;
-import org.junit.Test;
-
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PlayerTest {
 
@@ -16,7 +15,7 @@ public class PlayerTest {
     private Entity player;
     private MovingPart playerMovingPart;
 
-    @Before
+    @BeforeEach
     public void setup() {
         gameData = new GameData();
         World world = new World();
@@ -32,7 +31,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void playerMovement() {
+    public void playerMovementTest() {
         // Check if player is created with all the right parts
         assertNotNull(player.getPart(MovingPart.class));
 

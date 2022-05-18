@@ -52,7 +52,7 @@ public class WeaponCollisionTest {
     }
 
     @Test
-    public void process() {
+    public void processTest() {
         enemy.setX(300);
         enemy.setY(300);
         weapon.setX(20);

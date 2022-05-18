@@ -2,31 +2,32 @@ package Common.ai;
 
 import Common.data.World;
 import Common.tools.FileLoader;
-import org.junit.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.*;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AStarPathFindingTest {
     private AStarPathFinding pathFinding = new AStarPathFinding();
     private World world;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         world = new World();
         FileLoader.loadFile("Map.tmx", this.getClass());
         world.setCsvMap(FileLoader.fetchData("Map.tmx"));
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
     }
 
     @Test
-    public void treeSearch() {
+    public void treeSearchTest() {
         List<Integer> initialState = new ArrayList<>(Arrays.asList(10, 29));
         List<Integer> goalState = new ArrayList<>(Arrays.asList(9, 15));
 

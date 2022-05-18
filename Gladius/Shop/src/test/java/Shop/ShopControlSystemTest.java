@@ -11,7 +11,10 @@ import Shop.ShopItems.ShopWeapon;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ShopControlSystemTest {
 
@@ -19,7 +22,7 @@ public class ShopControlSystemTest {
     private final int clubPrice = 100;
     private final Map<WeaponImages, Weapon> swordMap = new HashMap<>();
 
-    @org.junit.Before
+    @BeforeEach
     public void setUp() throws Exception {
         player = new Player(null,2);
         player.add(new StatsPart(10,10,0));
@@ -27,12 +30,12 @@ public class ShopControlSystemTest {
         swordMap.put(WeaponImages.CLUB,sword);
     }
 
-    @org.junit.After
+    @AfterEach
     public void tearDown() throws Exception {
     }
 
-    @org.junit.Test
-    public void process() {
+    @Test
+    public void processTest() {
         StatsPart statsPart = player.getPart(StatsPart.class);
         ShopWeapon shopWeapon = new ShopWeapon("Club", 100, 290,WeaponImages.CLUB, clubPrice,45,14,14);
 
