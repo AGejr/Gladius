@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class collisionTest {
+public class CollisionTest {
     private GameData mockGameData;
     private World mockedWorld;
     private Collision collision;
