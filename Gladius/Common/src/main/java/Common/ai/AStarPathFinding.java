@@ -124,12 +124,12 @@ public class AStarPathFinding {
      * @return Pythagoras a^2 + b^2 = c^2 is used to calculate the direct route to the goal from currentNode
      */
     private float heuristic(Node currentNode) {
+        float heuristic = (float) (Math.pow(Math.abs(currentNode.getX() - goalState.get(0)), 2) + Math.pow(Math.abs(currentNode.getY() - goalState.get(1)), 2));
         if (csv.get(gridMapWidth - currentNode.getY()).get(currentNode.getX()) == 2) {
-           return (float) (Math.pow(Math.abs(currentNode.getX() - goalState.get(0)), 2) + Math.pow(Math.abs(currentNode.getY() - goalState.get(1)), 2))*1.7f;
+           return heuristic*1.7f;
         } else if (csv.get(gridMapWidth - currentNode.getY()).get(currentNode.getX()) == 3) {
-            return (float) ((Math.pow(Math.abs(currentNode.getX() - goalState.get(0)), 2) + Math.pow(Math.abs(currentNode.getY() - goalState.get(1)), 2))+10)*1.7f;
-        } else {
-            return (float) (Math.pow(Math.abs(currentNode.getX() - goalState.get(0)), 2) + Math.pow(Math.abs(currentNode.getY() - goalState.get(1)), 2));
+            return (heuristic+10)*1.7f;
         }
+        return heuristic;
     }
 }
