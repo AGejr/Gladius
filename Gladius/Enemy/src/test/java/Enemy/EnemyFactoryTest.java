@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
-public class EnemyControlSystemTest {
+public class EnemyFactoryTest {
     World world;
     GameData gameData;
     Enemy enemy;
