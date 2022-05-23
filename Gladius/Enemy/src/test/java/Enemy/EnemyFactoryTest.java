@@ -36,12 +36,8 @@ public class EnemyFactoryTest {
         //When wavenumber is 10, there will spawn 14 enemies
         enemyFactory.spawn(gameData, world, 10);
 
-        while (Thread.currentThread().isAlive()) {
-            Thread.sleep(1);
-            if (world.getEntities().size() == 14) {
-                break;
-            }
-        }
+        //Pause this thread in some time to make sure spawn thread has completed
+        Thread.sleep(5000);
         assertEquals(world.getEntities().size(), 14);
     }
 
