@@ -46,12 +46,13 @@ public class EnemyFactoryTest {
         EnemyFactory enemyFactory = new EnemyFactory();
 
         int entitiesBeforeStop = world.getEntities().size();
+        assertNotEquals(0, entitiesBeforeStop);
 
         enemyFactory.stop(world);
 
         int entitiesAfterStop = world.getEntities().size();
 
-        assertNotEquals(entitiesAfterStop, entitiesBeforeStop);
+        assertEquals(0, entitiesAfterStop);
     }
 
 
